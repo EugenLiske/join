@@ -1,0 +1,110 @@
+.menu-content{
+    position: relative;
+    overflow: hidden;
+}
+
+.board-header{
+    width: 100%;
+    height: 96px;
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px 0 348px ;
+    box-shadow: 0 0 0 4px #0000001A;
+}
+
+.header-menu-right{
+    display: flex;
+    gap: 16px;
+}
+
+.help-button{
+    display: flex;
+    align-items: center;
+}
+
+.help-button img{
+    height: 32px;
+}
+
+.help-button img:hover{
+    cursor: pointer;
+    transform:scale(1.2, 1.2);
+}
+
+.menu-button{
+    height: 56px;
+    width: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #29ABE2;
+    border-radius: 50%;
+    border: 3px solid #2A3647;
+    padding: 0;
+    background-color: transparent;
+    font-weight: bold;
+}
+
+.menu-button:hover{
+    background-color: #0C2E621F;
+    cursor: pointer;
+}
+
+.initials-small{
+    font-size: 14px;
+}
+
+.initials-tall{
+    font-size: 20px;
+}
+
+/* Side Menu */
+.side-menu {
+    position: absolute;
+    top: 96px;
+    right: -166px; /* Start außerhalb des Bildschirms */
+    width: 150px;
+    background-color: #2A3647;
+    color: white;
+    padding: 10px;
+    border-radius: 20px 0 20px 20px;
+    transition: right 0.5s ease;
+    z-index: 1000;
+    color: #CDCDCD;
+
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    margin-right: 16px;
+}
+
+.side-menu.open {
+    right: 0;
+}
+
+.side-menu a{
+    text-decoration: none;
+    color: #CDCDCD;
+    padding: 8px 16px;
+}
+
+
+/* Gleicher Code wie bei Navigationsleiste !!!!!*/
+.active-content{
+    background-color: #091931;
+    color: #FFFFFF;
+}
+
+.deactive-content{
+    background-color: transparent;
+    color: #CDCDCD;
+}
+
+.deactive-content:hover{
+    background-color: #2A3D59;
+    cursor: pointer;
+}
