@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main_navigation.css">
 </head>
 <body>
-    <nav class="main-navigation">
-        <img src="./assets/img/logos/join_logo_light.svg" alt="Join logo">
-        <ul class="nav-content">
-            <li><img src="./assets/img/icons/nav_bar/summary.svg" alt="Image for navigation element for summary">Summary</li>
-            <li><img src="./assets/img/icons/nav_bar/add_task.svg" alt="Image for navigation element for add task">Add Task</li>
-            <li><img src="./assets/img/icons/nav_bar/board.svg" alt="Image for navigation element for board">Board</li>
-            <li><img src="./assets/img/icons/nav_bar/contacts.svg" alt="Image for navigation element for contacts">Contacts</li>
-        </ul>
+    <main>
+        <nav class="main-navigation">
+            <img class="logo" src="./assets/img/logos/join_logo_light.svg" alt="Join logo">
+            <ul class="nav-content">
+                <li class="active-content"><img src="./assets/img/icons/nav_bar/summary.svg" alt="Image for navigation element for summary">Summary</li>
+                <li class="deactive-content"><img src="./assets/img/icons/nav_bar/add_task.svg" alt="Image for navigation element for add task">Add Task</li>
+                <li class="deactive-content"><img src="./assets/img/icons/nav_bar/board.svg" alt="Image for navigation element for board">Board</li>
+                <li class="deactive-content"><img src="./assets/img/icons/nav_bar/contacts.svg" alt="Image for navigation element for contacts">Contacts</li>
+            </ul>
 
-        <ul class="nav-footer">
-            <li>Privacy Policy</li>
-            <li>Legal notice</li>
-        </ul>
-    </nav>
+            <ul class="nav-footer">
+                <li class="active-footer">Privacy Policy</li>
+                <li class="deactive-footer">Legal notice</li>
+            </ul>
+        </nav>
+    </main>
+
 </body>
 </html>
