@@ -6,10 +6,13 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="main_navigation.css">
+    <link rel="stylesheet" href="menu.css">
+
+    <script src="script.js"></script>
 </head>
 <body>
-    <main>
+    <main class="df-row">
+
         <nav class="main-navigation">
             <img class="logo" src="./assets/img/logos/join_logo_light.svg" alt="Join logo">
             <ul class="nav-content">
@@ -23,7 +26,29 @@
                 <li class="active-footer">Privacy Policy</li>
                 <li class="deactive-footer">Legal notice</li>
             </ul>
-        </nav>
+        </nav>            
+
+
+        <div class="main-content">
+            <div>
+                <header class="board-header">
+                    <span>Kanban Project Management Tool</span>
+                    <div class="header-menu-right">
+                        <a class="help-button" href="#"><img src="./assets/img/icons/nav_bar/help.svg" alt="Questionmark"></a>
+                        <button onclick="toggleMenu()" class="menu-button initials-tall">G</button>                
+                    </div>
+                </header>
+
+                <menu id="side-menu" class="side-menu">
+                    <a class="deactive-content" href="#">Legal Notice</a>
+                    <a class="deactive-content" href="#">Privacy Policy</a>
+                    <a class="deactive-content" href="#">Log out</a>
+                </menu>                   
+            </div>
+            <!-- ... -->
+        </div>
+
+
     </main>
 
 </body>
