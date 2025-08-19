@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.logo_signup_page {
+    position: absolute;
+    width: 101px;
+    height: 122px;
+    animation: moveLogo 2000ms ease forwards;
+}
+
+
+@keyframes moveLogo {
+    from {
+        /* Start in der Mitte, stark vergrößert */
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(3); /* z. B. 3x größer */
+    }
+    to {
+        /* Ziel: oben links, normale Größe */
+        left: 77px;
+        top: 80px;
+        transform: translate(0, 0) scale(1); /* normale Größe */
+    }
+}
+
+.sign_up_page_content_div {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup_form {
+    background-color: #ffffff;
+    width: 598px;
+    height: 630px;
+    border-radius: 30px;
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 88px;
+    padding-right: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.signup_arrow_left {
+  position: absolute;
+  top: 68px;
+  left: 45px;
+
+  /* Fixe sichtbare Fläche */
+  width: 32px;
+  height: 32px;
+
+  /* Icon als Background, zentriert und passend skaliert */
+  background: center / contain no-repeat url("./assets/img/icons/navigation/arrow_left.svg");
+
+  /* sanfte Übergänge */
+  transition: background-image 0s, transform 250ms ease; /* image wechselt instant, scale smooth */
+}
+
+/* Hover: anderes Icon + leichtes „größer wirken“ */
+.signup_arrow_left:hover {
+  background-image: url("./assets/img/icons/navigation/arrow_left_hover.svg");
+  transform: scale(1.05); /* hebt sich minimal ab, ohne Layout zu verändern */
+}
+
+.signup_headline {
+    font-size: 61px;
+    font-weight: 700;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.signup_headline_underscore {
+   width: 150px;
+   height: 5px;
+   border: none;
+   background-color: #29ABE2;  /* Farbe hier */
+   margin-top: 16px;
+   border-radius: 1.5px; /* halbe Höhe → Enden rund */
+}
+
+.input_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.input_wrapper {
+    position: relative;           /* Bezugspunkt für das Icon */
+    display: inline-block;
+}
+
+.input_field {
+    width: 422px;
+    height: 48px;
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
+    padding-left: 21px;
+    padding-right: 48px;      /* 👉 Platz für das Icon rechts schaffen */
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #d1d1d1;
+}
+
+.input_field::placeholder {
+    color: #d1d1d1;  /* hellgrau für Platzhalter */
+}
+
+.input_field:focus {
+    border: 2px solid #29ABE2;
+    outline: none;
+}
+
+.input_field_icon {
+    position: absolute;
+    right: 21px;              /* 👉 gleicher Abstand wie padding-right */
+    top: 50%;                 /* vertikal mittig */
+    transform: translateY(-50%);
+    width: 24px;              /* Icon-Größe */
+    height: 24px;
+    pointer-events: none;     /* Klicks blockieren Input nicht */
+}
+
+.checkbox_wrapper {
+    display: flex;                /* Checkbox + Text in einer Zeile */
+    align-items: center;          /* vertikal ausrichten */
+    margin-bottom: 32px;
+}
+
+.checkbox_field {
+    /* Standard-Styles entfernen */
+    -webkit-appearance: none;
+    appearance: none;
+
+    /* Eigenes Quadrat */
+    width: 18px;           /* etwas größer */
+    height: 18px;
+    border: 3px solid #333; /* dickere Ränder */
+    border-radius: 4px;     /* optional: leicht abgerundet */
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #fff;
+    margin-right: 8px;
+
+      /* für den Haken */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px 12px;
+
+    /* optional, smooth */
+    transition: background-color 120ms, border-color 120ms;
+}
+
+
+.checkbox_field:checked {
+    background-color: #29ABE2;   /* Füllung blau */
+    border-color: #29ABE2;       /* Rahmen blau */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5 11-11'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px 12px;
+}
+
+.checkbox_label {
+    font-size: 16px;
+    font-weight: 400;
+    color: #a8a8a8;
+    font-family: sans-serif;
+}
+
+.privacy_link {
+    color: #29ABE2;
+    text-decoration: none;   /* unterstrichen, klar als Link erkennbar */
+    cursor: pointer;
+}
+
+.signup_button {
+    width: 126px;
+    height: 55px;
+    background-color: #2A3647;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    /* für sanften Übergang */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup_button:hover {
+    background-color: #29ABE2;
+    transform: translateX(-1px); /* Button hebt sich leicht an */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+}
+
+.signup_button:active {
+    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
+    transform: translateY(0);  /* Hover-Translate zurücknehmen */
+    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+}
+
+/* Optional: disabled-Style für den Button */
+.signup_button[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.signup_button[disabled]:hover {
+  background-color: #2A3647; /* Hover-Effekte neutralisieren */
+  transform: none;
+  box-shadow: none;
+}
+
+/* Overlay */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.overlay.leaving {
+  opacity: 0;
+}
+
+.overlay_message {
+    width: 312px;
+    height: 74px;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #2A3647;
+    color: #fff;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+      /* Inhalt in der Mitte zentrieren */
+    display: flex;
+    align-items: center;    /* vertikal */
+    justify-content: center;/* horizontal */
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.overlay_message.enter {
+  animation: overlaySlideIn 300ms ease-out forwards;
+}
+
+@keyframes overlaySlideIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}

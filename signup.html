@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Sign up</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="sign_up_page_content_div">
+
+    <form id="signup_form" class="signup_form" onsubmit="registerUser(event)">
+            <a href="#" class="signup_arrow_left"></a>
+            <h1 class="signup_headline">Sign up</h1>
+            <hr class="signup_headline_underscore">
+
+            <div class="input_fields">
+                <div class="input_wrapper">
+                    <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="validateForm()">
+                    <img src="./assets/img/icons/form/person.svg" class="input_field_icon"></img>
+                </div>
+                <div class="input_wrapper">
+                    <input id="email_input" class="input_field" type="email" placeholder="Email" oninput="validateForm()">
+                    <img src="./assets/img/icons/form/mail.svg" class="input_field_icon"></img>
+                </div>
+                <div class="input_wrapper">
+                    <input id="password_input" class="input_field" type="password" placeholder="Password" oninput="validateForm()">
+                    <img src="./assets/img/icons/form/lock.svg" class="input_field_icon"></img>
+                </div>
+                <div class="input_wrapper">
+                    <input id="confirm_input" class="input_field" type="password" placeholder="Confirm Password" oninput="validateForm()">
+                    <img src="./assets/img/icons/form/lock.svg" class="input_field_icon"></img>
+                </div>
+            </div>
+
+            <div class="checkbox_wrapper">
+                <input type="checkbox" id="privacy_checkbox" class="checkbox_field">
+                <label for="privacy_checkbox" class="checkbox_label">
+                    I accept the <a href="/privacy-policy" class="privacy_link">Privacy Policy</a>
+                </label>
+            </div>
+
+            <button id="signup_button" class="signup_button">Sign up</button>
+        </form>
+
+        <!-- Overlay -->
+        <div id="signup_overlay" class="overlay">
+            <div id="overlay_message" class="overlay_message">
+                You signed up successfully
+            </div>
+        </div>
+
+        <img class="logo_signup_page" src="./assets/img/logos/join_logo_dark.svg" alt="join_logo">
+    </div>
+</body>
+
+<script src="signup.js"></script>
+</html>
