@@ -12,44 +12,10 @@
 </head>
 <body>
     <main class="df_row">
-
-        <nav class="main_navigation">
-            <img class="logo" src="./assets/img/logos/join_logo_light.svg" alt="Join logo">
-            <ul class="nav_content">
-                <li class="active_content"><img src="./assets/img/icons/nav_bar/summary.svg" alt="Image for navigation element for summary">Summary</li>
-                <li class="deactive_content"><img src="./assets/img/icons/nav_bar/add_task.svg" alt="Image for navigation element for add task">Add Task</li>
-                <li class="deactive_content"><img src="./assets/img/icons/nav_bar/board.svg" alt="Image for navigation element for board">Board</li>
-                <li class="deactive_content"><img src="./assets/img/icons/nav_bar/contacts.svg" alt="Image for navigation element for contacts">Contacts</li>
-            </ul>
-
-            <ul class="nav_footer">
-                <li class="active_footer">Privacy Policy</li>
-                <li class="deactive_footer">Legal notice</li>
-            </ul>
-        </nav>            
-
-
-        <div class="main_content">
-            <div>
-                <header class="board_header">
-                    <span>Kanban Project Management Tool</span>
-                    <div class="header_menu_right">
-                        <a class="help_button" href="#"><img src="./assets/img/icons/nav_bar/help.svg" alt="Questionmark"></a>
-                        <button onclick="toggleMenu()" class="menu_button initials_tall">G</button>                
-                    </div>
-                </header>
-
-                <menu id="side_menu" class="side_menu">
-                    <a class="deactive_content" href="#">Legal Notice</a>
-                    <a class="deactive_content" href="#">Privacy Policy</a>
-                    <a class="deactive_content" href="#">Log out</a>
-                </menu>                   
-            </div>
-            <!-- ... -->
-        </div>
-
-
+        <div id="navigation_bar"></div>
+        <div id="main_header"></div>
     </main>
 
 </body>
+<script src="include.js"></script>
 </html>
