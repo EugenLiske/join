@@ -1,0 +1,142 @@
+h2{
+    font-size: 61px;
+}
+
+.main_card{
+    padding: 8px;
+    background-color: var(--bg-c-join);
+}
+
+.card_header{
+    display: flex;
+    align-items: center;
+}
+
+.card_header span{
+    font-size: 27px;
+}
+
+.header_separator{
+    height: 59px;
+    border: 2px solid var(--c-separator-var2);
+    margin: 0 30px;
+}
+
+.columns{
+    display: flex;
+    align-items: center;
+}
+
+.summary_content{
+    display: flex;
+    flex-direction: column;
+    width: 560px;
+}
+
+.df_row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gap_18{
+    gap: 18px;
+}
+
+.summary_card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    background-color: var(--bg-c-card);
+    gap: 18px;
+    flex-grow: 1;
+    box-shadow: 0 0 4px 0 #0000001A;
+    height: 168px;
+}
+
+.round_icon{
+    border-radius: 50%;
+    height: 69px;
+    width: 69px;
+    background-color: var(--c-btn-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amount{
+    font-size: 64px;
+    font-weight: 600;
+}
+
+.text{
+    font-size: 20px;
+}
+
+.text_box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.separator{
+    border: 1px solid var(--c-separator-var1);
+    height: 102px;
+}
+
+.middle_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 18px;
+}
+
+.middle_box p{
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.deadline_date{
+    font-size: 21px;
+    font-weight: bold;
+    color: var(--c-text-deadline);
+}
+
+
+.round_priority_icon{
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    background-color: var(--c-pr-urgent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome_content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.welcome_content p{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.welcome{
+    font-size: 47px;
+}
+
+.name{
+    font-size: 64px;
+    font-weight: bold;
+    color: var(--c-text-name);
+}
