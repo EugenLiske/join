@@ -1,0 +1,81 @@
+:root{
+    /* Colors ----------------------------------------------------------- */
+    /* Board */
+    --bg-c-join: #f6f7f8;
+    
+    /* Buttons */
+    --c-btn-default: #2A3647;
+    --c-btn-hover: #29ABE2;
+    --c-btn-click: #091931;
+
+    --c-btn-text-var1: #2A3647;
+    --c-btn-text-var2: #FFFFFF;
+    --c-btn-text-var3: #29ABE2;
+
+    /* Navigation & Menu */
+    --c-m-btn-default: transparent;
+    --c-m-btn-hover: #2A3D59;
+    --c-m-btn-click: #091931;
+    
+    --c-m-text-default: #CDCDCD;
+    --c-m-text-click: #FFFFFF;
+
+    /* Privacy Policy & Legal Notice */
+    --c-text-btn-default: #A8A8A8;
+    --c-text-btn-hover: #29ABE2;
+
+    /* Profile */
+    --c-pf-var1: #FF7A00;
+    --c-pf-var2: #FF5EB3;
+    --c-pf-var3: #6E52FF;
+    --c-pf-var4: #9327FF;
+    --c-pf-var5: #00BEE8;
+    --c-pf-var6: #1FD7C1;
+    --c-pf-var7: #FF745E;
+    --c-pf-var8: #FFA35E;
+    --c-pf-var9: #FC71FF;
+    --c-pf-var10: #FFC701;
+    --c-pf-var11: #0038FF;
+    --c-pf-var12: #C3FF2B;
+    --c-pf-var13: #FFE62B;
+    --c-pf-var14: #FF4646;
+    --c-pf-var15: #FFBB2B;
+
+    /* User Profile Initials */
+    --c-up-initials: #29ABE2;
+    --c-up-border: #2A3647;
+
+    /* Input */
+    --c-warn: #FF001F;
+    --c-active: #29ABE2;
+    --c-default: #D1D1D1;
+
+    /* Link */
+    --c-link: #29ABE2;
+
+    /* Summary - Buttons */
+    --c-btn-s-hover: #2A3647;
+
+    /* Prorities */
+    --c-pr-urgent: #FF3D00;
+    --c-pr-medium: #FFA800;
+    --c-pr-low: #7AE229;
+
+    /* Category */
+    --c-category1: #0038FF;
+    --c-category1: #1FD7C1;
+
+    /* Search - Magnifying Glass */
+    --c-mgl: #2A3647;
+    --c-mgl-click: #29ABE2;
+
+    /* Contacts */
+    --c-con-mail: #007CEE;
+    --c-con-btn-default: #FFFFFF;
+    --c-con-btn-hive: linear-gradient(#F9F9F9, #F0F0F0);
+    --c-con-btn-click: #2A3647;
+
+    /* Contact - Edit & Delete */
+    --c-btn-delete: #29ABE2;
+    --c-btn-edit: #2A3647;
+}
