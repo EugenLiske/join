@@ -1,10 +1,10 @@
-.df-row{
+.df_row{
     display: flex;
 }
 
 /* Navigationbar left -------------------------------------------------- */
 
-.main-navigation{
+.main_navigation{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +21,7 @@
     height: 121.97px;
 }
 
-.nav-content{
+.nav_content{
     list-style-type: none;
     width: 100%;
     padding: 0;
@@ -30,29 +30,29 @@
     gap: 15px;
 }
 
-.nav-content li{
+.nav_content li{
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 0 8px 53px;
 }
 
-.active-content{
+.active_content{
     background-color: #091931;
     color: #FFFFFF;
 }
 
-.deactive-content{
+.deactive_content{
     background-color: transparent;
     color: #CDCDCD;
 }
 
-.deactive-content:hover{
+.deactive_content:hover{
     background-color: #2A3D59;
     cursor: pointer;
 }
 
-.nav-footer{
+.nav_footer{
     list-style-type: none;
     width: 100%;
     padding: 243px 0 0 0;
@@ -61,21 +61,21 @@
     margin: 0px;
 }
 
-.nav-footer li{
+.nav_footer li{
     padding: 8px;
     text-align: center;
     color: #A8A8A8;
 }
 
-.active-footer{
+.active_footer{
     background-color: #091931;
 }
 
-.deactive-footer{
+.deactive_footer{
     background-color: transparent;
 }
 
-.deactive-footer:hover{
+.deactive_footer:hover{
     cursor: pointer;
     color: #29ABE2;
     font-weight: 700;
@@ -83,7 +83,7 @@
 
 /* Header --------------------------------------------------------------- */
 
-.board-header{
+.board_header{
     width: calc(100vw - 232px);
     height: 96px;
     background-color: white;
@@ -96,26 +96,26 @@
     box-shadow: 0 0 0 4px #0000001A;
 }
 
-.header-menu-right{
+.header_menu_right{
     display: flex;
     gap: 16px;
 }
 
-.help-button{
+.help_button{
     display: flex;
     align-items: center;
 }
 
-.help-button img{
+.help_button img{
     height: 32px;
 }
 
-.help-button img:hover{
+.help_button img:hover{
     cursor: pointer;
     transform:scale(1.2, 1.2);
 }
 
-.menu-button{
+.menu_button{
     height: 56px;
     width: 56px;
     display: flex;
@@ -129,21 +129,21 @@
     font-weight: bold;
 }
 
-.menu-button:hover{
+.menu_button:hover{
     background-color: #0C2E621F;
     cursor: pointer;
 }
 
-.initials-small{
+.initials_small{
     font-size: 14px;
 }
 
-.initials-tall{
+.initials_tall{
     font-size: 20px;
 }
 
 /* Side Menu */
-.side-menu {
+.side_menu {
     position: fixed;
     right: -166px;
     width: 150px;
@@ -162,11 +162,11 @@
     overflow: hidden;
 }
 
-.side-menu.open {
+.side_menu.open {
     right: 0;
 }
 
-.side-menu a{
+.side_menu a{
     text-decoration: none;
     color: #CDCDCD;
     padding: 8px 16px;
