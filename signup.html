@@ -9,27 +9,59 @@
 <body>
     <div class="sign_up_page_content_div">
 
-    <form id="signup_form" class="signup_form" onsubmit="registerUser(event)">
+    <form id="signup_form" class="signup_form" onsubmit="registerUser(event, 'users')">
             <a href="./login.html" class="signup_arrow_left"></a>
             <h1 class="signup_headline">Sign up</h1>
             <hr class="signup_headline_underscore">
 
             <div class="input_fields">
                 <div class="input_wrapper">
-                    <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="validateForm()">
+                    <input
+                        id="name_input"
+                        class="input_field"
+                        type="text" placeholder="Name"
+                        oninput="validateForm()"
+                    >
                     <img src="./assets/img/icons/form/person.svg" class="input_field_icon"></img>
                 </div>
                 <div class="input_wrapper">
-                    <input id="email_input" class="input_field" type="email" placeholder="Email" oninput="validateForm()">
+                    <input id="email_input"
+                        class="input_field"
+                        type="email" placeholder="Email"
+                        oninput="validateForm()"
+                    >
                     <img src="./assets/img/icons/form/mail.svg" class="input_field_icon"></img>
                 </div>
                 <div class="input_wrapper">
-                    <input id="password_input" class="input_field" type="password" placeholder="Password" oninput="validateForm()">
-                    <img src="./assets/img/icons/form/lock.svg" class="input_field_icon"></img>
+                    <input
+                        id="password_input"
+                        class="input_field"
+                        type="password"
+                        placeholder="Password"
+                        oninput="validateForm(); handlePwdInput('password_input','password_icon')"
+                    >
+                    <img
+                        id="password_icon"
+                        src="./assets/img/icons/form/lock.svg"
+                        class="input_field_icon input_field_icon--btn"
+                        onclick="toggleVisibility('password_input','password_icon')"
+                    >
                 </div>
-                <div class="input_wrapper">
-                    <input id="confirm_input" class="input_field" type="password" placeholder="Confirm Password" oninput="validateForm()">
-                    <img src="./assets/img/icons/form/lock.svg" class="input_field_icon"></img>
+                <div class="input_wrapper input_wrapper--with-error">
+                    <input
+                        id="confirm_input"
+                        class="input_field"
+                        type="password"
+                        placeholder="Confirm Password"
+                        oninput="validateForm(); handlePwdInput('confirm_input','confirm_icon')"
+                    >
+                    <img
+                        id="confirm_icon"
+                        src="./assets/img/icons/form/lock.svg"
+                        class="input_field_icon input_field_icon--btn input_field_icon--confirm"
+                        onclick="toggleVisibility('confirm_input','confirm_icon')"
+                    >
+                    <div id="confirm_error" class="error_text"></div>
                 </div>
             </div>
 

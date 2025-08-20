@@ -100,9 +100,32 @@
     margin-bottom: 32px;
 }
 
+/* Wrapper-Basis */
 .input_wrapper {
-    position: relative;           /* Bezugspunkt für das Icon */
-    display: inline-block;
+    position: relative;
+    display: block;          /* stabiler als inline-block */
+    width: 100%;
+}
+
+/* Nur für das Confirm-Feld: Platz für die Meldung reservieren */
+.input_wrapper--with-error {
+    padding-bottom: 28px;    /* ~14px Texthöhe + 8px Abstand + etwas Luft */
+}
+
+/* Fehlermeldung exakt 8px unter der Unterkante des Inputs */
+.error_text {
+    position: absolute;
+    left: 0;
+    margin-top: 8px;         /* der gewünschte Abstand */
+    font-size: 14px;
+    color: #E53935;
+    line-height: 1.2;
+    display: none;
+}
+
+/* roter Rahmen am Confirm-Feld bei Fehler */
+.input_field.error {
+    border: 2px solid #E53935 !important;
 }
 
 .input_field {
@@ -137,6 +160,17 @@
     pointer-events: none;     /* Klicks blockieren Input nicht */
 }
 
+.input_field_icon--btn {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Ausnahme: nur für das Confirm-Feld-Icon */
+.input_field_icon--confirm {
+    top: 12px; /* Feinanpassung */
+    transform: translateY(0); /* Zentrierung aufheben */
+}
+
 .checkbox_wrapper {
     display: flex;                /* Checkbox + Text in einer Zeile */
     align-items: center;          /* vertikal ausrichten */
@@ -149,8 +183,8 @@
     appearance: none;
 
     /* Eigenes Quadrat */
-    width: 18px;           /* etwas größer */
-    height: 18px;
+    width: 24px;           /* etwas größer */
+    height: 24px;
     border: 3px solid #333; /* dickere Ränder */
     border-radius: 4px;     /* optional: leicht abgerundet */
     cursor: pointer;
@@ -175,7 +209,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5 11-11'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 12px 12px;
+    background-size: 20px 20px;
 }
 
 .checkbox_label {
@@ -326,13 +360,13 @@
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.signup_button:hover {
+.signup_button_login_page:hover {
     background-color: #29ABE2;
     transform: translateX(-1px); /* Button hebt sich leicht an */
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
 }
 
-.signup_button:active {
+.signup_button_login_page:active {
     background-color: #091931; /* etwas dunkleres Blau beim Klicken */
     transform: translateY(0);  /* Hover-Translate zurücknehmen */
     box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
@@ -427,4 +461,15 @@
     border-color: #091931;       /* Rahmen ebenfalls dunkler */
     transform: translateY(0);    /* Hover-Translate zurücknehmen */
     box-shadow: none;            /* Schatten verschwindet = "eingedrückt" */
+}
+
+.login_button[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.login_button[disabled]:hover {
+    background-color: #2A3647; /* Hover-Effekte neutralisieren */
+    transform: none;
+    box-shadow: none;
 }
