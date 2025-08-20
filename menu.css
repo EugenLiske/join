@@ -1,24 +1,31 @@
-.df_row{
-    display: flex;
-}
-
 /* Navigationbar left -------------------------------------------------- */
+
+/* #navigation_bar{
+    height: 100%;
+} */
 
 .main_navigation{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     background-color: #2A3647;
     width: 232px;
-    height: 100%;
+    min-height: 100%;
     padding: 64px 0;
-    color: white;
+}
+
+.nav_top{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+    width: 100%;
 }
 
 .logo{
-    width: 100.03px;
-    height: 121.97px;
+    width: 100px;
 }
 
 .nav_content{
@@ -55,10 +62,10 @@
 .nav_footer{
     list-style-type: none;
     width: 100%;
-    padding: 243px 0 0 0;
     display: flex;
     flex-direction: column;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .nav_footer li{
@@ -84,7 +91,6 @@
 /* Header --------------------------------------------------------------- */
 
 .board_header{
-    width: calc(100vw - 232px);
     height: 96px;
     background-color: white;
 
@@ -92,8 +98,11 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 40px 0 calc(348px - 232px);
-    box-shadow: 0 0 0 4px #0000001A;
+    padding: 0 40px 0 116px;
+    box-shadow: 0 4px 4px 0 #0000001A;
+    z-index: 100;
+
+    margin-bottom: 4px;
 }
 
 .header_menu_right{

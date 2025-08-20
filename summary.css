@@ -1,18 +1,43 @@
 h2{
     font-size: 61px;
+    margin: 32px 0;
 }
 
-.main_card{
-    padding: 8px;
+.page_wrapper{
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+.main_wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.main_container{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
     background-color: var(--bg-c-join);
 }
 
-.card_header{
+.main_content{
     display: flex;
-    align-items: center;
+    justify-content: center;
+    flex: 1;
+
+    gap: 40px;
 }
 
-.card_header span{
+.main_header{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.main_header span{
     font-size: 27px;
 }
 
@@ -22,12 +47,15 @@ h2{
     margin: 0 30px;
 }
 
-.columns{
+.content_wrapper{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    flex: 1;
+
+    background-color: var(--bg-c-join);
 }
 
-.summary_content{
+.overview{
     display: flex;
     flex-direction: column;
     width: 560px;
@@ -107,7 +135,6 @@ h2{
     color: var(--c-text-deadline);
 }
 
-
 .round_priority_icon{
     border-radius: 50%;
     height: 60px;
@@ -118,24 +145,23 @@ h2{
     justify-content: center;
 }
 
-.welcome_content{
+.welcome{
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
 }
 
-.welcome_content p{
+.welcome p{
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.welcome{
+.welcome_text{
     font-size: 47px;
 }
 
-.name{
+.welcome_name{
     font-size: 64px;
     font-weight: bold;
     color: var(--c-text-name);
