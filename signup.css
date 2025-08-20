@@ -4,6 +4,8 @@
     font-family: sans-serif;
 }
 
+/* Logo plus Animation */
+
 .logo_signup_page {
     position: absolute;
     width: 101px;
@@ -34,6 +36,8 @@
     align-items: center;
 }
 
+/* Sign Up Formular */
+
 .signup_form {
     background-color: #ffffff;
     width: 598px;
@@ -51,25 +55,25 @@
 }
 
 .signup_arrow_left {
-  position: absolute;
-  top: 68px;
-  left: 45px;
+    position: absolute;
+    top: 68px;
+    left: 45px;
 
-  /* Fixe sichtbare Fläche */
-  width: 32px;
-  height: 32px;
+    /* Fixe sichtbare Fläche */
+    width: 32px;
+    height: 32px;
 
-  /* Icon als Background, zentriert und passend skaliert */
-  background: center / contain no-repeat url("./assets/img/icons/navigation/arrow_left.svg");
+    /* Icon als Background, zentriert und passend skaliert */
+    background: center / contain no-repeat url("./assets/img/icons/navigation/arrow_left.svg");
 
-  /* sanfte Übergänge */
-  transition: background-image 0s, transform 250ms ease; /* image wechselt instant, scale smooth */
+    /* sanfte Übergänge */
+    transition: background-image 0s, transform 250ms ease; /* image wechselt instant, scale smooth */
 }
 
 /* Hover: anderes Icon + leichtes „größer wirken“ */
 .signup_arrow_left:hover {
-  background-image: url("./assets/img/icons/navigation/arrow_left_hover.svg");
-  transform: scale(1.05); /* hebt sich minimal ab, ohne Layout zu verändern */
+    background-image: url("./assets/img/icons/navigation/arrow_left_hover.svg");
+    transform: scale(1.0); /* hebt sich minimal ab, ohne Layout zu verändern */
 }
 
 .signup_headline {
@@ -112,7 +116,6 @@
     padding-bottom: 12px;
     font-size: 20px;
     font-weight: 400;
-    color: #d1d1d1;
 }
 
 .input_field::placeholder {
@@ -198,7 +201,11 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 24px;
+    padding-right: 24px;
+    
     /* für sanften Übergang */
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -217,36 +224,36 @@
 
 /* Optional: disabled-Style für den Button */
 .signup_button[disabled] {
-  opacity: .5;
-  cursor: not-allowed;
+    opacity: .5;
+    cursor: not-allowed;
 }
 .signup_button[disabled]:hover {
-  background-color: #2A3647; /* Hover-Effekte neutralisieren */
-  transform: none;
-  box-shadow: none;
+    background-color: #2A3647; /* Hover-Effekte neutralisieren */
+    transform: none;
+    box-shadow: none;
 }
 
 /* Overlay */
 
 .overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 300ms ease;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 300ms ease;
 }
 
 .overlay.active {
-  display: flex;
-  opacity: 1;
+    display: flex;
+    opacity: 1;
 }
 
 .overlay.leaving {
-  opacity: 0;
+    opacity: 0;
 }
 
 .overlay_message {
@@ -285,4 +292,139 @@
     transform: translateY(0%);
     opacity: 1;
   }
+}
+
+/*------------------------- Log In Seite------------------------- */
+
+.become_member_area {
+    position: absolute;
+    top: 50px;
+    right: 100px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+/* Sign Up Button */
+
+.signup_button_login_page {
+    width: 91px;
+    height: 49px;
+    background-color: #2A3647;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    /* für sanften Übergang */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup_button:hover {
+    background-color: #29ABE2;
+    transform: translateX(-1px); /* Button hebt sich leicht an */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+}
+
+.signup_button:active {
+    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
+    transform: translateY(0);  /* Hover-Translate zurücknehmen */
+    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+}
+
+/* Log In Formular */
+
+.login_form {
+    background-color: #ffffff;
+    width: 652px;
+    height: 449px;
+    border-radius: 30px;
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 115px;
+    padding-right: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*Log In Button */
+
+.login_button {
+    width: 110px;
+    height: 48px;
+    background-color: #2A3647;
+    color: white;
+    font-weight: 700;
+    font-size: 20px; /* ist 21px im figma */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    /* für sanften Übergang */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login_button:hover {
+    background-color: #29ABE2;
+    transform: translateX(-1px); /* Button hebt sich leicht an */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+}
+
+.login_button:active {
+    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
+    transform: translateY(0);  /* Hover-Translate zurücknehmen */
+    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+}
+
+/* Guest Log In Button */
+
+.login_button_area {
+   display: flex;
+   gap: 35px;
+   justify-content: center;
+   align-items: center;
+}
+
+.guest_login_button {
+    width: 177px;
+    height: 48px;
+    border-radius: 8px;
+    border: 2px solid #2A3647;   /* etwas kräftigerer Rand */
+    background-color: #ffffff;   /* bleibt weiß */
+    color: #2A3647;              /* dunkler Text */
+    font-weight: 700;
+    font-size: 20px; /* ist 21px im figma */
+    cursor: pointer;
+
+    /* sanfte Übergänge */
+    transition: color 0.2s ease, border-color 0.2s ease,
+                transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guest_login_button:hover {
+    background-color: #ffffff;   /* bleibt weiß */
+    color: #29ABE2;              /* Text wechselt */
+    border-color: #29ABE2;       /* Rahmen wechselt */
+    transform: translateX(-1px); /* Button hebt sich leicht an */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+}
+
+.guest_login_button:active {
+    background-color: #ffffff;   /* bleibt weiß */
+    color: #091931;              /* Text dunkler beim Klicken */
+    border-color: #091931;       /* Rahmen ebenfalls dunkler */
+    transform: translateY(0);    /* Hover-Translate zurücknehmen */
+    box-shadow: none;            /* Schatten verschwindet = "eingedrückt" */
 }

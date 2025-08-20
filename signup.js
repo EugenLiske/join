@@ -1,9 +1,16 @@
-function registerUser(event) {
-    event.preventDefault(); // verhindert sofortiges Reload/Submit
+// beim Laden einmal prüfen (Autofill-Fälle) --> Button-Deaktivierung zu Beginn, da alle Felder leer sind
+(function init() {
+  validateForm();
+})();
 
+function registerUser(event) {
+    // verhindert sofortiges Reload/Submit
+    event.preventDefault();
+
+    // Sicherheitsnetz
     if (!validateForm()) {
         return false;
-    } // Sicherheitsnetz
+    } 
 
     let overlay = document.getElementById('signup_overlay');
     let msg = document.getElementById('overlay_message');
@@ -22,11 +29,6 @@ function registerUser(event) {
       }, 300);
     }, 2700);
 }
-
-  // beim Laden einmal prüfen (Autofill-Fälle) --> Button-Deaktivierung zu Beginn, da alle Felder leer sind
-(function init() {
-  validateForm();
-})();
 
 function isEmailValid(email) {
     let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;

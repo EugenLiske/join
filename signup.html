@@ -10,7 +10,7 @@
     <div class="sign_up_page_content_div">
 
     <form id="signup_form" class="signup_form" onsubmit="registerUser(event)">
-            <a href="#" class="signup_arrow_left"></a>
+            <a href="./login.html" class="signup_arrow_left"></a>
             <h1 class="signup_headline">Sign up</h1>
             <hr class="signup_headline_underscore">
 
@@ -34,7 +34,7 @@
             </div>
 
             <div class="checkbox_wrapper">
-                <input type="checkbox" id="privacy_checkbox" class="checkbox_field">
+                <input type="checkbox" id="privacy_checkbox" class="checkbox_field" oninput="validateForm()">
                 <label for="privacy_checkbox" class="checkbox_label">
                     I accept the <a href="/privacy-policy" class="privacy_link">Privacy Policy</a>
                 </label>
