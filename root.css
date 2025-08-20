@@ -53,8 +53,17 @@
     /* Link */
     --c-link: #29ABE2;
 
+    /* Separators */
+    --c-separator-var1: #D1D1D1;
+    --c-separator-var2: #29ABE2;
+
     /* Summary - Buttons */
     --c-btn-s-hover: #2A3647;
+    
+    --bg-c-card: #FFFFFF;
+
+    --c-text-deadline: #2A3647;
+    --c-text-name: #29ABE2;
 
     /* Prorities */
     --c-pr-urgent: #FF3D00;
