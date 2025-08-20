@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="menu.css">
 
     <script src="script.js"></script>
+    <script src="task_db.js"></script>
+    <script src="task_overview.js"></script>
 </head>
-<body>
+<body onload="initSummary()">
     <div class="page_wrapper">
         <!-- navigation bar left -->
         <div id="page_navigation"></div>
@@ -39,7 +41,7 @@
                                         </svg>
                                     </div>
                                     <div class="text_box">
-                                        <span class="amount">1</span>
+                                        <span id="amount_toDo" class="amount">1</span>
                                         <span class="text">To-do</span>
                                     </div>
                                 </div>
@@ -50,7 +52,7 @@
                                         </svg>
                                     </div>
                                     <div class="text_box">
-                                        <span class="amount">1</span>
+                                        <span id="amount_done" class="amount">1</span>
                                         <span class="text">Done</span>
                                     </div>
                                 </div>
@@ -64,7 +66,7 @@
                                             <img src="assets/img/icons/task/urgent.svg" height="25" alt="Silhouette of a pen">
                                         </div>
                                         <div class="text_box">
-                                            <span class="amount">1</span>
+                                            <span id="amount_urgent" class="amount">1</span>
                                             <span class="text">Urgent</span>
                                         </div>
                                     </div>
@@ -72,7 +74,7 @@
                                     <!-- right side -->
                                     <div class="middle_box">
                                         <p>
-                                            <span class="deadline_date">October 16, 2022</span>
+                                            <span id="amount_deadline" class="deadline_date">October 16, 2022</span>
                                             <span>Upcoming Deadline</span>                           
                                         </p>
                                     </div>
@@ -82,19 +84,19 @@
                             <div div class="df_row gap_18">
                                 <div class="summary_card">
                                     <div class="text_box">
-                                        <span class="amount">5</span>
+                                        <span id="amount_tasks" class="amount">5</span>
                                         <span class="text">Tasks in<br>Board</span>
                                     </div>
                                 </div>
                                 <div class="summary_card">
                                     <div class="text_box">
-                                        <span class="amount">2</span>
+                                        <span id="amount_inProgress" class="amount">2</span>
                                         <span class="text">Tasks in<br>Progress</span>
                                     </div>
                                 </div>
                                 <div class="summary_card">
                                     <div class="text_box">
-                                        <span class="amount">2</span>
+                                        <span id="amount_awaitingFeedback" class="amount">2</span>
                                         <span class="text">Awaiting<br>Feedback</span>
                                     </div>
                                 </div>
@@ -104,7 +106,7 @@
                         <section class="welcome">
                             <p>
                                 <span class="welcome_text">Good morning!</span>
-                                <span class="welcome_name">Sofia Müller</span>
+                                <span id="welcome_name" class="welcome_name">Sofia Müller</span>
                             </p>
                         </section>
                     </div>
