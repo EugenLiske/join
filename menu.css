@@ -1,9 +1,5 @@
 /* Navigationbar left -------------------------------------------------- */
 
-/* #navigation_bar{
-    height: 100%;
-} */
-
 .main_navigation{
     display: flex;
     flex-direction: column;
@@ -47,6 +43,7 @@
 .active_content{
     background-color: #091931;
     color: #FFFFFF;
+    cursor: default;
 }
 
 .deactive_content{
@@ -76,6 +73,7 @@
 
 .active_footer{
     background-color: #091931;
+    cursor: default;
 }
 
 .deactive_footer{
