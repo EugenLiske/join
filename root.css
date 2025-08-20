@@ -2,6 +2,9 @@
     /* Colors ----------------------------------------------------------- */
     /* Board */
     --bg-c-join: #f6f7f8;
+
+    /* Header */
+    --bg-c-header: #FFFFFF;
     
     /* Buttons */
     --c-btn-default: #2A3647;
@@ -13,12 +16,17 @@
     --c-btn-text-var3: #29ABE2;
 
     /* Navigation & Menu */
+    --bg-c-navigation: #2A3647;
+
     --c-m-btn-default: transparent;
     --c-m-btn-hover: #2A3D59;
     --c-m-btn-click: #091931;
     
     --c-m-text-default: #CDCDCD;
     --c-m-text-click: #FFFFFF;
+
+    --c-m-contact-text: #29ABE2;
+    --c-m-btn-contact-hover: #0C2E621F;
 
     /* Privacy Policy & Legal Notice */
     --c-text-btn-default: #A8A8A8;
@@ -72,7 +80,7 @@
 
     /* Category */
     --c-category1: #0038FF;
-    --c-category1: #1FD7C1;
+    --c-category2: #1FD7C1;
 
     /* Search - Magnifying Glass */
     --c-mgl: #2A3647;
