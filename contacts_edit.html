@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="styles/contact_edit_add.css" />
+    <link rel="stylesheet" href="root.css" />
+    <link rel="stylesheet" href="styles/contact_edit.css">
+  </head>
+  <body>
+    <main class="edit_main">
+      <!-- LEFT SIDE - HEADER SECTION -->
+      <div class="edit_contact">
+        <img
+          class="logo_light"
+          src="assets/img/logos/join_logo_light.svg"
+          alt="Join Logo"
+        />
+        <h1 class="edit_h1">Edit contact</h1>
+        <div class="edit_blue_line"></div>
+      </div>
+
+      <!-- RIGHT SIDE - CONTENT AREA -->
+      <div class="content_area">
+
+        <!-- CLOSE BUTTON TOP RIGHT -->
+        <button class="close_button" onclick="closeEditContact()"></button>
+
+        <!-- PROFILE AVATAR CIRCLE -->
+        <div class="contact_avatar" id="contact_avatar">
+          <span class="avatar_initials" id="avatar_initials">
+           <img
+                src="assets/img/icons/form/person.svg"
+                class="input_field_icon"
+                alt="Person Icon"
+              /></span>
+        </div>
+
+        <!-- INPUT CONTAINER -->
+        <div class="input_container">
+          <div class="input_fields">
+            <div class="input_wrapper">
+              <input
+                id="name_input"
+                class="input_field"
+                type="text"
+                placeholder="Name"
+                oninput="validateContactForm()"
+                required
+              />
+              <img
+                src="assets/img/icons/form/person.svg"
+                class="input_field_icon"
+                alt="Person Icon"
+              />
+            </div>
+
+            <div class="input_wrapper">
+              <input
+                id="email_input"
+                class="input_field"
+                type="email"
+                placeholder="Email"
+                oninput="validateContactForm()"
+                required
+              />
+              <img
+                src="assets/img/icons/form/mail.svg"
+                class="input_field_icon"
+                alt="Mail Icon"
+              />
+            </div>
+
+            <div class="input_wrapper">
+              <input
+                id="telephone_input"
+                class="input_field"
+                type="tel"
+                placeholder="Phone"
+                oninput="validateContactForm()"
+                required
+              />
+              <img
+                src="assets/img/icons/form/call.svg"
+                class="input_field_icon"
+                alt="Phone Icon"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- BUTTON CONTAINER -->
+        <div class="button_container">
+          <div class="button_wrapper">
+            <button
+              type="button"
+              id="delete_button"
+              class="delete_button"
+              onclick="deleteContact()"
+            >
+              Delete
+            </button>
+
+            <button
+              type="submit"
+              id="save_button"
+              class="add_edit_button"
+              onclick="saveContact(event)"
+            >
+              <span id="button_text">Save &#10004</span>
+              
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    
+  </body>
+</html>
