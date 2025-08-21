@@ -1,0 +1,172 @@
+.task_input_area{
+    display: flex;
+}
+
+.task_input_wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 20px;
+}
+
+.task_input_column{
+    display: flex;
+    flex-direction: column;
+    max-width: 440px;
+    flex: 1;
+    gap: 24px;
+}
+
+.ta-height{
+    height: 120px !important;
+}
+
+.required_symbole{
+    color: red;
+}
+
+.task_separator{
+    height: 100%;
+    border: 1px solid var(--c-separator-var1);
+    margin: 0 32px;
+}
+
+/* Priority Button ----------------------------------------------------- */
+
+.priority_input{
+    display: flex;
+    gap: 8px;
+}
+
+.priority_button{
+    border-radius: 10px;
+    padding: 16px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    font-size: 20px;
+    border: none;
+    box-shadow: 0 0 4px 0 #0000001A;
+}
+
+.priority_button > span{
+    color: black;
+}
+
+.priority_button:hover{
+    box-shadow: 0 4px 4px 0 #00000040;
+    cursor: pointer;
+}
+
+.medium_color_default{
+    color: var(--c-pr-medium);
+    background-color: white;
+}
+
+.medium_color_click{
+    background-color: var(--c-pr-medium);
+    color: white;
+}
+
+.urgent_color_default{
+    color: var(--c-pr-urgent);
+    background-color: white;
+}
+
+.urgent_color_click{
+    background-color: var(--c-pr-urgent);
+    color: white;
+}
+
+.low_color_default{
+    color: var(--c-pr-low);
+    background-color: white;
+}
+
+.low_color_click{
+    background-color: var(--c-pr-low);
+    color: white;
+}
+
+.priority_button_shadow_click{
+    box-shadow: none;
+}
+
+/* Persons to assign to */
+
+.selection{
+    list-style-type: none;
+    max-height: 288px;
+    background-color: white;
+    padding: 0;
+    gap: 2px;
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+.selection li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    border-radius: 10px;
+    padding: 7px 16px;
+    margin: 1px 0;
+}
+
+.selection li:hover{
+    cursor: pointer;
+}
+
+.person_selected{
+    background-color: #2A3D59;
+    color: white;
+}
+
+.person_selected:hover{
+    background-color: #091931;
+}
+
+.hidden{
+    display: none;
+}
+
+.person_icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 42px;
+    width: 42px;
+    border: 2px solid white;
+    color: white;
+}
+
+.selection_color_container{
+    background-color: white;
+    border-radius: 10px;
+}
+
+.person_info{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.d_none{
+    display: none;
+}
+
+.input_field_icon_task {
+    position: absolute;
+    right: 15px;
+    top: 25%;                 /* vertikal mittig */
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.input_field_icon_task:hover{
+    background-color: #EEEEEE;
+}
