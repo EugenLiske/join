@@ -86,7 +86,7 @@
                                     <div class="selection_color_container">
                                         <div class="input_wrapper">
                                             <input onkeyup="startNameSearch()" id="task_assignedto_input" class="input_field" placeholder="Select contacts to assign">  
-                                            <img onclick="toggleSelectionList()" id="drop_down_persons" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
+                                            <img onclick="toggleSelectionList('selection', 'drop_down_persons')" id="drop_down_persons" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
                                         </div>
                                         <ul class="selection d_none" id="selection">
 
@@ -95,16 +95,15 @@
  
                                 </div>
                                 <div class="task_input_wrapper">
-                                    <label for="task_category_input">Category<span class="required_symbole">*</span></label>
+                                    <label for="category_selection">Category<span class="required_symbole">*</span></label>
                                     <div class="selection_color_container">
                                         <div class="input_wrapper">
-                                            <input list="categories" id="category" class="input_field" name="category" placeholder="Select contacts to assign">  
-                                            <img id="drop_down_persons" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
+                                            <button id="category_selection" class="input_field" onclick="toggleSelectionList('category_options', 'drop_down_categories')">Select task category</button>
+                                            <img id="drop_down_categories" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task" onclick="toggleSelectionList('category_options', 'drop_down_categories')">
                                         </div>
-                                        <datalist id="categories">
-                                            <option value="Technical Task">
-                                            <option value="User Story">
-                                        </datalist>                                         
+                                        <ul class="category_options d_none selection" id="category_options">
+
+                                        </ul>                                       
                                     </div>                               
                                 </div>
                                 <div class="task_input_wrapper">

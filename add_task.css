@@ -170,3 +170,9 @@
 .input_field_icon_task:hover{
     background-color: #EEEEEE;
 }
+
+button.input_field{
+    background-color: white;
+    text-align: start;
+    cursor: pointer;
+}

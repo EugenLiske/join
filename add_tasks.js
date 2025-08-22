@@ -1,15 +1,19 @@
 
 let currentPriority = null;
+let currentCategory = "";
 
 let nameSearchListResult = [];
 let nameSearchList = [];
 
-const categries = ["Technical Task", "User Story"];
+const categories = ["Technical Task", "User Story"];
+
+// Initial Function -----------------------------------------------------------------
 
 function initAddTask(){
     getNameSearchList();
     getSearchListResult("");
     renderNames();
+    renderCategoryOptions();
 }
 
 function getNameSearchList(){
@@ -18,34 +22,7 @@ function getNameSearchList(){
     }
 }
 
-function startNameSearch(){
-    let input = document.getElementById("task_assignedto_input").value;
-    getSearchListResult(input);
-    renderNames();
-    document.getElementById("selection").classList.remove("d_none");
-    toggleDropDownIcon();
-}
-
-function toggleDropDownIcon(){
-    let selectionRef = document.getElementById("selection");
-    let dropDownRef = document.getElementById("drop_down_persons");
-
-    if (selectionRef.classList.contains("d_none")){
-        dropDownRef.src="./assets/img/icons/drop_down/arrow.svg";
-    }
-    else{
-        dropDownRef.src="./assets/img/icons/drop_down/arrow_close.svg";
-    }
-}
-
-function getSearchListResult(input){
-    nameSearchListResult = [];
-    for (let personIdx = 0; personIdx < nameSearchList.length; personIdx++) {
-        if (nameSearchList[personIdx].toLowerCase().includes(input.toLowerCase())){
-            nameSearchListResult.push(personIdx);
-        }
-    }
-}
+// Priority Selection -------------------------------------------------------------------
 
 function setGlobalPriority(element, priority){
     let priorityButtonsRef = document.getElementsByClassName("priority_button");
@@ -70,6 +47,25 @@ function setButtonDefault(buttons){
     }
 }
 
+// Assigned To Selection ------------------------------------------------------------------
+
+function startNameSearch(){
+    let input = document.getElementById("task_assignedto_input").value;
+    getSearchListResult(input);
+    renderNames();
+    document.getElementById("selection").classList.remove("d_none");
+    toggleDropDownIcon();
+}
+
+function getSearchListResult(input){
+    nameSearchListResult = [];
+    for (let personIdx = 0; personIdx < nameSearchList.length; personIdx++) {
+        if (nameSearchList[personIdx].toLowerCase().includes(input.toLowerCase())){
+            nameSearchListResult.push(personIdx);
+        }
+    }
+}
+
 function renderNames(){
     let personSelectionRef = document.getElementById("selection");
     let selection = "";
@@ -77,7 +73,6 @@ function renderNames(){
         selection += getListElementTemplate(persons[nameSearchListResult[resultIdx]]);
     }
     personSelectionRef.innerHTML = selection;
-
 }
 
 function getListElementTemplate(person){
@@ -99,6 +94,10 @@ function selectPerson(element){
     toggleCheckbox(element.classList.contains("person_selected"), checkbox);    
 }
 
+function getCheckbox(parent){
+    return parent.childNodes[3];
+}
+
 function toggleCheckbox(checked, checkbox){
     if (checked){
         checkbox.src = "./assets/img/icons/task/checkbox_tick.svg";
@@ -108,11 +107,49 @@ function toggleCheckbox(checked, checkbox){
     }
 }
 
-function getCheckbox(parent){
-    return parent.childNodes[3];
+function toggleSelectionList(listId, iconId){
+    document.getElementById(listId).classList.toggle("d_none");
+    toggleDropDownIcon(listId, iconId);
 }
 
-function toggleSelectionList(){
-    document.getElementById("selection").classList.toggle("d_none");
-    toggleDropDownIcon();
+function toggleDropDownIcon(inputId, iconId){
+    let selectionRef = document.getElementById(inputId);
+    let dropDownRef = document.getElementById(iconId);
+
+    if (selectionRef.classList.contains("d_none")){
+        dropDownRef.src="./assets/img/icons/drop_down/arrow.svg";
+    }
+    else{
+        dropDownRef.src="./assets/img/icons/drop_down/arrow_close.svg";
+    }
+}
+
+// Category Selection ---------------------------------------------------------------------
+function renderCategoryOptions(){
+    let categoryOptionsRef = document.getElementById("category_options");
+    let optionList = "";
+
+    for (let catIdx = 0; catIdx < categories.length; catIdx++) {
+        if (!checkCategorySelection(categories[catIdx])){
+            optionList += `<li onclick="setCategory('${categories[catIdx]}')">${categories[catIdx]}</li>`
+        }
+    }
+    categoryOptionsRef.innerHTML = optionList;
+}
+
+function setCategory(category){
+    currentCategory = category;
+    showCategorySelection(category);
+    renderCategoryOptions();
+}
+
+function checkCategorySelection(category){
+    let categoryButtonRef = document.getElementById("category_selection");
+    let choice = categoryButtonRef.innerText;
+    return choice === category;
+}
+
+function showCategorySelection(category){
+    let categoryButtonRef = document.getElementById("category_selection");
+    categoryButtonRef.innerText = category;
 }
