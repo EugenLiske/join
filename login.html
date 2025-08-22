@@ -19,13 +19,33 @@
 
         <div class="input_fields">
             <div class="input_wrapper">
-                <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="checkLoginEnable()">
-                <img src="./assets/img/icons/form/person.svg" class="input_field_icon">
+                <input
+                    id="name_input"
+                    class="input_field"
+                    type="text"
+                    placeholder="Name"
+                    oninput="checkLoginEnable()"
+                >
+                <img
+                    src="./assets/img/icons/form/person.svg"
+                    class="input_field_icon"
+                >
             </div>
 
             <div class="input_wrapper">
-                <input id="password_input" class="input_field" type="password" placeholder="Password" oninput="checkLoginEnable()">
-                <img src="./assets/img/icons/form/lock.svg" class="input_field_icon">
+                <input
+                    id="password_input"
+                    class="input_field"
+                    type="password"
+                    placeholder="Password"
+                    oninput="checkLoginEnable(); handleLoginPwdInput('password_input','login_password_icon')"
+                >
+                <img
+                    id="login_password_icon"
+                    src="./assets/img/icons/form/lock.svg"
+                    class="input_field_icon input_field_icon--btn"
+                    onclick="toggleLoginVisibility('password_input','login_password_icon')"
+                >
             </div>
         </div>
 
