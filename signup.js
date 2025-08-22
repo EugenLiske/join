@@ -10,9 +10,15 @@
 })();
 
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
-let registeredUsers = []; // Array, das wir nach jedem Upload befüllen
-let currentUserID = 1; // einfache laufende Nummer (user_1, user_2, ...)
 
+// Helfer: Daten aus Firebase lesen
+async function getAllUsers(path) {
+  let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+  let fireBaseResponseAsJson = await fireBaseResponse.json();
+  return fireBaseResponseAsJson; // gibt Objekt oder null zurück
+}
+
+// Helfer: PUT in Firebase
 async function putUserData(path, data) {
   let response = await fetch(BASE_URL + path + ".json", {
     method: "PUT",
@@ -21,59 +27,62 @@ async function putUserData(path, data) {
   });
 
   let responseAsJson = await response.json();
-  // console.log(response);
-  // console.log(responseAsJson);
+  console.log(response);
+  console.log(responseAsJson);
 }
 
-async function getAllUsers(path) {
-  let fireBaseResponse = await fetch(BASE_URL + path + ".json");
-  console.log(fireBaseResponseAsJson);
-  let fireBaseResponseAsJson = await fireBaseResponse.json();
-  return fireBaseResponseAsJson; // Objekt oder null
-}
-
+// === Register-Funktion ===
 async function registerUser(event) {
-  // verhindert sofortiges Reload/Submit
-  event.preventDefault();
+  event.preventDefault(); // Form-Reload verhindern
 
-  // Sicherheitsnetz
   if (!validateForm()) {
-    return false;
+    return false; // Sicherheitsnetz
   }
 
-  // (1) Daten aus Inputfeldern lesen
+  // (1) Alle bisherigen User aus Firebase holen
+  let userResponse = await getAllUsers("/users");
+
+  // (2) Nächste freie ID berechnen
+  let nextUserID = 1; // Standard: 1, falls DB leer
+  if (userResponse) {
+    let keys = Object.keys(userResponse); // ["user_1", "user_2", ...]
+    let highestUserID = 0;
+
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i]; // z. B. "user_7"
+
+      if (key.startsWith("user_")) {
+
+        let numberPart = key.substring(5); // "7"
+        let n = parseInt(numberPart, 10);
+        
+        if (!isNaN(n) && n > highestUserID) {
+          highestUserID = n; // größte Zahl merken
+        }
+      }
+    }
+
+    nextUserID = highestUserID + 1; // die nächste freie Nummer
+  }
+
+  // (3) Input-Werte lesen
   let nameVal = document.getElementById("name_input").value.trim();
   let emailVal = document.getElementById("email_input").value.trim();
   let passVal = document.getElementById("password_input").value;
 
-  // (2) Objekt bauen
+  // (4) Neues User-Objekt
   let user = {
+    id: nextUserID,
     name: nameVal,
     email: emailVal,
     password: passVal,
   };
 
-  // (3) Pfad mit aktueller ID berechnen
-  let path = "/users/user_" + currentUserID;
+  // (5) Pfad für den neuen User
+  let path = "/users/user_" + nextUserID;
 
-  // (4) User hochladen
+  // (6) User in Firebase speichern
   await putUserData(path, user);
-
-  // (5) ID hochzählen → nächster User kriegt automatisch user_2, user_3 ...
-  currentUserID++;
-
-  // (6) registeredUsers befüllen
-  let usersResponse = await getAllUsers("/users");
-  let usersResponseKeys = Object.keys(usersResponse);
-
-  for (let index = 0; index < usersResponseKeys.length; index++) {
-    registeredUsers.push({
-      id: usersResponseKeys[index],
-      name: usersResponse[usersResponseKeys[index]].name,
-      email: usersResponse[usersResponseKeys[index]].email,
-      password: usersResponse[usersResponseKeys[index]].password,
-    });
-  }
 
   // (7) Overlay wie bisher
   let overlay = document.getElementById("signup_overlay");
@@ -195,58 +204,54 @@ function toggleVisibility(inputId, iconId) {
 
 //------- Testfunktion und Übungen
 
-let users = [];
+// let users = [];
 
-async function testUpload() {
-  let userResponse = await getAllUsers("/users");
-  let userKeysArray = Object.keys(userResponse);
+// async function testUpload() {
+//   let userResponse = await getAllUsers("/users");
+//   let userKeysArray = Object.keys(userResponse);
 
-  for (let index = 0; index < userKeysArray.length; index++) {
-    users.push({
-      id: userKeysArray[index],
-      name: userResponse[userKeysArray[index]].name,
-      email: userResponse[userKeysArray[index]].email,
-      password: userResponse[userKeysArray[index]].password,
-    });
-  }
+//   for (let index = 0; index < userKeysArray.length; index++) {
+//     users.push({
+//       id: userKeysArray[index],
+//       name: userResponse[userKeysArray[index]].name,
+//       email: userResponse[userKeysArray[index]].email,
+//       password: userResponse[userKeysArray[index]].password,
+//     });
+//   }
 
-  console.log(userResponse);
-  console.log(userKeysArray);
-  console.log(users);
+//   console.log(userResponse);
+//   console.log(userKeysArray);
+//   console.log(users);
 
-  await addSingleUser();
-}
+//   await addSingleUser();
+// }
 
-async function addSingleUser(
-  id = 1,
-  user = { name: "Brooke", email: "eugen.liske@gmx.de", password: "top_secret" }
-) {
-  await putUserData(`/users/user_${id}`, user);
-}
+// async function addSingleUser(
+//   id = 1,
+//   user = { name: "Brooke", email: "eugen.liske@gmx.de", password: "top_secret" }
+// ) {
+//   await putUserData(`/users/user_${id}`, user);
+// }
 
-async function putUserData(path, data) {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+// async function putUserData(path, data) {
+//   let response = await fetch(BASE_URL + path + ".json", {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
 
-  let responseAsJson = await response.json();
-  // console.log(response);
-  // console.log(responseAsJson);
-}
+//   let responseAsJson = await response.json();
+//   // console.log(response);
+//   // console.log(responseAsJson);
+// }
 
 // Alle User aus der Firebase DB ziehen. Der übergebene Pfad ist /users. Alle User werden damit adressiert.
 
-async function getAllUsers(path) {
-  let fireBaseResponse = await fetch(BASE_URL + path + ".json");
-  let fireBaseResponseAsJson = await fireBaseResponse.json();
+// async function getAllUsers(path) {
+//   let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+//   let fireBaseResponseAsJson = await fireBaseResponse.json();
 
-  return fireBaseResponseAsJson;
-}
-
-// async function addSingleUser(id, user){
-//   putUserData(`/users/user_${id}`, user)
+//   return fireBaseResponseAsJson;
 // }
