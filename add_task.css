@@ -1,3 +1,12 @@
+.main_content_column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+
+    gap: 40px;
+}
+
 .task_input_area{
     display: flex;
 }
@@ -70,6 +79,11 @@
     color: white;
 }
 
+.medium_color_click:hover{
+    box-shadow: none;
+    cursor: default;
+}
+
 .urgent_color_default{
     color: var(--c-pr-urgent);
     background-color: white;
@@ -80,6 +94,11 @@
     color: white;
 }
 
+.urgent_color_click:hover{
+    box-shadow: none;
+    cursor: default;
+}
+
 .low_color_default{
     color: var(--c-pr-low);
     background-color: white;
@@ -88,6 +107,11 @@
 .low_color_click{
     background-color: var(--c-pr-low);
     color: white;
+}
+
+.low_color_click:hover{
+    box-shadow: none;
+    cursor: default;
 }
 
 .priority_button_shadow_click{
@@ -118,6 +142,7 @@
 
 .selection li:hover{
     cursor: pointer;
+    background-color: #EEEEEE;
 }
 
 .person_selected{
@@ -126,7 +151,7 @@
 }
 
 .person_selected:hover{
-    background-color: #091931;
+    background-color: #091931 !important;
 }
 
 .hidden{
@@ -142,11 +167,16 @@
     width: 42px;
     border: 2px solid white;
     color: white;
+    font-size: 12px;
 }
 
 .selection_color_container{
     background-color: white;
     border-radius: 10px;
+}
+
+.selection_color_container:hover{
+    box-shadow: 0 0 14px 3px #0000000A;
 }
 
 .person_info{
@@ -156,13 +186,13 @@
 }
 
 .d_none{
-    display: none;
+    display: none !important;
 }
 
 .input_field_icon_task {
     position: absolute;
     right: 15px;
-    top: 25%;                 /* vertikal mittig */
+    top: 25%;
     cursor: pointer;
     border-radius: 50%;
 }
@@ -176,3 +206,251 @@ button.input_field{
     text-align: start;
     cursor: pointer;
 }
+
+.selected_persons_container{
+    display: flex;
+    gap: 8px;
+}
+
+/* Subtasks -----------------------------------------------------------------------------------------------  */
+
+.pad_8{
+    padding: 8px;
+}
+
+.icon_separator_input{
+    border: 1px solid #A8A8A8;
+    height: 24px;
+}
+
+.subtask_input_icon_wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    right: 12px;
+    top: 0;
+    gap: 4px;
+    cursor: pointer;
+
+    color: transparent;
+}
+
+.icon_height_24 {
+    height: 75%;
+}
+
+.input_field_icon_subtasks{
+    border-radius: 50%;
+    color: transparent;
+    height: 32px;
+    width: 32px;
+}
+
+.input_field_icon_subtasks:hover{
+    background-color: #EEEEEE;
+}
+
+.subtasks_container{
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style-position: inside;
+    padding: 0;
+}
+
+.subtask_bulletpoint{
+    position: relative;
+    padding: 6px 16px 6px 30px;
+}
+
+.subtask_bulletpoint:hover{
+    background-color: #EEEEEE;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.subtask_bulletpoint:hover .subtask_input_icon_wrapper{
+    color: #2A3647;
+}
+
+.icon_separator_task{
+    border: 1px solid transparent;
+    height: 24px;
+}
+
+.subtask_bulletpoint:hover .icon_separator_task{
+    border: 1px solid #A8A8A8;
+}
+
+.edit_subtask{
+    position: relative;
+    list-style-type: none;
+    color: black;
+}
+
+.edit_overlay{
+    position: absolute;
+    width: 422px;
+    top: 0;
+    left: 0;
+    height: 32px;
+}
+
+.subtask_icon_wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    right: 12px;
+    top: 0;
+    gap: 4px;
+    cursor: pointer;
+
+    color: transparent;
+}
+
+.icon_separator_subtask{
+    border-right: 1px solid transparent;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    height: 20px;
+}
+
+.edit_subtask_input{
+    width: 100%;
+    padding: 4px 16px;
+    font-size: 16px;
+    background-color: white;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #005DFF;
+    height: 32px;
+}
+
+.subtask_bulletpoint:hover .subtask_icon_wrapper{
+    color:black;
+}
+
+.subtask_bulletpoint:hover .icon_separator_subtask{
+    border-right: 1px solid #A8A8A8;
+}
+
+.edit_subtask_input:focus{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #005DFF;
+    outline: none;
+}
+
+.add_task_footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.add_task_buttons{
+    display: flex;
+    gap: 16px;
+}
+
+
+/* Button Design --------------------------------------------------------------- */
+/* Button Container */
+/* Silhouette */
+.button_silhouette {
+    display: flex;
+    align-items: center;
+ 
+    border: 1px solid #2A3647;
+    color: #2A3647;
+    background-color: transparent;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button_silhouette:hover {
+    border: 2px solid #29ABE2;
+    color: #29ABE2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button_silhouette:active {
+    border: 1px solid #2A3647;
+    color: #2A3647;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Filled */
+.button_filled{
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #2A3647;
+    color: white;
+    background-color: #2A3647;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button_filled:hover{
+    border: 2px solid #29ABE2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    background-color: #29ABE2;
+}
+
+.button_filled:active{
+    border: 1px solid #091931;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    background-color: #091931;
+}
+
+
+/* Types */
+.button_default{
+    font-size: 16px;
+    font-weight: 400;
+    padding: 15px 24px;
+    border-radius: 8px;       
+}
+
+.button_check{
+    gap: 4px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 10px;   
+}
+
+.button_contact{
+    gap: 16px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-radius: 10px;     
+}
+
+.button_secondary{
+    gap: 4px;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 16px;
+    border-radius: 10px;       
+}
+
+.button_secondary_plus{
+    gap: 4px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-radius: 10px;    
+}
+
