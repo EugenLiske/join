@@ -1,3 +1,18 @@
+// ---------------------------------------------------------
+// Globale DOM-Elemente → einmalig definieren
+// ---------------------------------------------------------
+const nameInput = document.getElementById("name_input");
+const emailInput = document.getElementById("email_input");
+const passInput = document.getElementById("password_input");
+const confInput = document.getElementById("confirm_input");
+const checkbox = document.getElementById("privacy_checkbox");
+const signupBtn = document.getElementById("signup_button");
+const confirmErr = document.getElementById("confirm_error");
+
+const DUPLICATE_MSG =
+  "This user exists already. Please use a different email address."; // NEW
+// ---------------------------------------------------------
+
 // beim Laden einmal prüfen (Autofill-Fälle) --> Button-Deaktivierung zu Beginn, da alle Felder leer sind
 (function init() {
   validateForm();
@@ -11,14 +26,46 @@
 
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
-// Helfer: Daten aus Firebase lesen
+function getInitials(rawName) {
+  // 1) Eingabe sicher in einen String verwandeln und Ränder abschneiden
+  var n = String(rawName || "").trim();
+
+  // 2) Wenn nach dem Trimmen nichts übrig ist → keine Initialen
+  if (n === "") {
+    return "";
+  }
+
+  // 3) In "Wörter" aufspalten (beliebig viele Leerzeichen als Trenner)
+  var parts = n.split(/\s+/);
+
+  // 4) Ersten Buchstaben des ersten Wortes vorbereiten
+  var first = "";
+  if (parts.length > 0 && parts[0].length > 0) {
+    first = parts[0].charAt(0);
+  }
+
+  // 5) Ersten Buchstaben des letzten Wortes vorbereiten (nur wenn es >1 Wort gibt)
+  var last = "";
+  if (parts.length > 1) {
+    var lastWord = parts[parts.length - 1];
+    if (lastWord.length > 0) {
+      last = lastWord.charAt(0);
+    }
+  }
+
+  // 6) Zusammenfügen und in Großbuchstaben konvertieren
+  var initials = first + last;
+  initials = initials.toUpperCase();
+
+  // 7) Ergebnis zurückgeben (bei 1 Wort nur der erste Buchstabe, bei ≥2 Wörtern zwei Buchstaben)
+  return initials;
+}
 async function getAllUsers(path) {
   let fireBaseResponse = await fetch(BASE_URL + path + ".json");
   let fireBaseResponseAsJson = await fireBaseResponse.json();
   return fireBaseResponseAsJson; // gibt Objekt oder null zurück
 }
 
-// Helfer: PUT in Firebase
 async function putUserData(path, data) {
   let response = await fetch(BASE_URL + path + ".json", {
     method: "PUT",
@@ -31,18 +78,58 @@ async function putUserData(path, data) {
   console.log(responseAsJson);
 }
 
-// === Register-Funktion ===
 async function registerUser(event) {
-  event.preventDefault(); // Form-Reload verhindern
+  event.preventDefault();
 
   if (!validateForm()) {
-    return false; // Sicherheitsnetz
+    return false;
   }
 
   // (1) Alle bisherigen User aus Firebase holen
   let userResponse = await getAllUsers("/users");
+  console.log(userResponse);
 
-  // (2) Nächste freie ID berechnen
+  // -------------------------------------------------
+  // NEU: E-Mail-Duplikatsprüfung (ohne ternären Operator)
+  // -------------------------------------------------
+  confirmErr.textContent = "";
+  confirmErr.style.display = "none";
+  emailInput.classList.remove("error");
+
+  let emailValForCheck = emailInput.value.trim().toLowerCase();
+  let emailExists = false;
+
+  if (userResponse) {
+    let keys = Object.keys(userResponse); // ["user_1", "user_2", ...]
+
+    for (let i = 0; i < keys.length; i++) {
+      let k = keys[i];
+
+      // Standard: leere Email
+      let existing = "";
+
+      // Prüfen, ob userResponse[k] existiert und ob es ein email-Feld gibt
+      if (userResponse[k] && userResponse[k].email) {
+        existing = String(userResponse[k].email).toLowerCase().trim();
+      }
+
+      // Vergleich mit der eingegebenen Email
+      if (existing !== "" && existing === emailValForCheck) {
+        emailExists = true;
+        break; // Treffer → wir können abbrechen
+      }
+    }
+  }
+
+  if (emailExists) {
+    emailInput.classList.add("error");
+    confirmErr.textContent =
+      "This user exists already. Please use a different email address.";
+    confirmErr.style.display = "block";
+    return false; // Abbruch der gesamten Funktion: kein Anlegen
+  }
+
+  // (2) Nächste freie User-ID berechnen
   let nextUserID = 1; // Standard: 1, falls DB leer
   if (userResponse) {
     let keys = Object.keys(userResponse); // ["user_1", "user_2", ...]
@@ -52,10 +139,9 @@ async function registerUser(event) {
       let key = keys[i]; // z. B. "user_7"
 
       if (key.startsWith("user_")) {
-
         let numberPart = key.substring(5); // "7"
         let n = parseInt(numberPart, 10);
-        
+
         if (!isNaN(n) && n > highestUserID) {
           highestUserID = n; // größte Zahl merken
         }
@@ -66,16 +152,16 @@ async function registerUser(event) {
   }
 
   // (3) Input-Werte lesen
-  let nameVal = document.getElementById("name_input").value.trim();
-  let emailVal = document.getElementById("email_input").value.trim();
-  let passVal = document.getElementById("password_input").value;
+  let nameVal = nameInput.value.trim();
+  let emailVal = emailInput.value.trim().toLowerCase(); // (für DB speichern ggf. originaler Case)
+  let passVal = passInput.value;
 
   // (4) Neues User-Objekt
   let user = {
-    id: nextUserID,
     name: nameVal,
     email: emailVal,
     password: passVal,
+    initials: getInitials(nameVal),
   };
 
   // (5) Pfad für den neuen User
@@ -96,7 +182,7 @@ async function registerUser(event) {
     setTimeout(function () {
       window.location.href = "login.html";
     }, 300);
-  }, 2700);
+  }, 27000000000);
 }
 
 function isEmailValid(email) {
@@ -105,14 +191,6 @@ function isEmailValid(email) {
 }
 
 function validateForm() {
-  let nameInput = document.getElementById("name_input");
-  let emailInput = document.getElementById("email_input");
-  let passInput = document.getElementById("password_input");
-  let confInput = document.getElementById("confirm_input");
-  let checkbox = document.getElementById("privacy_checkbox");
-  let button = document.getElementById("signup_button");
-  let confirmErr = document.getElementById("confirm_error");
-
   let nameVal = nameInput.value.trim();
   let emailVal = emailInput.value.trim();
   let passVal = passInput.value; // ⚠️ kein trim bei Passwörtern
@@ -127,9 +205,7 @@ function validateForm() {
   let passMatch = passVal !== "" && passVal === confVal;
   let passLenOk = passVal.length >= MIN_LEN;
 
-  // Fehlerlogik:
-  // 1) Wenn unterschiedlich → "don't match"
-  // 2) Wenn gleich aber zu kurz → "must be at least 8..."
+  // Fehlerlogik (Passwort)
   let showMismatch = passVal !== "" && confVal !== "" && passVal !== confVal;
   let showTooShort =
     passVal !== "" && confVal !== "" && passMatch && !passLenOk;
@@ -144,34 +220,32 @@ function validateForm() {
     confirmErr.style.display = "block";
   } else {
     confInput.classList.remove("error");
-    confirmErr.textContent = "";
-    confirmErr.style.display = "none";
+    // Nur leeren, wenn aktuell KEINE E-Mail-Duplikatmeldung angezeigt wird
+    if (confirmErr.textContent !== DUPLICATE_MSG) {
+      // NEW (sanft)
+      confirmErr.textContent = "";
+      confirmErr.style.display = "none";
+    }
   }
 
-  // Button nur freigeben, wenn ALLES passt (inkl. Länge)
   let allOk = notEmpty && emailOk && passMatch && passLenOk && checked;
-
-  button.disabled = !allOk;
+  signupBtn.disabled = !allOk;
   return allOk;
 }
 
-// Zeigt abhängig vom Feldzustand das richtige Icon an.
+// Sichtbarkeits-Handling (wie gehabt)
 function handlePwdInput(inputId, iconId) {
   let input = document.getElementById(inputId);
   let icon = document.getElementById(iconId);
 
   if (input.value.length === 0) {
-    // Feld leer → Schloss zeigen, wieder verstecken, Icon nicht klickbar
     input.type = "password";
     icon.src = "./assets/img/icons/form/lock.svg";
     icon.style.pointerEvents = "none";
     return;
   }
 
-  // Feld hat Text → Icon klickbar
   icon.style.pointerEvents = "auto";
-
-  // Sichtbar? → offenes Auge; sonst → durchgestrichenes Auge
   if (input.type === "text") {
     icon.src = "./assets/img/icons/form/visibility.svg";
   } else {
@@ -179,12 +253,10 @@ function handlePwdInput(inputId, iconId) {
   }
 }
 
-// Klick auf das Icon schaltet Sichtbarkeit + Icon um.
 function toggleVisibility(inputId, iconId) {
   let input = document.getElementById(inputId);
   let icon = document.getElementById(iconId);
 
-  // Nichts zu togglen, wenn leer → Schloss + versteckt
   if (input.value.length === 0) {
     input.type = "password";
     icon.src = "./assets/img/icons/form/lock.svg";
@@ -200,6 +272,17 @@ function toggleVisibility(inputId, iconId) {
     icon.src = "./assets/img/icons/form/visibility_off.svg";
   }
   return false;
+}
+
+// -------------------- UX-Politur --------------------
+// E-Mail-Fehler ausblenden, sobald der User im E-Mail-Feld arbeitet
+function clearEmailError() {
+  // NEW
+  emailInput.classList.remove("error");
+  if (confirmErr.textContent === DUPLICATE_MSG) {
+    confirmErr.textContent = "";
+    confirmErr.style.display = "none";
+  }
 }
 
 //------- Testfunktion und Übungen
