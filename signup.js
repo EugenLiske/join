@@ -28,38 +28,39 @@ const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 function getInitials(rawName) {
   // 1) Eingabe sicher in einen String verwandeln und Ränder abschneiden
-  var n = String(rawName || "").trim();
+  let cleanName = String(rawName || "").trim();
 
   // 2) Wenn nach dem Trimmen nichts übrig ist → keine Initialen
-  if (n === "") {
+  if (cleanName === "") {
     return "";
   }
 
   // 3) In "Wörter" aufspalten (beliebig viele Leerzeichen als Trenner)
-  var parts = n.split(/\s+/);
+  let nameParts = cleanName.split(/\s+/);
 
   // 4) Ersten Buchstaben des ersten Wortes vorbereiten
-  var first = "";
-  if (parts.length > 0 && parts[0].length > 0) {
-    first = parts[0].charAt(0);
+  let firstInitial = "";
+  if (nameParts.length > 0 && nameParts[0].length > 0) {
+    firstInitial = nameParts[0].charAt(0);
   }
 
   // 5) Ersten Buchstaben des letzten Wortes vorbereiten (nur wenn es >1 Wort gibt)
-  var last = "";
-  if (parts.length > 1) {
-    var lastWord = parts[parts.length - 1];
-    if (lastWord.length > 0) {
-      last = lastWord.charAt(0);
+  let lastInitial = "";
+  if (nameParts.length > 1) {
+    let lastName = nameParts[nameParts.length - 1];
+    if (lastName.length > 0) {
+      lastInitial = lastName.charAt(0);
     }
   }
 
   // 6) Zusammenfügen und in Großbuchstaben konvertieren
-  var initials = first + last;
+  let initials = firstInitial + lastInitial;
   initials = initials.toUpperCase();
 
   // 7) Ergebnis zurückgeben (bei 1 Wort nur der erste Buchstabe, bei ≥2 Wörtern zwei Buchstaben)
   return initials;
 }
+
 async function getAllUsers(path) {
   let fireBaseResponse = await fetch(BASE_URL + path + ".json");
   let fireBaseResponseAsJson = await fireBaseResponse.json();
@@ -132,14 +133,14 @@ async function registerUser(event) {
   // (2) Nächste freie User-ID berechnen
   let nextUserID = 1; // Standard: 1, falls DB leer
   if (userResponse) {
-    let keys = Object.keys(userResponse); // ["user_1", "user_2", ...]
+    let keys = Object.keys(userResponse); // ["user_1", "user_2"]
     let highestUserID = 0;
 
     for (let i = 0; i < keys.length; i++) {
-      let key = keys[i]; // z. B. "user_7"
+      let key = keys[i]; // z. B. "user_2"
 
       if (key.startsWith("user_")) {
-        let numberPart = key.substring(5); // "7"
+        let numberPart = key.substring(5); // "2"
         let n = parseInt(numberPart, 10);
 
         if (!isNaN(n) && n > highestUserID) {
@@ -182,7 +183,7 @@ async function registerUser(event) {
     setTimeout(function () {
       window.location.href = "login.html";
     }, 300);
-  }, 27000000000);
+  }, 2700);
 }
 
 function isEmailValid(email) {
