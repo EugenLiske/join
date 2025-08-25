@@ -22,13 +22,32 @@ let newTask = {
 
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+// EventListener -------------------------------------------------------------------
+
+document.addEventListener('click', function(event) {
+    const containerAssignedTo = document.getElementById('selection_container_assignedto');
+    const containerCategory = document.getElementById('selection_container_category');
+
+    if (!containerAssignedTo.contains(event.target)) {
+        if (!document.getElementById('selection').classList.contains("d_none")){
+            toggleInputElement();
+        }
+    }        
+
+    if (!containerCategory.contains(event.target)) {
+        hideSelectionList('category_options', 'drop_down_categories')
+    }        
+
+});
+
 // Initial Function -----------------------------------------------------------------
 
 function initAddTask(){
-    getNameSearchList();
-    getSearchListResult("");
-    initAssignedToList();
-    renderNames();
+    initAssignedToList(); // all false -> set assigned to list default
+    getNameSearchList(); // init search list with all names
+    getSearchListResult(""); // set result list default
+    renderSearchNames(); // render searchlist default
+
     renderCategoryOptions();
 }
 
@@ -52,6 +71,7 @@ function setGlobalPriority(element, priority){
 
     element.disabled = true;
     element.classList.replace(priority + "_color_default", priority + "_color_click");
+    element.children[0].classList.remove("priority_btn_c_txt_default");
 
     currentPriority = priority;
 }
@@ -66,10 +86,12 @@ function setButtonDefault(buttons, mode = "all"){
 
         buttons[buttonIdx].classList.replace(id + "_color_click", id + "_color_default");
         buttons[buttonIdx].classList.remove("priority_button_shadow_click");
+        buttons[buttonIdx].children[0].classList.add("priority_btn_c_txt_default");
     }
 
     if (mode == "default"){
         document.getElementById("medium").classList.replace("medium_color_default", "medium_color_click");
+        document.getElementById("medium").children[0].classList.remove("priority_btn_c_txt_default");
         currentPriority = "medium";
     }
 }
@@ -84,7 +106,7 @@ function clearPriorityButtons(mode = "all"){
 function startNameSearch(){
     let input = document.getElementById("task_assignedto_input").value;
     getSearchListResult(input);
-    renderNames();
+    renderSearchNames();
     document.getElementById("selection").classList.remove("d_none");
     toggleDropDownIcon("task_assignedto_input", "drop_down_persons");
 }
@@ -98,7 +120,7 @@ function getSearchListResult(input){
     }
 }
 
-function renderNames(){
+function renderSearchNames(){
     let personSelectionRef = document.getElementById("selection");
     let selection = "";
     let personIdx = 0;
@@ -146,6 +168,11 @@ function toggleSelectionList(listId, iconId){
     toggleDropDownIcon(listId, iconId);
 }
 
+function hideSelectionList(listId, iconId){
+    document.getElementById(listId).classList.add("d_none");
+    toggleDropDownIcon(listId, iconId);
+}
+
 function toggleDropDownIcon(inputId, iconId){
     let selectionRef = document.getElementById(inputId);
     let dropDownRef = document.getElementById(iconId);
@@ -163,6 +190,11 @@ function toggleInputElement(){
     document.getElementById("task_assignedto_input").classList.toggle("d_none");
 
     toggleSelectionList('selection', 'drop_down_persons');
+    togglePersonSelection();
+}
+
+function togglePersonSelection(){
+    document.getElementById("selected_persons").classList.toggle("d_none");
 }
 
 function renderAssignedToList(){
@@ -193,12 +225,12 @@ function clearAssignedToInputArea(){
     
     // Reset selected persons
     document.getElementById("selected_persons").innerHTML = "";
+    document.getElementById("selected_persons").classList.remove("d_none");
 
     // Reset searchlist
-    document.getElementById("selection").innerHTML = "";
     initAssignedToList();
-    nameSearchListResult = [];
-    renderNames();
+    getSearchListResult("");
+    renderSearchNames();
 
     // Show button and hide input
     document.getElementById("task_assignedto_button").classList.remove("d_none");
@@ -244,22 +276,34 @@ function clearCategoryInput(){
 
 // Subtasks ---------------------------------------------------------------------------------
 
+function addTaskOrToggleIcons(event){
+    if (event.key === 'Enter' && document.getElementById("subtask_input").value.length > 0) {
+        addSubtask();
+    }
+    else {
+        toggleIcons();
+    }
+
+}
+
 function toggleIcons(){
     let inputSubtask = document.getElementById("subtask_input");
     let input = inputSubtask.value;
 
     if (input.length > 0){
-        switchDisplayButtons("subtask_icon", "subtask_icons");
+        // switchDisplayButtons("subtask_icon", "subtask_icons");
+        document.getElementById("subtask_icons").classList.remove("d_none");
     }
     else{
-        switchDisplayButtons("subtask_icons", "subtask_icon");
-    }
+        // switchDisplayButtons("subtask_icons", "subtask_icon");
+        document.getElementById("subtask_icons").classList.add("d_none");
+    }  
 }
 
-function switchDisplayButtons(buttonIdAdd, buttonIdRemove){
-    document.getElementById(buttonIdAdd).classList.add("d_none");
-    document.getElementById(buttonIdRemove).classList.remove("d_none");
-}
+// function switchDisplayButtons(buttonIdAdd, buttonIdRemove){
+//     document.getElementById(buttonIdAdd).classList.add("d_none");
+//     document.getElementById(buttonIdRemove).classList.remove("d_none");
+// }
 
 function openEditMode(subtaskID){
     document.getElementById("edit_mode_" + subtaskID).classList.remove("d_none");
@@ -311,6 +355,8 @@ function deleteForm(){
     clearAssignedToInputArea();
     clearCategoryInput();
     clearSubtasksInputArea();
+
+    resetWarning();
 }
 
 function clearTask(){
@@ -326,16 +372,15 @@ function clearTask(){
 }
 
 function checkAndCreateTask(){
-    console.log("hello");
-    checkDueDate();
 
     if (checkRequiredFields()){
         createTask();
         tasks.push(newTask);
+        deleteForm();
     }
+    console.log(tasks);
     
-    // Weiterleitung auf Board Seite
-    // Hinweise geben
+    // TODO: Weiterleitung auf Board Seite
 }
 
 function createTask(){
@@ -359,29 +404,8 @@ function getAssignedPersons(){
 }
 
 
-
-
-
-
-
-
-
-// Entertaste um Subtask zu erstellen
-// Prüfung... Subtask muss gefüllt sein
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function changeDateFormat(date){
+    return date.replaceAll("/", "-");
+}
 
 

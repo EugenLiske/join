@@ -16,6 +16,7 @@
     flex-direction: column;
     gap: 8px;
     font-size: 20px;
+    position: relative;
 }
 
 .task_input_column{
@@ -60,7 +61,11 @@
     box-shadow: 0 0 4px 0 #0000001A;
 }
 
-.priority_button > span{
+/* .priority_button > span{
+    color: black;
+} */
+
+.priority_btn_c_txt_default{
     color: black;
 }
 
@@ -413,6 +418,9 @@ button.input_field{
     background-color: #091931;
 }
 
+.input_field.taskerror {
+    border: 2px solid #FF8190 !important;
+}
 
 /* Types */
 .button_default{
@@ -454,3 +462,10 @@ button.input_field{
     border-radius: 10px;    
 }
 
+
+.warning{
+    position: absolute;
+    bottom: -18px;
+    font-size: 12px;
+    color: #FF8190;
+}

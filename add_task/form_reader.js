@@ -33,7 +33,7 @@ function getSubtasks(){
     let subtaskNr = 0;
 
     for (let subtaskIdx = 0; subtaskIdx < subtasksContainer.length; subtaskIdx++) {
-        subtaskNr = extractSubtaskNrFromId(subtasksContainer[subtaskIdx]);
+        subtaskNr = extractSubtaskNrFromId(subtasksContainer[subtaskIdx].id);
         subtasks.push(getSubtaskTxt(subtaskNr));
     }
 
