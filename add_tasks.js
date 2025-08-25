@@ -1,13 +1,12 @@
 
-let currentPriority = null;
+let currentPriority = "medium";
 let currentCategory = "";
 
-let nameSearchListResult = [];
 let nameSearchList = [];
+let nameSearchListResult = [];
+let assignedToList = [];
 
 const categories = ["Technical Task", "User Story"];
-
-let assignedToList = [];
 
 let nextSubtaskId = 0;
 
@@ -16,16 +15,19 @@ let newTask = {
     "description": "",
     "duedate": "",
     "priority": "",
-    "assignedTo": {},
+    "assignedPersons": [],
     "category": "",
-    "subtasks": {}
+    "subtasks": []
 }
+
+const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 // Initial Function -----------------------------------------------------------------
 
 function initAddTask(){
     getNameSearchList();
     getSearchListResult("");
+    initAssignedToList();
     renderNames();
     renderCategoryOptions();
 }
@@ -37,6 +39,7 @@ function getNameSearchList(){
 }
 
 function initAssignedToList(){
+    assignedToList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {
         assignedToList.push(false);
     }
@@ -45,7 +48,7 @@ function initAssignedToList(){
 // Priority Selection -------------------------------------------------------------------
 
 function setGlobalPriority(element, priority){
-    clearPriorityButtons();
+    clearPriorityButtons("all");
 
     element.disabled = true;
     element.classList.replace(priority + "_color_default", priority + "_color_click");
@@ -53,7 +56,7 @@ function setGlobalPriority(element, priority){
     currentPriority = priority;
 }
 
-function setButtonDefault(buttons){
+function setButtonDefault(buttons, mode = "all"){
     let id = -1;
 
     for (let buttonIdx = 0; buttonIdx < buttons.length; buttonIdx++) {
@@ -64,11 +67,16 @@ function setButtonDefault(buttons){
         buttons[buttonIdx].classList.replace(id + "_color_click", id + "_color_default");
         buttons[buttonIdx].classList.remove("priority_button_shadow_click");
     }
+
+    if (mode == "default"){
+        document.getElementById("medium").classList.replace("medium_color_default", "medium_color_click");
+        currentPriority = "medium";
+    }
 }
 
-function clearPriorityButtons(){
+function clearPriorityButtons(mode = "all"){
     let priorityButtonsRef = document.getElementsByClassName("priority_button");
-    setButtonDefault(priorityButtonsRef);    
+    setButtonDefault(priorityButtonsRef, mode);    
 }
 
 // Assigned To Selection ------------------------------------------------------------------
@@ -182,8 +190,17 @@ function getFirstThreeAssignments(firstThreeAssignments){
 }
 
 function clearAssignedToInputArea(){
+    
+    // Reset selected persons
     document.getElementById("selected_persons").innerHTML = "";
+
+    // Reset searchlist
     document.getElementById("selection").innerHTML = "";
+    initAssignedToList();
+    nameSearchListResult = [];
+    renderNames();
+
+    // Show button and hide input
     document.getElementById("task_assignedto_button").classList.remove("d_none");
     document.getElementById("task_assignedto_input").classList.add("d_none");
 }
@@ -222,6 +239,7 @@ function showCategorySelection(category){
 function clearCategoryInput(){
     document.getElementById("category_selection").innerText = "Select task category";
     document.getElementById("category_options").classList.add("d_none");
+    currentCategory = "";
 }
 
 // Subtasks ---------------------------------------------------------------------------------
@@ -283,20 +301,73 @@ function clearSubtasksInputArea(){
     document.getElementById("subtask_input").value = "";
 }
 
+// Final Add Task Buttons - Clear and Create Task 
 
 function deleteForm(){
     document.getElementById("task_title_input").value = "";
     document.getElementById("task_description_input").value = "";
     document.getElementById("task_deadline_input").value = "";
-    clearPriorityButtons();
+    clearPriorityButtons("default");
     clearAssignedToInputArea();
     clearCategoryInput();
     clearSubtasksInputArea();
 }
 
+function clearTask(){
+    newTask = {
+    "title": "",
+    "description": "",
+    "duedate": "",
+    "priority": "",
+    "assignedPersons": [],
+    "category": "",
+    "subtasks": []
+    };
+}
+
+function checkAndCreateTask(){
+    console.log("hello");
+    checkDueDate();
+
+    if (checkRequiredFields()){
+        createTask();
+        tasks.push(newTask);
+    }
+    
+    // Weiterleitung auf Board Seite
+    // Hinweise geben
+}
+
+function createTask(){
+    newTask.title = getTitle();
+    newTask.description = getDescription();
+    newTask.duedate = getDueDate();
+    newTask.priority = currentPriority;
+    newTask.category = currentCategory;
+    newTask.assignedPersons = getAssignedPersons();
+    newTask.subtasks = getSubtasks();
+}
+
+function getAssignedPersons(){
+    let assignedPersons = [];
+    for (let personIdx = 0; personIdx < assignedToList.length; personIdx++) {
+        if (assignedToList[personIdx]){
+            assignedPersons.push(personIdx);
+        }
+    }
+    return assignedPersons;
+}
 
 
 
+
+
+
+
+
+
+// Entertaste um Subtask zu erstellen
+// Prüfung... Subtask muss gefüllt sein
 
 
 

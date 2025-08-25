@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="add_task.css">
     <link rel="stylesheet" href="login_signup.css">
 
-    <script src="add_task_templates.js"></script>
+    <script src="./add_task/templates.js"></script>
     <script src="script.js"></script>
     <script src="task_db.js"></script>
+    <script src="./add_task/form_validation.js"></script>
+    <script src="./add_task/form_reader.js"></script>
     <script src="person_db.js"></script>
     <script src="add_tasks.js"></script>
     <!-- <script src="task_overview.js"></script> -->
@@ -31,7 +33,7 @@
                     <header class="main_header">
                         <h2>Add Task</h2>
                     </header>
-                    <from class="main_content_column">
+                    <from class="main_content_column" onsubmit="checkAndCreateTask()">
                         <!-- input -->
                         <div class="task_input_area">
                             <!-- left side -->
@@ -61,8 +63,8 @@
                             <div class="task_input_column">
                                 <!-- Priority -->
                                 <div class="task_input_wrapper">
-                                    <label for="task_priority_input">Priority</span></label>
-                                    <div class="priority_input">
+                                    <span>Priority</span>
+                                    <div class="priority_input" id="task_priority_input">
                                         <button id="urgent" class="priority_button urgent_color_default" onclick="setGlobalPriority(this, 'urgent')">
                                             <span>Urgent</span>
                                             <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +72,7 @@
                                                 <path d="M19.2597 9.69733C19.0251 9.69774 18.7965 9.62289 18.6077 9.48379L10.3556 3.40063L2.10356 9.48379C1.86959 9.6566 1.57651 9.72945 1.28878 9.68633C1.00105 9.6432 0.742254 9.48762 0.569318 9.25383C0.396382 9.02003 0.323475 8.72716 0.366634 8.43964C0.409793 8.15213 0.565483 7.89352 0.799455 7.72072L9.70356 1.15024C9.89226 1.01065 10.1208 0.935303 10.3556 0.935303C10.5904 0.935303 10.819 1.01065 11.0077 1.15024L19.9118 7.72072C20.0977 7.85763 20.2356 8.04974 20.3057 8.26962C20.3759 8.4895 20.3747 8.72591 20.3024 8.94509C20.2301 9.16427 20.0904 9.35503 19.9031 9.49012C19.7159 9.62521 19.4907 9.69773 19.2597 9.69733Z" fill="currentColor"/>
                                             </svg>
                                         </button>
-                                        <button id="medium" class="priority_button medium_color_default" onclick="setGlobalPriority(this, 'medium')">
+                                        <button id="medium" class="priority_button medium_color_click" onclick="setGlobalPriority(this, 'medium')">
                                             <span>Medium</span>
                                             <svg width="21" height="8" viewBox="0 0 21 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M19.1526 7.72528H1.34443C1.05378 7.72528 0.775033 7.60898 0.569514 7.40197C0.363995 7.19495 0.248535 6.91419 0.248535 6.62143C0.248535 6.32867 0.363995 6.0479 0.569514 5.84089C0.775033 5.63388 1.05378 5.51758 1.34443 5.51758H19.1526C19.4433 5.51758 19.722 5.63388 19.9276 5.84089C20.1331 6.0479 20.2485 6.32867 20.2485 6.62143C20.2485 6.91419 20.1331 7.19495 19.9276 7.40197C19.722 7.60898 19.4433 7.72528 19.1526 7.72528Z" fill="currentColor"/>
@@ -88,7 +90,7 @@
                                 </div>
                                 <!-- Assigned to -->
                                 <div class="task_input_wrapper">
-                                    <label for="task_assignedto_input">Assigned to</span></label>
+                                    <label for="task_assignedto_input">Assigned to</label>
                                     <div class="selection_color_container">
                                         <div class="input_wrapper">
                                             <button id="task_assignedto_button" class="input_field" onclick="toggleInputElement()">Select contacts to assign</button>
@@ -147,7 +149,7 @@
                                         <path d="M12.0692 12.0001L17.3122 17.2431M6.82617 17.2431L12.0692 12.0001L6.82617 17.2431ZM17.3122 6.75708L12.0682 12.0001L17.3122 6.75708ZM12.0682 12.0001L6.82617 6.75708L12.0682 12.0001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
-                                <button class="button_filled button_check">
+                                <button class="button_filled button_check" onclick="checkAndCreateTask()">
                                     Create Task
                                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <mask id="mask0_359093_6303" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
@@ -164,11 +166,8 @@
                     </form>
 
                 </article>
-
             </div>
-
         </div>
-    
     </div>
 </body>
 <script src="include.js"></script>
