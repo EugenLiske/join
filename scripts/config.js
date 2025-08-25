@@ -1,0 +1,60 @@
+/**
+ * Central Configuration for Join Contact Management
+ * All constants, URLs, and settings in one place
+ */
+
+// Firebase Configuration
+export const FIREBASE_URL = 'https://join-476d1-default-rtdb.firebaseio.com';
+
+// Avatar Colors from CSS Variables (15 predefined colors)
+export const AVATAR_COLORS = [
+    'var(--c-pf-var1)',  // #FF7A00
+    'var(--c-pf-var2)',  // #FF5EB3
+    'var(--c-pf-var3)',  // #6E52FF
+    'var(--c-pf-var4)',  // #9327FF
+    'var(--c-pf-var5)',  // #00BEE8
+    'var(--c-pf-var6)',  // #1FD7C1
+    'var(--c-pf-var7)',  // #FF745E
+    'var(--c-pf-var8)',  // #FFA35E
+    'var(--c-pf-var9)',  // #FC71FF
+    'var(--c-pf-var10)', // #FFC701
+    'var(--c-pf-var11)', // #0038FF
+    'var(--c-pf-var12)', // #C3FF2B
+    'var(--c-pf-var13)', // #FFE62B
+    'var(--c-pf-var14)', // #FF4646
+    'var(--c-pf-var15)'  // #FFBB2B
+];
+
+// Page URLs for Navigation
+export const PAGES = {
+    ADD_CONTACT: 'contact_add.html',
+    EDIT_CONTACT: 'contact_edit.html',
+    SUCCESS_PAGE: 'contacts_add_successful.html',
+    CONTACTS_LIST: 'contacts.html' // Falls Sie später eine Hauptliste haben
+};
+
+// LocalStorage Keys - prevents typos and centralizes key management
+export const STORAGE_KEYS = {
+    LAST_SAVED_CONTACT: 'lastSavedContact',
+    CURRENT_EDIT_ID: 'currentEditContactId'
+};
+
+// Firebase Endpoints Structure
+export const FIREBASE_PATHS = {
+    COUNTER: '/contacts/counter.json',
+    CONTACTS_DATA: '/contacts/data.json',
+    SINGLE_CONTACT: (id) => `/contacts/data/${id}.json`
+};
+
+// App Configuration
+export const APP_CONFIG = {
+    NAME: 'Join Contact Management',
+    VERSION: '1.0.0',
+    DEBUG: false // Set to true for development
+};
+
+// Default Values
+export const DEFAULTS = {
+    START_COUNTER: 1000,
+    PERSON_ICON: 'assets/img/icons/form/person.svg'
+};

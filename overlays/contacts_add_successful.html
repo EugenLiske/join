@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact add successful</title>
+    <link rel="stylesheet" href="styles/contacts_add_successful.css" />
+    <link rel="stylesheet" href="root.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="contact_successfully_created">
+        Contact succesfully created
+      </div>
+
+      <div class="content" id="content_add_successful">
+        <div class="content_head">
+          <!-- PROFILE AVATAR CIRCLE -->
+          <div class="contact_avatar" id="contact_avatar">
+            <span class="avatar_initials" id="avatar_initials">
+              <img
+                src="assets/img/icons/form/person.svg"
+                class="input_field_icon"
+                alt="Person Icon"
+            /></span>
+          </div>
+
+          <div class="content_head_name">
+            <h1 id="content_head_name">John Doe</h1>
+            <span
+              ><img
+                src="assets/img/icons/edit_and_delete/edit.svg"
+                alt="Edit"
+              />
+              Edit</span
+            >
+            <span
+              ><img
+                src="assets/img/icons/edit_and_delete/delete.svg"
+                alt="Delete"
+              />
+              Delete</span
+            >
+          </div>
+        </div>
+        <div class="content_body">
+          <h2>Contact Information</h2>
+          <h3>Email</h3>
+          <p id="contact_email"></p>
+          <h3>Phone</h3>
+          <p id="contact_phone"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="scripts/contacts.js"></script>
+</html>

@@ -1,0 +1,97 @@
+{
+  "contacts": {
+    "counter": 9,
+    "data": {
+      "contact_0": {
+        "id": 0,
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1234567890",
+        "avatarColor": "var(--c-pf-var1)",
+        "createdAt": 1640995200000,
+        "updatedAt": 1640995200000
+      },
+      "contact_1": {
+        "id": 1,
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+1234567891",
+        "avatarColor": "var(--c-pf-var2)",
+        "createdAt": 1640995260000,
+        "updatedAt": 1640995260000
+      },
+      "contact_2": {
+        "id": 2,
+        "name": "Mike Johnson",
+        "email": "mike.johnson@example.com",
+        "phone": "+1234567892",
+        "avatarColor": "var(--c-pf-var3)",
+        "createdAt": 1640995320000,
+        "updatedAt": 1640995320000
+      },
+      "contact_3": {
+        "id": 3,
+        "name": "Sarah Wilson",
+        "email": "sarah.wilson@example.com",
+        "phone": "+1234567893",
+        "avatarColor": "var(--c-pf-var4)",
+        "createdAt": 1640995380000,
+        "updatedAt": 1640995380000
+      },
+      "contact_4": {
+        "id": 4,
+        "name": "David Brown",
+        "email": "david.brown@example.com",
+        "phone": "+1234567894",
+        "avatarColor": "var(--c-pf-var5)",
+        "createdAt": 1640995440000,
+        "updatedAt": 1640995440000
+      },
+      "contact_5": {
+        "id": 5,
+        "name": "Lisa Garcia",
+        "email": "lisa.garcia@example.com",
+        "phone": "+1234567895",
+        "avatarColor": "var(--c-pf-var6)",
+        "createdAt": 1640995500000,
+        "updatedAt": 1640995500000
+      },
+      "contact_6": {
+        "id": 6,
+        "name": "Tom Miller",
+        "email": "tom.miller@example.com",
+        "phone": "+1234567896",
+        "avatarColor": "var(--c-pf-var7)",
+        "createdAt": 1640995560000,
+        "updatedAt": 1640995560000
+      },
+      "contact_7": {
+        "id": 7,
+        "name": "Emma Davis",
+        "email": "emma.davis@example.com",
+        "phone": "+1234567897",
+        "avatarColor": "var(--c-pf-var8)",
+        "createdAt": 1640995620000,
+        "updatedAt": 1640995620000
+      },
+      "contact_8": {
+        "id": 8,
+        "name": "Chris Anderson",
+        "email": "chris.anderson@example.com",
+        "phone": "+1234567898",
+        "avatarColor": "var(--c-pf-var9)",
+        "createdAt": 1640995680000,
+        "updatedAt": 1640995680000
+      },
+      "contact_9": {
+        "id": 9,
+        "name": "Amanda Taylor",
+        "email": "amanda.taylor@example.com",
+        "phone": "+1234567899",
+        "avatarColor": "var(--c-pf-var10)",
+        "createdAt": 1640995740000,
+        "updatedAt": 1640995740000
+      }
+    }
+  }
+}

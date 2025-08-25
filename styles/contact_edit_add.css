@@ -272,7 +272,7 @@
    background-color: var(--c-pr-low);
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE DESIGN
 @media (max-width: 1300px) {
    .edit_main {
        width: 95%;
@@ -329,4 +329,4 @@
    .input_field {
        width: 100%;
    }
-}
+} */

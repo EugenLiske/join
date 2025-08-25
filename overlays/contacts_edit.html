@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Contact</title>
-    <link rel="stylesheet" href="styles\contact_edit_add.css" />
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="styles/contact_edit_add.css" />
     <link rel="stylesheet" href="root.css" />
-    <link rel="stylesheet" href="styles/contact_add.css">
+    <link rel="stylesheet" href="styles/contact_edit.css">
   </head>
   <body>
     <main class="edit_main">
@@ -17,8 +17,7 @@
           src="assets/img/logos/join_logo_light.svg"
           alt="Join Logo"
         />
-        <h1 class="edit_h1">Add contact</h1>
-        <h3 class="edit_h3">Tasks are better with a team!</h3>
+        <h1 class="edit_h1">Edit contact</h1>
         <div class="edit_blue_line"></div>
       </div>
 
@@ -39,7 +38,6 @@
         </div>
 
         <!-- INPUT CONTAINER -->
-         const name_input = document.getElementById("input_name")
         <div class="input_container">
           <div class="input_fields">
             <div class="input_wrapper">
@@ -98,23 +96,19 @@
             <button
               type="button"
               id="delete_button"
-              class="delete_button cancel"
+              class="delete_button"
               onclick="deleteContact()"
             >
-              Cancel
-              <img
-                src="assets/img/icons/buttons/cross.svg"
-                alt="Cancel Icon"
-              />
+              Delete
             </button>
 
             <button
               type="submit"
               id="save_button"
-              class="add_edit_button create-contact"
+              class="add_edit_button"
               onclick="saveContact(event)"
             >
-              <span id="button_text">Create contact &#10004</span>
+              <span id="button_text">Save &#10004</span>
               
             </button>
           </div>
@@ -124,4 +118,5 @@
 
     
   </body>
+  <script type="module" src="scripts/contacts.js"></script>
 </html>
