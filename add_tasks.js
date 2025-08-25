@@ -223,16 +223,13 @@ function getFirstThreeAssignments(firstThreeAssignments){
 
 function clearAssignedToInputArea(){
     
-    // Reset selected persons
     document.getElementById("selected_persons").innerHTML = "";
     document.getElementById("selected_persons").classList.remove("d_none");
 
-    // Reset searchlist
     initAssignedToList();
     getSearchListResult("");
     renderSearchNames();
 
-    // Show button and hide input
     document.getElementById("task_assignedto_button").classList.remove("d_none");
     document.getElementById("task_assignedto_input").classList.add("d_none");
 }
@@ -291,19 +288,12 @@ function toggleIcons(){
     let input = inputSubtask.value;
 
     if (input.length > 0){
-        // switchDisplayButtons("subtask_icon", "subtask_icons");
         document.getElementById("subtask_icons").classList.remove("d_none");
     }
     else{
-        // switchDisplayButtons("subtask_icons", "subtask_icon");
         document.getElementById("subtask_icons").classList.add("d_none");
     }  
 }
-
-// function switchDisplayButtons(buttonIdAdd, buttonIdRemove){
-//     document.getElementById(buttonIdAdd).classList.add("d_none");
-//     document.getElementById(buttonIdRemove).classList.remove("d_none");
-// }
 
 function openEditMode(subtaskID){
     document.getElementById("edit_mode_" + subtaskID).classList.remove("d_none");
