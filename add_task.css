@@ -32,7 +32,7 @@
 }
 
 .required_symbole{
-    color: red;
+    color: var(--c-warn);
 }
 
 .task_separator{
@@ -62,7 +62,7 @@
 }
 
 .priority_btn_c_txt_default{
-    color: black;
+    color: var(--c-btn-text-var1);
 }
 
 .priority_button:hover{
@@ -72,12 +72,12 @@
 
 .medium_color_default{
     color: var(--c-pr-medium);
-    background-color: white;
+    background-color: var(--c-btn-default-var2);
 }
 
 .medium_color_click{
     background-color: var(--c-pr-medium);
-    color: white;
+    color: var(--c-btn-text-var2);
 }
 
 .medium_color_click:hover{
@@ -87,12 +87,12 @@
 
 .urgent_color_default{
     color: var(--c-pr-urgent);
-    background-color: white;
+    background-color: var(--c-btn-default-var2);
 }
 
 .urgent_color_click{
     background-color: var(--c-pr-urgent);
-    color: white;
+    color: var(--c-btn-text-var2);
 }
 
 .urgent_color_click:hover{
@@ -102,12 +102,12 @@
 
 .low_color_default{
     color: var(--c-pr-low);
-    background-color: white;
+    background-color: var(--c-btn-default-var2);
 }
 
 .low_color_click{
     background-color: var(--c-pr-low);
-    color: white;
+    color: var(--c-btn-text-var2);
 }
 
 .low_color_click:hover{
@@ -124,7 +124,7 @@
 .selection{
     list-style-type: none;
     max-height: 288px;
-    background-color: white;
+    background-color: var(--bg-c-sel-var1);
     padding: 0;
     gap: 2px;
     overflow-y: auto;
@@ -143,16 +143,16 @@
 
 .selection li:hover{
     cursor: pointer;
-    background-color: #EEEEEE;
+    background-color: var(--bg-c-sel-hover-var1);
 }
 
 .person_selected{
-    background-color: #2A3D59;
-    color: white;
+    background-color: var(--bg-c-sel-selected);
+    color: var(--c-text-selected);
 }
 
 .person_selected:hover{
-    background-color: #091931 !important;
+    background-color: var(--bg-c-sel-hover-var2) !important;
 }
 
 .hidden{
@@ -167,12 +167,12 @@
     height: 42px;
     width: 42px;
     border: 2px solid white;
-    color: white;
+    color: var(--c-up-initials-var2);
     font-size: 12px;
 }
 
 .selection_color_container{
-    background-color: white;
+    background-color: var(--bg-c-sel-var1);
     border-radius: 10px;
 }
 
@@ -199,7 +199,7 @@
 }
 
 .input_field_icon_task:hover{
-    background-color: #EEEEEE;
+    background-color: var(--bg-c-sel-hover-var1);
 }
 
 button.input_field{
@@ -249,7 +249,7 @@ button.input_field{
 }
 
 .input_field_icon_subtasks:hover{
-    background-color: #EEEEEE;
+    background-color: var(--bg-c-sel-hover-var1);
 }
 
 .subtasks_container{
@@ -267,7 +267,7 @@ button.input_field{
 }
 
 .subtask_bulletpoint:hover{
-    background-color: #EEEEEE;
+    background-color: var(--bg-c-sel-hover-var1);
     border-radius: 10px;
     cursor: pointer;
 }
@@ -328,7 +328,7 @@ button.input_field{
     border-top: none;
     border-right: none;
     border-left: none;
-    border-bottom: 1px solid #005DFF;
+    border-bottom: 1px solid var(--border-c-active);
     height: 32px;
 }
 
@@ -344,7 +344,7 @@ button.input_field{
     border-top: none;
     border-right: none;
     border-left: none;
-    border-bottom: 1px solid #005DFF;
+    border-bottom: 1px solid var(--border-c-active);
     outline: none;
 }
 
@@ -367,8 +367,8 @@ button.input_field{
     display: flex;
     align-items: center;
  
-    border: 1px solid #2A3647;
-    color: #2A3647;
+    border: 1px solid var(--c-btn-text-var1);
+    color: var(--c-btn-text-var1);
     background-color: transparent;
 
     cursor: pointer;
@@ -377,14 +377,14 @@ button.input_field{
 }
 
 .button_silhouette:hover {
-    border: 2px solid #29ABE2;
-    color: #29ABE2;
+    border: 2px solid var(--c-btn-hover);
+    color: var(--c-btn-hover);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
 .button_silhouette:active {
-    border: 1px solid #2A3647;
-    color: #2A3647;
+    border: 1px solid var(--c-btn-text-var1);
+    color: var(--c-btn-text-var1);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -393,9 +393,9 @@ button.input_field{
     display: flex;
     align-items: center;
 
-    border: 1px solid #2A3647;
-    color: white;
-    background-color: #2A3647;
+    border: 1px solid var(--c-btn-default);
+    color: var(--c-btn-text-var2);
+    background-color: var(--c-btn-default);
 
     cursor: pointer;
 
@@ -403,19 +403,19 @@ button.input_field{
 }
 
 .button_filled:hover{
-    border: 2px solid #29ABE2;
+    border: 2px solid var(--c-btn-hover);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
-    background-color: #29ABE2;
+    background-color: var(--c-btn-hover);
 }
 
 .button_filled:active{
-    border: 1px solid #091931;
+    border: 1px solid var(--c-btn-click);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
-    background-color: #091931;
+    background-color: var(--c-btn-click);
 }
 
 .input_field.taskerror {
-    border: 2px solid #FF8190 !important;
+    border: 2px solid var(--c-warn) !important;
 }
 
 /* Types */
@@ -463,5 +463,5 @@ button.input_field{
     position: absolute;
     bottom: -18px;
     font-size: 12px;
-    color: #FF8190;
+    color: var(--c-warn);
 }
