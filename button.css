@@ -1,0 +1,97 @@
+/* Button Design --------------------------------------------------------------- */
+/* Button Container */
+/* Silhouette */
+.button_silhouette {
+    display: flex;
+    align-items: center;
+ 
+    border: 1px solid var(--c-btn-text-var1);
+    color: var(--c-btn-text-var1);
+    background-color: transparent;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button_silhouette:hover {
+    border: 2px solid var(--c-btn-hover);
+    color: var(--c-btn-hover);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button_silhouette:active {
+    border: 1px solid var(--c-btn-text-var1);
+    color: var(--c-btn-text-var1);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Filled */
+.button_filled{
+    display: flex;
+    align-items: center;
+
+    border: 1px solid var(--c-btn-default);
+    color: var(--c-btn-text-var2);
+    background-color: var(--c-btn-default);
+
+    cursor: pointer;
+
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button_filled:hover{
+    border: 2px solid var(--c-btn-hover);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    background-color: var(--c-btn-hover);
+}
+
+.button_filled:active{
+    border: 1px solid var(--c-btn-click);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    background-color: var(--c-btn-click);
+}
+
+.input_field.taskerror {
+    border: 2px solid var(--c-warn) !important;
+}
+
+/* Types */
+.button_default{
+    font-size: 16px;
+    font-weight: 400;
+    padding: 15px 24px;
+    border-radius: 8px;       
+}
+
+.button_check{
+    gap: 4px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 10px;   
+}
+
+.button_contact{
+    gap: 16px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-radius: 10px;     
+}
+
+.button_secondary{
+    gap: 4px;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 16px;
+    border-radius: 10px;       
+}
+
+.button_secondary_plus{
+    gap: 4px;
+    font-size: 21px;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-radius: 10px;    
+}
