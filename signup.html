@@ -41,13 +41,13 @@
                         class="input_field"
                         type="password"
                         placeholder="Password"
-                        oninput="validateForm(); handlePwdInput('password_input','password_icon')"
+                        oninput="validateForm(); handlePasswordInput('password_input','password_icon')"
                     >
                     <img
                         id="password_icon"
                         src="./assets/img/icons/form/lock.svg"
                         class="input_field_icon input_field_icon--btn"
-                        onclick="toggleVisibility('password_input','password_icon')"
+                        onclick="togglePwIconVisibility('password_input','password_icon')"
                     >
                 </div>
                 <div class="input_wrapper input_wrapper--with-error">
@@ -56,13 +56,13 @@
                         class="input_field"
                         type="password"
                         placeholder="Confirm Password"
-                        oninput="validateForm(); handlePwdInput('confirm_input','confirm_icon')"
+                        oninput="validateForm(); handlePasswordInput('confirm_input','confirm_icon')"
                     >
                     <img
                         id="confirm_icon"
                         src="./assets/img/icons/form/lock.svg"
                         class="input_field_icon input_field_icon--btn input_field_icon--confirm"
-                        onclick="toggleVisibility('confirm_input','confirm_icon')"
+                        onclick="togglePwIconVisibility('confirm_input','confirm_icon')"
                     >
                     <div id="confirm_error" class="error_text"></div>
                 </div>
