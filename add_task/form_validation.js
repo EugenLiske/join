@@ -1,4 +1,4 @@
-
+const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function checkRequiredFields(){
     let isCorrectTitle = checkTitle();
@@ -144,7 +144,7 @@ function setFebruaryDays(year){
 }
 
 function checkDay(day, month){
-    return day >= 1 && day <= monthMaxDays[month];
+    return day >= 1 && day <= monthMaxDays[month - 1];
 }
 
 function checkDateFormat(date){

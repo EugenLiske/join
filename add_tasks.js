@@ -20,7 +20,6 @@ let newTask = {
     "subtasks": {}
 }
 
-const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 // EventListener -------------------------------------------------------------------
 
@@ -400,7 +399,6 @@ function getAssignedPersons(){
     }
     return assignedPersons;
 }
-
 
 function changeDateFormat(date){
     return date.replaceAll("/", "-");
