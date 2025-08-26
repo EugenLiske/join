@@ -1,4 +1,4 @@
-// Referenzen der DOM-Elemente
+// Referenzen der DOM-Elemente und weitere Variablen
 const nameInput = document.getElementById("name_input");
 const emailInput = document.getElementById("email_input");
 const passwordInput = document.getElementById("password_input");
@@ -9,8 +9,7 @@ const confirmationError = document.getElementById("confirm_error");
 const signupOverlay = document.getElementById("signup_overlay"); // optional, für Konsistenz
 const overlayMessage = document.getElementById("overlay_message");
 
-const DUPLICATE_MSG =
-  "This user exists already. Please use a different email address.";
+const DUPLICATE_MSG = "This user exists already. Please use a different email address.";
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 // Funktion für eventuelles Autofill. PW-Icons und der Button-Zustand werden richtig gesetzt
@@ -23,21 +22,7 @@ function initAutoFill() {
 
 initAutoFill();
 
-function getInitials(rawName) {
-  let cleanName = String(rawName || "").trim();
-  let nameParts = cleanName.split(/\s+/);
-  let firstInitial = nameParts[0].charAt(0);
-  let lastInitial = "";
-
-  if (nameParts.length > 1) {
-    let lastName = nameParts[nameParts.length - 1];
-    lastInitial = lastName.charAt(0);
-  }
-
-  let initials = firstInitial + lastInitial;
-  initials = initials.toUpperCase();
-  return initials;
-}
+// Firebase-Datenbank: Funktionen für GET und PUT
 
 async function getAllUsers(path) {
   try {
@@ -47,7 +32,6 @@ async function getAllUsers(path) {
         `GET ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`
       );
     }
-
     let fireBaseResponseAsJson = await fireBaseResponse.json();
     return fireBaseResponseAsJson;
   } catch (error) {
@@ -63,7 +47,6 @@ async function putUserData(path, data) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-
     if (!fireBaseResponse.ok) {
       throw new Error(
         `PUT ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`
@@ -75,56 +58,107 @@ async function putUserData(path, data) {
   }
 }
 
+// Registrierfunktion (Sign Up Button)
+
 async function registerUser(event) {
   event.preventDefault();
   if (!validateForm()) {
     return false;
   }
-
   try {
     let userResponse = await getAllUsers("/users");
-    // Prüfung nach vorhandenem User mittels der Emailadresse
-
     if (checkExistingUsers(userResponse)) {
       return false;
     }
-
     let nextUserID = calculateNextUserID(userResponse);
-
-    // Input-Werte auslesen
-    let nameVal = nameInput.value.trim();
-    let emailVal = emailInput.value.trim().toLowerCase();
-    let passVal = passwordInput.value;
-
-    // Neues User-Objekt erstellen
-    let user = {
-      name: nameVal,
-      email: emailVal,
-      password: passVal,
-      initials: getInitials(nameVal),
-    };
-
-    // Pfad für den neuen User bauen
-    let path = "/users/user_" + nextUserID;
-
-    // User in Firebase speichern
-    await putUserData(path, user);
-
-    // Overlay der Toast-Nachricht aktivieren
-
-    signupOverlay.classList.add("active");
-    overlayMessage.classList.add("enter");
-
-    setTimeout(function () {
-      overlay.classList.add("leaving");
-      setTimeout(function () {
-        window.location.href = "login.html";
-      }, 300);
-    }, 27000000);
+    await createAndUploadUserObject(nextUserID);
+    createSuccessOverlay();
   } catch (error) {
     console.error("registerUser failed:", error);
     return false;
   }
+}
+
+// Hilfsfunktionen für die registerUser-Funktion
+
+function checkExistingUsers(userResponse) {
+  let emailToCheck = emailInput.value.trim().toLowerCase();
+  if (userResponse && checkEveryUserEmail(userResponse, emailToCheck)) {
+    emailInput.classList.add("error");
+    confirmationError.style.display = "block";
+    confirmationError.textContent = "This user exists already. Please use a different email address.";
+    return true;
+  }
+  return false;
+}
+
+function checkEveryUserEmail(userResponse, emailToCheck) {
+  let userKeys = Object.keys(userResponse);
+  for (let i = 0; i < userKeys.length; i++) {
+    let singleUserKey = userKeys[i];
+    let existingEmail = "";
+    if (userResponse[singleUserKey] && userResponse[singleUserKey].email) {
+      existingEmail = String(userResponse[singleUserKey].email).toLowerCase().trim();
+    }
+    if (existingEmail !== "" && existingEmail === emailToCheck) {
+      return true; // sofort Abbruch → Mail gefunden
+    }
+  }
+  return false; // nichts gefunden nachdem man alle Mailadressen durchsucht hat
+}
+
+function calculateNextUserID(userResponse) {
+  if (!userResponse) return 1;
+  let highestUserID = 0;
+  let userKeys = Object.keys(userResponse);
+  for (let index = 0; index < userKeys.length; index++) {
+    let singleUserKey = userKeys[index];
+    if (singleUserKey.startsWith("user_")) {
+      let userIdString = singleUserKey.slice(5);
+      let userIdNumber = parseInt(userIdString, 10);
+      if (!isNaN(userIdNumber) && userIdNumber > highestUserID) highestUserID = userIdNumber;
+    }
+  }
+  return highestUserID + 1;
+}
+
+async function createAndUploadUserObject(nextUserID) {
+  let nameVal = nameInput.value.trim();
+  let emailVal = emailInput.value.trim().toLowerCase();
+  let passVal = passwordInput.value;
+  let user = {
+    name: nameVal,
+    email: emailVal,
+    password: passVal,
+    initials: getInitials(nameVal),
+  };
+  let path = "/users/user_" + nextUserID;
+  await putUserData(path, user);
+}
+
+function getInitials(rawName) {
+  let cleanName = String(rawName || "").trim();
+  let nameParts = cleanName.split(/\s+/);
+  let firstInitial = nameParts[0].charAt(0);
+  let lastInitial = "";
+  if (nameParts.length > 1) {
+    let lastName = nameParts[nameParts.length - 1];
+    lastInitial = lastName.charAt(0);
+  }
+  let initials = firstInitial + lastInitial;
+  initials = initials.toUpperCase();
+  return initials;
+}
+
+function createSuccessOverlay() {
+  signupOverlay.classList.add("active");
+  overlayMessage.classList.add("enter");
+  setTimeout(function () {
+    signupOverlay.classList.add("leaving");
+    setTimeout(function () {
+      window.location.href = "login.html";
+    }, 300);
+  }, 27000000);
 }
 
 function isEmailValid(email) {
@@ -220,66 +254,4 @@ function clearEmailError() {
     confirmationError.textContent = "";
     confirmationError.style.display = "none";
   }
-}
-
-function checkExistingUsers(userResponse) {
-  let emailToCheck = emailInput.value.trim().toLowerCase();
-  if (userResponse) {
-    let userKeys = Object.keys(userResponse);
-    for (let i = 0; i < userKeys.length; i++) {
-      let singleUserKey = userKeys[i];
-      let existingEmail = "";
-      if (userResponse[singleUserKey] && userResponse[singleUserKey].email) {
-        existingEmail = String(userResponse[singleUserKey].email).toLowerCase().trim();
-      }
-      if (existingEmail !== "" && existingEmail === emailToCheck) {
-        emailInput.classList.add("error");
-        confirmationError.style.display = "block";
-        confirmationError.textContent = "This user exists already. Please use a different email address.";
-        return true; // Sofort: E-Mail existiert bereits
-      }
-    }
-  }
-  return false; // Nach kompletter Schleife: kein Duplikat gefunden
-}
-
-function calculateNextUserID(userResponse) {
-  let nextUserID = 1;
-  if (userResponse) {
-    let userKeys = Object.keys(userResponse);
-    let highestUserID = 0;
-
-    for (let i = 0; i < userKeys.length; i++) {
-      let singleUserKey = userKeys[i];
-
-      if (singleUserKey.startsWith("user_")) {
-        let userIdString = singleUserKey.substring(5); 
-        let userIdNumber = parseInt(userIdString, 10); 
-
-        if (!isNaN(userIdNumber) && userIdNumber > highestUserID) {
-          highestUserID = userIdNumber; 
-        }
-      }
-    }
-
-    nextUserID = highestUserID + 1;
-    return nextUserID
-  }
-}
-
-async function createAndUploadUserObject(){
-    let nameVal = nameInput.value.trim();
-    let emailVal = emailInput.value.trim().toLowerCase();
-    let passVal = passwordInput.value;
-
-    let user = {
-      name: nameVal,
-      email: emailVal,
-      password: passVal,
-      initials: getInitials(nameVal),
-    };
-
-    let path = "/users/user_" + nextUserID;
-
-    await putUserData(path, user);
 }
