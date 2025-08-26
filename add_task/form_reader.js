@@ -29,12 +29,14 @@ function getDueDate(){
 
 function getSubtasks(){
     let subtasksContainer = document.getElementById("subtasks_container").children;
-    let subtasks = [];
+    let subtasks = {};
     let subtaskNr = 0;
+    let subtaskKey = "";
 
     for (let subtaskIdx = 0; subtaskIdx < subtasksContainer.length; subtaskIdx++) {
         subtaskNr = extractSubtaskNrFromId(subtasksContainer[subtaskIdx].id);
-        subtasks.push(getSubtaskTxt(subtaskNr));
+        subtaskKey = "subtask_" + subtaskIdx;
+        subtasks[subtaskKey] = {"description": getSubtaskTxt(subtaskNr), "status": false};
     }
 
     return subtasks;

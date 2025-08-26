@@ -15,9 +15,9 @@ let newTask = {
     "description": "",
     "duedate": "",
     "priority": "",
-    "assignedPersons": [],
+    "assignedPersons": {},
     "category": "",
-    "subtasks": []
+    "subtasks": {}
 }
 
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -344,9 +344,11 @@ function deleteForm(){
     clearPriorityButtons("default");
     clearAssignedToInputArea();
     clearCategoryInput();
+    renderCategoryOptions();
     clearSubtasksInputArea();
 
     resetWarning();
+    clearTask();
 }
 
 function clearTask(){
@@ -355,23 +357,27 @@ function clearTask(){
     "description": "",
     "duedate": "",
     "priority": "",
-    "assignedPersons": [],
+    "assignedPersons": {},
     "category": "",
-    "subtasks": []
+    "subtasks": {}
     };
 }
 
-function checkAndCreateTask(){
+async function checkAndCreateTask(){
+    let taskKey = "";
 
     if (checkRequiredFields()){
         createTask();
-        tasks.push(newTask);
+        nextTaskId = await getTaskCounter();
+        taskKey = "task_" + nextTaskId;
+        path = "/tasks/" + taskKey;
+        await setData(newTask, path);
+        await increaseTaskCounter();
         deleteForm();
     }
-    console.log(tasks);
-    
     // TODO: Weiterleitung auf Board Seite
 }
+
 
 function createTask(){
     newTask.title = getTitle();
@@ -384,10 +390,12 @@ function createTask(){
 }
 
 function getAssignedPersons(){
-    let assignedPersons = [];
+    let assignedPersons = {};
     for (let personIdx = 0; personIdx < assignedToList.length; personIdx++) {
         if (assignedToList[personIdx]){
-            assignedPersons.push(personIdx);
+            let personKey = "contact_" + personIdx;
+            
+            assignedPersons[personKey] = personIdx;
         }
     }
     return assignedPersons;
