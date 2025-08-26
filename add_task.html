@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Add task</title>
+
+    <link rel="stylesheet" href="root.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="summary.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="add_task.css">
+    <link rel="stylesheet" href="login_signup.css">
+
+    <script src="./add_task/templates.js"></script>
+    <script src="script.js"></script>
+    <script src="task_db.js"></script>
+    <script src="./add_task/form_validation.js"></script>
+    <script src="./add_task/form_reader.js"></script>
+    <script src="person_db.js"></script>
+    <script src="add_tasks.js"></script>
+    <script src="task_db_connection.js"></script>
+
+</head>
+<body onload="initAddTask()">
+    <div class="page_wrapper">
+        <!-- navigation bar left -->
+        <div id="page_navigation"></div>
+        <!-- content right -->
+        <div class="content_wrapper">
+            <div id="page_header"></div>
+            <div class="main_wrapper">
+                <article class="main_container">
+                    <header class="main_header">
+                        <h2>Add Task</h2>
+                    </header>
+                    <from class="main_content_column" onsubmit="checkAndCreateTask()">
+                        <!-- input -->
+                        <div class="task_input_area">
+                            <!-- left side -->
+                            <div class="task_input_column">
+                                <!-- title -->
+                                <div class="task_input_wrapper">
+                                    <label for="task_title_input">Title<span class="required_symbole">*</span></label>
+                                    <input id="task_title_input" class="input_field" type="text" placeholder="Enter a title" required autocomplete="off"> 
+                                    <span id="warning_title" class="warning d_none">This field is required!</span>                                   
+                                </div>
+                                <!-- Description -->
+                                <div class="task_input_wrapper">
+                                    <label for="task_description_input">Description</label>
+                                    <textarea id="task_description_input" class="input_field ta-height" type="text" placeholder="Enter a Description" autocomplete="off"></textarea>                                    
+                                </div>
+                                <!-- Due date -->
+                                <div class="task_input_wrapper">
+                                    <label for="task_deadline_input">Due date<span class="required_symbole">*</span></label>
+                                    <div class="input_wrapper">
+                                        <input id="task_deadline_input" class="input_field" type="text" placeholder="dd/mm/yyyy" required autocomplete="off">                                    
+                                        <img src="./assets/img/icons/task/event.svg" class="input_field_icon"></img>
+                                    </div>
+                                    <span id="warning_deadline" class="warning d_none">This field is required! Check whether the date is in the correct format.</span> 
+                                </div>
+                            </div>
+                            <!-- separator -->
+                            <div class="task_separator"></div>
+                            <!-- right side -->
+                            <div class="task_input_column">
+                                <!-- Priority -->
+                                <div class="task_input_wrapper">
+                                    <span>Priority</span>
+                                    <div class="priority_input" id="task_priority_input">
+                                        <button id="urgent" class="priority_button urgent_color_default" onclick="setGlobalPriority(this, 'urgent')">
+                                            <span class="priority_btn_c_txt_default">Urgent</span>
+                                            <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M19.2597 15.4464C19.0251 15.4468 18.7965 15.3719 18.6077 15.2328L10.3556 9.14965L2.10356 15.2328C1.98771 15.3184 1.85613 15.3803 1.71633 15.4151C1.57652 15.4498 1.43124 15.4567 1.28877 15.4354C1.14631 15.414 1.00944 15.3648 0.885997 15.2906C0.762552 15.2164 0.654943 15.1186 0.569314 15.0029C0.483684 14.8871 0.421712 14.7556 0.386936 14.6159C0.352159 14.4762 0.345259 14.331 0.366629 14.1887C0.409788 13.9012 0.565479 13.6425 0.799451 13.4697L9.70356 6.89926C9.89226 6.75967 10.1208 6.68433 10.3556 6.68433C10.5904 6.68433 10.819 6.75967 11.0077 6.89926L19.9118 13.4697C20.0977 13.6067 20.2356 13.7988 20.3057 14.0186C20.3759 14.2385 20.3747 14.4749 20.3024 14.6941C20.2301 14.9133 20.0904 15.1041 19.9031 15.2391C19.7159 15.3742 19.4907 15.4468 19.2597 15.4464Z" fill="currentColor"/>
+                                                <path d="M19.2597 9.69733C19.0251 9.69774 18.7965 9.62289 18.6077 9.48379L10.3556 3.40063L2.10356 9.48379C1.86959 9.6566 1.57651 9.72945 1.28878 9.68633C1.00105 9.6432 0.742254 9.48762 0.569318 9.25383C0.396382 9.02003 0.323475 8.72716 0.366634 8.43964C0.409793 8.15213 0.565483 7.89352 0.799455 7.72072L9.70356 1.15024C9.89226 1.01065 10.1208 0.935303 10.3556 0.935303C10.5904 0.935303 10.819 1.01065 11.0077 1.15024L19.9118 7.72072C20.0977 7.85763 20.2356 8.04974 20.3057 8.26962C20.3759 8.4895 20.3747 8.72591 20.3024 8.94509C20.2301 9.16427 20.0904 9.35503 19.9031 9.49012C19.7159 9.62521 19.4907 9.69773 19.2597 9.69733Z" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                        <button id="medium" class="priority_button medium_color_click" onclick="setGlobalPriority(this, 'medium')">
+                                            <span>Medium</span>
+                                            <svg width="21" height="8" viewBox="0 0 21 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M19.1526 7.72528H1.34443C1.05378 7.72528 0.775033 7.60898 0.569514 7.40197C0.363995 7.19495 0.248535 6.91419 0.248535 6.62143C0.248535 6.32867 0.363995 6.0479 0.569514 5.84089C0.775033 5.63388 1.05378 5.51758 1.34443 5.51758H19.1526C19.4433 5.51758 19.722 5.63388 19.9276 5.84089C20.1331 6.0479 20.2485 6.32867 20.2485 6.62143C20.2485 6.91419 20.1331 7.19495 19.9276 7.40197C19.722 7.60898 19.4433 7.72528 19.1526 7.72528Z" fill="currentColor"/>
+                                                <path d="M19.1526 2.48211H1.34443C1.05378 2.48211 0.775033 2.36581 0.569514 2.1588C0.363995 1.95179 0.248535 1.67102 0.248535 1.37826C0.248535 1.0855 0.363995 0.804736 0.569514 0.597724C0.775033 0.390712 1.05378 0.274414 1.34443 0.274414L19.1526 0.274414C19.4433 0.274414 19.722 0.390712 19.9276 0.597724C20.1331 0.804736 20.2485 1.0855 20.2485 1.37826C20.2485 1.67102 20.1331 1.95179 19.9276 2.1588C19.722 2.36581 19.4433 2.48211 19.1526 2.48211Z" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                        <button id="low" class="priority_button low_color_default" onclick="setGlobalPriority(this, 'low')">
+                                            <span class="priority_btn_c_txt_default">Low</span>
+                                            <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10.2485 9.50614C10.0139 9.50654 9.7854 9.4317 9.59655 9.29262L0.693448 2.72288C0.57761 2.63733 0.47977 2.52981 0.405515 2.40647C0.33126 2.28313 0.282043 2.14638 0.260675 2.00404C0.217521 1.71655 0.290421 1.42372 0.463337 1.18994C0.636253 0.956173 0.895022 0.800615 1.18272 0.757493C1.47041 0.71437 1.76347 0.787216 1.99741 0.960004L10.2485 7.04248L18.4997 0.960004C18.6155 0.874448 18.7471 0.812529 18.8869 0.777782C19.0266 0.743035 19.1719 0.736141 19.3144 0.757493C19.4568 0.778844 19.5937 0.828025 19.7171 0.902225C19.8405 0.976425 19.9481 1.07419 20.0337 1.18994C20.1194 1.3057 20.1813 1.43717 20.2161 1.57685C20.2509 1.71653 20.2578 1.86169 20.2364 2.00404C20.215 2.14638 20.1658 2.28313 20.0916 2.40647C20.0173 2.52981 19.9195 2.63733 19.8036 2.72288L10.9005 9.29262C10.7117 9.4317 10.4831 9.50654 10.2485 9.50614Z" fill="currentColor"/>
+                                                <path d="M10.2485 15.2547C10.0139 15.2551 9.7854 15.1802 9.59655 15.0412L0.693448 8.47142C0.459502 8.29863 0.30383 8.04005 0.260675 7.75257C0.217521 7.46509 0.290421 7.17225 0.463337 6.93848C0.636253 6.70471 0.895021 6.54915 1.18272 6.50603C1.47041 6.46291 1.76347 6.53575 1.99741 6.70854L10.2485 12.791L18.4997 6.70854C18.7336 6.53575 19.0267 6.46291 19.3144 6.50603C19.602 6.54915 19.8608 6.70471 20.0337 6.93848C20.2066 7.17225 20.2795 7.46509 20.2364 7.75257C20.1932 8.04005 20.0376 8.29863 19.8036 8.47142L10.9005 15.0412C10.7117 15.1802 10.4831 15.2551 10.2485 15.2547Z" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                                <!-- Assigned to -->
+                                <div class="task_input_wrapper">
+                                    <label for="task_assignedto_input">Assigned to</label>
+                                    <div id="selection_container_assignedto" class="selection_color_container">
+                                        <div class="input_wrapper">
+                                            <button id="task_assignedto_button" class="input_field" onclick="toggleInputElement()">Select contacts to assign</button>
+                                            <input onkeyup="startNameSearch()" id="task_assignedto_input" class="input_field d_none" placeholder="Search" autocomplete="off">  
+                                            <img onclick="toggleInputElement()" id="drop_down_persons" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
+                                        </div>
+                                        <ul class="selection d_none" id="selection">
+
+                                        </ul>                                           
+                                    </div>
+                                    <div id="selected_persons" class="selected_persons_container">
+
+                                    </div>
+ 
+                                </div>
+                                <!-- Category -->
+                                <div class="task_input_wrapper">
+                                    <label for="category_selection">Category<span class="required_symbole">*</span></label>
+                                    <div id="selection_container_category" class="selection_color_container">
+                                        <div class="input_wrapper">
+                                            <button id="category_selection" class="input_field" onclick="toggleSelectionList('category_options', 'drop_down_categories')">Select task category</button>
+                                            <img id="drop_down_categories" src="./assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task" onclick="toggleSelectionList('category_options', 'drop_down_categories')">
+                                        </div>
+                                        <ul class="category_options d_none selection" id="category_options">
+
+                                        </ul>                                       
+                                    </div>
+                                    <span id="warning_category" class="warning d_none">This field is required!</span>                                
+                                </div>
+                                <!-- Subtasks -->
+                                <div class="task_input_wrapper">
+                                    <label for="subtask_input">Subtasks</label>
+                                    <div class="input_wrapper">
+                                        <input onkeyup="addTaskOrToggleIcons(event)" id="subtask_input" class="input_field subtask_focus" type="text" placeholder="Add new subtask" autocomplete="off">
+                                        <div id="subtask_icons" class="subtask_input_icon_wrapper d_none">
+                                            <img onclick="cancelSubtask()" src="./assets/img/icons/form/close.svg" class="input_field_icon_subtasks pad_8"></img>
+                                            <div class="icon_separator_input"></div>
+                                            <img onclick="addSubtask()" src="./assets/img/icons/form/check.svg" class="input_field_icon_subtasks pad_8"></img>
+                                        </div>              
+                                    </div>
+                                    <ul id="subtasks_container" class="subtasks_container">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- footer buttons -->
+                        <div class="add_task_footer">
+                            <span><span class="required_symbole">*</span>This field is required</span>
+                            <div class="add_task_buttons">
+                                <button class="button_silhouette button_secondary" onclick="deleteForm()">
+                                    Clear
+                                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.0692 12.0001L17.3122 17.2431M6.82617 17.2431L12.0692 12.0001L6.82617 17.2431ZM17.3122 6.75708L12.0682 12.0001L17.3122 6.75708ZM12.0682 12.0001L6.82617 6.75708L12.0682 12.0001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button class="button_filled button_check" onclick="checkAndCreateTask()">
+                                    Create Task
+                                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="mask0_359093_6303" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
+                                        <rect x="0.248535" width="24" height="24" fill="#D9D9D9"/>
+                                        </mask>
+                                        <g mask="url(#mask0_359093_6303)">
+                                        <path d="M9.79923 15.15L18.2742 6.675C18.4742 6.475 18.7117 6.375 18.9867 6.375C19.2617 6.375 19.4992 6.475 19.6992 6.675C19.8992 6.875 19.9992 7.1125 19.9992 7.3875C19.9992 7.6625 19.8992 7.9 19.6992 8.1L10.4992 17.3C10.2992 17.5 10.0659 17.6 9.79923 17.6C9.53256 17.6 9.29923 17.5 9.09923 17.3L4.79923 13C4.59923 12.8 4.5034 12.5625 4.51173 12.2875C4.52006 12.0125 4.62423 11.775 4.82423 11.575C5.02423 11.375 5.26173 11.275 5.53673 11.275C5.81173 11.275 6.04923 11.375 6.24923 11.575L9.79923 15.15Z" fill="white"/>
+                                        </g>
+                                    </svg>
+
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </article>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="include.js"></script>
+</html>
