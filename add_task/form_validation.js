@@ -1,5 +1,10 @@
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+function simpleCheckRequiredFields(){
+    return checkTitle(false) && simpleCheckDueDate() && checkCategory(false);
+
+}
+
 function checkRequiredFields(){
     let isCorrectTitle = checkTitle();
     let isCorrectDueDate = checkDueDate();
@@ -35,27 +40,33 @@ function resetWarning(){
 
 // Check Title -----------------------------------------------------------------------
 
-function checkTitle(){
+function checkTitle(setWarning = true){
     let titleInputRef = document.getElementById("task_title_input");
     let isCorrect = titleInputRef.value.length > 0;
-    removeOrAddWarning(titleInputRef, "warning_title", isCorrect, "This field is required!");
+    if (setWarning) removeOrAddWarning(titleInputRef, "warning_title", isCorrect, "This field is required!");
 
     return isCorrect;
 }
 
 // Check Category --------------------------------------------------------------------
 
-function checkCategory(){
+function checkCategory(setWarning = true){
     let categoryButtonRef = document.getElementById("category_selection");
     let choice = categoryButtonRef.innerText;
     let isCorrect = categories.indexOf(choice) >= 0 ? true : false;
-    removeOrAddWarning(categoryButtonRef, "warning_category", isCorrect, "This field is required!");
+    if (setWarning) removeOrAddWarning(categoryButtonRef, "warning_category", isCorrect, "This field is required!");
 
     return isCorrect;
 }
 
 
 // Check Date -------------------------------------------------------------------------
+
+function simpleCheckDueDate(){
+    let dueDateRef = document.getElementById("task_deadline_input");  
+    let isCorrect = dueDateRef.value.length > 0;
+    return isCorrect;
+}
 
 function checkDueDate(){
     let dueDateRef = document.getElementById("task_deadline_input");
@@ -64,7 +75,6 @@ function checkDueDate(){
     removeOrAddWarning(dueDateRef, "warning_deadline", isCorrect, getDateWarning(errorNumber));
     return isCorrect;
 }
-
 
 function getDateWarning(errorNumber){
     let message = "";

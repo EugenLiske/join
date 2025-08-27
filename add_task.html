@@ -43,7 +43,7 @@
                                 <!-- title -->
                                 <div class="task_input_wrapper">
                                     <label for="task_title_input">Title<span class="required_symbole">*</span></label>
-                                    <input id="task_title_input" class="input_field" type="text" placeholder="Enter a title" required autocomplete="off"> 
+                                    <input id="task_title_input" onkeyup="checkAndEnableButton()" class="input_field" type="text" placeholder="Enter a title" required autocomplete="off"> 
                                     <span id="warning_title" class="warning d_none">This field is required!</span>                                   
                                 </div>
                                 <!-- Description -->
@@ -55,7 +55,7 @@
                                 <div class="task_input_wrapper">
                                     <label for="task_deadline_input">Due date<span class="required_symbole">*</span></label>
                                     <div class="input_wrapper">
-                                        <input id="task_deadline_input" class="input_field" type="text" placeholder="dd/mm/yyyy" required autocomplete="off">                                    
+                                        <input id="task_deadline_input" onkeyup="checkAndEnableButton()" class="input_field" type="text" placeholder="dd/mm/yyyy" required autocomplete="off">                                    
                                         <img src="./assets/img/icons/task/event.svg" class="input_field_icon"></img>
                                     </div>
                                     <span id="warning_deadline" class="warning d_none">This field is required! Check whether the date is in the correct format.</span> 
@@ -152,7 +152,7 @@
                                         <path d="M12.0692 12.0001L17.3122 17.2431M6.82617 17.2431L12.0692 12.0001L6.82617 17.2431ZM17.3122 6.75708L12.0682 12.0001L17.3122 6.75708ZM12.0682 12.0001L6.82617 6.75708L12.0682 12.0001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
-                                <button class="button_filled button_check" onclick="checkAndCreateTask()">
+                                <button id="create_task_button" class="button_filled button_check" onclick="checkAndCreateTask()" disabled>
                                     Create Task
                                     <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <mask id="mask0_359093_6303" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">

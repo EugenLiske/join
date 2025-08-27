@@ -241,7 +241,7 @@ function renderCategoryOptions(){
 
     for (let catIdx = 0; catIdx < categories.length; catIdx++) {
         if (!checkCategorySelection(categories[catIdx])){
-            optionList += `<li onclick="setCategory('${categories[catIdx]}')">${categories[catIdx]}</li>`
+            optionList += `<li onclick="setCategory('${categories[catIdx]}'); checkAndEnableButton();">${categories[catIdx]}</li>`
         }
     }
     categoryOptionsRef.innerHTML = optionList;
@@ -377,6 +377,15 @@ async function checkAndCreateTask(){
     // TODO: Weiterleitung auf Board Seite
 }
 
+function checkAndEnableButton(){
+    let createButtonRef = document.getElementById("create_task_button");
+    if (simpleCheckRequiredFields()){
+        createButtonRef.disabled = false;
+    }
+    else {
+        createButtonRef.disabled = true;
+    }
+}
 
 function createTask(){
     newTask.title = getTitle();

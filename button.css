@@ -26,6 +26,14 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
+.button_silhouette:disabled{
+    opacity: .5;
+    cursor: not-allowed;
+    box-shadow: none;
+    border: 1px solid var(--c-btn-text-var1);
+    background-color: transparent;
+}
+
 /* Filled */
 .button_filled{
     display: flex;
@@ -50,6 +58,14 @@
     border: 1px solid var(--c-btn-click);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
     background-color: var(--c-btn-click);
+}
+
+.button_filled:disabled{
+    opacity: .5;
+    cursor: not-allowed;
+    box-shadow: none;
+    border: 1px solid var(--c-btn-default);
+    background-color: var(--c-btn-default);
 }
 
 
