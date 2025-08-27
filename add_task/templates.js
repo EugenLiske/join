@@ -27,11 +27,13 @@ function getSubtaskTemplate(input){
             </li>`;
 }
 
+
 function getAssignedToTemplate(color, initials){
     return `<div class="person_icon" style="background-color: ${color}">
                 ${initials}
             </div>`;
 }
+
 
 function getListElementTemplate(selectedDesignClass, personIdx, checked){
     return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">

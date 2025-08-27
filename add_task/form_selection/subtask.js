@@ -7,8 +7,8 @@ function addTaskOrToggleIcons(event){
     else {
         toggleIcons();
     }
-
 }
+
 
 function toggleIcons(){
     let inputSubtask = document.getElementById("subtask_input");
@@ -22,9 +22,11 @@ function toggleIcons(){
     }  
 }
 
+
 function openEditMode(subtaskID){
     document.getElementById("edit_mode_" + subtaskID).classList.remove("d_none");
 }
+
 
 function addSubtask(){
     let inputSubtask = document.getElementById("subtask_input");
@@ -34,8 +36,8 @@ function addSubtask(){
     nextSubtaskId++;
     inputSubtask.value = "";
     toggleIcons();
-
 }
+
 
 function cancelSubtask(){
     let inputSubtask = document.getElementById("subtask_input");
@@ -43,11 +45,13 @@ function cancelSubtask(){
     toggleIcons();
 }
 
+
 function deleteSubtask(event, subtaskID) {
     event.stopPropagation();
-
+    
     document.getElementById("subtask_element_" + subtaskID).remove();
 }
+
 
 function saveAndCloseEditMode(event, subtaskID){
     event.stopPropagation();
@@ -56,6 +60,7 @@ function saveAndCloseEditMode(event, subtaskID){
     document.getElementById("subtask_" + subtaskID).innerText = input;
     document.getElementById("edit_mode_" + subtaskID).classList.add("d_none");
 }
+
 
 function clearSubtasksInputArea(){
     document.getElementById("subtasks_container").innerHTML = "";

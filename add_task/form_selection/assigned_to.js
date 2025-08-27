@@ -7,12 +7,14 @@ function getNameSearchList(){
     }
 }
 
+
 function initAssignedToList(){
     assignedToList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {
         assignedToList.push(false);
     }
 }
+
 
 // Event Listener
 
@@ -25,6 +27,7 @@ function closeDropDownAssignedToSelection(event){
     }    
 }
 
+
 // Selection
 
 function startNameSearch(){
@@ -35,6 +38,7 @@ function startNameSearch(){
     toggleDropDownIcon("task_assignedto_input", "drop_down_persons");
 }
 
+
 function getSearchListResult(input){
     nameSearchListResult = [];
     for (let personIdx = 0; personIdx < nameSearchList.length; personIdx++) {
@@ -43,6 +47,7 @@ function getSearchListResult(input){
         }
     }
 }
+
 
 function renderSearchNames(){
     let personSelectionRef = document.getElementById("selection");
@@ -60,6 +65,7 @@ function renderSearchNames(){
     personSelectionRef.innerHTML = selection;
 }
 
+
 function selectPerson(element, personIdx){
     element.classList.toggle("person_selected");
 
@@ -70,9 +76,11 @@ function selectPerson(element, personIdx){
     renderAssignedToList();
 }
 
+
 function getCheckbox(parent){
     return parent.childNodes[3];
 }
+
 
 function toggleCheckbox(checked, checkbox){
     if (checked){
@@ -83,19 +91,23 @@ function toggleCheckbox(checked, checkbox){
     }
 }
 
+
 function getCheckboxImg(checked){
     return checked ? "./assets/img/icons/task/checkbox_tick.svg" : "./assets/img/icons/task/checkbox.svg";
 }
+
 
 function toggleSelectionList(listId, iconId){
     document.getElementById(listId).classList.toggle("d_none");
     toggleDropDownIcon(listId, iconId);
 }
 
+
 function hideSelectionList(listId, iconId){
     document.getElementById(listId).classList.add("d_none");
     toggleDropDownIcon(listId, iconId);
 }
+
 
 function toggleDropDownIcon(inputId, iconId){
     let selectionRef = document.getElementById(inputId);
@@ -109,6 +121,7 @@ function toggleDropDownIcon(inputId, iconId){
     }
 }
 
+
 function toggleInputElement(){
     document.getElementById("task_assignedto_button").classList.toggle("d_none");
     document.getElementById("task_assignedto_input").classList.toggle("d_none");
@@ -117,9 +130,11 @@ function toggleInputElement(){
     togglePersonSelection();
 }
 
+
 function togglePersonSelection(){
     document.getElementById("selected_persons").classList.toggle("d_none");
 }
+
 
 function renderAssignedToList(){
     let selectedPersonContainer = document.getElementById("selected_persons");
@@ -133,6 +148,7 @@ function renderAssignedToList(){
     selectedPersonContainer.innerHTML = firstThreeAssignments.htmlTemplate;
 }
 
+
 function getFirstThreeAssignments(firstThreeAssignments){
 
     for (let persIdx = 0; persIdx < assignedToList.length; persIdx++) {
@@ -144,6 +160,7 @@ function getFirstThreeAssignments(firstThreeAssignments){
         }
     }
 }
+
 
 function clearAssignedToInputArea(){
     

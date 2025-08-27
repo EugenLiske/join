@@ -2,6 +2,7 @@
 
 const categories = ["Technical Task", "User Story"];
 
+
 function closeDropDownCategorySelection(event){
     const containerCategory = document.getElementById('selection_container_category');
     if (!containerCategory.contains(event.target)) {
@@ -9,6 +10,7 @@ function closeDropDownCategorySelection(event){
     }        
 
 }
+
 
 function renderCategoryOptions(){
     let categoryOptionsRef = document.getElementById("category_options");
@@ -22,11 +24,13 @@ function renderCategoryOptions(){
     categoryOptionsRef.innerHTML = optionList;
 }
 
+
 function setCategory(category){
     currentCategory = category;
     showCategorySelection(category);
     renderCategoryOptions();
 }
+
 
 function checkCategorySelection(category){
     let categoryButtonRef = document.getElementById("category_selection");
@@ -34,10 +38,12 @@ function checkCategorySelection(category){
     return choice === category;
 }
 
+
 function showCategorySelection(category){
     let categoryButtonRef = document.getElementById("category_selection");
     categoryButtonRef.innerText = category;
 }
+
 
 function clearCategoryInput(){
     document.getElementById("category_selection").innerText = "Select task category";

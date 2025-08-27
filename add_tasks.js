@@ -22,6 +22,7 @@ document.addEventListener('click', function(event) {
     closeDropDownCategorySelection(event);
 });
 
+
 // Initial Function -----------------------------------------------------------------
 
 function initAddTask(){
@@ -32,7 +33,6 @@ function initAddTask(){
 
     renderCategoryOptions();
 }
-
 
 
 // Final Add Task Buttons - Clear and Create Task ------------------------------------
@@ -51,6 +51,7 @@ function deleteForm(){
     clearTask();
 }
 
+
 function clearTask(){
     newTask = {
     "title": "",
@@ -62,6 +63,7 @@ function clearTask(){
     "subtasks": {}
     };
 }
+
 
 async function checkAndCreateTask(){
     let taskKey = "";
@@ -78,6 +80,7 @@ async function checkAndCreateTask(){
     // TODO: Weiterleitung auf Board Seite
 }
 
+
 function checkAndEnableButton(){
     let createButtonRef = document.getElementById("create_task_button");
     if (simpleCheckRequiredFields()){
@@ -88,6 +91,7 @@ function checkAndEnableButton(){
     }
 }
 
+
 function createTask(){
     newTask.title = getTitle();
     newTask.description = getDescription();
@@ -97,6 +101,7 @@ function createTask(){
     newTask.assignedPersons = getAssignedPersons();
     newTask.subtasks = getSubtasks();
 }
+
 
 function getAssignedPersons(){
     let assignedPersons = {};
@@ -109,6 +114,7 @@ function getAssignedPersons(){
     }
     return assignedPersons;
 }
+
 
 function changeDateFormat(date){
     return date.replaceAll("/", "-");

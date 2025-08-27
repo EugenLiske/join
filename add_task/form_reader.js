@@ -5,11 +5,13 @@ function getTitle(){
     return document.getElementById("task_title_input").value;
 }
 
+
 // Get Description --------------------------------------------------
 
 function getDescription(){
     return document.getElementById("task_description_input").value;
 }
+
 
 // Get Due Date -----------------------------------------------------
 
@@ -18,12 +20,16 @@ function getDueDate(){
     return changeDateFormat(dueDate);
 }
 
+
 // Get Priority -> global "currentPriority" -------------------------
+
 
 // Get Assigned Persons -> global "assignedToList" ------------------
 // -> getAssignedPersons() in add_tasks.js
 
+
 // Get Category -> global "currentCategory" -------------------------
+
 
 // Get Subtasks -----------------------------------------------------
 
@@ -42,10 +48,12 @@ function getSubtasks(){
     return subtasks;
 }
 
+
 function getSubtaskTxt(subtaskNr){
     let subtaskTxtSpan = document.getElementById("subtask_element_" + subtaskNr);
     return subtaskTxtSpan.innerText;
 }
+
 
 function extractSubtaskNrFromId(subtaskId){
     let strNumber = subtaskId.split("_")[2];

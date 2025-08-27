@@ -3,6 +3,7 @@
 let currentPriority = "medium";
 let currentCategory = "";
 
+
 function setGlobalPriority(element, priority){
     clearPriorityButtons("all");
 
@@ -12,6 +13,7 @@ function setGlobalPriority(element, priority){
 
     currentPriority = priority;
 }
+
 
 function setPriorityButtonDefault(buttons, mode = "all"){
     let id = -1;
@@ -32,6 +34,7 @@ function setPriorityButtonDefault(buttons, mode = "all"){
         currentPriority = "medium";
     }
 }
+
 
 function clearPriorityButtons(mode = "all"){
     let priorityButtonsRef = document.getElementsByClassName("priority_button");
