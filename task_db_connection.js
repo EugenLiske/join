@@ -5,17 +5,33 @@ async function getAllTasks(){
 }
 
 async function getData(path) {
-  let fireBaseResponse = await fetch(BASE_URL + path + ".json");
-  let fireBaseResponseAsJson = await fireBaseResponse.json();
+  let fireBaseResponseAsJson = null;
+  try {
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+    fireBaseResponseAsJson = await fireBaseResponse.json();
+  }
+  catch(error){
+    console.error("getData: Error occured!");
+    console.error(error);
+  }
   return fireBaseResponseAsJson; // gibt Objekt oder null zurück
 }
 
 async function setData(data, path) {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let response = null;
+  try {
+    response = await fetch(BASE_URL + path + ".json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });    
+  }
+  catch (error){
+    console.error("setData: Error occured! ");
+    console.error(error);
+    console.error(response);
+  }
+
 
   // let responseAsJson = await response.json();
   // console.log(response);
