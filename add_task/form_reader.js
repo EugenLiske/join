@@ -21,6 +21,11 @@ function getDueDate(){
 }
 
 
+function changeDateFormat(date){
+    return date.replaceAll("/", "-");
+}
+
+
 // Get Priority -> global "currentPriority" -------------------------
 
 

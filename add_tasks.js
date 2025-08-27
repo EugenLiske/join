@@ -116,8 +116,3 @@ function getAssignedPersons(){
 }
 
 
-function changeDateFormat(date){
-    return date.replaceAll("/", "-");
-}
-
-
