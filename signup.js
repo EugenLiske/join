@@ -9,10 +9,12 @@ const confirmationError = document.getElementById("confirm_error");
 const signupOverlay = document.getElementById("signup_overlay"); // optional, für Konsistenz
 const overlayMessage = document.getElementById("overlay_message");
 
-const DUPLICATE_MSG = "This user exists already. Please use a different email address.";
+const USER_EXISTS_MSG =
+  "This user exists already. Please use a different email address.";
+const PASSWORD_MIN_LENGHT = 8;
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
-// Funktion für eventuelles Autofill. PW-Icons und der Button-Zustand werden richtig gesetzt
+// Funktion für eventuelles Autofill. Passwort-Icons und der Button-Zustand werden richtig gesetzt.
 
 function initAutoFill() {
   validateForm();
@@ -22,7 +24,7 @@ function initAutoFill() {
 
 initAutoFill();
 
-// Firebase-Datenbank: Funktionen für GET und PUT
+// Firebase-Datenbank: Funktionen für GET und PUT für die User-Daten
 
 async function getAllUsers(path) {
   try {
@@ -86,7 +88,7 @@ function checkExistingUsers(userResponse) {
   if (userResponse && checkEveryUserEmail(userResponse, emailToCheck)) {
     emailInput.classList.add("error");
     confirmationError.style.display = "block";
-    confirmationError.textContent = "This user exists already. Please use a different email address.";
+    confirmationError.textContent = USER_EXISTS_MSG;
     return true;
   }
   return false;
@@ -98,7 +100,9 @@ function checkEveryUserEmail(userResponse, emailToCheck) {
     let singleUserKey = userKeys[i];
     let existingEmail = "";
     if (userResponse[singleUserKey] && userResponse[singleUserKey].email) {
-      existingEmail = String(userResponse[singleUserKey].email).toLowerCase().trim();
+      existingEmail = String(userResponse[singleUserKey].email)
+        .toLowerCase()
+        .trim();
     }
     if (existingEmail !== "" && existingEmail === emailToCheck) {
       return true; // sofort Abbruch → Mail gefunden
@@ -116,7 +120,8 @@ function calculateNextUserID(userResponse) {
     if (singleUserKey.startsWith("user_")) {
       let userIdString = singleUserKey.slice(5);
       let userIdNumber = parseInt(userIdString, 10);
-      if (!isNaN(userIdNumber) && userIdNumber > highestUserID) highestUserID = userIdNumber;
+      if (!isNaN(userIdNumber) && userIdNumber > highestUserID)
+        highestUserID = userIdNumber; // Nur ein Statement, daher keine geschweiften Klammern
     }
   }
   return highestUserID + 1;
@@ -158,40 +163,74 @@ function createSuccessOverlay() {
     setTimeout(function () {
       window.location.href = "login.html";
     }, 300);
-  }, 27000000);
+  }, 2700);
 }
 
-function isEmailValid(email) {
-  let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
-  return regularExpression.test(email);
-}
+// Validierungsfunktion - aktiviert den Sign Up Button bei validen Eingaben
 
 function validateForm() {
-  let nameVal = nameInput.value.trim();
-  let emailVal = emailInput.value.trim();
-  let passVal = passwordInput.value; // ⚠️ kein trim bei Passwörtern
-  let confVal = confirmationPasswordInput.value;
-  let checked = checkbox.checked;
+  const formInput = readFormInput(); // aktuelle Feldwerte
+  const evaluatedFormInput = evaluateFormInput(formInput); // alle Prüfergebnisse
+  renderPasswordErrors(evaluatedFormInput); // Fehlermeldung anzeigen/verbergen
+  setSignupButtonState(evaluatedFormInput.allValid); // Button aktiv/deaktiv
+  return evaluatedFormInput.allValid; // für registerUser() wichtig
+}
 
-  const MIN_LEN = 8;
+// ---- helpers ----
 
-  let notEmpty =
-    nameVal !== "" && emailVal !== "" && passVal !== "" && confVal !== "";
-  let emailOk = isEmailValid(emailVal);
-  let passMatch = passVal !== "" && passVal === confVal;
-  let passLenOk = passVal.length >= MIN_LEN;
+function readFormInput() {
+  return {
+    name: nameInput.value.trim(),
+    email: emailInput.value.trim(),
+    password: passwordInput.value, // ⚠️ kein trim
+    confirmPassword: confirmationPasswordInput.value,
+    privacyChecked: checkbox.checked,
+  };
+}
 
-  // Fehlerlogik (Passwort)
-  let showMismatch = passVal !== "" && confVal !== "" && passVal !== confVal;
-  let showTooShort =
-    passVal !== "" && confVal !== "" && passMatch && !passLenOk;
+function evaluateFormInput(formInput) {
+  const allFieldsFilled =
+    formInput.name !== "" &&
+    formInput.email !== "" &&
+    formInput.password !== "" &&
+    formInput.confirmPassword !== "";
+  const emailFormatValid = isEmailValid(formInput.email);
+  const passwordsMatch =
+    formInput.password !== "" &&
+    formInput.password === formInput.confirmPassword;
+  const passwordLongEnough = formInput.password.length >= PASSWORD_MIN_LENGHT;
+  const showMismatchError =
+    formInput.password !== "" &&
+    formInput.confirmPassword !== "" &&
+    formInput.password !== formInput.confirmPassword;
+  const showTooShortError =
+    formInput.password !== "" &&
+    formInput.confirmPassword !== "" &&
+    passwordsMatch &&
+    !passwordLongEnough;
+  return {
+    allFieldsFilled: allFieldsFilled,
+    emailFormatValid: emailFormatValid,
+    passwordsMatch: passwordsMatch,
+    passwordLongEnough: passwordLongEnough,
+    showMismatchError: showMismatchError,
+    showTooShortError: showTooShortError,
+    allValid:
+      allFieldsFilled &&
+      emailFormatValid &&
+      passwordsMatch &&
+      passwordLongEnough &&
+      formInput.privacyChecked,
+  };
+}
 
-  if (showMismatch) {
+function renderPasswordErrors(evaluatedFormInput) {
+  if (evaluatedFormInput.showMismatchError) {
     confirmationPasswordInput.classList.add("error");
     confirmationError.textContent =
       "Your passwords don't match. Please try again.";
     confirmationError.style.display = "block";
-  } else if (showTooShort) {
+  } else if (evaluatedFormInput.showTooShortError) {
     confirmationPasswordInput.classList.add("error");
     confirmationError.textContent =
       "Your password must be at least 8 characters long";
@@ -201,24 +240,75 @@ function validateForm() {
     confirmationError.textContent = "";
     confirmationError.style.display = "none";
   }
-
-  let allOk = notEmpty && emailOk && passMatch && passLenOk && checked;
-  signupButton.disabled = !allOk;
-  return allOk;
 }
 
-// Sichtbarkeits-Handling (wie gehabt)
+function setSignupButtonState(isFormValid) {
+  signupButton.disabled = !isFormValid;
+}
+
+// function validateForm() {
+//   let nameVal = nameInput.value.trim();
+//   let emailVal = emailInput.value.trim();
+//   let passVal = passwordInput.value; // ⚠️ kein trim bei Passwörtern
+//   let confVal = confirmationPasswordInput.value;
+//   let checked = checkbox.checked;
+
+//   let notEmpty = nameVal !== "" && emailVal !== "" && passVal !== "" && confVal !== "";
+//   let emailOk = isEmailValid(emailVal);
+//   let passMatch = passVal !== "" && passVal === confVal;
+//   let passLenOk = passVal.length >= PASSWORD_MIN_LENGHT;
+
+//   let showMismatch = passVal !== "" && confVal !== "" && passVal !== confVal;
+//   let showTooShort = passVal !== "" && confVal !== "" && passMatch && !passLenOk;
+
+//   if (showMismatch) {
+//     confirmationPasswordInput.classList.add("error");
+//     confirmationError.textContent = "Your passwords don't match. Please try again.";
+//     confirmationError.style.display = "block";
+//   } else if (showTooShort) {
+//     confirmationPasswordInput.classList.add("error");
+//     confirmationError.textContent = "Your password must be at least 8 characters long";
+//     confirmationError.style.display = "block";
+//   } else {
+//     confirmationPasswordInput.classList.remove("error");
+//     confirmationError.textContent = "";
+//     confirmationError.style.display = "none";
+//   }
+
+//   let allOk = notEmpty && emailOk && passMatch && passLenOk && checked;
+//   signupButton.disabled = !allOk;
+//   return allOk;
+// }
+
+// Hilfsfunktion für validateForm
+
+function isEmailValid(email) {
+  let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+  return regularExpression.test(email);
+}
+
+// Bereinigung des Emailfeldes bei erneutem onfocus/oninput.
+// Für denn Fall dass eine bereits benutzte Mailadresse bei registerUser verwendet wurde.
+
+function clearEmailError() {
+  if (confirmationError.textContent === USER_EXISTS_MSG) {
+    emailInput.classList.remove("error");
+    confirmationError.textContent = "";
+    confirmationError.style.display = "none";
+  }
+}
+
+// Sichtbarkeits-Handling der Passwort-Icons bei Eingabe des Passwortes sowie beim Anklicken des Icons.
+
 function handlePasswordInput(inputId, iconId) {
   let input = document.getElementById(inputId);
   let icon = document.getElementById(iconId);
-
   if (input.value.length === 0) {
     input.type = "password";
     icon.src = "./assets/img/icons/form/lock.svg";
     icon.style.pointerEvents = "none";
     return;
   }
-
   icon.style.pointerEvents = "auto";
   if (input.type === "text") {
     icon.src = "./assets/img/icons/form/visibility.svg";
@@ -227,31 +317,20 @@ function handlePasswordInput(inputId, iconId) {
   }
 }
 
-function togglePwIconVisibility(inputId, iconId) {
+function togglePasswordIconVisibility(inputId, iconId) {
   let input = document.getElementById(inputId);
   let icon = document.getElementById(iconId);
-
   if (input.value.length === 0) {
     input.type = "password";
     icon.src = "./assets/img/icons/form/lock.svg";
     icon.style.pointerEvents = "none";
-    return false;
+    return;
   }
-
   if (input.type === "password") {
     input.type = "text";
     icon.src = "./assets/img/icons/form/visibility.svg";
   } else {
     input.type = "password";
     icon.src = "./assets/img/icons/form/visibility_off.svg";
-  }
-  return false;
-}
-
-function clearEmailError() {
-  emailInput.classList.remove("error");
-  if (confirmationError.textContent === DUPLICATE_MSG) {
-    confirmationError.textContent = "";
-    confirmationError.style.display = "none";
   }
 }
