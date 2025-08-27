@@ -52,9 +52,6 @@
     background-color: var(--c-btn-click);
 }
 
-.input_field.taskerror {
-    border: 2px solid var(--c-warn) !important;
-}
 
 /* Types */
 .button_default{

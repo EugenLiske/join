@@ -359,6 +359,10 @@ button.input_field{
     gap: 16px;
 }
 
+.input_field.taskerror {
+    border: 2px solid var(--c-warn) !important;
+}
+
 .warning{
     position: absolute;
     bottom: -18px;
