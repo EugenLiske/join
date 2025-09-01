@@ -1,233 +1,272 @@
-const BASE_URL = "https://console.firebase.google.com/project/join-test-c19be/database/join-test-c19be-default-rtdb/data/~2F";
+// Referenzen der DOM-Elemente und weitere Variablen
 
-// beim Laden einmal prüfen (Autofill-Fälle) --> Button-Deaktivierung zu Beginn, da alle Felder leer sind
-(function init() {
+const nameInput                   = document.getElementById("name_input");
+const emailInput                  = document.getElementById("email_input");
+const passwordInput               = document.getElementById("password_input");
+const confirmationPasswordInput   = document.getElementById("confirm_input");
+const checkbox                    = document.getElementById("privacy_checkbox");
+const signupButton                = document.getElementById("signup_button");
+const confirmationError           = document.getElementById("confirm_error");
+const signupOverlay               = document.getElementById("signup_overlay");
+const overlayMessage              = document.getElementById("overlay_message");
+
+const USER_EXISTS_MSG             = "This user exists already. Please use a different email address.";
+const PASSWORD_MIN_LENGTH         = 8;
+const BASE_URL                    = "https://join-test-c19be-default-rtdb.firebaseio.com";
+
+// Funktion für eventuelles Autofill. Passwort-Icons und der Button-Zustand werden richtig gesetzt.
+
+function initAutoFill() {
   validateForm();
-})();
-
-//-------------------------------Registrierten User in die Datenbank hochladen--------------------------//
-
-
-// 1) Deine Realtime-Database REST-URL (ohne .json am Ende)
-const DB_URL = 'https://join-test-c19be-default-rtdb.firebaseio.com';
-
-/** 2) Hilfsfunktion: URL bauen (fügt .json an) */
-function dbUrl(path) {
-  // Entfernt mögliche führende/abschließende Slashes und hängt .json an
-  const clean = String(path).replace(/^\/+|\/+$/g, '');
-  return `${DB_URL}/${clean}.json`;
+  handlePasswordInput("password_input", "password_icon");
+  handlePasswordInput("confirm_input", "confirm_icon");
 }
+initAutoFill();
 
-/** 3) Nächsten Key im Format user_N bestimmen (liest vorhandene Keys aus) */
-function nextUserKey(existingObj) {
-  if (!existingObj || typeof existingObj !== 'object') return 'user_1';
-  let max = 0;
-  for (const key of Object.keys(existingObj)) {
-    const m = key.match(/^user_(\d+)$/);
-    if (m) max = Math.max(max, parseInt(m[1], 10));
-  }
-  return `user_${max + 1}`;
-}
+// Firebase-Datenbank: Funktionen für GET und PUT für die User-Daten
 
-/** 4) Registrierung: liest Inputs, baut JSON, PUT nach /users/user_N */
-async function registerUser(event, collectionPath) {
-  event.preventDefault();                 // (a) Standard-Submit verhindern (Seiten-Reload)
-
-  // (b) Sicherheitsnetz: Deine bestehende Validierung erneut prüfen
-  if (typeof validateForm === 'function' && !validateForm()) return false;
-
-  // (c) Eingaben auslesen
-  const nameVal  = document.getElementById('name_input').value.trim();
-  const emailVal = document.getElementById('email_input').value.trim();
-  const passVal  = document.getElementById('password_input').value; // kein trim bei Passwörtern
-
-  // (d) JSON-Objekt für die DB (Hinweis: Plaintext-Passwort ist nur zu Übungszwecken!)
-  const userObj = { name: nameVal, email: emailVal, password: passVal };
-
-  // (e) Button gegen Doppelklicks sperren
-  const btn = document.getElementById('signup_button');
-  if (btn) btn.disabled = true;
-
+async function getAllUsers(path) {
   try {
-    // (f) Bestehende users laden, um nächste Nummer zu finden
-    const listRes = await fetch(dbUrl(collectionPath));      // z.B. GET …/users.json
-    if (!listRes.ok) throw new Error(`Read failed: ${listRes.status}`);
-    const listData = await listRes.json();                   // Objekt aller bisherigen user_N oder null
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+    if (!fireBaseResponse.ok) {
+      throw new Error(`GET ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`);
+    }
+    let fireBaseResponseAsJson = await fireBaseResponse.json();
+    return fireBaseResponseAsJson;
+  } catch (error) {
+    console.error("getAllUsers error:", error);
+    throw error;
+  }
+}
 
-    // (g) Nächsten Key bestimmen (user_1, user_2, …)
-    const key = nextUserKey(listData);
-
-    // (h) Mit PUT exakt unter /users/user_N schreiben (kein Auto-ID)
-    const putRes = await fetch(dbUrl(`${collectionPath}/${key}`), {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userObj)
+async function putUserData(path, data) {
+  try {
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
-    if (!putRes.ok) {
-      const t = await putRes.text().catch(() => '');
-      throw new Error(`PUT failed: ${putRes.status} ${t}`);
+    if (!fireBaseResponse.ok) {
+      throw new Error(`PUT ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`);
     }
+  } catch (error) {
+    console.error("putUserData error:", error);
+    throw error;
+  }
+}
 
-    // (i) Erfolg → dein Overlay-Flow
-    const overlay = document.getElementById('signup_overlay');
-    const msg     = document.getElementById('overlay_message');
-    if (overlay && msg) {
-      overlay.classList.add('active');
-      msg.classList.add('enter');
+// Registrierfunktion (Sign Up Button)
 
-      setTimeout(function () {
-        overlay.classList.add('leaving');
-        setTimeout(function () {
-          window.location.href = 'login.html';
-        }, 300);
-      }, 2700);
-    } else {
-      // Fallback, falls Overlay nicht vorhanden ist
-      window.location.href = 'login.html';
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Saving to database failed. Please try again.');
-    if (btn) btn.disabled = false;       // (j) Button wieder freigeben
+async function registerUser(event) {
+  event.preventDefault();
+  if (!validateForm()) {
     return false;
   }
-}
-
-
-//-------------------------------Registrierten User in die Datenbank hochladen--------------------------//
-
-// function registerUser(event) {
-//     // verhindert sofortiges Reload/Submit
-//     event.preventDefault();
-
-//     // Sicherheitsnetz
-//     if (!validateForm()) {
-//         return false;
-//     } 
-
-//     let overlay = document.getElementById('signup_overlay');
-//     let msg = document.getElementById('overlay_message');
-
-//     // Overlay sichtbar machen
-//     overlay.classList.add('active');
-
-//     // Message einfahren
-//     msg.classList.add('enter');
-
-//     // Nach 2.7s ausblenden und weiterleiten
-//     setTimeout(function () {
-//       overlay.classList.add('leaving');
-//       setTimeout(function () {
-//         window.location.href = 'login.html';
-//       }, 300);
-//     }, 2700);
-// }
-
-function isEmailValid(email) {
-    let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
-    return regularExpression.test(email);
-}
-
-function validateForm() {
-  let nameInput  = document.getElementById('name_input');
-  let emailInput = document.getElementById('email_input');
-  let passInput  = document.getElementById('password_input');
-  let confInput  = document.getElementById('confirm_input');
-  let checkbox   = document.getElementById('privacy_checkbox');
-  let button     = document.getElementById('signup_button');
-  let confirmErr = document.getElementById('confirm_error');
-
-  let nameVal  = nameInput.value.trim();
-  let emailVal = emailInput.value.trim();
-  let passVal  = passInput.value;   // ⚠️ kein trim bei Passwörtern
-  let confVal  = confInput.value;
-  let checked  = checkbox.checked;
-
-  const MIN_LEN = 8;
-
-  let notEmpty     = (nameVal !== '' && emailVal !== '' && passVal !== '' && confVal !== '');
-  let emailOk      = isEmailValid(emailVal);
-  let passMatch    = (passVal !== '' && passVal === confVal);
-  let passLenOk    = (passVal.length >= MIN_LEN);
-
-  // Fehlerlogik:
-  // 1) Wenn unterschiedlich → "don't match"
-  // 2) Wenn gleich aber zu kurz → "must be at least 8..."
-  let showMismatch = (passVal !== '' && confVal !== '' && passVal !== confVal);
-  let showTooShort = (passVal !== '' && confVal !== '' && passMatch && !passLenOk);
-
-  if (showMismatch) {
-    confInput.classList.add('error');
-    confirmErr.textContent = "Your passwords don't match. Please try again.";
-    confirmErr.style.display = 'block';
-  } else if (showTooShort) {
-    confInput.classList.add('error');
-    confirmErr.textContent = "Your password must be at least 8 characters long";
-    confirmErr.style.display = 'block';
-  } else {
-    confInput.classList.remove('error');
-    confirmErr.textContent = '';
-    confirmErr.style.display = 'none';
-  }
-
-  // Button nur freigeben, wenn ALLES passt (inkl. Länge)
-  let allOk = notEmpty && emailOk && passMatch && passLenOk && checked;
-
-  button.disabled = !allOk;
-  return allOk;
-}
-
-  // Zeigt abhängig vom Feldzustand das richtige Icon an.
-  function handlePwdInput(inputId, iconId) {
-    let input = document.getElementById(inputId);
-    let icon  = document.getElementById(iconId);
-
-    if (input.value.length === 0) {
-      // Feld leer → Schloss zeigen, wieder verstecken, Icon nicht klickbar
-      input.type = 'password';
-      icon.src   = './assets/img/icons/form/lock.svg';
-      icon.style.pointerEvents = 'none';
-      return;
-    }
-
-    // Feld hat Text → Icon klickbar
-    icon.style.pointerEvents = 'auto';
-
-    // Sichtbar? → offenes Auge; sonst → durchgestrichenes Auge
-    if (input.type === 'text') {
-      icon.src = './assets/img/icons/form/visibility.svg';
-    } else {
-      icon.src = './assets/img/icons/form/visibility_off.svg';
-    }
-  }
-
-    // Klick auf das Icon schaltet Sichtbarkeit + Icon um.
-  function toggleVisibility(inputId, iconId) {
-    let input = document.getElementById(inputId);
-    let icon  = document.getElementById(iconId);
-
-    // Nichts zu togglen, wenn leer → Schloss + versteckt
-    if (input.value.length === 0) {
-      input.type = 'password';
-      icon.src   = './assets/img/icons/form/lock.svg';
-      icon.style.pointerEvents = 'none';
+  try {
+    let userResponse = await getAllUsers("/users");
+    if (checkExistingUsers(userResponse)) {
       return false;
     }
-
-    if (input.type === 'password') {
-      input.type = 'text';
-      icon.src   = './assets/img/icons/form/visibility.svg';
-    } else {
-      input.type = 'password';
-      icon.src   = './assets/img/icons/form/visibility_off.svg';
-    }
-
+    let nextUserID = calculateNextUserID(userResponse);
+    await createAndUploadUserObject(nextUserID);
+    createSuccessOverlaySignUp();
+  } catch (error) {
+    console.error("registerUser failed:", error);
     return false;
   }
+}
 
-  // Beim Laden: korrekte Start-Icons setzen (z. B. Autofill-Fälle)
-  (function initPwdIcons() {
-    handlePwdInput('password_input','password_icon');
-    handlePwdInput('confirm_input','confirm_icon');
-  })();
-  
+// Hilfsfunktionen für die registerUser-Funktion
+
+function checkExistingUsers(userResponse) {
+  let emailToCheck = emailInput.value.trim().toLowerCase();
+  if (userResponse && checkEveryUserEmail(userResponse, emailToCheck)) {
+    emailInput.classList.add("error");
+    confirmationError.style.display = "block";
+    confirmationError.textContent = USER_EXISTS_MSG;
+    return true;
+  }
+  return false;
+}
+
+function checkEveryUserEmail(userResponse, emailToCheck) {
+  let userKeys = Object.keys(userResponse);
+  for (let i = 0; i < userKeys.length; i++) {
+    let singleUserKey = userKeys[i];
+    let existingEmail = "";
+    if (userResponse[singleUserKey] && userResponse[singleUserKey].email) {
+      existingEmail = String(userResponse[singleUserKey].email).toLowerCase().trim();
+    }
+    if (existingEmail !== "" && existingEmail === emailToCheck) {
+      return true; // sofort Abbruch → Mail gefunden
+    }
+  }
+  return false; // nichts gefunden nachdem man alle Mailadressen durchsucht hat
+}
+
+function calculateNextUserID(userResponse) {
+  if (!userResponse) return 1;
+  let highestUserID = 0;
+  let userKeys = Object.keys(userResponse);
+  for (let index = 0; index < userKeys.length; index++) {
+    let singleUserKey = userKeys[index];
+    if (singleUserKey.startsWith("user_")) {
+      let userIdString = singleUserKey.slice(5);
+      let userIdNumber = parseInt(userIdString, 10);
+      if (!isNaN(userIdNumber) && userIdNumber > highestUserID) highestUserID = userIdNumber; // Nur ein Statement, daher keine geschweiften Klammern
+    }
+  }
+  return highestUserID + 1;
+}
+
+async function createAndUploadUserObject(nextUserID) {
+  let nameVal = nameInput.value.trim();
+  let emailVal = emailInput.value.trim().toLowerCase();
+  let passVal = passwordInput.value;
+  let user = {
+    name: nameVal,
+    email: emailVal,
+    password: passVal,
+    initials: getInitials(nameVal),
+  };
+  let path = "/users/user_" + nextUserID;
+  await putUserData(path, user);
+}
+
+function getInitials(rawName) {
+  let cleanName = String(rawName || "").trim();
+  let nameParts = cleanName.split(/\s+/);
+  let firstInitial = nameParts[0].charAt(0);
+  let lastInitial = "";
+  if (nameParts.length > 1) {
+    let lastName = nameParts[nameParts.length - 1];
+    lastInitial = lastName.charAt(0);
+  }
+  let initials = firstInitial + lastInitial;
+  initials = initials.toUpperCase();
+  return initials;
+}
+
+function createSuccessOverlaySignUp() {
+  signupOverlay.classList.add("active");
+  overlayMessage.classList.add("enter");
+  setTimeout(function () {
+    signupOverlay.classList.add("leaving");
+    setTimeout(function () {
+      window.location.href = "login.html";
+    }, 300);
+  }, 2700);
+}
+
+// Validierungsfunktion - aktiviert den Sign Up Button bei validen Eingaben
+
+function validateForm() {
+  const formInput = readFormInput();
+  const evaluatedFormInput = evaluateFormInput(formInput);
+  renderPasswordErrors(evaluatedFormInput);
+  setSignupButtonState(evaluatedFormInput.allValid);
+  return evaluatedFormInput.allValid;
+}
+
+// Hilfsfunktionen für die validateForm-Funktion
+
+function readFormInput() {
+  return {
+    name: nameInput.value.trim(),
+    email: emailInput.value.trim(),
+    password: passwordInput.value,
+    confirmPassword: confirmationPasswordInput.value,
+    privacyChecked: checkbox.checked,
+  };
+}
+
+function evaluateFormInput(formInput) {
+  const allFieldsFilled = (formInput.name !== "" && formInput.email !== "") && (formInput.password !== "" && formInput.confirmPassword !== "");
+  const emailFormatValid = isEmailValid(formInput.email);
+  const passwordLongEnough = formInput.password.length >= PASSWORD_MIN_LENGTH;
+  const passwordsMatch = (formInput.password !== "" && formInput.confirmPassword !== "") && (formInput.password === formInput.confirmPassword);
+  const showMismatchError = (formInput.password !== "" && formInput.confirmPassword !== "") && (formInput.password !== formInput.confirmPassword);
+  const showTooShortError = (formInput.password !== "" && formInput.confirmPassword !== "") && passwordsMatch && !passwordLongEnough;
+  return {
+    allFieldsFilled: allFieldsFilled,
+    emailFormatValid: emailFormatValid,
+    passwordsMatch: passwordsMatch,
+    passwordLongEnough: passwordLongEnough,
+    showMismatchError: showMismatchError,
+    showTooShortError: showTooShortError,
+    allValid: allFieldsFilled && emailFormatValid && passwordsMatch && passwordLongEnough && formInput.privacyChecked,
+  };
+}
+
+function renderPasswordErrors(evaluatedFormInput) {
+  if (evaluatedFormInput.showMismatchError) {
+    confirmationPasswordInput.classList.add("error");
+    confirmationError.textContent = "Your passwords don't match. Please try again.";
+    confirmationError.style.display = "block";
+  } else if (evaluatedFormInput.showTooShortError) {
+    confirmationPasswordInput.classList.add("error");
+    confirmationError.textContent = "Your password must be at least 8 characters long";
+    confirmationError.style.display = "block";
+  } else {
+    confirmationPasswordInput.classList.remove("error");
+    confirmationError.textContent = "";
+    confirmationError.style.display = "none";
+  }
+}
+
+function setSignupButtonState(isFormValid) {
+  signupButton.disabled = !isFormValid;
+}
+
+function isEmailValid(email) {
+  let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+  return regularExpression.test(email);
+}
+
+// Bereinigung der Fehleranzeige bei erneuter Eingabe (also onfocus/oninput).
+// Für denn Fall dass eine bereits benutzte Mailadresse bei registerUser eingegeben wurde.
+
+function clearEmailError() {
+  if (confirmationError.textContent === USER_EXISTS_MSG) {
+    emailInput.classList.remove("error");
+    confirmationError.textContent = "";
+    confirmationError.style.display = "none";
+  }
+}
+
+// Sichtbarkeits-Handling der Passwort-Icons bei Eingabe des Passwortes sowie beim Anklicken des Icons.
+
+function handlePasswordInput(inputId, iconId) {
+  let input = document.getElementById(inputId);
+  let icon = document.getElementById(iconId);
+  if (input.value.length === 0) {
+    input.type = "password";
+    icon.src = "./assets/img/icons/form/lock.svg";
+    icon.style.pointerEvents = "none";
+    return;
+  }
+  icon.style.pointerEvents = "auto";
+  if (input.type === "text") {
+    icon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    icon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
+}
+
+function togglePasswordIconVisibility(inputId, iconId) {
+  let input = document.getElementById(inputId);
+  let icon = document.getElementById(iconId);
+  if (input.value.length === 0) {
+    input.type = "password";
+    icon.src = "./assets/img/icons/form/lock.svg";
+    icon.style.pointerEvents = "none";
+    return;
+  }
+  if (input.type === "password") {
+    input.type = "text";
+    icon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    input.type = "password";
+    icon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
+}

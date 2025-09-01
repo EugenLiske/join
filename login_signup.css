@@ -473,3 +473,9 @@
     transform: none;
     box-shadow: none;
 }
+
+/* Ausnahme: nur für das Passwordfeld-Icon */
+.input_field_icon--confirm_login {
+    top: 12px; /* Feinanpassung */
+    transform: translateY(0); /* Zentrierung aufheben */
+}

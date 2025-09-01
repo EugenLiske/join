@@ -1,42 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Login</title>
-    <link rel="stylesheet" href="login_signup.css">
-</head>
-<body>
+    <link rel="stylesheet" href="login_signup.css" />
+  </head>
+  <body>
     <div class="become_member_area">
-        <span>Not a Join user?</span>
-        <button class="signup_button_login_page" onclick="window.location.href='signup.html'">Sign up</button>
+      <span>Not a Join user?</span>
+      <button
+        class="signup_button_login_page"
+        onclick="window.location.href='signup.html'"
+      >
+        Sign up
+      </button>
     </div>
     <div class="sign_up_page_content_div">
-
-    <form id="login_form" class="login_form">
+      <form id="login_form" class="login_form" onsubmit="return loginUser(event)">
         <h1 class="signup_headline">Log in</h1>
-        <hr class="signup_headline_underscore">
+        <hr class="signup_headline_underscore" />
 
         <div class="input_fields">
-            <div class="input_wrapper">
-                <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="checkLoginEnable()">
-                <img src="./assets/img/icons/form/person.svg" class="input_field_icon">
-            </div>
+          <div class="input_wrapper">
+            <input
+              id="email_input"
+              class="input_field"
+              type="email"
+              placeholder="Email"
+              oninput="checkLoginEnable()"
+            />
+            <img
+              src="./assets/img/icons/form/mail.svg"
+              class="input_field_icon"
+            />
+          </div>
 
-            <div class="input_wrapper">
-                <input id="password_input" class="input_field" type="password" placeholder="Password" oninput="checkLoginEnable()">
-                <img src="./assets/img/icons/form/lock.svg" class="input_field_icon">
-            </div>
+          <!-- Fehlerzone unten im Passwortfeld-Wrapper -->
+          <div class="input_wrapper input_wrapper--with-error">
+            <input
+              id="password_input"
+              class="input_field"
+              type="password"
+              placeholder="Password"
+              oninput="checkLoginEnable(); handleLoginPasswordInput('password_input','login_password_icon')"
+            />
+            <img
+              id="login_password_icon"
+              src="./assets/img/icons/form/lock.svg"
+              class="input_field_icon input_field_icon--btn input_field_icon--confirm_login "
+              onclick="toggleLoginVisibility('password_input','login_password_icon')"
+            />
+            <div id="login_error" class="error_text"></div>
+            <!-- ← Fehlermeldung -->
+          </div>
         </div>
 
         <div class="login_button_area">
-            <button id="login_button" class="login_button" disabled>Log in</button>
-            <button id="guest_login_button" class="guest_login_button" type="button">Guest Log in</button>
+          <button id="login_button" class="login_button" type="submit" disabled>
+            Log in
+          </button>
+          <button
+            id="guest_login_button"
+            class="guest_login_button"
+            type="button"
+            onclick="window.location.href='summary.html'"
+          >
+            Guest Log in
+          </button>
         </div>
-    </form>
-    <img class="logo_signup_page" src="./assets/img/logos/join_logo_dark.svg" alt="join_logo">
-    </div>
+      </form>
 
-</body>
-<script src="login.js"></script>
+        <!-- Overlay -->
+        <div id="signup_overlay" class="overlay">
+            <div id="overlay_message" class="overlay_message">
+                You signed up successfully
+            </div>
+        </div>
+      <img
+        class="logo_signup_page"
+        src="./assets/img/logos/join_logo_dark.svg"
+        alt="join_logo"
+      />
+    </div>
+  </body>
+  <script src="login.js"></script>
 </html>
