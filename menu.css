@@ -77,10 +77,15 @@
     padding: 0;
 }
 
+.nav_footer a{
+    text-decoration: none;
+    width: 100%;
+    color: var(--c-text-btn-default);
+}
+
 .nav_footer li{
     padding: 8px;
     text-align: center;
-    color: var(--c-text-btn-default);
 }
 
 .active_footer{
@@ -88,11 +93,15 @@
     cursor: default;
 }
 
+.active_footer a{
+    cursor: default;
+}
+
 .deactive_footer{
     background-color: transparent;
 }
 
-.deactive_footer:hover{
+.deactive_footer:hover a{
     cursor: pointer;
     color: var(--c-text-btn-hover);
     font-weight: 700;
