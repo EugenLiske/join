@@ -22,7 +22,9 @@ function getDueDate(){
 
 
 function changeDateFormat(date){
-    return date.replaceAll("/", "-");
+    let splitDate = date.split("/");
+    let reverseDate = splitDate.reverse();
+    return reverseDate.join("-");
 }
 
 
