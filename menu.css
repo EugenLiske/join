@@ -34,20 +34,32 @@
 }
 
 .nav_content li{
+
+    padding: 8px 0 8px 53px;
+}
+
+.nav_content a{
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 0 8px 53px;
+    text-decoration: none;
+    width: 100%;
 }
 
 .active_content{
     background-color: var(--c-m-btn-click);
+}
+
+.active_content a{
     color: var(--c-m-text-click);
     cursor: default;
 }
 
 .deactive_content{
     background-color: transparent;
+}
+
+.deactive_content a{
     color: var(--c-m-text-default);
 }
 
