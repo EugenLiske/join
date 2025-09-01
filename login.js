@@ -1,175 +1,178 @@
+// Referenzen der DOM-Elemente und weitere Variablen
+
+const emailInput          = document.getElementById("email_input");
+const passwordInput       = document.getElementById("password_input");
+const loginButton         = document.getElementById("login_button");
+const loginErrorContainer = document.getElementById("login_error");
+const loginPwdIcon        = document.getElementById("login_password_icon");
+const signupOverlay       = document.getElementById("signup_overlay");
+const overlayMessage      = document.getElementById("overlay_message");
+const passwordInputField  = document.getElementById("password_input");
+const passwordIcon        = document.getElementById("login_password_icon");
+
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
-// ✅ NEU: eigener Init-Block fürs Login
-(function initLoginPwdIcon() {
-  handleLoginPwdInput("password_input", "login_password_icon");
-})();
+// Funktion für eventuelles Autofill. Passwort-Icons und der Button-Zustand werden richtig gesetzt.
 
-// beim Laden: Autofill berücksichtigen
-(function initLoginBtn() {
+function initLoginAutoFill() {
+  handleLoginPasswordInput("password_input", "login_password_icon");
   checkLoginEnable();
-})();
-
-function checkLoginEnable() {
-  let emailVal = document.getElementById("email_input").value.trim();
-  let passVal = document.getElementById("password_input").value; // kein trim bei Passwörtern
-  let btn = document.getElementById("login_button");
-
-  // Button nur aktiv, wenn E-Mail syntaktisch ok UND Passwort nicht leer
-  let emailOk  = (emailVal !== "" && isEmailValid(emailVal));
-  let canLogin = (emailOk && passVal !== "");
-  btn.disabled = !canLogin;
-
-  // Fehler sanft zurücksetzen, wenn der/die Nutzer:in weitertippt
-  let loginErr = document.getElementById("login_error");
-  document.getElementById("email_input").classList.remove("error");
-  document.getElementById("password_input").classList.remove("error");
-  if (loginErr) {
-    loginErr.textContent = "";
-    loginErr.style.display = "none";
-  }
-
-  return canLogin;
 }
+initLoginAutoFill();
+
+// Firebase-Datenbank: Funktion für GET für die User-Daten
 
 async function getAllUsers(path) {
-  let fireBaseResponse = await fetch(BASE_URL + path + ".json");
-  let fireBaseResponseAsJson = await fireBaseResponse.json();
-  return fireBaseResponseAsJson; // gibt Objekt oder null zurück
+  try {
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+    if (!fireBaseResponse.ok) {
+      throw new Error(`GET ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`);
+    }
+    let fireBaseResponseAsJson = await fireBaseResponse.json();
+    return fireBaseResponseAsJson;
+  } catch (error) {
+    console.error("getAllUsers error:", error);
+    throw error;
+  }
 }
+
+// Login-Funktion (Login-Button)
 
 async function loginUser(event) {
   event.preventDefault();
-
-  // Elemente & Werte
-  let emailField = document.getElementById("email_input");
-  let passField = document.getElementById("password_input");
-  let loginErr = document.getElementById("login_error");
-
-  let emailVal = emailField.value.trim().toLowerCase(); // Vergleich immer lowercased
-  let passVal = passField.value; // Passwörter nicht trimmen/lowercasen
-
-  // Button-Schutz: nur arbeiten, wenn beide Felder gefüllt
-  if (emailVal === "" || passVal === "") {
+  let emailValue    = emailInput.value.trim().toLowerCase();
+  let passwordValue = passwordInput.value;
+  try {
+    let userResponse = await getAllUsers("/users");
+    let matchedUser = findMatchingUser(userResponse, emailValue, passwordValue);
+    if (!matchedUser) return showLoginErrorAndStop();
+    storeUserInitials(matchedUser);
+    createSuccessOverlayLogin();
+    return true;
+  } catch (error) {
+    console.error("loginUser failed:", error);
+    showGenericLoginError();
     return false;
   }
+}
 
-  // vorherige Fehlzustände zurücksetzen
-  emailField.classList.remove("error");
-  passField.classList.remove("error");
-  loginErr.textContent = "";
-  loginErr.style.display = "none";
+// Hilfsfunktionen für die loginUser-Funktion
 
-  // Alle User holen
-  let userResponse = await getAllUsers("/users");
-
-  // Standard: nicht gefunden
-  let matchFound = false;
-
-  if (userResponse) {
-    let keys = Object.keys(userResponse);
-
-    for (let i = 0; i < keys.length; i++) {
-      let k = keys[i];
-
-      // defensiv lesen
-      let dbEmail = "";
-      let dbPass = "";
-
-      if (userResponse[k] && userResponse[k].email) {
-        dbEmail = String(userResponse[k].email).toLowerCase().trim();
-      }
-      if (userResponse[k] && userResponse[k].password) {
-        dbPass = String(userResponse[k].password);
-      }
-
-      // Vergleich: E-Mail (normalisiert) + Passwort (genau)
-      if (dbEmail !== "" && dbEmail === emailVal && dbPass === passVal) {
-        matchFound = true;
-        break;
-      }
+function findMatchingUser(userResponse, emailValue, passwordValue) {
+  let users = Object.values(userResponse);
+  for (let i = 0; i < users.length; i++) {
+    let user = users[i];
+    if (checkSingleUserMatch(user, emailValue, passwordValue)) {
+      return user;
     }
   }
+  return null;
+}
 
-  if (!matchFound) {
-    // Fehler anzeigen (einfach und klar)
-    emailField.classList.add("error");
-    passField.classList.add("error");
-    loginErr.textContent = "Check your email and password. Please try again.";
-    loginErr.style.display = "block";
-    return false;
+function checkSingleUserMatch(user, emailValue, passwordValue) {
+  let dbEmail = "";
+  let dbPassword = "";
+  if (user && user.email) {
+    dbEmail = String(user.email).toLowerCase().trim();
   }
+  if (user && user.password) {
+    dbPassword = String(user.password);
+  }
+  return dbEmail !== "" && dbEmail === emailValue && dbPassword === passwordValue;
+}
 
-    // (7) Overlay wie bisher
-  let overlay = document.getElementById("signup_overlay");
-  let msg = document.getElementById("overlay_message");
+function storeUserInitials(user) {
+  if (user && user.initials) {
+    let initials = String(user.initials);
+    if (initials !== "") {
+      sessionStorage.setItem("initials", initials);
+    }
+  }
+}
 
-  overlay.classList.add("active");
-  msg.classList.add("enter");
+function showLoginErrorAndStop() {
+  emailInput.classList.add("error");
+  passwordInput.classList.add("error");
+  loginErrorContainer.textContent = "Check your email and password. Please try again.";
+  loginErrorContainer.style.display = "block";
+  return false;
+}
 
+function showGenericLoginError() {
+  loginErrorContainer.textContent = "We couldn't sign you in right now. Please try again in a moment.";
+  loginErrorContainer.style.display = "block";
+}
+
+function createSuccessOverlayLogin() {
+  signupOverlay.classList.add("active");
+  overlayMessage.classList.add("enter");
   setTimeout(function () {
-    overlay.classList.add("leaving");
+    signupOverlay.classList.add("leaving");
     setTimeout(function () {
       window.location.href = "summary.html";
     }, 300);
   }, 2700);
 }
 
-  // Erfolg – hier kannst du später redirecten
-  // alert("Login successful!");
-  // window.location.href = "summary.html";
-  // return true;
+// Validierungsfunktion - aktiviert den Login-Button bei validen Eingaben
 
-
-// ✅ NEU: Login-spezifische Version
-function handleLoginPwdInput(inputId, iconId) {
-  const input = document.getElementById(inputId);
-  const icon = document.getElementById(iconId);
-
-  if (!input || !icon) return;
-
-  if (input.value.length === 0) {
-    input.type = "password";
-    icon.src = "./assets/img/icons/form/lock.svg";
-    icon.style.pointerEvents = "none";
-    return;
-  }
-
-  icon.style.pointerEvents = "auto";
-
-  if (input.type === "text") {
-    icon.src = "./assets/img/icons/form/visibility.svg";
-  } else {
-    icon.src = "./assets/img/icons/form/visibility_off.svg";
-  }
+function checkLoginEnable() {
+  let emailValue = emailInput.value.trim();
+  let passwordValue = passwordInput.value;
+  let emailOk = emailValue !== "" && isEmailValid(emailValue);
+  let canLogin = emailOk && passwordValue !== "";
+  loginButton.disabled = !canLogin;
+  resetExistingLoginError();
 }
 
-// ✅ NEU: Login-spezifische Version
-function toggleLoginVisibility(inputId, iconId) {
-  const input = document.getElementById(inputId);
-  const icon = document.getElementById(iconId);
-
-  if (!input || !icon) return false;
-
-  if (input.value.length === 0) {
-    input.type = "password";
-    icon.src = "./assets/img/icons/form/lock.svg";
-    icon.style.pointerEvents = "none";
-    return false;
-  }
-
-  if (input.type === "password") {
-    input.type = "text";
-    icon.src = "./assets/img/icons/form/visibility.svg";
-  } else {
-    input.type = "password";
-    icon.src = "./assets/img/icons/form/visibility_off.svg";
-  }
-
-  return false;
-}
+// Hilfsfunktion für die checkLoginEnable-Funktion
 
 function isEmailValid(email) {
   let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
   return regularExpression.test(email);
+}
+
+// Bereinigung der Fehleranzeige bei erneuter Eingabe (oninput).
+// Für denn Fall dass eine nicht valide Email-Passwort-Kombination bei loginUser eingegeben wurde
+
+function resetExistingLoginError() {
+  emailInput.classList.remove("error");
+  passwordInput.classList.remove("error");
+  if (loginErrorContainer) {
+    loginErrorContainer.textContent = "";
+    loginErrorContainer.style.display = "none";
+  }
+}
+
+// Sichtbarkeits-Handling der Passwort-Icons bei Eingabe des Passwortes sowie beim Anklicken des Icons.
+
+function handleLoginPasswordInput() {
+  if (passwordInputField.value.length === 0) {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.style.pointerEvents = "none";
+    return;
+  }
+  passwordIcon.style.pointerEvents = "auto";
+  if (passwordInputField.type === "text") {
+    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
+}
+
+function toggleLoginVisibility() {
+  if (passwordInputField.value.length === 0) {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.style.pointerEvents = "none";
+    return;
+  }
+  if (passwordInputField.type === "password") {
+    passwordInputField.type = "text";
+    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
 }
