@@ -10,6 +10,7 @@ let summaryContent = {
 };
 
 function initSummary(){
+    currentPage = "summary";
     calculateInformation();
     displaySummaryOnScreen();
     displayWelcomeOnScreen();

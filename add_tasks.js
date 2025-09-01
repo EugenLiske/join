@@ -26,10 +26,11 @@ document.addEventListener('click', function(event) {
 // Initial Function -----------------------------------------------------------------
 
 function initAddTask(){
-    initAssignedToList(); // all false -> set assigned to list default
-    getNameSearchList(); // init search list with all names
-    getSearchListResult(""); // set result list default
-    renderSearchNames(); // render searchlist default
+    currentPage = "add_task"; // important for displaying the navigation bar 
+    initAssignedToList();
+    getNameSearchList();
+    getSearchListResult("");
+    renderSearchNames();
 
     renderCategoryOptions();
 }
