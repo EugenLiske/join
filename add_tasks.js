@@ -61,7 +61,8 @@ function clearTask(){
     "priority": "",
     "assignedPersons": {},
     "category": "",
-    "subtasks": {}
+    "subtasks": {},
+    "status": 0
     };
 }
 
@@ -93,7 +94,7 @@ function checkAndEnableButton(){
 }
 
 
-function createTask(){
+function createTask(status = 0){
     newTask.title = getTitle();
     newTask.description = getDescription();
     newTask.duedate = getDueDate();
@@ -101,6 +102,7 @@ function createTask(){
     newTask.category = currentCategory;
     newTask.assignedPersons = getAssignedPersons();
     newTask.subtasks = getSubtasks();
+    newTask.status = status;
 }
 
 
