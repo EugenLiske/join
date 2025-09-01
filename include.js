@@ -7,10 +7,6 @@
 //      id: navigation_bar
 // 
 
-// fetch('./includes/page_header.html')
-//     .then(response => response.text())
-//     .then(data => document.getElementById("page_header").innerHTML = data);
-
 fetch('./includes/page_header.html')
   .then(response => response.text())
   .then(data => {
@@ -26,7 +22,6 @@ fetch('./includes/page_header.html')
   .catch(error => {
     console.error("Header include failed:", error);
   });
-
 
 fetch('./includes/page_navigation.html')
     .then(response => response.text())
