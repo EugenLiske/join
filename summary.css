@@ -173,7 +173,6 @@ h2{
 .welcome p{
     display: flex;
     flex-direction: column;
-    text-align: center;
 }
 
 .welcome_text{
