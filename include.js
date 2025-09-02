@@ -18,7 +18,7 @@ try{
                 if (initials && initials.trim() !== "") {
                     initialsButton.textContent = initials;
                 } else {
-                    initialsButton.textContent = "";
+                    initialsButton.textContent = "G";
                 }
             }
             catch(error){

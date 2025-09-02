@@ -1,4 +1,12 @@
-/* Overlay-Eigenschaften für die Toast-Nachricht samt Simulation*/
+/* HTML-Snippet, in dem sich die eigentliche Toast-Nachricht verbirgt.
+    <div id="signup_overlay" class="overlay">
+        <div id="overlay_message" class="overlay_message">
+            You signed up successfully
+        </div>
+    </div>
+*/
+
+/* Overlay-Eigenschaften für die Toast-Nachricht*/
 
 .overlay {
     position: fixed;
@@ -58,11 +66,3 @@
     opacity: 1;
   }
 }
-
-/* HTML-Snippet, in dem sich die eigentliche Toast-Nachricht verbirgt.
-    <div id="signup_overlay" class="overlay">
-        <div id="overlay_message" class="overlay_message">
-            You signed up successfully
-        </div>
-    </div>
-*/
