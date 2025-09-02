@@ -11,10 +11,28 @@ let summaryContent = {
 
 async function initSummary(){
     currentPage = "summary";
+    mobileWelcome();
     await getAllTasks();
     calculateInformation();
     displaySummaryOnScreen();
     displayWelcomeOnScreen();
+    
+}
+
+function mobileWelcome() {
+    if (login){
+        const welcomeRef = document.getElementById("welcome_mobile");
+
+        if (window.innerWidth <= 950) {
+            welcomeRef.classList.add("welcome_show");
+
+            setTimeout(() => {
+                welcomeRef.classList.remove("welcome_show");
+            }, 2000);
+        }
+        login = false;
+    }
+
 }
 
 function calculateInformation() {

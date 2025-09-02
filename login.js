@@ -48,6 +48,7 @@ async function loginUser(event) {
     if (!matchedUser) return showLoginErrorAndStop();
     storeUserInitials(matchedUser);
     createSuccessOverlayLogin();
+    login = true;
     return true;
   } catch (error) {
     console.error("loginUser failed:", error);
