@@ -14,6 +14,7 @@ h2{
     flex-direction: column;
     align-items: center;
     flex: 1;
+    position: relative;
 }
 
 .main_container{
@@ -25,7 +26,6 @@ h2{
 
 .main_content{
     display: flex;
-    justify-content: center;
     flex: 1;
 
     gap: 40px;
@@ -46,6 +46,10 @@ h2{
     height: 59px;
     border: 2px solid var(--c-separator-var2);
     margin: 0 30px;
+}
+
+.mobile_header_separator{
+    display: none;
 }
 
 .content_wrapper{
@@ -170,6 +174,10 @@ h2{
     cursor: default;
 }
 
+.welcome_mobile{
+    display: none;
+}
+
 .welcome p{
     display: flex;
     flex-direction: column;
@@ -183,4 +191,123 @@ h2{
     font-size: 64px;
     font-weight: bold;
     color: var(--c-text-name);
+}
+
+@media(max-width: 1150px){
+    .main_header h2{
+        font-size: 47px;
+    }
+
+    .main_header span{
+        font-size: 20px;
+    }
+
+    .round_icon,
+    .round_priority_icon{
+        width: 40px;
+        height: 40px;
+    }
+
+    .round_icon svg{
+        height: 16px;
+    }
+
+    .round_priority_icon img{
+        height: 16px;
+    }
+
+    .amount{
+        font-size: 47px;
+    }
+
+    .text{
+        font-size: 14px;
+    }
+
+    .deadline_date{
+        font-size: 16px;
+    }
+
+    .overview{
+        width: 396px;
+    }
+
+    .welcome_text{
+        font-size: 36px;
+    }
+
+    .welcome_name{
+        font-size: 47px;
+    }
+
+    .summary_card{
+        gap: 10px;
+        height: 110px;
+    }
+
+}
+
+@media(max-width: 950px){
+    .welcome{
+        display: none;
+    }
+
+    .welcome_mobile{
+        display: none;
+        position: absolute;
+        z-index: 10;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        cursor: default;
+    }
+
+    .welcome_mobile p {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome_show{
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
+@media(max-width: 500px){
+
+    .main_header{
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
+    }
+
+    .main_header h2{
+        margin-bottom: 0;
+    }
+
+    .header_separator{
+        display: none;
+    }
+
+    .mobile_header_separator{
+        display: block;
+        width: 90px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid var(--c-separator-var2);
+        margin: 0 0 30px 0;
+    }
+}
+
+
+@media(max-width: 440px){
+
+    .overview{
+        width: 280px;
+    }
+
 }
