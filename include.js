@@ -6,12 +6,20 @@
 //      id: main_header
 //      id: navigation_bar
 // 
+
 try{
     fetch('../includes/page_header.html')
         .then(response => response.text())
         .then(data => {
             try{
                 document.getElementById("page_header").innerHTML = data;
+                const initialsButton = document.getElementById("login_initials");
+                const initials = sessionStorage.getItem("initials");
+                if (initials && initials.trim() !== "") {
+                    initialsButton.textContent = initials;
+                } else {
+                    initialsButton.textContent = "";
+                }
             }
             catch(error){
                 console.warn("HTML container not available!");

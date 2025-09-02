@@ -1,0 +1,68 @@
+/* Overlay-Eigenschaften für die Toast-Nachricht samt Simulation*/
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.overlay.leaving {
+    opacity: 0;
+}
+
+.overlay_message {
+    width: 312px;
+    height: 74px;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #2A3647;
+    color: #fff;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: center;
+      /* Inhalt in der Mitte zentrieren */
+    display: flex;
+    align-items: center;    /* vertikal */
+    justify-content: center;/* horizontal */
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.overlay_message.enter {
+  animation: overlaySlideIn 300ms ease-out forwards;
+}
+
+@keyframes overlaySlideIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+/* HTML-Snippet, in dem sich die eigentliche Toast-Nachricht verbirgt.
+    <div id="signup_overlay" class="overlay">
+        <div id="overlay_message" class="overlay_message">
+            You signed up successfully
+        </div>
+    </div>
+*/
