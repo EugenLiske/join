@@ -10,10 +10,32 @@ function setGlobalPriority(element, priority){
     element.disabled = true;
     element.classList.replace(priority + "_color_default", priority + "_color_click");
     element.children[0].classList.remove("priority_btn_c_txt_default");
+    element.children[1].src = setIconPriority(priority);
 
     currentPriority = priority;
 }
 
+
+function setIconPriority(priority){
+    return "../assets/img/icons/task/priorities/" + priority + "_white.svg";
+}
+
+function setDefaultIconPriority(priority){
+    let source = "../assets/img/icons/task/priorities/" + priority;
+    if (priority == "low"){
+        source += "_green.svg";
+    }
+    else if (priority == "medium"){
+        source += "_yellow.svg";
+    }
+    else if (priority == "urgent"){
+        source += "_red.svg";
+    }
+    else {
+        source += "_white.svg";
+    }
+    return source;
+}
 
 function setPriorityButtonDefault(buttons, mode = "all"){
     setAllButtonInactive(buttons);
@@ -34,6 +56,7 @@ function setAllButtonInactive(buttons){
         buttons[buttonIdx].classList.replace(id + "_color_click", id + "_color_default");
         buttons[buttonIdx].classList.remove("priority_button_shadow_click");
         buttons[buttonIdx].children[0].classList.add("priority_btn_c_txt_default");
+        buttons[buttonIdx].children[1].src = setDefaultIconPriority(id);
     }    
 }
 
@@ -41,6 +64,7 @@ function setAllButtonInactive(buttons){
 function setMediumButtonDefault(){
     document.getElementById("medium").classList.replace("medium_color_default", "medium_color_click");
     document.getElementById("medium").children[0].classList.remove("priority_btn_c_txt_default");
+    document.getElementById("medium").children[1].src = setIconPriority("medium");
     currentPriority = "medium";
 }
 

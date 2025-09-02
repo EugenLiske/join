@@ -84,16 +84,16 @@ function getCheckbox(parent){
 
 function toggleCheckbox(checked, checkbox){
     if (checked){
-        checkbox.src = "./assets/img/icons/task/checkbox_tick.svg";
+        checkbox.src = "../assets/img/icons/task/checkbox_tick.svg";
     }
     else{
-        checkbox.src = "./assets/img/icons/task/checkbox.svg";
+        checkbox.src = "../assets/img/icons/task/checkbox.svg";
     }
 }
 
 
 function getCheckboxImg(checked){
-    return checked ? "./assets/img/icons/task/checkbox_tick.svg" : "./assets/img/icons/task/checkbox.svg";
+    return checked ? "../assets/img/icons/task/checkbox_tick.svg" : "../assets/img/icons/task/checkbox.svg";
 }
 
 
@@ -114,10 +114,10 @@ function toggleDropDownIcon(inputId, iconId){
     let dropDownRef = document.getElementById(iconId);
 
     if (selectionRef.classList.contains("d_none")){
-        dropDownRef.src="./assets/img/icons/drop_down/arrow.svg";
+        dropDownRef.src="../assets/img/icons/drop_down/arrow.svg";
     }
     else{
-        dropDownRef.src="./assets/img/icons/drop_down/arrow_close.svg";
+        dropDownRef.src="../assets/img/icons/drop_down/arrow_close.svg";
     }
 }
 

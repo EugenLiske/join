@@ -25,8 +25,11 @@ document.addEventListener('click', function(event) {
 
 // Initial Function -----------------------------------------------------------------
 
-function initAddTask(){
+function initAddTaskGlobal(){
     currentPage = "add_task"; // important for displaying the navigation bar 
+}
+
+function initAddTask(){
     initAssignedToList();
     getNameSearchList();
     getSearchListResult("");
@@ -119,3 +122,9 @@ function getAssignedPersons(){
 }
 
 
+// Overlay ----------------------------------------------------------------------------
+
+function toggleOverlay(htmlId){
+    const overlay = document.getElementById(htmlId);
+    overlay.classList.toggle("d_none");
+}
