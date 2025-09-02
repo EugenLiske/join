@@ -6,26 +6,56 @@
 //      id: main_header
 //      id: navigation_bar
 // 
+try{
+    fetch('../includes/page_header.html')
+        .then(response => response.text())
+        .then(data => {
+            try{
+                document.getElementById("page_header").innerHTML = data;
+            }
+            catch(error){
+                console.warn("HTML container not available!");
+            }
+        });    
+}
+catch(error){
+    console.warn("Include page header - Error: Header is not loaded!!!");
+}
 
-fetch('./includes/page_header.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById("page_header").innerHTML = data;
-    const initialsButton = document.getElementById("login_initials");
-    const initials = sessionStorage.getItem("initials");
-    if (initials && initials.trim() !== "") {
-      initialsButton.textContent = initials;
-    } else {
-      initialsButton.textContent = "";
-    }
-  })
-  .catch(error => {
-    console.error("Header include failed:", error);
-  });
+try{
+    fetch('../includes/page_navigation.html')
+        .then(response => response.text())
+        .then(data => {
+            try{
+                document.getElementById("page_navigation").innerHTML = data; 
+                changeActiveNavButton();
+            }
+            catch(error){
+                console.warn("HTML container not available!");
+            }
+        });
+}
+catch(error){
+    console.warn("Include page navigation - Error: Navigation is not loaded!!!");
+}
 
-fetch('./includes/page_navigation.html')
-    .then(response => response.text())
-    .then(data => {document.getElementById("page_navigation").innerHTML = data; changeActiveNavButton();});
+try{
+    fetch('../includes/add_task_form.html')
+        .then(response => response.text())
+        .then(data => {
+            try{
+                document.getElementById("add_task_form").innerHTML = data; 
+                initAddTask();
+            }
+            catch{
+                console.warn("HTML container not available!");
+            }
+        });    
+}
+catch(error){
+    console.warn("Include add task form - Error: Form is not loaded!!!");
+}
+
 
 function changeActiveNavButton(){
     if (["summary", "add_task", "board", "contacts"].indexOf(currentPage) >= 0){
