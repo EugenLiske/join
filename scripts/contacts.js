@@ -1,422 +1,374 @@
 /**
- * Frontend Input Functions for Contact Management
- * Handles form data collection, validation, and user interactions
+ * Contact Management - Main Orchestration
+ * Coordinates validation, UI updates, Firebase operations and navigation
  */
 
+// ================== IMPORTS ==================
 import { 
-    FIREBASE_URL, 
-    AVATAR_COLORS, 
     PAGES, 
-    STORAGE_KEYS,
-    FIREBASE_PATHS,
-    DEFAULTS 
+    STORAGE_KEYS
 } from './config.js';
 
+import { 
+    getFormData, 
+    generateInitials 
+} from './contacts_validation.js';
 
+import { 
+    updateFieldValidation, 
+    updateAvatarPreview, 
+    updateSaveButtonState,
+    displayContactSuccess,
+    displayContactDataInForm,
+    clearFormInputs,
+    updateButtonState 
+} from './contacts_ui_helpers.js';
 
+import { 
+    checkEmailExists,
+    checkEmailExistsForEdit,
+    saveContactToFirebase,
+    saveEditContactToFirebase,
+    deleteContactFromFirebase,
+    loadExistingContact
+} from './contacts_firebase_api.js';
 
 // ================== DOM ELEMENT CONSTANTS ==================
-
-// Form Input Elements
 const NAME_INPUT = document.getElementById('name_input');
 const EMAIL_INPUT = document.getElementById('email_input');
 const PHONE_INPUT = document.getElementById('telephone_input');
-
-// Button Elements
 const SAVE_BUTTON = document.getElementById('save_button');
-const DELETE_BUTTON = document.getElementById('delete_button');
-const CLOSE_BUTTON = document.getElementById('close_button');
 const BUTTON_TEXT = document.getElementById('button_text');
-
-// Avatar Elements
 const CONTACT_AVATAR = document.getElementById('contact_avatar');
 const AVATAR_INITIALS = document.getElementById('avatar_initials');
 
-// Success Page Elements (only exist on success page)
 const CONTENT_HEAD_NAME = document.getElementById('content_head_name');
 const CONTACT_EMAIL_DISPLAY = document.getElementById('contact_email');
 const CONTACT_PHONE_DISPLAY = document.getElementById('contact_phone');
 
-// ================== VALIDATION FUNCTIONS ==================
+// ================== ORCHESTRATION FUNCTIONS ==================
 
 /**
- * Validates email format using regex
- * @param {string} email - Email address to validate
- * @returns {boolean} - True if valid email format
- */
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-/**
- * Validates phone format - must start with 0 or +, minimum 6 digits
- * @param {string} phone - Phone number to validate
- * @returns {object} - {isValid: boolean, message: string}
- */
-function validatePhone(phone) {
-    // Remove all spaces and special characters to count digits
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    
-    // Must start with 0 or +
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return {
-            isValid: false,
-            message: 'Phone number must have at least 6 digits'
-        };
-    }
-    
-    if (!startsCorrect) {
-        return {
-            isValid: false,
-            message: 'Please enter area code (start with 0 or +)'
-        };
-    }
-    
-    // Additional format check: allow digits, spaces, +, -, (), /
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
-    };
-}
-
-/**
- * Validates name input - must contain at least first and last name
- * @param {string} name - Full name to validate
- * @returns {object} - {isValid: boolean, message: string}
- */
-function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return {
-            isValid: false,
-            message: 'Name is required'
-        };
-    }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length < 2) {
-        return {
-            isValid: false,
-            message: 'Please enter first and last name'
-        };
-    }
-    
-    return {
-        isValid: true,
-        message: ''
-    };
-}
-
-// ================== INPUT DATA FUNCTIONS ==================
-
-/**
- * Gets all form input values and validates them
- * @returns {object} - Complete form data with validation results
- */
-function getFormData() {
-    // Get values (with null checks for missing elements)
-    const name = NAME_INPUT ? NAME_INPUT.value.trim() : '';
-    const email = EMAIL_INPUT ? EMAIL_INPUT.value.trim() : '';
-    const phone = PHONE_INPUT ? PHONE_INPUT.value.trim() : '';
-    
-    // Validate each field
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 && validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        // Raw values
-        name: name,
-        email: email, 
-        phone: phone,
-        
-        // Validation results
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        
-        // Overall validity
-        isValid: nameValidation.isValid && emailValidation.isValid && phoneValidation.isValid,
-        
-        // Ready-to-save contact object
-        contactData: {
-            name: name,
-            email: email,
-            phone: phone
-        }
-    };
-}
-
-/**
- * Generates initials from full name (first + last name only)
- * @param {string} name - Full name
- * @returns {string} - Initials (e.g., "Karl Hans Heinrich Meier" -> "KM")
- */
-function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    // First + Last name only
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}
-
-// ================== UI UPDATE FUNCTIONS ==================
-
-/**
- * Updates field validation styling based on validation result
- * @param {HTMLElement} inputElement - The input field to style
- * @param {object} validationResult - Result from validation function
- */
-function updateFieldValidation(inputElement, validationResult) {
-    if (!inputElement) return;
-    
-    // Remove existing validation classes
-    inputElement.style.borderColor = '';
-    
-    if (validationResult.isValid) {
-        inputElement.style.borderColor = 'var(--c-active)'; // Blue for valid
-        inputElement.title = ''; // Remove error tooltip
-    } else if (inputElement.value.length > 0) {
-        inputElement.style.borderColor = 'var(--c-warn)'; // Red for invalid
-        inputElement.title = validationResult.message; // Show error in tooltip
-    } else {
-        inputElement.style.borderColor = 'var(--c-default)'; // Gray for empty
-        inputElement.title = '';
-    }
-}
-
-/**
- * Updates avatar preview with initials from name input
- * @param {string} name - Current name input value
- */
-function updateAvatarPreview(name) {
-    if (!AVATAR_INITIALS) return;
-    
-    const initials = generateInitials(name);
-    if (initials.length > 0) {
-        AVATAR_INITIALS.textContent = initials;
-    } else {
-        // Show default person icon when no valid name
-        AVATAR_INITIALS.innerHTML = '<img src="assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
-    }
-}
-
-/**
- * Updates save button state based on form validation
- * @param {boolean} isFormValid - Whether the entire form is valid
- */
-function updateSaveButtonState(isFormValid) {
-    if (!SAVE_BUTTON) return;
-    
-    SAVE_BUTTON.disabled = !isFormValid;
-    
-    if (isFormValid) {
-        SAVE_BUTTON.classList.remove('disabled');
-    } else {
-        SAVE_BUTTON.classList.add('disabled');
-    }
-}
-
-// ================== MAIN FORM VALIDATION ==================
-
-/**
- * Main form validation function - validates entire form and updates UI
- * Called on input events and form submission
+ * Orchestrates complete form validation and UI updates
+ * @returns {Object} Complete form validation results
  */
 function validateContactForm() {
     const formData = getFormData();
     
-    // Update individual field styling
     updateFieldValidation(NAME_INPUT, formData.nameValidation);
     updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
     updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
     
-    // Update avatar preview
     updateAvatarPreview(formData.name);
-    
-    // Update save button state
     updateSaveButtonState(formData.isValid);
     
     return formData;
 }
 
-// ================== BUTTON ACTIONS ==================
+// ================== NAVIGATION FUNCTIONS ==================
 
 /**
- * Clears all form inputs and resets validation styling
+ * Navigates to success page with contact data
+ * @param {Object} contactData - Contact data to display on success page
  */
-function clearForm() {
-    if (NAME_INPUT) {
-        NAME_INPUT.value = '';
-        NAME_INPUT.style.borderColor = 'var(--c-default)';
-        NAME_INPUT.title = '';
-    }
-    
-    if (EMAIL_INPUT) {
-        EMAIL_INPUT.value = '';
-        EMAIL_INPUT.style.borderColor = 'var(--c-default)';
-        EMAIL_INPUT.title = '';
-    }
-    
-    if (PHONE_INPUT) {
-        PHONE_INPUT.value = '';
-        PHONE_INPUT.style.borderColor = 'var(--c-default)';
-        PHONE_INPUT.title = '';
-    }
-    
-    // Reset avatar to default icon
-    if (AVATAR_INITIALS) {
-        AVATAR_INITIALS.innerHTML = '<img src="assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
-    }
-    
-    // Reset save button
-    updateSaveButtonState(false);
-    
-    console.log('Form cleared');
+function navigateToSuccessPage(contactData) {
+    localStorage.setItem(STORAGE_KEYS.LAST_SAVED_CONTACT, JSON.stringify(contactData));
+    console.log('Navigating to success page with data:', contactData);
+    window.location.href = PAGES.SUCCESS_PAGE;
 }
 
 /**
- * Cancel button action - clears form and optionally navigates back
+ * Navigates to edit page with contact ID
+ * @param {number} contactId - ID of contact to edit
  */
-function cancelContactAction() {
-    const confirmCancel = confirm('Are you sure you want to cancel? All changes will be lost.');
+function editContact(contactId) {
+    localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, contactId);
+    console.log('Navigating to edit page for contact:', contactId);
+    window.location.href = PAGES.EDIT_CONTACT;
+}
+
+/**
+ * Closes edit/add overlay and returns to previous page
+ */
+function closeEditContact() {
+    // Clean up edit data if present
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+    window.history.back();
+}
+
+// ================== SUCCESS PAGE FUNCTIONS ==================
+
+/**
+ * Loads and displays contact data for success page
+ */
+function loadContactDataForSuccessPage() {
+    const contactDataJSON = localStorage.getItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
     
-    if (confirmCancel) {
-        clearForm();
-        // TODO: Add navigation logic here
-        console.log('Contact action cancelled');
+    if (contactDataJSON) {
+        try {
+            const contactData = JSON.parse(contactDataJSON);
+            displayContactSuccess(contactData);
+            setupClickOutsideToClose();
+            
+        } catch (error) {
+            console.error('Error parsing contact data:', error);
+        }
+    } else {
+        console.warn('No contact data found for success page');
     }
 }
 
 /**
- * Fills form with contact data (for editing)
- * @param {object} contactData - Contact object with name, email, phone
+ * Sets up click-outside for success page overlay
  */
-function fillFormWithContactData(contactData) {
-    if (!contactData) return;
-    
-    if (NAME_INPUT && contactData.name) {
-        NAME_INPUT.value = contactData.name;
-    }
-    
-    if (EMAIL_INPUT && contactData.email) {
-        EMAIL_INPUT.value = contactData.email;
-    }
-    
-    if (PHONE_INPUT && contactData.phone) {
-        PHONE_INPUT.value = contactData.phone;
-    }
-    
-    // Update avatar if contact has a color
-    if (contactData.avatarColor && CONTACT_AVATAR) {
-        CONTACT_AVATAR.style.backgroundColor = contactData.avatarColor;
-    }
-    
-    // Validate the filled form
-    validateContactForm();
-    
-    console.log('Form filled with contact data:', contactData);
+function setupClickOutsideToClose() {
+    document.addEventListener('click', function(event) {
+        const overlayContent = document.querySelector('.content');
+        
+        if (overlayContent && !overlayContent.contains(event.target)) {
+            console.log('Clicked outside overlay, closing...');
+            localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
+            window.history.back();
+        }
+    });
 }
 
-// ================== SUCCESS PAGE DISPLAY ==================
+// ================== EDIT FUNCTIONALITY ==================
+
 
 /**
- * Displays contact information on success page
- * @param {object} contactData - Contact object to display
+ * Handles errors when contact loading fails
+ * @param {Error} error - The error that occurred
  */
-function displayContactSuccess(contactData) {
-    if (!contactData) {
-        console.error('No contact data to display');
+function handleContactLoadError(error) {
+    console.error('Error loading contact for edit:', error);
+    // TODO: Replace with Toast
+    alert('Error loading contact data. Contact may have been deleted.');
+    window.history.back();
+}
+
+/**
+ * Loads contact data for editing and populates form
+ * @param {number} contactId - ID of contact to load for editing
+ * @returns {Promise<Object|null>} Contact data or null if error
+ */
+async function loadContactForEdit(contactId) {
+    try {
+        console.log('Loading contact for edit:', contactId);
+        
+        const contactData = await loadExistingContact(contactId);
+        if (!contactData) {
+            throw new Error('Contact not found');
+        }
+        
+        displayContactDataInForm(contactData);
+        validateContactForm();
+        console.log('Contact data loaded for editing');
+        return contactData;
+        
+    } catch (error) {
+        handleContactLoadError(error);
+        return null;
+    }
+}
+
+/**
+ * Auto-loads contact data when edit page loads
+ */
+function loadContactDataForEditPage() {
+    const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+    
+    if (contactId) {
+        loadContactForEdit(parseInt(contactId));
+    } else {
+        console.warn('No contact ID found for edit page');
+        alert('No contact selected for editing');
+        window.history.back();
+    }
+}
+
+// ================== DELETE FUNCTIONALITY ==================
+
+/**
+ * Deletes contact from success page and navigates to add contact
+ * @param {number} contactId - ID of contact to delete
+ */
+async function deleteContactFromSuccessPage(contactId) {
+    try {
+        console.log('Deleting contact from success page:', contactId);
+        
+        await deleteContactFromFirebase(contactId);
+        
+        // Clear stored data
+        localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
+        
+        // Navigate back to add contact page
+        window.location.href = PAGES.ADD_CONTACT;
+        
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        alert('Error deleting contact. Please try again.');
+    }
+}
+
+/**
+ * Deletes contact from edit page and navigates back
+ */
+async function deleteContact() {
+    const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+    
+    if (!contactId) {
+        console.error('No contact ID found for deletion');
         return;
     }
     
-    // Update name
-    if (CONTENT_HEAD_NAME) {
-        CONTENT_HEAD_NAME.textContent = contactData.name;
+    try {
+        console.log('Deleting contact from edit page:', contactId);
+        
+        await deleteContactFromFirebase(parseInt(contactId));
+        
+        // Clear stored data
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+        
+        // Navigate back
+        window.history.back();
+        
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        alert('Error deleting contact. Please try again.');
+    }
+}
+
+// ================== MAIN SAVE FUNCTION ==================
+
+/**
+ * Main save function - handles both CREATE and UPDATE operations
+ * @param {Event} event - Form submit event
+ */
+/**
+ * Handles CREATE mode - saves new contact
+ * @param {Object} formData - Validated form data
+ * @returns {Promise<boolean>} Success status
+ */
+async function handleCreateMode(formData) {
+    const emailExists = await checkEmailExists(formData.email);
+    if (emailExists) {
+        // TODO: Replace with Toast
+        alert('This email address is already in use. Please use a different email.');
+        return false;
     }
     
-    // Update email
-    if (CONTACT_EMAIL_DISPLAY) {
-        CONTACT_EMAIL_DISPLAY.textContent = contactData.email;
+    const savedContact = await saveContactToFirebase(formData.contactData);
+    console.log('Contact saved successfully with ID:', savedContact.id);
+    
+    clearFormInputs();
+    navigateToSuccessPage(savedContact);
+    return true;
+}
+
+/**
+ * Handles EDIT mode - updates existing contact
+ * @param {Object} formData - Validated form data
+ * @param {string} contactId - ID of contact being edited
+ * @returns {Promise<boolean>} Success status
+ */
+async function handleEditMode(formData, contactId) {
+    if (!contactId) {
+        throw new Error('No contact ID found for editing');
     }
     
-    // Update phone
-    if (CONTACT_PHONE_DISPLAY) {
-        CONTACT_PHONE_DISPLAY.textContent = contactData.phone;
+    const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
+    if (emailExists) {
+        // TODO: Replace with Toast
+        alert('This email address is already in use by another contact. Please use a different email.');
+        return false;
     }
     
-    // Update avatar
-    if (contactData.avatarColor && CONTACT_AVATAR) {
-        CONTACT_AVATAR.style.backgroundColor = contactData.avatarColor;
+    const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
+    console.log('Contact updated successfully with ID:', updatedContact.id);
+    
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+    window.history.back();
+    return true;
+}
+
+/**
+ * Main save function - coordinates CREATE/EDIT operations
+ * @param {Event} event - Form submit event
+ */
+async function saveContact(event) {
+    if (event) event.preventDefault();
+    
+    const formData = getFormData();
+    if (!formData.isValid) {
+        // TODO: Replace with Toast
+        alert('Please correct the form errors before saving.');
+        return;
     }
     
-    if (AVATAR_INITIALS) {
-        const initials = generateInitials(contactData.name);
-        AVATAR_INITIALS.textContent = initials;
-    }
+    const isEditMode = window.location.pathname.includes('contacts_edit.html');
+    const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     
-    console.log('Success page updated with contact data');
+    try {
+        console.log('Starting save process for:', formData.contactData, 'Edit mode:', isEditMode);
+        
+        const success = isEditMode 
+            ? await handleEditMode(formData, contactId)
+            : await handleCreateMode(formData);
+            
+        if (!success) return;
+        
+    } catch (error) {
+        console.error('Error saving contact:', error);
+        // TODO: Replace with Toast
+        alert('Error saving contact. Please check your connection and try again.');
+    }
 }
 
 // ================== EVENT LISTENERS ==================
 
 /**
- * Initialize event listeners when DOM is loaded
+ * Initializes form input event listeners
  */
 function initializeEventListeners() {
-    // Input validation on typing
-    if (NAME_INPUT) {
-        NAME_INPUT.addEventListener('input', validateContactForm);
-    }
-    
-    if (EMAIL_INPUT) {
-        EMAIL_INPUT.addEventListener('input', validateContactForm);
-    }
-    
-    if (PHONE_INPUT) {
-        PHONE_INPUT.addEventListener('input', validateContactForm);
-    }
+    if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
+    if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
+    if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
     
     console.log('Event listeners initialized');
 }
 
 // ================== INITIALIZATION ==================
 
-/**
- * Initialize the page when DOM is ready
- */
 document.addEventListener('DOMContentLoaded', function() {
-    initializeEventListeners();
+    console.log('DOM loaded, initializing contact system');
     
-    // Initial form validation
-    if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
-        validateContactForm();
+    if (window.location.pathname.includes('contacts_add_successful.html')) {
+        console.log('Success page detected, loading contact data');
+        loadContactDataForSuccessPage();
+    } 
+    else if (window.location.pathname.includes('contacts_edit.html')) {
+        console.log('Edit page detected, setting up edit form');
+        initializeEventListeners();
+        loadContactDataForEditPage();
+    }
+    else {
+        console.log('Add page detected, setting up form');
+        initializeEventListeners();
+        
+        if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
+            validateContactForm();
+        }
     }
     
-    console.log('Frontend functions initialized');
+    console.log('Contact management system initialized');
 });
 
-// ================== EXPORT FUNCTIONS FOR GLOBAL ACCESS ==================
-
-// Make functions available globally for onclick handlers in HTML
+// ================== GLOBAL EXPORTS ==================
 window.validateContactForm = validateContactForm;
-window.clearForm = clearForm;
-window.cancelContactAction = cancelContactAction;
-window.getFormData = getFormData;
+window.closeEditContact = closeEditContact;
+window.saveContact = saveContact;
+window.clearFormInputs = clearFormInputs;
+window.editContact = editContact;
+window.deleteContact = deleteContact;
+window.deleteContactFromSuccessPage = deleteContactFromSuccessPage;

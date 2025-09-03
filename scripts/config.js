@@ -27,10 +27,10 @@ export const AVATAR_COLORS = [
 
 // Page URLs for Navigation
 export const PAGES = {
-    ADD_CONTACT: 'contact_add.html',
-    EDIT_CONTACT: 'contact_edit.html',
-    SUCCESS_PAGE: 'contacts_add_successful.html',
-    CONTACTS_LIST: 'contacts.html' // Falls Sie später eine Hauptliste haben
+    ADD_CONTACT: '../overlays/contacts_add.html',
+    EDIT_CONTACT: '../overlays/contacts_edit.html',
+    SUCCESS_PAGE: '../overlays/contacts_add_successful.html',
+    CONTACTS_LIST: '../overlays/contacts.html' // Falls Sie später eine Hauptliste haben
 };
 
 // LocalStorage Keys - prevents typos and centralizes key management
@@ -43,14 +43,7 @@ export const STORAGE_KEYS = {
 export const FIREBASE_PATHS = {
     COUNTER: '/contacts/counter.json',
     CONTACTS_DATA: '/contacts/data.json',
-    SINGLE_CONTACT: (id) => `/contacts/data/${id}.json`
-};
-
-// App Configuration
-export const APP_CONFIG = {
-    NAME: 'Join Contact Management',
-    VERSION: '1.0.0',
-    DEBUG: false // Set to true for development
+    SINGLE_CONTACT: (id) => `/contacts/data/contact_${id}.json`
 };
 
 // Default Values

@@ -163,10 +163,10 @@
    pointer-events: none;
 }
 
-/* BUTTON CONTAINER */
+/* ================== BUTTON CONTAINER ================== */
 .button_container {
-   width: 276px;
-   height: 55px;
+   width: 100%;
+   max-width: 422px; /* Match input field width */
    position: absolute;
    top: 384px;
    left: 292px;
@@ -175,86 +175,89 @@
 /* BUTTON WRAPPER LAYOUT */
 .button_wrapper {
    display: flex;
-   gap: 24px;
+   gap: 25px; /* 25px gap zwischen den Buttons */
    align-items: center;
-   justify-content: flex-end;
+   justify-content: flex-start; /* Linksbündig mit Input */
    width: 100%;
-   height: 100%;
+   height: 55px;
 }
 
-/* delete und add Button bitte prüfen wegen font und schriftgröße und color */
-/* DELETE BUTTON STYLING */
+/* ================== DELETE & CANCEL BUTTONS ================== */
 .delete_button {
-   width: 113px;
    height: 55px;
-   background-color: var(--c-btn-join);
-   color: var(--c-btn-text-var1);
+   background-color: var(--c-con-btn-default);
+   color: var(--c-btn-edit);
    font-size: 21px;
    font-weight: 700;
-   font-style: bold;
-   border: 1px solid var(--c-btn-default);
+   border: 1px solid var(--c-btn-edit);
    border-radius: 8px;
    cursor: pointer;
    padding: 15px 24px;
    display: flex;
    align-items: center;
    justify-content: center;
-   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+   gap: 8px; /* Für Icon + Text */
+   transition: all 0.2s ease;
+   white-space: nowrap;
+   min-width: 113px; /* Mindestbreite */
 }
 
 .delete_button:hover {
-   color: var(--c-btn-hover);
-   border: 1px solid var(--c-btn-hover);
+   background-color: var(--c-con-btn-default);
+   color: var(--c-btn-delete);
+   border-color: var(--c-btn-delete);
    transform: translateY(-1px);
-   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .delete_button:active {
-   background-color: var(--c-btn-click);
    transform: translateY(0);
    box-shadow: none;
 }
 
-/* SAVE BUTTON STYLING */
+/* Cancel Button (erweitert Delete) */
+.delete_button.cancel {
+   min-width: 126px;
+}
+
+/* ================== SAVE & CREATE BUTTONS ================== */
 .add_edit_button {
-   width: 111px;
    height: 55px;
-   background-color: var(--c-con-btn-click);
-   color: var(--c-btn-text-var2);
+   background-color: var(--c-btn-edit);
+   color: var(--c-con-btn-default);
    font-weight: 700;
    font-size: 21px;
-   font-style: bold;
-   border: none;
+   border: 1px solid var(--c-btn-edit);
    border-radius: 8px;
    cursor: pointer;
    padding: 15px 24px;
    display: flex;
    align-items: center;
    justify-content: center;
-   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.cancel{
-   width: 126px;
-}
-
-.create-contact{
-   width: 214px;
+   transition: all 0.2s ease;
+   white-space: nowrap;
+   min-width: 111px; /* Mindestbreite */
 }
 
 .add_edit_button:hover {
-   background-color: var(--c-btn-hover);
+   background-color: var(--c-btn-delete);
+   border-color: var(--c-btn-delete);
+   color: var(--c-con-btn-default);
    transform: translateY(-1px);
-   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .add_edit_button:active {
-   background-color: var(--c-btn-click);
    transform: translateY(0);
    box-shadow: none;
 }
 
-/* DISABLED BUTTON STATES */
+/* Create Contact Button (erweitert Save) */
+.add_edit_button.create-contact {
+   min-width: 214px;
+}
+
+/* ================== DISABLED STATES ================== */
 .add_edit_button:disabled,
 .delete_button:disabled {
    opacity: 0.5;
@@ -265,68 +268,442 @@
 .delete_button:disabled:hover {
    transform: none;
    box-shadow: none;
+   background-color: initial;
+   border-color: initial;
+   color: initial;
 }
 
-/* SUCCESS STATE FOR SAVE BUTTON */
-.add_edit_button.success {
-   background-color: var(--c-pr-low);
-}
+/* ================== RESPONSIVE DESIGN ================== */
 
-/* RESPONSIVE DESIGN
-@media (max-width: 1300px) {
-   .edit_main {
-       width: 95%;
-       max-width: 1212px;
-   }
-   
-   .input_container {
-       left: 600px;
-   }
-   
-   .contact_avatar {
-       left: 450px;
-   }
-   
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
    .button_container {
-       left: 746px;
+      width: calc(100% - 96px);
+      left: 48px;
+      max-width: none;
+   }
+   
+   .button_wrapper {
+      gap: 20px;
+   }
+   
+   .delete_button,
+   .add_edit_button {
+      font-size: 18px;
+      padding: 12px 20px;
+      min-height: 48px;
+      height: 48px;
    }
 }
 
-@media (max-width: 900px) {
+/* Mobile Landscape (481px - 767px) */
+@media (max-width: 767px) {
+   .button_container {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      margin-top: 32px;
+   }
+   
+   .button_wrapper {
+      flex-direction: column;
+      gap: 16px;
+      height: auto;
+   }
+   
+   .delete_button,
+   .add_edit_button {
+      width: 100%;
+      min-width: auto;
+      max-width: 300px;
+      margin: 0 auto;
+   }
+   
+   .delete_button.cancel,
+   .add_edit_button.create-contact {
+      min-width: auto;
+   }
+}
+
+/* Mobile Portrait (max 480px) */
+@media (max-width: 480px) {
+   .button_wrapper {
+      gap: 12px;
+   }
+   
+   .delete_button,
+   .add_edit_button {
+      font-size: 16px;
+      padding: 10px 16px;
+      height: 44px;
+      min-height: 44px;
+   }
+   
+   /* Stack buttons on very small screens */
+   .button_wrapper {
+      flex-direction: column-reverse; /* Save button on top */
+   }
+}
+
+/* ================== CONTAINER RESPONSIVE ADJUSTMENTS ================== */
+
+/* Adjust main container for smaller screens */
+@media (max-width: 1024px) {
    .edit_main {
-       flex-direction: column;
-       height: auto;
-       min-height: 600px;
-   }
-   
-   .edit_contact {
-       max-width: 100%;
-       height: 200px;
-       border-radius: 30px 30px 0 0;
-       flex-direction: row;
-       justify-content: flex-start;
-       align-items: center;
-       gap: 20px;
-   }
-   
-   .edit_h1 {
-       font-size: 36px;
-       margin: 0;
+      width: 90%;
+      max-width: 900px;
+      height: auto;
+      min-height: 500px;
    }
    
    .content_area {
-       padding: 32px;
+      padding: 32px;
    }
    
-   .input_container,
-   .contact_avatar,
-   .button_container {
-       position: relative;
-       top: auto;
-       left: auto;
+   .input_container {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      margin-top: 80px; /* Space for avatar */
    }
    
    .input_field {
-       width: 100%;
+      width: 100%;
+      max-width: 400px;
    }
-} */
+}
+
+@media (max-width: 767px) {
+   .edit_main {
+      flex-direction: column;
+      width: 95%;
+      height: auto;
+   }
+   
+   .edit_contact {
+      width: 100%;
+      max-width: none;
+      height: auto;
+      padding: 20px;
+      border-radius: 20px 20px 0 0;
+   }
+   
+   .content_area {
+      padding: 20px;
+   }
+   
+   .contact_avatar {
+      position: relative;
+      top: auto;
+      left: auto;
+      margin: -60px auto 20px auto;
+      width: 100px;
+      height: 100px;
+   }
+   
+   .input_container {
+      margin-top: 20px;
+   }
+}
+
+/* ================== BUTTON FOCUS STATES ================== */
+.delete_button:focus-visible,
+.add_edit_button:focus-visible {
+   outline: 2px solid var(--c-active);
+   outline-offset: 2px;
+}
+
+/* ================== LOADING STATES ================== */
+.add_edit_button.loading {
+   position: relative;
+   color: transparent;
+}
+
+.add_edit_button.loading::after {
+   content: '';
+   position: absolute;
+   width: 20px;
+   height: 20px;
+   border: 2px solid transparent;
+   border-top: 2px solid var(--c-con-btn-default);
+   border-radius: 50%;
+   animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+   0% { transform: rotate(0deg); }
+   100% { transform: rotate(360deg); }
+}
+
+/* ================== HIGH CONTRAST MODE SUPPORT ================== */
+@media (prefers-contrast: high) {
+   .delete_button,
+   .add_edit_button {
+      border-width: 2px;
+   }
+   
+   .delete_button:hover,
+   .add_edit_button:hover {
+      border-width: 3px;
+   }
+}
+
+
+/* ================== TOAST NOTIFICATIONS ================== */
+
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--c-btn-default);
+    color: var(--c-btn-text-var2);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    font-weight: 500;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    max-width: 300px;
+    min-width: 200px;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.3s ease;
+    word-wrap: break-word;
+}
+
+/* Toast Animation States */
+.toast-show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-hide {
+    opacity: 0;
+    transform: translateX(100px);
+}
+
+/* Toast Types */
+.toast-success {
+    background: var(--c-pr-low);
+    color: white;
+}
+
+.toast-error {
+    background: var(--c-pr-urgent);
+    color: white;
+}
+
+.toast-warning {
+    background: var(--c-pr-medium);
+    color: white;
+}
+
+.toast-info {
+    background: var(--c-btn-hover);
+    color: white;
+}
+
+/* Toast Responsive */
+@media (max-width: 480px) {
+    .toast-message {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        min-width: auto;
+        transform: translateY(-100px);
+    }
+    
+    .toast-show {
+        transform: translateY(0);
+    }
+    
+    .toast-hide {
+        transform: translateY(-100px);
+    }
+}
+
+/* ================== CONFIRMATION OVERLAY ================== */
+
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+.confirm-dialog {
+    background: white;
+    padding: 32px 24px 24px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    min-width: 320px;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+    margin: 0 20px;
+}
+
+.confirm-message {
+    margin-bottom: 24px;
+    font-size: 16px;
+    color: var(--c-btn-default);
+    font-family: Inter, sans-serif;
+    line-height: 1.4;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.confirm-btn {
+    padding: 12px 24px;
+    background: var(--c-pr-urgent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.confirm-btn:hover {
+    background: #d32f00;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.cancel-btn {
+    padding: 12px 24px;
+    background: var(--c-default);
+    color: var(--c-btn-default);
+    border: 1px solid var(--c-default);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.cancel-btn:hover {
+    background: #f0f0f0;
+    border-color: var(--c-btn-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* ================== ANIMATIONS ================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ================== OVERLAY RESPONSIVE ================== */
+
+@media (max-width: 480px) {
+    .confirm-dialog {
+        margin: 20px;
+        min-width: auto;
+        padding: 24px 20px 20px 20px;
+    }
+    
+    .confirm-message {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .confirm-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .confirm-btn,
+    .cancel-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* ================== ADDITIONAL TOAST POSITIONS ================== */
+
+/* Optional: Different toast positions */
+.toast-bottom-right {
+    bottom: 20px;
+    top: auto;
+    right: 20px;
+}
+
+.toast-bottom-center {
+    bottom: 20px;
+    top: auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(100px);
+}
+
+.toast-bottom-center.toast-show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-bottom-center.toast-hide {
+    transform: translateX(-50%) translateY(100px);
+}
+
+.toast-top-center {
+    top: 20px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(-100px);
+}
+
+.toast-top-center.toast-show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-top-center.toast-hide {
+    transform: translateX(-50%) translateY(-100px);
+}
