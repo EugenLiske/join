@@ -1,69 +1,9 @@
-h2{
-    font-size: 61px;
-    margin: 32px 0;
-}
-
-.page_wrapper{
-    display: flex;
-    align-items: stretch;
-    min-height: 100vh;
-}
-
-.main_wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    position: relative;
-}
-
-.main_container{
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    background-color: var(--bg-c-join);
-}
-
-.main_content{
-    display: flex;
-    flex: 1;
-
-    gap: 40px;
-}
-
-.main_header{
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    cursor: default;
-}
-
-.main_header span{
-    font-size: 27px;
-}
-
-.header_separator{
-    height: 59px;
-    border: 2px solid var(--c-separator-var2);
-    margin: 0 30px;
-}
-
-.mobile_header_separator{
-    display: none;
-}
-
-.content_wrapper{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-
-    background-color: var(--bg-c-join);
-}
 
 .overview{
     display: flex;
     flex-direction: column;
-    width: 560px;
+    max-width: 560px;
+    width: 100%;
 }
 
 .df_row{
@@ -134,7 +74,7 @@ h2{
 
 .separator{
     border: 1px solid var(--c-separator-var1);
-    height: 102px;
+    height: 60%;
 }
 
 .middle_box{
@@ -193,7 +133,7 @@ h2{
     color: var(--c-text-name);
 }
 
-@media(max-width: 1150px){
+@media(max-width: 1000px){
     .main_header h2{
         font-size: 47px;
     }
@@ -228,10 +168,6 @@ h2{
         font-size: 16px;
     }
 
-    .overview{
-        width: 396px;
-    }
-
     .welcome_text{
         font-size: 36px;
     }
@@ -247,7 +183,7 @@ h2{
 
 }
 
-@media(max-width: 950px){
+@media(max-width: 850px){
     .welcome{
         display: none;
     }
@@ -276,38 +212,3 @@ h2{
 
 }
 
-@media(max-width: 500px){
-
-    .main_header{
-        flex-direction: column;
-        align-items: start;
-        gap: 16px;
-    }
-
-    .main_header h2{
-        margin-bottom: 0;
-    }
-
-    .header_separator{
-        display: none;
-    }
-
-    .mobile_header_separator{
-        display: block;
-        width: 90px;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: 3px solid var(--c-separator-var2);
-        margin: 0 0 30px 0;
-    }
-}
-
-
-@media(max-width: 440px){
-
-    .overview{
-        width: 280px;
-    }
-
-}

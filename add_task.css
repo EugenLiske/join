@@ -2,8 +2,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex: 1;
-
     gap: 40px;
 }
 
@@ -22,12 +20,11 @@
 .task_input_column{
     display: flex;
     flex-direction: column;
-    max-width: 440px;
     flex: 1;
     gap: 24px;
 }
 
-.ta-height{
+.textarea_height{
     height: 120px !important;
 }
 
@@ -36,8 +33,10 @@
 }
 
 .task_separator{
-    height: 100%;
-    border: 1px solid var(--c-separator-var1);
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: 1px solid var(--c-separator-var1);
     margin: 0 32px;
 }
 
@@ -412,4 +411,56 @@ button.input_field{
 
 .overlay_add_task header button:hover{
     background-color: #EEEEEE;
+}
+
+@media(max-width: 1000px){
+
+    .task_separator{
+        margin: 0 16px;
+    }
+
+    .task_input_wrapper{
+        font-size: 16px;
+    }
+
+    .priority_button{
+        font-size: 16px;
+    }
+
+    .main_content_column{
+        gap: 24px;
+    }
+
+}
+
+
+@media(max-width: 850px){
+
+    .task_input_area{
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .task_separator{
+        display: none;
+    }
+
+    .add_task_footer{
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .add_task_footer span{
+        width: 100%;
+        text-align: start;
+    }
+}
+
+
+@media(max-width: 400px){
+
+    .priority_button{
+        flex-direction: column;
+    }
+
 }

@@ -202,7 +202,7 @@
     padding: 8px 16px;
 }
 
-@media(max-width: 1150px){
+@media(max-width: 1000px){
 
     .logo{
         width: 70px;
