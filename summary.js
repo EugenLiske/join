@@ -9,19 +9,40 @@ let summaryContent = {
     "awaitingFeedback": 0
 };
 
-function initSummary(){
+async function initSummary(){
+    currentPage = "summary";
+    mobileWelcome();
+    await getAllTasks();
     calculateInformation();
     displaySummaryOnScreen();
     displayWelcomeOnScreen();
+    
+}
+
+function mobileWelcome() {
+    if (login){
+        const welcomeRef = document.getElementById("welcome_mobile");
+
+        if (window.innerWidth <= 950) {
+            welcomeRef.classList.add("welcome_show");
+
+            setTimeout(() => {
+                welcomeRef.classList.remove("welcome_show");
+            }, 2000);
+        }
+        login = false;
+    }
+
 }
 
 function calculateInformation() {
     let latestTask = null;
+    let taskKeys = Object.keys(tasks);
 
-    summaryContent.tasks = tasks.length;
+    summaryContent.tasks = taskKeys.length;
 
-    for (let taskIdx = 0; taskIdx < tasks.length; taskIdx++) {
-        let task = tasks[taskIdx];
+    for (let taskIdx = 0; taskIdx < taskKeys.length; taskIdx++) {
+        let task = tasks[taskKeys[taskIdx]];
         countTasks(task);
         countUrgentTask(task);
         latestTask = checkLatestDeadline(latestTask, task);
@@ -31,11 +52,11 @@ function calculateInformation() {
 }
 
 function checkLatestDeadline(latestTask, task){
-    let date = task["dueDate"];
+    let date = task["duedate"];
     let status = task["status"];
 
     if ((status == 0 || status == 1 || status == 2) && date) {
-        if (!latestTask || new Date(date) < new Date(date)) {
+        if (!latestTask || new Date(date) < new Date(latestTask)) {
             latestTask = date;
         }
     }

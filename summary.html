@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Summary</title>
 
+    <link rel="stylesheet" href="board_style.css">
     <link rel="stylesheet" href="root.css">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="summary.css">
     <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="styles/fonts.css">
 
     <script src="script.js"></script>
+    <script src="task_db_connection.js"></script>
     <script src="task_db.js"></script>
-    <script src="task_overview.js"></script>
+    <script src="summary.js"></script>
 </head>
 <body onload="initSummary()">
     <div class="page_wrapper">
@@ -28,10 +30,11 @@
                         <h2>Join 360</h2>
                         <div class="header_separator"></div>
                         <span>Key Metrics at a Glance</span>
+                        <div class="mobile_header_separator"></div>
                     </header>
                     <div class="main_content">
                         <!-- left side : summary -->
-                        <section class="overview gap_18">
+                        <section id="overview" class="overview gap_18">
                             <!-- first row -->
                             <div class="df_row gap_18">
                                 <div class="summary_card">
@@ -75,7 +78,7 @@
                                     <div class="middle_box">
                                         <p>
                                             <span id="amount_deadline" class="deadline_date">October 16, 2022</span>
-                                            <span>Upcoming Deadline</span>                           
+                                            <span class="text">Upcoming Deadline</span>                           
                                         </p>
                                     </div>
                                 </div>
@@ -103,7 +106,7 @@
                             </div>
                         </section>
                         <!-- right side : welcome -->
-                        <section class="welcome">
+                        <section id="welcome" class="welcome">
                             <p>
                                 <span class="welcome_text">Good morning!</span>
                                 <span id="welcome_name" class="welcome_name">Sofia Müller</span>
@@ -111,6 +114,12 @@
                         </section>
                     </div>
                 </article>
+                <section id="welcome_mobile" class="welcome_mobile">
+                    <p>
+                        <span class="welcome_text">Good morning!</span>
+                        <span id="welcome_name" class="welcome_name">Sofia Müller</span>
+                    </p>
+                </section>
             </div>                
         </div>
     

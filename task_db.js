@@ -7,116 +7,115 @@ let currentUser = {
   "role": "user"
 };
 
+let nextTaskId = 0;
 
-let tasks = [
-  {
-    "title": "Design fertigstellen",
-    "description": "mache 1, mache 2",
-    "dueDate": "2025-10-22",
+let tasks = {
+  "task_0": {
+    "title": "Task Title 1",
+    "description": "This is the description of Task 0",
+    "dueDate": "05-09-2025",
     "priority": "medium",
-    "assignedTo": "Hans Peter",
-    "category": "Design",
-    "status": 1,
-    "subtasks": [
-      {
-        "description": "Layout finalisieren",
-        "status": false
-      },
-      {
-        "description": "Farbschema prüfen",
-        "status": true
-      }
-    ]
+    "assignedTo": {
+      "contact_0": 3,
+      "contact_1": 5
+    },
+    "category": "User Story",
+    "column": 1,
+    "subtasks": {
+      "subtask_0": { "description": "This is Subtask 1", "status": false },
+      "subtask_1": { "description": "This is Subtask 3", "status": false }
+    }
   },
-  {
-    "title": "API entwickeln",
-    "description": "Endpoints definieren, testen",
-    "dueDate": "2025-09-15",
-    "priority": "urgent",
-    "assignedTo": "Anna Müller",
-    "category": "Entwicklung",
-    "status": 2,
-    "subtasks": [
-      {
-        "description": "GET-/POST-Routen erstellen",
-        "status": false
-      }
-    ]
+  "task_1": {
+    "title": "Task Title 2",
+    "description": "This is the description of Task 1",
+    "dueDate": "10-09-2025",
+    "priority": "high",
+    "assignedTo": {
+      "contact_2": 7
+    },
+    "category": "Bug",
+    "column": 2,
+    "subtasks": {
+      "subtask_0": { "description": "Fix login issue", "status": false },
+      "subtask_1": { "description": "Write test cases", "status": false }
+    }
   },
-  {
-    "title": "Dokumentation schreiben",
-    "description": "README und technische Beschreibung",
-    "dueDate": "2025-11-05",
+  "task_2": {
+    "title": "Task Title 3",
+    "description": "This is the description of Task 2",
+    "dueDate": "12-09-2025",
     "priority": "low",
-    "assignedTo": "Tom Schneider",
-    "category": "Dokumentation",
-    "status": 0,
-    "subtasks": [
-      {
-        "description": "README.md erstellen",
-        "status": true
-      },
-      {
-        "description": "API-Dokumentation ergänzen",
-        "status": false
-      }
-    ]
+    "assignedTo": {
+      "contact_3": 2
+    },
+    "category": "Refactor",
+    "column": 1,
+    "subtasks": {
+      "subtask_0": { "description": "Cleanup CSS", "status": false },
+      "subtask_1": { "description": "Remove unused variables", "status": false }
+    }
   },
-  {
-    "title": "Testfälle schreiben",
-    "description": "Unit- und Integrationstests",
-    "dueDate": "2025-10-01",
+  "task_3": {
+    "title": "Task Title 4",
+    "description": "This is the description of Task 3",
+    "dueDate": "15-09-2025",
     "priority": "medium",
-    "assignedTo": "Lea König",
-    "category": "Testing",
-    "status": 3,
-    "subtasks": [
-      {
-        "description": "Unit Tests für Modul A",
-        "status": true
-      },
-      {
-        "description": "Integrationstests vorbereiten",
-        "status": false
-      }
-    ]
+    "assignedTo": {
+      "contact_0": 1,
+      "contact_4": 4
+    },
+    "category": "Feature",
+    "column": 3,
+    "subtasks": {
+      "subtask_0": { "description": "Design UI", "status": false },
+      "subtask_1": { "description": "Implement frontend", "status": false }
+    }
   },
-  {
-    "title": "Projektbesprechung vorbereiten",
-    "description": "Agenda und Präsentation erstellen",
-    "dueDate": "2025-08-28",
-    "priority": "urgent",
-    "assignedTo": "Max Fischer",
-    "category": "Management",
-    "status": 1,
-    "subtasks": [
-      {
-        "description": "PowerPoint erstellen",
-        "status": true
-      },
-      {
-        "description": "Agenda abstimmen",
-        "status": false
-      }
-    ]
+  "task_4": {
+    "title": "Task Title 5",
+    "description": "This is the description of Task 4",
+    "dueDate": "18-09-2025",
+    "priority": "high",
+    "assignedTo": {
+      "contact_2": 6
+    },
+    "category": "User Story",
+    "column": 2,
+    "subtasks": {
+      "subtask_0": { "description": "Write acceptance criteria", "status": false },
+      "subtask_1": { "description": "Get stakeholder approval", "status": false }
+    }
   },
-  {
-    "title": "Projektbesprechung vorbereiten",
-    "description": "Agenda und Präsentation erstellen",
-    "dueDate": "2025-08-28",
-    "priority": "urgent",
-    "assignedTo": "Max Fischer",
-    "category": "Management",
-    "status": 1,
-    "subtasks": [
-      {
-        "description": "PowerPoint erstellen",
-        "status": true
-      },
-      {
-        "description": "Agenda abstimmen",
-        "status": false
-      }
-    ]
+  "task_5": {
+    "title": "Task Title 6",
+    "description": "This is the description of Task 5",
+    "dueDate": "20-09-2025",
+    "priority": "low",
+    "assignedTo": {
+      "contact_5": 9
+    },
+    "category": "Chore",
+    "column": 1,
+    "subtasks": {
+      "subtask_0": { "description": "Update documentation", "status": false },
+      "subtask_1": { "description": "Review with team", "status": false }
+    }
+  },
+  "task_6": {
+    "title": "Task Title 7",
+    "description": "This is the description of Task 6",
+    "dueDate": "25-09-2025",
+    "priority": "medium",
+    "assignedTo": {
+      "contact_1": 5,
+      "contact_6": 8
+    },
+    "category": "Maintenance",
+    "column": 3,
+    "subtasks": {
+      "subtask_0": { "description": "Check server logs", "status": false },
+      "subtask_1": { "description": "Restart services", "status": false }
+    }
   }
-];
+};

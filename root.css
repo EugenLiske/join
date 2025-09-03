@@ -10,6 +10,7 @@
     --c-btn-default: #2A3647;
     --c-btn-hover: #29ABE2;
     --c-btn-click: #091931;
+    --c-btn-default-var2: #FFFFFF;
 
     --c-btn-text-var1: #2A3647;
     --c-btn-text-var2: #FFFFFF;
@@ -52,6 +53,7 @@
     /* User Profile Initials */
     --c-up-initials: #29ABE2;
     --c-up-border: #2A3647;
+    --c-up-initials-var2: #FFFFFF;
 
     /* Input */
     --c-warn: #FF001F;
@@ -95,4 +97,14 @@
     /* Contact - Edit & Delete */
     --c-btn-delete: #29ABE2;
     --c-btn-edit: #2A3647;
+
+    /* Selection */
+    --bg-c-sel-var1: #FFFFFF;
+    --bg-c-sel-hover-var1: #EEEEEE;
+    --bg-c-sel-selected: #2A3D59;
+
+    --c-text-selected: #FFFFFF;
+
+    --bg-c-sel-hover-var2: #091931;
+    --border-c-active: #005DFF;
 }

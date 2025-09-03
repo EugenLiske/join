@@ -1,65 +1,9 @@
-h2{
-    font-size: 61px;
-    margin: 32px 0;
-}
-
-.page_wrapper{
-    display: flex;
-    align-items: stretch;
-    min-height: 100vh;
-}
-
-.main_wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-}
-
-.main_container{
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    background-color: var(--bg-c-join);
-}
-
-.main_content{
-    display: flex;
-    justify-content: center;
-    flex: 1;
-
-    gap: 40px;
-}
-
-.main_header{
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    cursor: default;
-}
-
-.main_header span{
-    font-size: 27px;
-}
-
-.header_separator{
-    height: 59px;
-    border: 2px solid var(--c-separator-var2);
-    margin: 0 30px;
-}
-
-.content_wrapper{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-
-    background-color: var(--bg-c-join);
-}
 
 .overview{
     display: flex;
     flex-direction: column;
-    width: 560px;
+    max-width: 560px;
+    width: 100%;
 }
 
 .df_row{
@@ -130,7 +74,7 @@ h2{
 
 .separator{
     border: 1px solid var(--c-separator-var1);
-    height: 102px;
+    height: 60%;
 }
 
 .middle_box{
@@ -170,10 +114,13 @@ h2{
     cursor: default;
 }
 
+.welcome_mobile{
+    display: none;
+}
+
 .welcome p{
     display: flex;
     flex-direction: column;
-    text-align: center;
 }
 
 .welcome_text{
@@ -185,3 +132,83 @@ h2{
     font-weight: bold;
     color: var(--c-text-name);
 }
+
+@media(max-width: 1000px){
+    .main_header h2{
+        font-size: 47px;
+    }
+
+    .main_header span{
+        font-size: 20px;
+    }
+
+    .round_icon,
+    .round_priority_icon{
+        width: 40px;
+        height: 40px;
+    }
+
+    .round_icon svg{
+        height: 16px;
+    }
+
+    .round_priority_icon img{
+        height: 16px;
+    }
+
+    .amount{
+        font-size: 47px;
+    }
+
+    .text{
+        font-size: 14px;
+    }
+
+    .deadline_date{
+        font-size: 16px;
+    }
+
+    .welcome_text{
+        font-size: 36px;
+    }
+
+    .welcome_name{
+        font-size: 47px;
+    }
+
+    .summary_card{
+        gap: 10px;
+        height: 110px;
+    }
+
+}
+
+@media(max-width: 850px){
+    .welcome{
+        display: none;
+    }
+
+    .welcome_mobile{
+        display: none;
+        position: absolute;
+        z-index: 10;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        cursor: default;
+    }
+
+    .welcome_mobile p {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .welcome_show{
+        display: flex;
+        justify-content: center;
+    }
+
+}
+

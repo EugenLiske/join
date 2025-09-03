@@ -1,7 +1,6 @@
 * {
     margin: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 /* Logo plus Animation */
@@ -11,6 +10,11 @@
     width: 101px;
     height: 122px;
     animation: moveLogo 2000ms ease forwards;
+}
+
+.field_size{
+    max-width: 422px;
+    width: 100%;
 }
 
 
@@ -80,7 +84,6 @@
     font-size: 61px;
     font-weight: 700;
     text-align: center;
-    font-family: sans-serif;
 }
 
 .signup_headline_underscore {
@@ -129,7 +132,7 @@
 }
 
 .input_field {
-    width: 422px;
+    width: 100%;
     height: 48px;
     border-radius: 10px;
     border: 1px solid #d1d1d1;
@@ -472,4 +475,19 @@
     background-color: #2A3647; /* Hover-Effekte neutralisieren */
     transform: none;
     box-shadow: none;
+}
+
+/* Ausnahme: nur für das Passwordfeld-Icon */
+.input_field_icon--confirm_login {
+    top: 12px; /* Feinanpassung */
+    transform: translateY(0); /* Zentrierung aufheben */
+}
+
+
+@media(max-width: 1000px){
+
+    .input_field{
+        font-size: 16px;
+    }
+
 }
