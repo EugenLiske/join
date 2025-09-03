@@ -1,7 +1,6 @@
 * {
     margin: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 /* Logo plus Animation */
@@ -85,7 +84,6 @@
     font-size: 61px;
     font-weight: 700;
     text-align: center;
-    font-family: sans-serif;
 }
 
 .signup_headline_underscore {
