@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay</title>
+
+    <link rel="stylesheet" href="../root.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/task.css">
+    <link rel="stylesheet" href="../styles/fonts.css">
+
+    <script src="../script.js"></script>
+    
+    <script src="../task_db.js"></script>
+    <script src="../person_db.js"></script>
+
+</head>
+<body>
+    <div class="page_wrapper">
+
+        <div class="content_wrapper">
+
+            <div class="main_wrapper">
+                <div id="" class="overlay_wrapper">
+                    <article class="overlay_task">
+                        <header class="task_header">
+                            <span class="category category_bg_color1">User Story</span>
+                            <button class="overlay_close_button" onclick="toggleOverlay('overlay_add_task')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+                        </header>
+                        <h1>Kochwelt Page & Recipe Recommender</h1>
+                        <section>
+                            <p>Build start page with recipe recommendation.</p>
+                            <div class="task_info_one_line">
+                                <span class="task_label">Due date:</span>
+                                <span id="dueDate">10/05/2023</span>
+                            </div>
+                            <div class="task_info_one_line">
+                                <span class="task_label">Priority:</span>
+                                <div id="priority" class="display_priority"><span>Medium</span><img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt=""></div>
+                            </div>
+                            <div>
+                                <span class="task_label">Assigned To:</span>
+                                <ul class="assigned_to_list">
+                                    <li>
+                                        <div class="person_icon" style="background-color: #1FD7C1">
+                                            EM
+                                        </div>
+                                            Emmanuel Mauer
+                                    </li>
+                                    <li>
+                                        <div class="person_icon" style="background-color: #462F8A">
+                                            MB
+                                        </div>
+                                            Marcel Bauer
+                                    </li>
+                                    <li>
+                                        <div class="person_icon" style="background-color: #0038FF">
+                                            AM
+                                        </div>
+                                            Anton Mayer
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <span class="task_label">Subtasks:</span>
+                                <ul class="subtasks_list">
+                                    <li>
+                                        <img src="../assets/img/icons/task/checkbox_tick_dark.svg" alt="">
+                                        <span>Implement Recipe Recommendation</span>
+                                    </li>
+                                    <li>
+                                        <img src="../assets/img/icons/task/checkbox.svg" alt="">
+                                        <span>Start Page Layout</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="task_buttons_container">
+                                <button><img src="../assets/img/icons/edit_and_delete/delete.svg" alt="">Delete</button>
+                                <div class="task_button_separator"></div>
+                                <button><img src="../assets/img/icons/edit_and_delete/edit.svg" alt="">Edit</button>
+                            </div>
+                        </section>
+                    </article>                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

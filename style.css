@@ -4,3 +4,85 @@
     scroll-behavior: smooth;
     font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
+
+.overlay_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.overlay_close_button{
+    background-color: transparent;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 32px; */
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0px;    
+}
+
+.overlay_close_button:hover{
+    background-color: #EEEEEE;
+}
+
+.person_icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 42px;
+    width: 42px;
+    border: 2px solid white;
+    color: var(--c-up-initials-var2);
+    font-size: 12px;
+}
+
+.overlay_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.overlay_close_button{
+    background-color: transparent;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 32px; */
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0px;    
+}
+
+.overlay_close_button:hover{
+    background-color: #EEEEEE;
+}
+
+.person_icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 42px;
+    width: 42px;
+    border: 2px solid white;
+    color: var(--c-up-initials-var2);
+    font-size: 12px;
+}
