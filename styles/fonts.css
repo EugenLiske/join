@@ -30,16 +30,3 @@
   font-weight: 700;
   src: url('../assets/fonts/inter-v19-latin/inter-v19-latin-700.woff2') format('woff2');
 }
-
-html, body, * {
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-}
-
-
-/* html {
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-
-*, *::before, *::after {
-  font-family: inherit;
-} */

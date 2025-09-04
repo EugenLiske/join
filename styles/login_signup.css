@@ -62,22 +62,17 @@
     position: absolute;
     top: 68px;
     left: 45px;
-
-    /* Fixe sichtbare Fläche */
     width: 32px;
     height: 32px;
-
-    /* Icon als Background, zentriert und passend skaliert */
-    background: center / contain no-repeat url("./assets/img/icons/navigation/arrow_left.svg");
-
-    /* sanfte Übergänge */
-    transition: background-image 0s, transform 250ms ease; /* image wechselt instant, scale smooth */
+    background-image: url("./assets/img/icons/navigation/arrow_left.svg");
+    background-position: center;       /* Bild wird zentriert */
+    background-size: contain;          /* Bild so groß wie möglich, aber komplett sichtbar */
+    background-repeat: no-repeat;      /* Bild nicht wiederholen/kacheln */
 }
 
-/* Hover: anderes Icon + leichtes „größer wirken“ */
 .signup_arrow_left:hover {
     background-image: url("./assets/img/icons/navigation/arrow_left_hover.svg");
-    transform: scale(1.0); /* hebt sich minimal ab, ohne Layout zu verändern */
+    transform: scale(1.5);
 }
 
 .signup_headline {
