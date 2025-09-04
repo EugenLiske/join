@@ -1,0 +1,124 @@
+.page_wrapper {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+.content_wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--bg-c-join);
+}
+
+.main_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    padding-top: 100px;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+.main_container_help {
+    width: 100%;
+    max-width: 2000px;
+}
+
+.headline_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1 {
+    font-size: 61px;
+}
+
+.signup_arrow_left {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url("./assets/img/icons/navigation/arrow_left.svg");
+    background-position: center;       /* Bild wird zentriert */
+    background-size: contain;          /* Bild so groß wie möglich, aber komplett sichtbar */
+    background-repeat: no-repeat;      /* Bild nicht wiederholen/kacheln */
+}
+
+.signup_arrow_left:hover {
+    background-image: url("./assets/img/icons/navigation/arrow_left_hover.svg");
+    transform: scale(1.5);
+}
+
+.join_introduction_text {
+    margin-top: 30px;
+}
+
+p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 24px;  
+    margin-bottom: 24px;  
+}
+
+h2 {
+    font-size: 27px;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* 1) Liste vorbereiten */
+.how_to_use_text .steps {
+  counter-reset: step;
+  list-style: none;   /* native Marker aus */
+  margin: 0;
+  padding: 0;
+}
+
+/* 2) Jede Zeile bekommt links Platz für Nummer + Gap */
+.how_to_use_text .steps {
+  --marker-col: 24px;   /* Breite der Nummernspalte */
+  --marker-gap: 32px;   /* Abstand Nummer → Text */
+  /* 24 + 11 = 35 px Gesamtabstand */
+}
+
+.how_to_use_text .steps li {
+  position: relative;
+  padding-left: calc(var(--marker-col) + var(--marker-gap));
+  /* optionaler Abstand zwischen Schritten: */
+  margin-bottom: 16px;
+}
+
+/* 3) Der „Marker“ (1., 2., 3., …) absolut in die Markerspalte setzen */
+.how_to_use_text .steps li::before {
+  counter-increment: step;
+  content: counter(step) ".";
+  position: absolute;
+  left: 0;
+  top: 0;                         /* Start oben am Inhalt */
+  width: var(--marker-col);       /* feste Spaltenbreite */
+  text-align: right;              /* Zahl rechtsbündig in der Spalte */
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 4) Typografie der Inhalte */
+.how_to_use_text .steps h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;                      /* wir steuern Abstände selbst */
+}
+
+.how_to_use_text .steps p {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px 0 0;                /* kleiner Abstand unter der H3 */
+}
+
+.text_highlight_join {
+    color: #29ABE2;
+}
