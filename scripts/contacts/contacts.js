@@ -7,7 +7,7 @@
 import { 
     PAGES, 
     STORAGE_KEYS
-} from './config.js';
+} from '../config.js';
 
 import { 
     getFormData, 

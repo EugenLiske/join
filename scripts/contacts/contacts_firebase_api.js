@@ -8,7 +8,7 @@ import {
     AVATAR_COLORS, 
     FIREBASE_PATHS,
     DEFAULTS 
-} from './config.js';
+} from '../config.js';
 
 /**
  * Retrieves and increments the contact counter for new contact IDs
