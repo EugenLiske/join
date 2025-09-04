@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Sign up</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="styles/fonts.css">
-    <link rel="stylesheet" href="login_signup.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/fonts.css">
+    <link rel="stylesheet" href="../styles/login_signup.css">
 </head>
 <body>
     <div class="sign_up_page_content_div">
@@ -25,7 +25,7 @@
                         placeholder="Name"
                         oninput="validateForm()"
                     >
-                    <img src="./assets/img/icons/form/person.svg" class="input_field_icon"></img>
+                    <img src="../assets/img/icons/form/person.svg" class="input_field_icon"></img>
                 </div>
                 <div class="input_wrapper">
                     <input id="email_input"
@@ -35,7 +35,7 @@
                         oninput="validateForm(); clearEmailError()"   
                         onfocus="clearEmailError()"                  
                     >
-                    <img src="./assets/img/icons/form/mail.svg" class="input_field_icon"></img>
+                    <img src="../assets/img/icons/form/mail.svg" class="input_field_icon"></img>
                 </div>
                 <div class="input_wrapper">
                     <input
@@ -47,7 +47,7 @@
                     >
                     <img
                         id="password_icon"
-                        src="./assets/img/icons/form/lock.svg"
+                        src="../assets/img/icons/form/lock.svg"
                         class="input_field_icon input_field_icon--btn"
                         onclick="togglePasswordIconVisibility('password_input','password_icon')"
                     >
@@ -62,7 +62,7 @@
                     >
                     <img
                         id="confirm_icon"
-                        src="./assets/img/icons/form/lock.svg"
+                        src="../assets/img/icons/form/lock.svg"
                         class="input_field_icon input_field_icon--btn input_field_icon--confirm"
                         onclick="togglePasswordIconVisibility('confirm_input','confirm_icon')"
                     >
@@ -87,9 +87,9 @@
             </div>
         </div>
 
-        <img class="logo_signup_page" src="./assets/img/logos/join_logo_dark.svg" alt="join_logo">
+        <img class="logo_signup_page" src="../assets/img/logos/join_logo_dark.svg" alt="join_logo">
     </div>
 </body>
 
-<script src="signup.js"></script>
+<script src="../scripts/signup.js"></script>
 </html>
