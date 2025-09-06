@@ -40,6 +40,10 @@
     margin: 0 32px;
 }
 
+.mg_top{
+    margin-top: 32px;
+}
+
 /* Priority Button ----------------------------------------------------- */
 
 .priority_input{
