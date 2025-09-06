@@ -150,30 +150,30 @@ function resetExistingLoginError() {
 function handleLoginPasswordInput() {
   if (passwordInputField.value.length === 0) {
     passwordInputField.type = "password";
-    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.src = "../assets/img/icons/form/lock.svg";
     passwordIcon.style.pointerEvents = "none";
     return;
   }
   passwordIcon.style.pointerEvents = "auto";
   if (passwordInputField.type === "text") {
-    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+    passwordIcon.src = "../assets/img/icons/form/visibility.svg";
   } else {
-    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+    passwordIcon.src = "../assets/img/icons/form/visibility_off.svg";
   }
 }
 
 function toggleLoginVisibility() {
   if (passwordInputField.value.length === 0) {
     passwordInputField.type = "password";
-    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.src = "../assets/img/icons/form/lock.svg";
     passwordIcon.style.pointerEvents = "none";
     return;
   }
   if (passwordInputField.type === "password") {
     passwordInputField.type = "text";
-    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+    passwordIcon.src = "../assets/img/icons/form/visibility.svg";
   } else {
     passwordInputField.type = "password";
-    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+    passwordIcon.src = "../assets/img/icons/form/visibility_off.svg";
   }
 }
