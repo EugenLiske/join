@@ -26,10 +26,12 @@ document.addEventListener('click', function(event) {
 // Initial Function -----------------------------------------------------------------
 
 function initAddTaskGlobal(){
-    currentPage = "add_task"; // important for displaying the navigation bar 
+    initNavigation("add_task"); // important for displaying the navigation bar 
+    includeAddTaskForm();
 }
 
 function initAddTask(){
+    
     initAssignedToList();
     getNameSearchList();
     getSearchListResult("");

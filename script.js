@@ -1,5 +1,4 @@
-let currentPage = "summary";
-let login = true;
+let login = true;   //for mobile view
 
 function toggleMenu() {
     const menu = document.getElementById('side_menu');
@@ -11,3 +10,8 @@ function toggleOverlay(htmlId){
     const overlay = document.getElementById(htmlId);
     overlay.classList.toggle("d_none");
 }
+
+function initNavAndHeaderPage(page){
+    initNavigation(page);
+}
+

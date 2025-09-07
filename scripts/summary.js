@@ -10,7 +10,7 @@ let summaryContent = {
 };
 
 async function initSummary(){
-    currentPage = "summary";
+    initNavigation("summary");  
     mobileWelcome();
     await getAllTasks();
     calculateInformation();
@@ -18,6 +18,7 @@ async function initSummary(){
     displayWelcomeOnScreen();
     
 }
+
 
 function mobileWelcome() {
     if (login){
