@@ -20,12 +20,12 @@
     color: white;
 }
 
-.category_bg_color1{
-    background-color: #0038FF;
+.category_bg_color0{
+    background-color: var(--c-category1);
 }
 
-.category_bg_color2{
-    background-color: #1FD7C1;
+.category_bg_color1{
+    background-color: var(--c-category2);
 }
 
 /* Header */
@@ -92,12 +92,44 @@
     align-items: center;
     gap: 16px;
     padding: 6px 16px;
+    border-radius: 10px;
+
+    width: fit-content;
 }
+
+.subtasks_list li:hover{
+    background-color: var(--bg-c-sel-hover-var1);
+    cursor: pointer;
+}
+
+.checkbox_img_container{
+    width: 24px;
+    height: 24px;
+    transition: background-image 0.2s ease-in-out;
+}
+
+/* .checkbox_img_container[data-checked="false"]{
+    background-image: url("../assets/img/icons/task/checkbox.svg");
+} */
+
+/* .subtasks_list li:hover .checkbox_img_container[data-checked="false"]{
+    background-image: url("../assets/img/icons/task/checkbox_tick_dark.svg");
+} */
+
+/* .checkbox_img_container[data-checked="true"]{
+    background-image: url("../assets/img/icons/task/checkbox_tick_dark.svg");
+} */
+
+/* .subtasks_list li:hover .checkbox_img_container[data-checked="true"]{
+    background-image: url("../assets/img/icons/task/checkbox.svg");
+} */
+
 
 .task_buttons_container{
     display: flex;
     justify-content: end;
     gap: 8px;
+
 }
 
 .task_buttons_container button{
@@ -108,6 +140,16 @@
 
     font-size: 16px;
     cursor: pointer;
+
+    color: var(--c-btn-default);
+
+    transition: color 0.2s ease-in-out;
+    transition: font-weight 0.2s ease-in-out;
+}
+
+.task_buttons_container button:hover{
+    color: var(--c-btn-hover);
+    font-weight: bold;
 }
 
 .task_button_separator{
@@ -115,5 +157,4 @@
     border-top: none;
     border-right: none;
     border-bottom: none;
-    height: 100%;
 }
