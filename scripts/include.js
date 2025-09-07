@@ -12,6 +12,11 @@ function initNavigation(page){
     includePageHeader();
 }
 
+function initNavigationExternal(page){
+    includePageNavigationExternal(page);
+    includePageHeader();
+}
+
 function includePageNavigation(page){
     try{
         fetch('../includes/page_navigation.html')
@@ -30,6 +35,28 @@ function includePageNavigation(page){
         console.warn("Include page navigation - Error: Navigation is not loaded!!!");
     }
 }
+
+function includePageNavigationExternal(page){
+    try{
+        fetch('../includes/page_navigation_external.html')
+            .then(response => response.text())
+            .then(data => {
+                try{
+                    document.getElementById("page_navigation").innerHTML = data; 
+                    changeActiveNavButtonExternal(page);
+                }
+                catch(error){
+                    console.warn("HTML container not available!");
+                }
+            });
+    }
+    catch(error){
+        console.warn("Include page navigation - Error: Navigation is not loaded!!!");
+    }
+}
+
+
+
 
 function includePageHeader(){
     try{
@@ -89,7 +116,21 @@ function changeActiveNavButton(page){
 }
 
 function toggleNavButtons(setElement, otherElement, page){
+    deactiveCurrentNavButton(setElement);
     deactiveCurrentNavButton(otherElement);
+    document.getElementById("nav_" + page).classList.replace("deactive_" + setElement, "active_" + setElement);               
+}
+
+function changeActiveNavButtonExternal(page){
+    if (["privacy_policy", "legal_notice"].indexOf(page) >= 0){
+        toggleNavButtonsExternal("footer", page);
+    }
+    if (["help"].indexOf(page) >= 0){
+        deactiveCurrentNavButton("footer");
+    }
+}
+
+function toggleNavButtonsExternal(setElement, page){
     deactiveCurrentNavButton(setElement);
     document.getElementById("nav_" + page).classList.replace("deactive_" + setElement, "active_" + setElement);               
 }
