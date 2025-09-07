@@ -1,3 +1,5 @@
+// MF
+
 /**
  * Contact Management - Main Orchestration
  * Coordinates validation, UI updates, Firebase operations and navigation
@@ -21,7 +23,8 @@ import {
     displayContactSuccess,
     displayContactDataInForm,
     clearFormInputs,
-    updateButtonState 
+    updateButtonState,
+    showOverlayMessage
 } from './contacts_ui_helpers.js';
 
 import { 
@@ -73,7 +76,6 @@ function validateContactForm() {
  */
 function navigateToSuccessPage(contactData) {
     localStorage.setItem(STORAGE_KEYS.LAST_SAVED_CONTACT, JSON.stringify(contactData));
-    console.log('Navigating to success page with data:', contactData);
     window.location.href = PAGES.SUCCESS_PAGE;
 }
 
@@ -83,7 +85,6 @@ function navigateToSuccessPage(contactData) {
  */
 function editContact(contactId) {
     localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, contactId);
-    console.log('Navigating to edit page for contact:', contactId);
     window.location.href = PAGES.EDIT_CONTACT;
 }
 
@@ -114,7 +115,7 @@ function loadContactDataForSuccessPage() {
             console.error('Error parsing contact data:', error);
         }
     } else {
-        console.warn('No contact data found for success page');
+        console.error('No contact data found for success page');
     }
 }
 
@@ -126,7 +127,6 @@ function setupClickOutsideToClose() {
         const overlayContent = document.querySelector('.content');
         
         if (overlayContent && !overlayContent.contains(event.target)) {
-            console.log('Clicked outside overlay, closing...');
             localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
             window.history.back();
         }
@@ -141,9 +141,7 @@ function setupClickOutsideToClose() {
  * @param {Error} error - The error that occurred
  */
 function handleContactLoadError(error) {
-    console.error('Error loading contact for edit:', error);
-    // TODO: Replace with Toast
-    alert('Error loading contact data. Contact may have been deleted.');
+    showOverlayMessage('Error loading contact data. Contact may have been deleted.');
     window.history.back();
 }
 
@@ -154,8 +152,6 @@ function handleContactLoadError(error) {
  */
 async function loadContactForEdit(contactId) {
     try {
-        console.log('Loading contact for edit:', contactId);
-        
         const contactData = await loadExistingContact(contactId);
         if (!contactData) {
             throw new Error('Contact not found');
@@ -163,7 +159,6 @@ async function loadContactForEdit(contactId) {
         
         displayContactDataInForm(contactData);
         validateContactForm();
-        console.log('Contact data loaded for editing');
         return contactData;
         
     } catch (error) {
@@ -181,8 +176,7 @@ function loadContactDataForEditPage() {
     if (contactId) {
         loadContactForEdit(parseInt(contactId));
     } else {
-        console.warn('No contact ID found for edit page');
-        alert('No contact selected for editing');
+        showOverlayMessage('No contact ID found for edit page');
         window.history.back();
     }
 }
@@ -195,19 +189,15 @@ function loadContactDataForEditPage() {
  */
 async function deleteContactFromSuccessPage(contactId) {
     try {
-        console.log('Deleting contact from success page:', contactId);
+        await deleteContactFromFirebase(parseInt(contactId));
         
-        await deleteContactFromFirebase(contactId);
-        
-        // Clear stored data
         localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
-        
-        // Navigate back to add contact page
+        showOverlayMessage('Contact deleted successfully');
         window.location.href = PAGES.ADD_CONTACT;
         
     } catch (error) {
         console.error('Error deleting contact:', error);
-        alert('Error deleting contact. Please try again.');
+        showOverlayMessage('Error deleting contact. Please try again.', 'error');
     }
 }
 
@@ -223,19 +213,15 @@ async function deleteContact() {
     }
     
     try {
-        console.log('Deleting contact from edit page:', contactId);
+        showOverlayMessage('Deleting contact from edit page:', contactId);
         
         await deleteContactFromFirebase(parseInt(contactId));
-        
-        // Clear stored data
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
-        
-        // Navigate back
+        showOverlayMessage('Contact deleted successfully');
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);        
         window.history.back();
         
     } catch (error) {
-        console.error('Error deleting contact:', error);
-        alert('Error deleting contact. Please try again.');
+        showOverlayMessage('Error deleting contact. Please try again.');
     }
 }
 
@@ -253,13 +239,12 @@ async function deleteContact() {
 async function handleCreateMode(formData) {
     const emailExists = await checkEmailExists(formData.email);
     if (emailExists) {
-        // TODO: Replace with Toast
-        alert('This email address is already in use. Please use a different email.');
+        showOverlayMessage('This email address is already in use. Please use a different email.');
         return false;
     }
     
     const savedContact = await saveContactToFirebase(formData.contactData);
-    console.log('Contact saved successfully with ID:', savedContact.id);
+    showOverlayMessage('Contact saved successfully with ID:', savedContact.id);
     
     clearFormInputs();
     navigateToSuccessPage(savedContact);
@@ -280,12 +265,12 @@ async function handleEditMode(formData, contactId) {
     const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
     if (emailExists) {
         // TODO: Replace with Toast
-        alert('This email address is already in use by another contact. Please use a different email.');
+        showOverlayMessage('This email address is already in use by another contact. Please use a different email.');
         return false;
     }
     
     const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
-    console.log('Contact updated successfully with ID:', updatedContact.id);
+    showOverlayMessage('Contact updated successfully with ID:', updatedContact.id);
     
     localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     window.history.back();
@@ -302,7 +287,7 @@ async function saveContact(event) {
     const formData = getFormData();
     if (!formData.isValid) {
         // TODO: Replace with Toast
-        alert('Please correct the form errors before saving.');
+        showOverlayMessage('Please correct the form errors before saving.');
         return;
     }
     
@@ -310,8 +295,6 @@ async function saveContact(event) {
     const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     
     try {
-        console.log('Starting save process for:', formData.contactData, 'Edit mode:', isEditMode);
-        
         const success = isEditMode 
             ? await handleEditMode(formData, contactId)
             : await handleCreateMode(formData);
@@ -320,8 +303,7 @@ async function saveContact(event) {
         
     } catch (error) {
         console.error('Error saving contact:', error);
-        // TODO: Replace with Toast
-        alert('Error saving contact. Please check your connection and try again.');
+        showOverlayMessage('Error saving contact. Please check your connection and try again.');
     }
 }
 
@@ -334,34 +316,26 @@ function initializeEventListeners() {
     if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
     if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
     if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
-    
-    console.log('Event listeners initialized');
 }
 
 // ================== INITIALIZATION ==================
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing contact system');
-    
+
     if (window.location.pathname.includes('contacts_add_successful.html')) {
-        console.log('Success page detected, loading contact data');
         loadContactDataForSuccessPage();
     } 
     else if (window.location.pathname.includes('contacts_edit.html')) {
-        console.log('Edit page detected, setting up edit form');
         initializeEventListeners();
         loadContactDataForEditPage();
     }
     else {
-        console.log('Add page detected, setting up form');
         initializeEventListeners();
         
         if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
             validateContactForm();
         }
     }
-    
-    console.log('Contact management system initialized');
 });
 
 // ================== GLOBAL EXPORTS ==================

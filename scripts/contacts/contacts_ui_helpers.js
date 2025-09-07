@@ -1,3 +1,5 @@
+// MF
+
 /**
  * Contacts UI Helpers Module
  * DOM manipulation and UI update functions
@@ -66,8 +68,6 @@ export function displayContactSuccess(contactData) {
         return;
     }
     
-    console.log('Displaying success page for:', contactData);
-    
     const contentHeadName = document.getElementById('content_head_name');
     const contactEmailDisplay = document.getElementById('contact_email');
     const contactPhoneDisplay = document.getElementById('contact_phone');
@@ -95,7 +95,6 @@ export function displayContactSuccess(contactData) {
         avatarInitials.textContent = initials;
     }
     
-    // NEU: Event-Listener für Edit und Delete-Buttons
     const editButton = document.getElementById('edit_contact_btn');
     if (editButton && contactData.id) {
         editButton.onclick = () => window.editContact(contactData.id);
@@ -107,8 +106,6 @@ export function displayContactSuccess(contactData) {
         deleteButton.onclick = () => window.deleteContactFromSuccessPage(contactData.id);
         deleteButton.style.cursor = 'pointer';
     }
-    
-    console.log('Success page updated successfully');
 }
 
 /**
@@ -125,32 +122,26 @@ export function displayContactDataInForm(contactData) {
     if (emailInput) emailInput.value = contactData.email || '';
     if (phoneInput) phoneInput.value = contactData.phone || '';
     
-    // Update avatar background color
     if (contactData.avatarColor && contactAvatar) {
         contactAvatar.style.backgroundColor = contactData.avatarColor;
     }
     
     updateAvatarPreview(contactData.name);
-    console.log('Form populated with contact data');
 }
 
 /**
  * Clears all form inputs and resets styling
  */
-export function clearFormInputs() {
-    console.log('Clearing form inputs after successful save');
-    
+export function clearFormInputs() {    
     const nameInput = document.getElementById('name_input');
     const emailInput = document.getElementById('email_input');
     const phoneInput = document.getElementById('telephone_input');
-    const avatarInitials = document.getElementById('avatar_initials');
+    const avatarInitials = document.getElementById('avatar_initials');    
     
-    // Clear input values
     if (nameInput) nameInput.value = '';
     if (emailInput) emailInput.value = '';
     if (phoneInput) phoneInput.value = '';
     
-    // Reset field styling
     if (nameInput) {
         nameInput.style.borderColor = 'var(--c-default)';
         nameInput.title = '';
@@ -162,14 +153,10 @@ export function clearFormInputs() {
     if (phoneInput) {
         phoneInput.style.borderColor = 'var(--c-default)';
         phoneInput.title = '';
-    }
-    
-    // Reset avatar to default
+    }    
     if (avatarInitials) {
         avatarInitials.innerHTML = '<img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
     }
-    
-    console.log('Form inputs cleared successfully');
 }
 
 /**
@@ -188,4 +175,29 @@ export function updateButtonState(text, disabled = false) {
     if (buttonText) {
         buttonText.textContent = text;
     }
+}
+
+
+/**
+ * Shows an overlay message notification (modal-style toast)
+ * @param {string} message - The message text to display
+ * @param {string} type - Message type for styling ('success', 'error', 'warning', 'info')
+ * @param {number} duration - Duration in milliseconds before auto-hide (default: 3000)
+ * @returns {HTMLElement} The created overlay element
+ */
+export function showOverlayMessage(message, type = 'success', duration = 3000) {
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay active';
+    
+    const messageBox = document.createElement('div');
+    messageBox.className = 'overlay_message enter';
+    messageBox.textContent = message;
+    
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.classList.add('leaving');
+        setTimeout(() => overlay.remove(), 300);
+    }, duration);
 }

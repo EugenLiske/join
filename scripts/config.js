@@ -1,3 +1,5 @@
+//MF 
+
 /**
  * Central Configuration for Join Contact Management
  * All constants, URLs, and settings in one place
