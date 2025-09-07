@@ -177,10 +177,6 @@
     gap: 18px;
 }
 
-.d_none{
-    display: none !important;
-}
-
 .input_field_icon_task {
     position: absolute;
     right: 15px;

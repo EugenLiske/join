@@ -86,3 +86,7 @@
     color: var(--c-up-initials-var2);
     font-size: 12px;
 }
+
+.d_none{
+    display: none !important;
+}
