@@ -4,16 +4,6 @@ let assignedToList = [];
 
 let nextSubtaskId = 0;
 
-let newTask = {
-    "title": "",
-    "description": "",
-    "duedate": "",
-    "priority": "",
-    "assignedPersons": {},
-    "category": "",
-    "subtasks": {}
-}
-
 
 // EventListener -------------------------------------------------------------------
 
@@ -54,30 +44,15 @@ function deleteForm(){
     clearSubtasksInputArea();
 
     resetWarning();
-    clearTask();
 }
-
-
-function clearTask(){
-    newTask = {
-    "title": "",
-    "description": "",
-    "duedate": "",
-    "priority": "",
-    "assignedPersons": {},
-    "category": "",
-    "subtasks": {},
-    "status": 0
-    };
-}
-
 
 async function checkAndCreateTask(){
     let taskKey = "";
     let nextTaskId = -1;
+    let newTask = null;
 
     if (checkRequiredFields()){
-        createTask();
+        newTask = createTask();
         nextTaskId = await getTaskCounter();
         taskKey = "task_" + nextTaskId;
         path = "/tasks/" + taskKey;
@@ -101,6 +76,7 @@ function checkAndEnableButton(){
 
 
 function createTask(status = 0){
+    const newTask = createNewTaskObject();
     newTask.title = getTitle();
     newTask.description = getDescription();
     newTask.duedate = getDueDate();
@@ -109,8 +85,20 @@ function createTask(status = 0){
     newTask.assignedPersons = getAssignedPersons();
     newTask.subtasks = getSubtasks();
     newTask.status = status;
+    return newTask;
 }
 
+function createNewTaskObject(){
+    return {
+        "title": "",
+        "description": "",
+        "duedate": "",
+        "priority": "",
+        "assignedPersons": {},
+        "category": "",
+        "subtasks": {}
+    };
+}
 
 function getAssignedPersons(){
     let assignedPersons = {};
