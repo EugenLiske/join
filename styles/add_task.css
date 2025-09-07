@@ -40,10 +40,6 @@
     margin: 0 32px;
 }
 
-.mg_top{
-    margin-top: 32px;
-}
-
 /* Priority Button ----------------------------------------------------- */
 
 .priority_input{
@@ -361,7 +357,7 @@ button.input_field{
 
 .overlay_add_task{
     background-color: white;
-    padding: 16px 56px 56px 56px;
+    padding: 56px;
     border-radius: 16px;
     box-shadow: 0 0 4px 0 #0000001A;
 }
@@ -370,6 +366,7 @@ button.input_field{
 .overlay_add_task header{
     display: flex;
     justify-content: space-between;
+    padding-bottom: 32px;
 }
 
 
