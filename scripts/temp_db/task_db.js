@@ -7,7 +7,12 @@ let currentUser = {
   "role": "user"
 };
 
+let currentTask = null;
+let currentTaskKey = "";
+
 let nextTaskId = 0;
+
+const categories = ["User Story", "Technical Task"];
 
 let tasks = {
   "task_0": {
@@ -34,11 +39,11 @@ let tasks = {
     "assignedTo": {
       "contact_2": 7
     },
-    "category": "Bug",
+    "category": "Technical Task",
     "column": 2,
     "subtasks": {
       "subtask_0": { "description": "Fix login issue", "status": false },
-      "subtask_1": { "description": "Write test cases", "status": false }
+      "subtask_1": { "description": "Write test cases", "status": true }
     }
   },
   "task_2": {
