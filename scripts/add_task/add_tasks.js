@@ -74,6 +74,7 @@ function clearTask(){
 
 async function checkAndCreateTask(){
     let taskKey = "";
+    let nextTaskId = -1;
 
     if (checkRequiredFields()){
         createTask();
@@ -81,7 +82,7 @@ async function checkAndCreateTask(){
         taskKey = "task_" + nextTaskId;
         path = "/tasks/" + taskKey;
         await setData(newTask, path);
-        await increaseTaskCounter();
+        await increaseTaskCounter(nextTaskId);
         deleteForm();
     }
     // TODO: Weiterleitung auf Board Seite

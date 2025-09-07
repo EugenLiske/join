@@ -10,8 +10,6 @@ let currentUser = {
 let currentTask = null;
 let currentTaskKey = "";
 
-let nextTaskId = 0;
-
 const categories = ["User Story", "Technical Task"];
 
 let tasks = {

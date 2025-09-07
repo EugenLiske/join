@@ -1,7 +1,7 @@
 const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app/";
 
 async function getAllTasks(){
-    tasks = await getData("/tasks");
+  tasks = await getData("/tasks");
 }
 
 async function getData(path) {
@@ -42,11 +42,10 @@ async function getTaskCounter(){
   return await getData("/task_counter");
 }
 
-async function setTaskCounter(){
-  await setData(nextTaskId, "/task_counter");
+async function setTaskCounter(counter){
+  await setData(counter, "/task_counter");
 }
 
-async function increaseTaskCounter(){
-        nextTaskId++;
-        await setTaskCounter();       
+async function increaseTaskCounter(nextTaskId){
+  await setTaskCounter(nextTaskId+1);       
 }
