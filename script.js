@@ -6,3 +6,8 @@ function toggleMenu() {
     menu.classList.toggle('open');
 }
 
+
+function toggleOverlay(htmlId){
+    const overlay = document.getElementById(htmlId);
+    overlay.classList.toggle("d_none");
+}

@@ -121,10 +121,3 @@ function getAssignedPersons(){
     return assignedPersons;
 }
 
-
-// Overlay ----------------------------------------------------------------------------
-
-function toggleOverlay(htmlId){
-    const overlay = document.getElementById(htmlId);
-    overlay.classList.toggle("d_none");
-}
