@@ -181,7 +181,8 @@ h1{
         gap: 16px;
     }
 
-    .main_header h2{
+    h1{
+        font-size: 47px;
         margin-bottom: 0;
     }
 

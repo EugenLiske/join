@@ -1,0 +1,79 @@
+
+
+.overlay_edit_task{
+    border-radius: 30px;
+    padding: 48px 16px 48px 40px;
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 0 4px 0 #00000029;
+
+    max-width: 535px; 
+    width: 100%;
+
+
+
+    background-color: white;
+    margin: 8px;
+}
+
+.overlay_edit_task_header{
+    display: flex;
+    justify-content: end;
+    padding-right: 24px;
+}
+
+.task_input_area{
+    display: flex;
+    flex-direction: column;
+
+    gap: 24px;
+
+    height: 70vh;
+    padding-right: 20px;
+    overflow: auto;
+}
+
+.task_separator{
+    display: none;
+}
+
+.add_task_footer{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #A8A8A8;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #626262;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-button:single-button {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("../assets/img/icons/scrollbar/button_up.svg");
+}
+
+::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("../assets/img/icons/scrollbar/button_down.svg");
+}

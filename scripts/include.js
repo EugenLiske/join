@@ -56,9 +56,9 @@ function includePageHeader(){
     }     
 }
 
-function includeAddTaskForm(){
+async function includeAddTaskForm(){
     try{
-        fetch('../includes/add_task_form.html')
+        await fetch('../includes/add_task_form.html')
             .then(response => response.text())
             .then(data => {
                 try{

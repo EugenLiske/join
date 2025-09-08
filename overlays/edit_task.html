@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Overlay</title>
+    <title>Overlay - Edit</title>
 
     <link rel="stylesheet" href="../styles/fonts.css">
     <link rel="stylesheet" href="../styles/root.css">
     <link rel="stylesheet" href="../style.css">
     <!-- <link rel="stylesheet" href="../styles/summary.css"> -->
-    <link rel="stylesheet" href="../styles/add_task.css">
+    <link rel="stylesheet" href="../styles/edit_task.css">
     <link rel="stylesheet" href="../styles/task_form.css">
     <link rel="stylesheet" href="../styles/login_signup.css">
     <link rel="stylesheet" href="../styles/button.css">
@@ -24,6 +24,7 @@
     <script src="../scripts/add_task/form_validation.js"></script>
     <script src="../scripts/add_task/form_reader.js"></script>
 
+    <script src="../scripts/edit_task.js"></script>
     <script src="../scripts/add_task/add_tasks.js"></script>
     <script src="../scripts/add_task/form_selection/assigned_to.js"></script>
     <script src="../scripts/add_task/form_selection/category.js"></script>
@@ -33,17 +34,16 @@
 
     <script src="../scripts/include.js"></script>
 </head>
-<body onload="includeAddTaskForm()">
+<body onload="initEditTask()">
     <div class="page_wrapper">
 
         <div class="content_wrapper">
 
             <div class="main_wrapper">
-                <div id="overlay_add_task" class="overlay_wrapper">
-                    <article class="overlay_add_task">
-                        <header class="overlay_add_task_header">
-                            <h1>Add Task</h1>
-                            <button class="overlay_close_button" onclick="toggleOverlay('overlay_add_task')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+                <div id="overlay_edit_task" class="overlay_wrapper">
+                    <article class="overlay_edit_task">
+                        <header class="overlay_edit_task_header">
+                            <button class="overlay_close_button" onclick="toggleOverlay('overlay_edit_task')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
                         </header>
                         <div id="add_task_form"></div>
 
