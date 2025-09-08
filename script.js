@@ -15,3 +15,7 @@ function initNavAndHeaderPage(page){
     initNavigation(page);
 }
 
+function initNavAndHeaderPageExternal(page){
+    initNavigationExternal(page);
+}
+

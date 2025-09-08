@@ -33,7 +33,8 @@
                         type="email"
                         placeholder="Email"
                         oninput="validateForm(); clearEmailError()"   
-                        onfocus="clearEmailError()"                  
+                        onfocus="clearEmailError()"   
+                        onblur="validateEmailOnBlur()"               
                     >
                     <img src="../assets/img/icons/form/mail.svg" class="input_field_icon"></img>
                 </div>
@@ -67,6 +68,7 @@
                         onclick="togglePasswordIconVisibility('confirm_input','confirm_icon')"
                     >
                     <div id="confirm_error" class="error_text"></div>
+                    <div id="email_error"   class="error_text"></div>
                 </div>
             </div>
 
@@ -86,7 +88,10 @@
                 You signed up successfully
             </div>
         </div>
-
+        <footer>
+            <a href="./privacy_policy_external.html" class="additional_information">Privacy Policy</a>
+            <a href="./legal_notice_external.html" class="additional_information">Legal Notice</a>
+        </footer>
         <img class="logo_signup_page" src="../assets/img/logos/join_logo_dark.svg" alt="join_logo">
     </div>
 </body>

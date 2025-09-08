@@ -7,10 +7,12 @@ const confirmationPasswordInput   = document.getElementById("confirm_input");
 const checkbox                    = document.getElementById("privacy_checkbox");
 const signupButton                = document.getElementById("signup_button");
 const confirmationError           = document.getElementById("confirm_error");
+const emailError                  = document.getElementById("email_error");
 const signupOverlay               = document.getElementById("signup_overlay");
 const overlayMessage              = document.getElementById("overlay_message");
 
 const USER_EXISTS_MSG             = "This user exists already. Please use a different email address.";
+const EMAIL_INVALID_MSG           = "Please enter a valid email address.";
 const PASSWORD_MIN_LENGTH         = 8;
 const BASE_URL                    = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
@@ -199,6 +201,8 @@ function evaluateFormInput(formInput) {
 }
 
 function renderPasswordErrors(evaluatedFormInput) {
+  emailError.textContent = "";
+  emailError.style.display = "none";
   if (evaluatedFormInput.showMismatchError) {
     confirmationPasswordInput.classList.add("error");
     confirmationError.textContent = "Your passwords don't match. Please try again.";
@@ -225,10 +229,23 @@ function isEmailValid(email) {
 
 // Bereinigung der Fehleranzeige bei erneuter Eingabe (also onfocus/oninput).
 // Für denn Fall dass eine bereits benutzte Mailadresse bei registerUser eingegeben wurde.
+// Und falls keine valide Mailadresse eingegeben wurde.
 
 function clearEmailError() {
-  if (confirmationError.textContent === USER_EXISTS_MSG) {
-    emailInput.classList.remove("error");
+  emailInput.classList.remove("error");
+  emailError.textContent = "";
+  emailError.style.display = "none";
+}
+
+// Fehleranzeige beim Rausklicken aus dem Emailfeld und nicht-valider Email
+
+function validateEmailOnBlur() {
+  const value = emailInput.value.trim();
+
+  if (value !== "" && !isEmailValid(value)) {
+    emailInput.classList.add("error");
+    emailError.textContent = EMAIL_INVALID_MSG;
+    emailError.style.display = "block";
     confirmationError.textContent = "";
     confirmationError.style.display = "none";
   }

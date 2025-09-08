@@ -38,6 +38,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 /* Sign Up Formular */
@@ -476,6 +477,28 @@
 .input_field_icon--confirm_login {
     top: 12px; /* Feinanpassung */
     transform: translateY(0); /* Zentrierung aufheben */
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    right: 0;            /* damit er voll breit ist */
+    bottom: 32px;        /* fixer Abstand zum unteren Rand */
+    display: flex;
+    justify-content: center;
+    gap: 16px;           /* Abstand zwischen den Links */
+}
+
+.additional_information {
+    text-decoration: none;
+    font-size: 16px;
+    color: #A8A8A8;
+    min-width: 120px;
+}
+
+.additional_information:hover {
+    color: #29ABE2;
+    font-weight: 700;
 }
 
 
