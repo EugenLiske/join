@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Board</title>
+    <link rel="icon" href="../assets/img/logos/join_logo_dark.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../styles/fonts.css">
     <link rel="stylesheet" href="../styles/root.css">
@@ -22,9 +23,9 @@
                         <div class="find_and_create_task_container">
                             <div class="search_input_wrapper">
                                 <input id="searchInput" type="text" placeholder="Find Task">
-                                <div class="search_affix" onclick="focusSearchInput()">
+                                <div class="search_affix" onclick="focusSearchInputField()">
                                     <div class="separator_input_field"></div>
-                                    <button type="button" class="search_button" onclick="focusSearchInput()"></button>
+                                    <button type="button" class="search_button" onclick="focusSearchInputField()"></button>
                                 </div>
                             </div>
                             <button class="add_task_button">
@@ -50,16 +51,31 @@
                                 <h3>In progress</h3>
                                 <button class="add_task_button_kanban"></button>
                             </div>
+                            <div class="task_column_content">
+                                <div class="no_tasks_placeholder">
+                                    No tasks To do
+                                </div>
+                            </div>
                         </div>
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Await feedback</h3>
                                 <button class="add_task_button_kanban"></button>
                             </div>
+                            <div class="task_column_content">
+                                <div class="no_tasks_placeholder">
+                                    No tasks To do
+                                </div>
+                            </div>
                         </div>
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Done</h3>
+                            </div>
+                            <div class="task_column_content">
+                                <div class="no_tasks_placeholder">
+                                    No tasks Done
+                                </div>
                             </div>
                         </div>
                     </div>
