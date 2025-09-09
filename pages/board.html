@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/board.css">
 </head>
-<body onload="initNavAndHeaderPage('board')">
+<body onload="initNavAndHeaderPage('board'); updateHTML()">
     <div class="page_wrapper">
         <div id="page_navigation"></div>
         <div class="content_wrapper">
@@ -35,44 +35,72 @@
                         </div>
                     </div>
                     <div class="kanban_board">
+
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>To do</h3>
                                 <button class="add_task_button_kanban"></button>
                             </div>
-                            <div class="task_column_content">
+                            <div
+                                class="task_column_content"
+                                ondragover="allowDrop(event)"
+                                ondrop="moveToDifferentCategory('to_do')"
+                                id="to_do"
+                                >
+
                                 <div class="no_tasks_placeholder">
                                     No tasks To do
                                 </div>
                             </div>
                         </div>
+
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>In progress</h3>
                                 <button class="add_task_button_kanban"></button>
                             </div>
-                            <div class="task_column_content">
+                            <div
+                                class="task_column_content"
+                                ondragover="allowDrop(event)"
+                                ondrop="moveToDifferentCategory('in_progress')"
+                                id="in_progress"
+                                >
+
                                 <div class="no_tasks_placeholder">
                                     No tasks To do
                                 </div>
                             </div>
                         </div>
+
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Await feedback</h3>
                                 <button class="add_task_button_kanban"></button>
                             </div>
-                            <div class="task_column_content">
+                            <div
+                                class="task_column_content"
+                                ondragover="allowDrop(event)"
+                                ondrop="moveToDifferentCategory('await_feedback')"
+                                id="await_feedback"
+                                >
+
                                 <div class="no_tasks_placeholder">
                                     No tasks To do
                                 </div>
                             </div>
                         </div>
+
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Done</h3>
                             </div>
-                            <div class="task_column_content">
+                            <div
+                                class="task_column_content"
+                                ondragover="allowDrop(event)"
+                                ondrop="moveToDifferentCategory('done')"
+                                id="done"
+                                >
+                                
                                 <div class="no_tasks_placeholder">
                                     No tasks Done
                                 </div>

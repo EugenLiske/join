@@ -178,7 +178,7 @@
 }
 
 .task_column_content {
-
+    min-height: 100vh;
 }
 
 .no_tasks_placeholder {
@@ -189,10 +189,25 @@
     border-width: 1px;
     color: #A8A8A8;
     height: 48px;
+    width: 252px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task {
+    background-color: #ffffff;
+    border-color: #29ABE2;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    color: #000000;
+    height: 48px;
     width: 252;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 h1 {
