@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Board</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/fonts.css">
+    <link rel="stylesheet" href="../styles/root.css">
+    <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/board.css">
+</head>
+<body onload="initNavAndHeaderPage('board')">
+    <div class="page_wrapper">
+        <div id="page_navigation"></div>
+        <div class="content_wrapper">
+            <div id="page_header"></div>
+            <div class="main_wrapper">
+                <article class="main_container_board">
+                    <div class="kanban_header">
+                        <h1>Board</h1>
+                        <div class="find_and_create_task_container">
+                            <div class="search_input_wrapper">
+                                <input id="searchInput" type="text" placeholder="Find Task">
+                                <div class="search_affix" onclick="focusSearchInput()">
+                                    <div class="separator_input_field"></div>
+                                    <button type="button" class="search_button" onclick="focusSearchInput()"></button>
+                                </div>
+                            </div>
+                            <button class="add_task_button">
+                                Add task
+                                <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="kanban_board">
+                        <div class="task_column">
+                            <div class="task_column_header">
+                                <h3>To do</h3>
+                                <button class="add_task_button_kanban"></button>
+                            </div>
+                            <div class="task_column_content">
+                                <div class="no_tasks_placeholder">
+                                    No tasks To do
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task_column">
+                            <div class="task_column_header">
+                                <h3>In progress</h3>
+                                <button class="add_task_button_kanban"></button>
+                            </div>
+                        </div>
+                        <div class="task_column">
+                            <div class="task_column_header">
+                                <h3>Await feedback</h3>
+                                <button class="add_task_button_kanban"></button>
+                            </div>
+                        </div>
+                        <div class="task_column">
+                            <div class="task_column_header">
+                                <h3>Done</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="../script.js"></script>
+<script src="../scripts/include.js"></script>
+<script src="../scripts/board.js"></script>
+</html>
