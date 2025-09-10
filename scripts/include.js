@@ -12,11 +12,6 @@ function initNavigation(page){
     includePageHeader();
 }
 
-function initNavigationExternal(page){
-    includePageNavigationExternal(page);
-    includePageHeader();
-}
-
 function includePageNavigation(page){
     try{
         fetch('../includes/page_navigation.html')
@@ -34,6 +29,36 @@ function includePageNavigation(page){
     catch(error){
         console.warn("Include page navigation - Error: Navigation is not loaded!!!");
     }
+}
+
+function includePageHeader(){
+    try{
+        fetch('../includes/page_header.html')
+            .then(response => response.text())
+            .then(data => {
+                try{
+                    document.getElementById("page_header").innerHTML = data;
+                    const initialsButton = document.getElementById("login_initials");
+                    const initials = sessionStorage.getItem("initials");
+                    if (initials && initials.trim() !== "") {
+                        initialsButton.textContent = initials;
+                    } else {
+                        initialsButton.textContent = "G";
+                    }
+                }
+                catch(error){
+                    console.warn("HTML container not available!");
+                }
+            });    
+    }
+    catch(error){
+        console.warn("Include page header - Error: Header is not loaded!!!");
+    }     
+}
+
+function initNavigationExternal(page){
+    includePageNavigationExternal(page);
+    includePageHeaderExternal();
 }
 
 function includePageNavigationExternal(page){
@@ -55,12 +80,9 @@ function includePageNavigationExternal(page){
     }
 }
 
-
-
-
-function includePageHeader(){
+function includePageHeaderExternal(){
     try{
-        fetch('../includes/page_header.html')
+        fetch('../includes/page_header_external.html')
             .then(response => response.text())
             .then(data => {
                 try{

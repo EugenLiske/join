@@ -4,16 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Login</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../styles/fonts.css">
-    <link rel="stylesheet" href="../styles/login_signup.css" />
+    <link rel="icon" href="./assets/img/logos/join_logo_dark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="./styles/login_signup.css" />
   </head>
   <body>
     <div class="become_member_area">
       <span>Not a Join user?</span>
       <button
         class="signup_button_login_page"
-        onclick="window.location.href='signup.html'"
+        onclick="window.location.href='./pages/signup.html'"
       >
         Sign up
       </button>
@@ -33,7 +34,7 @@
               oninput="checkLoginEnable()"
             />
             <img
-              src="../assets/img/icons/form/mail.svg"
+              src="./assets/img/icons/form/mail.svg"
               class="input_field_icon"
             />
           </div>
@@ -49,7 +50,7 @@
             />
             <img
               id="login_password_icon"
-              src="../assets/img/icons/form/lock.svg"
+              src="./assets/img/icons/form/lock.svg"
               class="input_field_icon input_field_icon--btn input_field_icon--confirm_login "
               onclick="toggleLoginVisibility('password_input','login_password_icon')"
             />
@@ -66,7 +67,7 @@
             id="guest_login_button"
             class="guest_login_button"
             type="button"
-            onclick="window.location.href='summary.html'"
+            onclick="window.location.href='./pages/summary.html'"
           >
             Guest Log in
           </button>
@@ -81,16 +82,16 @@
       </div>
 
       <footer>
-          <a href="./privacy_policy_external.html" class="additional_information">Privacy Policy</a>
-          <a href="./legal_notice_external.html" class="additional_information">Legal Notice</a>
+          <a href="./pages/privacy_policy_external.html" class="additional_information">Privacy Policy</a>
+          <a href="./pages/legal_notice_external.html" class="additional_information">Legal Notice</a>
       </footer>
       <img
         class="logo_signup_page"
-        src="../assets/img/logos/join_logo_dark.svg"
+        src="./assets/img/logos/join_logo_dark.svg"
         alt="join_logo"
       />
     </div>
   </body>
-<script src="../scripts/login.js"></script>
-<script src="../script.js"></script>
+<script src="./scripts/login.js"></script>
+<script src="./script.js"></script>
 </html>
