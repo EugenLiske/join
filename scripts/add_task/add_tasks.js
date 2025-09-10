@@ -85,6 +85,7 @@ function createTask(status = 0){
     newTask.assignedPersons = getAssignedPersons();
     newTask.subtasks = getSubtasks();
     newTask.status = status;
+    newTask.kanban = "to_do"; // Test für die Kanban-Spalte. Name "category" war vergeben.
     return newTask;
 }
 
@@ -96,7 +97,8 @@ function createNewTaskObject(){
         "priority": "",
         "assignedPersons": {},
         "category": "",
-        "subtasks": {}
+        "subtasks": {},
+        "kanban": "to_do" // Test für die Kanban-Spalte. Name "category" war vergeben.
     };
 }
 

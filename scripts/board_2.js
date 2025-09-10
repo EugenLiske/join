@@ -9,28 +9,8 @@ function focusSearchInputField() {
 
 let currentDraggedTask;
 
-let allTasks = [
-    {
-        'id': 0,
-        'title': "Präsentation erstellen",
-        'category': "to_do"
-    },
-    {
-        'id': 1,
-        'title': "Kühlschrank reinigen",
-        'category': "in_progress"
-    },
-    {
-        'id': 2,
-        'title': "Hochzeit planen",
-        'category': "await_feedback"
-    },
-    {
-        'id': 3,
-        'title': "Garten pflegen",
-        'category': "done"
-    }
-]
+let allTasks = [];
+
 
 function updateHTML(){
     // To Do - Tasks
@@ -96,14 +76,7 @@ function updateHTML(){
 
 function generateTodoHTML(element){
     return `
-        <div
-            draggable="true"
-            ondragstart="startDragging(${element['id']}, event)"
-            ondragend="endDragging(event)"
-            class="task"
-            >
-            ${element['title']}
-        </div>
+        <div draggable="true" ondragstart="startDragging(${element['id']})" class="task">${element['title']}</div>
     `
 }
 
@@ -125,47 +98,11 @@ function allowDrop(event) {
     event.preventDefault();
 }
 
-function startDragging(id, event){
+function startDragging(id){
     currentDraggedTask = id;
-    event.target.classList.add('dragging');
-}
-
-function endDragging(event){
-    event.target.classList.remove('dragging');
 }
 
 function moveToDifferentCategory(category){
     allTasks[currentDraggedTask]['category'] = category;
     updateHTML();
-    // Indikatoren überall entfernen (falls einer noch steht)
-    hideDropIndicator('to_do');
-    hideDropIndicator('in_progress');
-    hideDropIndicator('await_feedback');
-    hideDropIndicator('done');
 }
-
-function showDropIndicator(columnId) {
-    const container = document.getElementById(columnId);
-
-    // Nicht im Ursprungs-Container anzeigen
-    const originCategory = allTasks[currentDraggedTask] && allTasks[currentDraggedTask]['category'];
-    if (originCategory === columnId) {
-        hideDropIndicator(columnId);
-        return;
-    }
-
-    // Nur einen Indikator pro Spalte
-    if (!container.querySelector('.drop_indicator')) {
-        const indicator = document.createElement('div');
-        indicator.className = 'drop_indicator';
-        container.appendChild(indicator);
-    }
-}
-
-function hideDropIndicator(columnId) {
-    const container = document.getElementById(columnId);
-    if (!container) return;
-    const indicator = container.querySelector('.drop_indicator');
-    if (indicator) indicator.remove();
-}
-
