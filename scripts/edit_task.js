@@ -1,19 +1,57 @@
 
 
-async function initEditTask(){
+async function displayEditTaskOverlay(taskId){
+    await getTaskFromDB(taskId);
+    
     await includeAddTaskForm();
     manipulateTaskForm();
     setTaskFormData();
-    
+}
+
+async function getTaskFromDB(taskId){
+    await getAllTasks();
+    currentTask = getElementWithId(tasks, taskId)
+    if (!objectFound(currentTask)) return false;
+    return true;
+}
+
+function getElementWithId(objects, getId) {
+    if (!objects) return -1;
+
+    const objectKeys = Object.keys(objects);
+
+    for (let keyIdx = 0; keyIdx < objectKeys.length; keyIdx++) {
+        if (getId == getIdFromObjectKey(objectKeys[keyIdx])){
+            return objects[objectKeys[keyIdx]];
+        }
+    }
+
+    return -1;
+}
+
+
+function getIdFromObjectKey(key){
+    let splitKey = key.split("_");
+    return splitKey[splitKey.length - 1];
+}
+
+
+function objectFound(object){
+    if (object == -1)
+    {
+        console.warn("Object doesn't exist!");
+        return false;
+    }
+    return true;
 }
 
 
 function manipulateTaskForm(){
-    // document.getElementById("add_task_footer").classList.add("d_none");
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
 
 }
+
 
 function hideRequiredSymole(){
     const symboles = document.getElementsByClassName("required_symbole");
@@ -23,16 +61,24 @@ function hideRequiredSymole(){
     }
 }
 
+
 function setTaskFormData(){
-    document.getElementById("task_title_input").value = "Hallo";
-    document.getElementById("task_description_input").value = "This is the description!";
-    document.getElementById("task_deadline_input").value = "30/11/2026";
-    setPriority("urgent");
+    const taskKeys = Object.keys(currentTask);
+    if (taskKeys.includes("title")) document.getElementById("task_title_input").value = currentTask.title;
+    if (taskKeys.includes("description")) document.getElementById("task_description_input").value = currentTask.description;
+    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
+    if (taskKeys.includes("priority")) setPriority(currentTask.priority);
     // Assigned To !!!!!!!!!!!!!!!!!!
     // setAssignedToList({"contact_0": 0, "contact_2": 2});
-    setCategory("User Story");
-    setSubtasks({"subtask_0": {"description": "Subtask 1"}, "subtask_1": {"description": "Subtask 2"}, "subtask_2": {"description": "Subtask 3"}});
+    if (taskKeys.includes("category")) setCategory(currentTask.category);
+    if (taskKeys.includes("subtasks")) setSubtasks(currentTask.subtasks);
+}
 
+
+function changeDateFormat(date){
+    const splitDate = date.split("-");
+    splitDate.reverse();
+    return splitDate.join("/");
 }
 
 
@@ -59,6 +105,7 @@ function setSubtasks(subtasks){
         
     }
 }
+
 
 function getOKButtonTemplate(){
     return `<button id="create_task_button" class="button_filled button_check" onclick="checkAndCreateTask()">

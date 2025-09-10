@@ -1,32 +1,43 @@
+import { testExportFunction } from "../export_test";
 
 
-function displayTaskOverlay(taskId){
+async function displayTaskOverlay(taskId){
+    testExportFunction();
+    await getTaskFromDB(taskId);
+    // getTaskLocal(taskId);
+
     toggleTaskOverlay();
-    getTask(taskId);
     renderCurrentTask();
+}
+
+async function getTaskFromDB(taskId){
+    await getAllTasks();
+    currentTask = getElementWithId(tasks, taskId)
+    if (!objectFound(currentTask)) return false;
+    return true;
 }
 
 function toggleTaskOverlay(){
     document.getElementById("overlay_task").classList.toggle("d_none");
 }
 
-function getTask(taskId){
+function getTaskLocal(taskId){
     currentTaskKey = "task_" + taskId;
     currentTask = tasks[currentTaskKey];
 }
 
 
 function renderCurrentTask(){
-    if(currentTask){
-        displayCategory(currentTask["category"]);
-        document.getElementById("task_title").innerText = currentTask["title"];
-        document.getElementById("task_description").innerText = currentTask["description"];
-        document.getElementById("dueDate").innerText = currentTask["dueDate"].replace(/-/g, "/");
-        displayPriority(currentTask["priority"]);
-        // displayAssignedToPersons(currentTask["assignedTo"]);
-        displaySubtasks(currentTask["subtasks"]);
-    }
+    const taskKeys = Object.keys(currentTask);
+    if (taskKeys.includes("title")) document.getElementById("task_title").innerText = currentTask.title;
+    if (taskKeys.includes("description")) document.getElementById("task_description").innerText = currentTask.description;
+    if (taskKeys.includes("duedate")) document.getElementById("dueDate").innerText = changeDateFormat2(currentTask.duedate);
+    if (taskKeys.includes("priority")) displayPriority(currentTask["priority"]);
+    // displayAssignedToPersons(currentTask["assignedTo"]);
+    if (taskKeys.includes("category")) displayCategory(currentTask["category"]);
+    if (taskKeys.includes("subtasks")) displaySubtasks(currentTask["subtasks"]);
 }
+
 
 
 function displayCategory(category){
