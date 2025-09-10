@@ -46,6 +46,7 @@
     justify-content: center;/* horizontal */
     transform: translateY(100%);
     opacity: 0;
+    gap: 12px;
 }
 
 .overlay_message.enter {
