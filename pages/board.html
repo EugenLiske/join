@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="../styles/root.css">
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/board.css">
+    <link rel="stylesheet" href="../styles/task.css">
 </head>
-<body onload="initNavAndHeaderPage('board'); updateHTML()">
+<!-- <body onload="initNavAndHeaderPage('board'); updateHTML()">  -->
+<body onload="initNavAndHeaderPage('board')"> 
     <div class="page_wrapper">
         <div id="page_navigation"></div>
         <div class="content_wrapper">
@@ -51,6 +53,43 @@
                                 <div class="no_tasks_placeholder">
                                     No tasks To do
                                 </div>
+
+                                <article class="board_card">
+                                    <span id="bct_category" class="category category_bg_color0">User Story</span>
+                                    <h4 id="bct_title">Kochwelt Page & Recipe Recommender</h4>
+                                    <p id="bct_description">Build start page with recipe recommendation...</p>
+                                        
+                                    <div class="subtask_wrapper">
+                                        <div class="progress-container">
+                                            <div class="progress-bar" id="myProgressBar" style="width: 50%"></div>
+                                        </div>
+                                        <span>1/2 Subtasks</span>
+                                    </div>
+                                    <div class="bct_footer">
+                                        <ul id="task_assigned_to" class="bct_assigned_to_list">
+                                            <li>
+                                                <div class="person_icon" style="background-color: #1FD7C1">
+                                                    EM
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="person_icon" style="background-color: #462F8A">
+                                                    MB
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="person_icon" style="background-color: #0038FF">
+                                                    AM
+                                                </div>
+
+                                            </li>
+                                        </ul>
+
+                                        <img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt="Priority">
+                                    </div>
+
+                                    
+                                </article>    
                             </div>
                         </div>
 

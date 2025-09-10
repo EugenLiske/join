@@ -231,3 +231,74 @@ p {
     font-size: 16px;
     font-weight: 400;
 }
+
+/* --- Board Card - Task --- */
+
+.board_card{
+    width: 100%;
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 10px;
+
+    box-shadow: 0 0 10px 3px #00000014;
+
+    background-color: white;
+}
+
+.board_card img{
+    height: 32px;
+    width: 32px;
+}
+
+.board_card p{
+    color: #A8A8A8;
+}
+
+.bct_footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bct_assigned_to_list{
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+    overflow-y: auto;
+    margin-top: 8px;
+    padding-left: 10px;
+}
+
+.bct_assigned_to_list li{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-left: -10px;
+}
+
+.subtask_wrapper{
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Progressbar */
+
+.progress-container {
+    width: 120px;
+    height: 8px;
+    background-color: #F4F4F4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4589FF;
+    width: 20%;
+    border-radius: 10px;
+}
