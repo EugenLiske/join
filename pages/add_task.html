@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../styles/task_form.css">
     <link rel="stylesheet" href="../styles/login_signup.css">
     <link rel="stylesheet" href="../styles/button.css">
+    <link rel="stylesheet" href="../styles/toast_message.css">
     
     <script src="../script.js"></script>
     
@@ -25,6 +26,7 @@
     <script src="../scripts/add_task/form_validation.js"></script>
     <script src="../scripts/add_task/form_reader.js"></script>
 
+    <script src="../scripts/toast_message.js"></script>
     <script src="../scripts/add_task/add_tasks.js"></script>
     <script src="../scripts/add_task/form_selection/assigned_to.js"></script>
     <script src="../scripts/add_task/form_selection/category.js"></script>
@@ -34,6 +36,7 @@
     <script src="../scripts/include.js"></script>
 
 </head>
+
 <body onload="initAddTaskGlobal()">
     <div class="page_wrapper">
         <!-- navigation bar left -->
@@ -50,6 +53,12 @@
 
                 </article>
             </div>
+        </div>
+    </div>
+    <div id="add_task_overlay" class="overlay">
+        <div id="overlay_message" class="overlay_message">
+            Task added to board
+            <img src="../assets/img/icons/nav_bar/board.svg" alt="Board Icon">
         </div>
     </div>
 </body>

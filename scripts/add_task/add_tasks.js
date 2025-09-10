@@ -20,9 +20,11 @@ function initAddTaskGlobal(){
     includeAddTaskForm();
 }
 
+
 async function initAddTaskOverlay(){
     await includeAddTaskForm();
 }
+
 
 function initAddTask(){
     
@@ -50,10 +52,12 @@ function deleteForm(){
     resetWarning();
 }
 
+
 async function checkAndCreateTask(){
     let taskKey = "";
     let nextTaskId = -1;
     let newTask = null;
+    
 
     if (checkRequiredFields()){
         newTask = createTask();
@@ -62,9 +66,9 @@ async function checkAndCreateTask(){
         path = "/tasks/" + taskKey;
         await setData(newTask, path);
         await increaseTaskCounter(nextTaskId);
-        deleteForm();
+        displayToastMessage("add_task_overlay", "overlay_message", "../pages/board.html");
     }
-    // TODO: Weiterleitung auf Board Seite
+
 }
 
 
@@ -92,6 +96,7 @@ function createTask(status = 0){
     return newTask;
 }
 
+
 function createNewTaskObject(){
     return {
         "title": "",
@@ -103,6 +108,7 @@ function createNewTaskObject(){
         "subtasks": {}
     };
 }
+
 
 function getAssignedPersons(){
     let assignedPersons = {};
