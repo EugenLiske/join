@@ -20,6 +20,10 @@ function initAddTaskGlobal(){
     includeAddTaskForm();
 }
 
+async function initAddTaskOverlay(){
+    await includeAddTaskForm();
+}
+
 function initAddTask(){
     
     initAssignedToList();
