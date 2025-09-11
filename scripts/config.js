@@ -29,10 +29,11 @@ export const AVATAR_COLORS = [
 
 // Page URLs for Navigation
 export const PAGES = {
-    ADD_CONTACT: '../overlays/contacts_add.html',
-    EDIT_CONTACT: '../overlays/contacts_edit.html',
-    SUCCESS_PAGE: '../overlays/contacts_add_successful.html',
-    CONTACTS_LIST: '../overlays/contacts.html' // Falls Sie später eine Hauptliste haben
+    ADD_CONTACT: '../../overlays/contacts/contacts_add.html',
+    EDIT_CONTACT: '../../overlays/contacts/contacts_edit.html',
+    SUCCESS_PAGE: '../../overlays/contacts/contacts_add_successful.html',
+    CONTACTS_LIST: '../../overlays/contacts/contacts.html',
+    MAIN_PAGE: '../../templates/contact_test.html' // für die Startseite aus der add aufgerufen wird 
 };
 
 // LocalStorage Keys - prevents typos and centralizes key management

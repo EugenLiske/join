@@ -53,7 +53,7 @@
     right: 24px;
     width: 32px;
     height: 32px;
-    background-image: url("../assets/img/icons/navigation/cross.svg");
+    background-image: url("../../assets/img/icons/navigation/cross.svg");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -64,7 +64,7 @@
 }
 
 .close_button:hover {
-    background-image: url("../assets/img/icons/navigation/cross_hover.svg");
+    background-image: url("../../assets/img/icons/navigation/cross_hover.svg");
     transform: scale(1.1);
 }
 
@@ -91,6 +91,7 @@
    font-size: 48px;
    font-weight: 700;
    font-family: Inter, sans-serif;
+   line-height: 1.2;
    text-transform: uppercase;
 }
 
@@ -189,8 +190,10 @@
    height: 55px;
    background-color: var(--c-con-btn-default);
    color: var(--c-btn-edit);
+  font-family: inter, sans-serif;
    font-size: 21px;
    font-weight: 700;
+   line-height: 1.2;
    border: 1px solid var(--c-btn-edit);
    border-radius: 8px;
    cursor: pointer;
@@ -453,81 +456,6 @@
 }
 
 
-/* ================== TOAST NOTIFICATIONS ================== */
-
-.toast-message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--c-btn-default);
-    color: var(--c-btn-text-var2);
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    font-weight: 500;
-    font-family: Inter, sans-serif;
-    font-size: 14px;
-    max-width: 300px;
-    min-width: 200px;
-    opacity: 0;
-    transform: translateX(100px);
-    transition: all 0.3s ease;
-    word-wrap: break-word;
-}
-
-/* Toast Animation States */
-.toast-show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.toast-hide {
-    opacity: 0;
-    transform: translateX(100px);
-}
-
-/* Toast Types */
-.toast-success {
-    background: var(--c-pr-low);
-    color: white;
-}
-
-.toast-error {
-    background: var(--c-pr-urgent);
-    color: white;
-}
-
-.toast-warning {
-    background: var(--c-pr-medium);
-    color: white;
-}
-
-.toast-info {
-    background: var(--c-btn-hover);
-    color: white;
-}
-
-/* Toast Responsive */
-@media (max-width: 480px) {
-    .toast-message {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        min-width: auto;
-        transform: translateY(-100px);
-    }
-    
-    .toast-show {
-        transform: translateY(0);
-    }
-    
-    .toast-hide {
-        transform: translateY(-100px);
-    }
-}
-
 /* ================== CONFIRMATION OVERLAY ================== */
 
 .confirm-overlay {
@@ -669,11 +597,10 @@
         min-width: auto;
     }
 }
-
-/* ================== ADDITIONAL TOAST POSITIONS ================== */
+/* ================== ADDITIONAL TOAST POSITIONS ==================
 
 /* Optional: Different toast positions */
-.toast-bottom-right {
+/* .toast-bottom-right {
     bottom: 20px;
     top: auto;
     right: 20px;
@@ -708,4 +635,63 @@
 
 .toast-top-center.toast-hide {
     transform: translateX(-50%) translateY(-100px);
+} */
+
+/* ================== FIGMA TOAST OVERLAY ================== */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.overlay.leaving {
+    opacity: 0;
+}
+
+.overlay_message {
+    width: 312px;
+    height: 74px;
+    border-radius: 20px;
+    padding: 25px;
+    background-color: #2A3647;
+    color: #fff;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: Inter, sans-serif;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.overlay_message.enter {
+    animation: overlaySlideIn 300ms ease-out forwards;
+}
+
+@keyframes overlaySlideIn {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(-8%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
 }
