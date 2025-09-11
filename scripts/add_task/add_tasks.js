@@ -1,6 +1,6 @@
-let nameSearchList = [];
-let nameSearchListResult = [];
-let assignedToList = [];
+let nameSearchList = []; //list with all names from contacts
+let nameSearchListResult = []; //list of idx of persons containing the search text
+let assignedToList = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
 
 let nextSubtaskId = 0;
 
@@ -26,14 +26,23 @@ async function initAddTaskOverlay(){
 }
 
 
-function initAddTask(){
+async function initAddTask(){
+    await loadContacts();
+    console.log(persons);
     
-    initAssignedToList();
-    getNameSearchList();
+    initAssignedToList2();
+    getNameSearchList2();
     getSearchListResult("");
     renderSearchNames();
 
     renderCategoryOptions();
+
+    console.log(nameSearchList);
+    console.log(nameSearchListResult);
+    console.log(assignedToList);
+    
+    
+    
 }
 
 
@@ -90,7 +99,7 @@ function createTask(status = 0){
     newTask.duedate = getDueDate();
     newTask.priority = currentPriority;
     newTask.category = currentCategory;
-    newTask.assignedPersons = getAssignedPersons();
+    newTask.assignedPersons = getAssignedPersons2();
     newTask.subtasks = getSubtasks();
     newTask.status = status;
     return newTask;
@@ -117,6 +126,22 @@ function getAssignedPersons(){
             let personKey = "contact_" + personIdx;
             
             assignedPersons[personKey] = personIdx;
+        }
+    }
+    return assignedPersons;
+}
+
+
+function getAssignedPersons2(){
+    console.log(persons);
+    
+    let assignedPersons = {};
+    let personsKeys = Object.keys(persons);
+    for (let personIdx = 0; personIdx < assignedToList.length; personIdx++) {
+        if (assignedToList[personIdx]){
+            let personKey = "contact_" + persons[personsKeys[personIdx]].id;
+            
+            assignedPersons[personKey] = persons[personsKeys[personIdx]].id;
         }
     }
     return assignedPersons;

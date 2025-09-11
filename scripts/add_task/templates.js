@@ -46,3 +46,16 @@ function getListElementTemplate(selectedDesignClass, personIdx, checked){
                 <img src="${getCheckboxImg(checked)}">
             </li>`;
 }
+
+
+function getListElementTemplate2(selectedDesignClass, personIdx, personkey, checked){
+    return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
+                <div class="person_info">
+                    <div class="person_icon" style="background-color: ${persons[personkey].avatarColor}">
+                        ${generateInitials(persons[personkey].name)}
+                    </div>
+                        ${persons[personkey].name}
+                </div>
+                <img src="${getCheckboxImg(checked)}">
+            </li>`;
+}

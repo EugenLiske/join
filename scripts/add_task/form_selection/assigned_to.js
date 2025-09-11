@@ -8,9 +8,25 @@ function getNameSearchList(){
 }
 
 
+function getNameSearchList2(){
+    const keys = Object.keys(persons);
+    for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
+        nameSearchList.push(persons[keys[keyIdx]].name);
+    }
+}
+
+
 function initAssignedToList(){
     assignedToList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {
+        assignedToList.push(false);
+    }
+}
+
+
+function initAssignedToList2(){
+    const keys = Object.keys(persons);
+    for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         assignedToList.push(false);
     }
 }
@@ -55,12 +71,14 @@ function renderSearchNames(){
     let personIdx = 0;
     let assignedTo = false;
     let selectedDesignClass = "";
+    let personKeys = Object.keys(persons);
 
+    // Iteriert über Namen aus dem Suchergebnis
     for (let resultIdx = 0; resultIdx < nameSearchListResult.length; resultIdx++) {
         personIdx = nameSearchListResult[resultIdx];
         assignedTo = assignedToList[personIdx];
         selectedDesignClass = assignedTo == true ? "person_selected" : "";
-        selection += getListElementTemplate(selectedDesignClass, personIdx, assignedTo);
+        selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
     }
     personSelectionRef.innerHTML = selection;
 }
@@ -140,22 +158,35 @@ function renderAssignedToList(){
     let selectedPersonContainer = document.getElementById("selected_persons");
 
     let firstThreeAssignments = {"counter": 0, "htmlTemplate": ""};
-    getFirstThreeAssignments(firstThreeAssignments);
+    getFirstThreeAssignments2(firstThreeAssignments);
     
     if (firstThreeAssignments.counter > 3){
-        firstThreeAssignments.htmlTemplate += getAssignedToTemplate("grey", "+" + (firstThreeAssignments.counter-3));
+        firstThreeAssignments.htmlTemplate += getAssignedToTemplate("grey", "+ " + (firstThreeAssignments.counter-3));
     }
     selectedPersonContainer.innerHTML = firstThreeAssignments.htmlTemplate;
 }
 
 
 function getFirstThreeAssignments(firstThreeAssignments){
-
     for (let persIdx = 0; persIdx < assignedToList.length; persIdx++) {
         if (assignedToList[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
                 firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[persIdx].color, persons[persIdx].initials);
+            }
+        }
+    }
+}
+
+
+function getFirstThreeAssignments2(firstThreeAssignments){
+    let personsKeys = Object.keys(persons);
+    
+    for (let persIdx = 0; persIdx < assignedToList.length; persIdx++) {
+        if (assignedToList[persIdx]){
+            firstThreeAssignments.counter++;
+            if (firstThreeAssignments.counter <= 3){
+                firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
             }
         }
     }

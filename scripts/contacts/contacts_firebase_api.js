@@ -9,7 +9,7 @@ import {
     FIREBASE_URL, 
     AVATAR_COLORS, 
     FIREBASE_PATHS,
-    DEFAULTS 
+    DEFAULTS
 } from '../config.js';
 
 /**
