@@ -92,9 +92,8 @@ function editContact(contactId) {
  * Closes edit/add overlay and returns to previous page
  */
 function closeEditContact() {
-    // Clean up edit data if present
     localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
-    window.history.back();
+    window.location.href = PAGES.MAIN_PAGE;
 }
 
 // ================== SUCCESS PAGE FUNCTIONS ==================
@@ -111,6 +110,11 @@ function loadContactDataForSuccessPage() {
             displayContactSuccess(contactData);
             setupClickOutsideToClose();
             
+            // Toast nach 0,5 Sekunden anzeigen
+            setTimeout(() => {
+                showOverlayMessage('Contact successfully created!', 'success', 3000);
+            }, 500);
+            
         } catch (error) {
             console.error('Error parsing contact data:', error);
         }
@@ -118,6 +122,7 @@ function loadContactDataForSuccessPage() {
         console.error('No contact data found for success page');
     }
 }
+
 
 /**
  * Sets up click-outside for success page overlay
@@ -133,6 +138,7 @@ function setupClickOutsideToClose() {
     });
 }
 
+
 // ================== EDIT FUNCTIONALITY ==================
 
 
@@ -141,8 +147,10 @@ function setupClickOutsideToClose() {
  * @param {Error} error - The error that occurred
  */
 function handleContactLoadError(error) {
-    showOverlayMessage('Error loading contact data. Contact may have been deleted.');
-    window.history.back();
+    showOverlayMessage('Error loading contact data. Contact may have been deleted.', 'error', 2500);
+    setTimeout(() => {
+        window.history.back();
+    }, 3000);
 }
 
 /**
@@ -176,8 +184,10 @@ function loadContactDataForEditPage() {
     if (contactId) {
         loadContactForEdit(parseInt(contactId));
     } else {
-        showOverlayMessage('No contact ID found for edit page');
-        window.history.back();
+        showOverlayMessage('No contact ID found for edit page', 'error', 2500);
+        setTimeout(() => {
+            window.history.back();
+        }, 3000);
     }
 }
 
@@ -188,19 +198,24 @@ function loadContactDataForEditPage() {
  * @param {number} contactId - ID of contact to delete
  */
 async function deleteContactFromSuccessPage(contactId) {
-    try {
+    try {        
         await deleteContactFromFirebase(parseInt(contactId));
         
-        localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
-        showOverlayMessage('Contact deleted successfully');
-        window.location.href = PAGES.ADD_CONTACT;
+        // Success-Toast anzeigen
+        showOverlayMessage('Contact deleted successfully', 'success', 1800);
+        
+        // Navigation nach 1.8 Sekunden
+        setTimeout(() => {
+            localStorage.removeItem(STORAGE_KEYS.LAST_SAVED_CONTACT);
+            window.location.href = PAGES.ADD_CONTACT;
+        }, 2000);
         
     } catch (error) {
         console.error('Error deleting contact:', error);
-        showOverlayMessage('Error deleting contact. Please try again.', 'error');
+        // Error-Toast ohne Auto-Navigation
+        showOverlayMessage('Error deleting contact. Please try again.', 'error', 3000);
     }
 }
-
 /**
  * Deletes contact from edit page and navigates back
  */
@@ -213,15 +228,23 @@ async function deleteContact() {
     }
     
     try {
-        showOverlayMessage('Deleting contact from edit page:', contactId);
+        // Kurzer Info-Toast während Löschvorgang
+        showOverlayMessage('Deleting contact...', 'warning', 1000);
         
         await deleteContactFromFirebase(parseInt(contactId));
-        showOverlayMessage('Contact deleted successfully');
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);        
-        window.history.back();
+        
+        // Success-Toast anzeigen
+        showOverlayMessage('Contact deleted successfully', 'success', 1500);
+        
+        // Navigation nach 1.8 Sekunden
+        setTimeout(() => {
+            localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);        
+            window.history.back();
+        }, 1800);
         
     } catch (error) {
-        showOverlayMessage('Error deleting contact. Please try again.');
+        // Error-Toast ohne Auto-Navigation (Benutzer soll Fehler sehen)
+        showOverlayMessage('Error deleting contact. Please try again.', 'error', 3000);
     }
 }
 
@@ -239,15 +262,22 @@ async function deleteContact() {
 async function handleCreateMode(formData) {
     const emailExists = await checkEmailExists(formData.email);
     if (emailExists) {
-        showOverlayMessage('This email address is already in use. Please use a different email.');
+        showOverlayMessage('This email address is already in use. Please use a different email.', 'error', 3000);
         return false;
     }
     
     const savedContact = await saveContactToFirebase(formData.contactData);
-    showOverlayMessage('Contact saved successfully with ID:', savedContact.id);
+    
+    // Success-Toast anzeigen
+    showOverlayMessage('Contact saved successfully', 'success', 1500);
     
     clearFormInputs();
-    navigateToSuccessPage(savedContact);
+    
+    // Navigation zur Success-Page nach 1.8 Sekunden
+    setTimeout(() => {
+        navigateToSuccessPage(savedContact);
+    }, 1800);
+    
     return true;
 }
 
@@ -260,20 +290,20 @@ async function handleCreateMode(formData) {
 async function handleEditMode(formData, contactId) {
     if (!contactId) {
         throw new Error('No contact ID found for editing');
-    }
-    
+    }    
     const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
     if (emailExists) {
-        // TODO: Replace with Toast
-        showOverlayMessage('This email address is already in use by another contact. Please use a different email.');
+         showOverlayMessage('This email address is already in use by another contact. Please use a different email.', 'error', 3000);
         return false;
     }
     
     const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
-    showOverlayMessage('Contact updated successfully with ID:', updatedContact.id);
+    showOverlayMessage('Contact updated successfully', 'success', 1500);
     
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
-    window.history.back();
+    setTimeout(() => {
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+        window.history.back();
+    }, 1800);
     return true;
 }
 

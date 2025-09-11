@@ -5,14 +5,14 @@
     margin: 0;
     box-sizing: border-box;
 }
-/* Bitte Hintergrundfarben rausnehmen  #################*/
+
 .main{
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     height: 594px;
-    width: 461px;    
-    background-color: aqua;
+    width: 461px;
+    background-color: aqua;    
 }
 
 .contact_successfully_created {
@@ -24,7 +24,10 @@
     background-color:var(--c-btn-edit);
     border-radius: 16px;
     color: var(--c-btn-text-var2);
-    font-weight: bold; 
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
     margin: 0px 0 48px 0;
 }
 
@@ -35,7 +38,6 @@
     align-items: center;
     height: 364px;
     width: 461px;
-    background-color: antiquewhite;
 }
 
 .content_head {
@@ -43,7 +45,6 @@
     justify-content: flex-start;
     height: 120px;
     width: 461px;
-    background-color: aquamarine;
 }
 
 /* PROFILE AVATAR CIRCLE */
@@ -64,9 +65,10 @@
 
 .avatar_initials {
    color: var(--c-btn-text-var2);
-   font-size: 48px;
-   font-weight: 700;
-   font-family: Inter, sans-serif;
+    font-family: 'Inter', sans-serif; /* Figma Daten */
+    font-weight: 500;
+    font-size: 47px;
+    line-height: 1.2;
    text-transform: uppercase;
 }
 
@@ -83,17 +85,23 @@
     width: auto;
     height: 120px;
     margin-left: 16px;
-    background-color: brown;
 }
 
 .content_head_name h1 {
     margin-top: 8px;
     margin-bottom: 24px;
-   /* bitte später Font bearbeiten  ######################*/
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 47px;
+    line-height: 1.2;
 }
 
 .content_head_name span {   
     margin: 24px 24px 0 0 ;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
 }
 
 .content_body {
@@ -104,10 +112,89 @@
 }
 .content_body h2 {
     margin: 48px 0 32px 0;
-    /* bitte später Font bearbeiten  ######################*/
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
 }
 
 .content_body h3 {
     margin: 8px 0;
-    /* bitte später Font bearbeiten  ######################*/
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.content_body p{
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+#contact_email{
+    color: var(--c-con-mail);
+    
+}
+
+
+/* ================== TOAST OVERLAY ================== */
+.overlay {
+    position:fixed;
+    inset: 0;    
+    color: var(--c-con-btn-click);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.overlay.leaving {
+    opacity: 0;
+}
+
+.overlay_message {
+    width: 312px;
+    height: 74px;
+    border-radius: 20px;
+    padding: 25px;
+    background-color: #2A3647;
+    color: #fff;
+    font-family: 'Inter', sans-serif; /* Figma Daten */
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.overlay_message.enter {
+    animation: overlaySlideIn 300ms ease-out forwards;
+}
+
+@keyframes overlaySlideIn {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(-8%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
 }

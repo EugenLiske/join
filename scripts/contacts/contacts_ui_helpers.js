@@ -41,7 +41,7 @@ export function updateAvatarPreview(name) {
     if (initials.length > 0) {
         avatarInitials.textContent = initials;
     } else {
-        avatarInitials.innerHTML = '<img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
+        avatarInitials.innerHTML = '<img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
     }
 }
 
@@ -62,7 +62,56 @@ export function updateSaveButtonState(isFormValid) {
     }
 }
 
+// export function displayContactSuccess(contactData) {
+//     if (!contactData) {
+//         console.error('No contact data to display');
+//         return;
+//     }
+    
+//     const contentHeadName = document.getElementById('content_head_name');
+//     const contactEmailDisplay = document.getElementById('contact_email');
+//     const contactPhoneDisplay = document.getElementById('contact_phone');
+//     const contactAvatar = document.getElementById('contact_avatar');
+//     const avatarInitials = document.getElementById('avatar_initials');
+    
+//     if (contentHeadName) {
+//         contentHeadName.textContent = contactData.name;
+//     }
+    
+//     if (contactEmailDisplay) {
+//         contactEmailDisplay.textContent = contactData.email;
+//     }
+    
+//     if (contactPhoneDisplay) {
+//         contactPhoneDisplay.textContent = contactData.phone;
+//     }
+    
+//     if (contactData.avatarColor && contactAvatar) {
+//         contactAvatar.style.backgroundColor = contactData.avatarColor;
+//     }
+    
+//     if (avatarInitials) {
+//         const initials = generateInitials(contactData.name);
+//         avatarInitials.textContent = initials;
+//     }
+    
+//     const editButton = document.getElementById('edit_contact_btn');
+//     if (editButton && contactData.id) {
+//         editButton.onclick = () => window.editContact(contactData.id);
+//         editButton.style.cursor = 'pointer';
+//     }
+    
+//     const deleteButton = document.getElementById('delete_contact_btn');
+//     if (deleteButton && contactData.id) {
+//         deleteButton.onclick = () => window.deleteContactFromSuccessPage(contactData.id);
+//         deleteButton.style.cursor = 'pointer';
+//     }
+// }
+
+// Debug Version 
 export function displayContactSuccess(contactData) {
+    console.log('displayContactSuccess called with:', contactData);
+    
     if (!contactData) {
         console.error('No contact data to display');
         return;
@@ -74,27 +123,39 @@ export function displayContactSuccess(contactData) {
     const contactAvatar = document.getElementById('contact_avatar');
     const avatarInitials = document.getElementById('avatar_initials');
     
+    console.log('Found elements:', {
+        contentHeadName,
+        contactEmailDisplay,
+        contactPhoneDisplay,
+        contactAvatar,
+        avatarInitials
+    });
+    
     if (contentHeadName) {
+        console.log('Setting name to:', contactData.name);
         contentHeadName.textContent = contactData.name;
     }
     
     if (contactEmailDisplay) {
+        console.log('Setting email to:', contactData.email);
         contactEmailDisplay.textContent = contactData.email;
     }
     
     if (contactPhoneDisplay) {
+        console.log('Setting phone to:', contactData.phone);
         contactPhoneDisplay.textContent = contactData.phone;
     }
     
     if (contactData.avatarColor && contactAvatar) {
+        console.log('Setting avatar color to:', contactData.avatarColor);
         contactAvatar.style.backgroundColor = contactData.avatarColor;
     }
     
     if (avatarInitials) {
         const initials = generateInitials(contactData.name);
+        console.log('Generated initials:', initials);
         avatarInitials.textContent = initials;
     }
-    
     const editButton = document.getElementById('edit_contact_btn');
     if (editButton && contactData.id) {
         editButton.onclick = () => window.editContact(contactData.id);
@@ -107,6 +168,7 @@ export function displayContactSuccess(contactData) {
         deleteButton.style.cursor = 'pointer';
     }
 }
+
 
 /**
  * Displays contact data in form input fields for editing
@@ -155,7 +217,7 @@ export function clearFormInputs() {
         phoneInput.title = '';
     }    
     if (avatarInitials) {
-        avatarInitials.innerHTML = '<img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
+        avatarInitials.innerHTML = '<img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
     }
 }
 
@@ -179,22 +241,60 @@ export function updateButtonState(text, disabled = false) {
 
 
 /**
- * Shows an overlay message notification (modal-style toast)
+ * Shows a toast notification message
  * @param {string} message - The message text to display
  * @param {string} type - Message type for styling ('success', 'error', 'warning', 'info')
  * @param {number} duration - Duration in milliseconds before auto-hide (default: 3000)
- * @returns {HTMLElement} The created overlay element
+ * @returns {HTMLElement} The created toast element
  */
+// export function showOverlayMessage(message, type = 'success', duration = 3000) {
+//     // Overlay-Container erstellen
+//     const overlay = document.createElement('div');
+//     overlay.className = 'overlay';
+    
+//     // Message-Box erstellen
+//     const messageBox = document.createElement('div');
+//     messageBox.className = 'overlay_message';
+//     messageBox.textContent = message;
+    
+//     // Zusammenfügen
+//     overlay.appendChild(messageBox);
+//     document.body.appendChild(overlay);
+    
+//     // Overlay anzeigen mit Animation
+//     setTimeout(() => {
+//         overlay.classList.add('active');
+//         messageBox.classList.add('enter');
+//     }, 10);
+    
+//     // Nach duration automatisch entfernen
+//     setTimeout(() => {
+//         overlay.classList.add('leaving');
+//         setTimeout(() => {
+//             if (overlay.parentNode) {
+//                 overlay.parentNode.removeChild(overlay);
+//             }
+//         }, 300);
+//     }, duration);
+    
+//     return overlay;
+// }
+
 export function showOverlayMessage(message, type = 'success', duration = 3000) {
     const overlay = document.createElement('div');
-    overlay.className = 'overlay active';
+    overlay.className = 'overlay';
     
     const messageBox = document.createElement('div');
-    messageBox.className = 'overlay_message enter';
+    messageBox.className = 'overlay_message';
     messageBox.textContent = message;
     
     overlay.appendChild(messageBox);
     document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.classList.add('active');
+        messageBox.classList.add('enter');
+    }, 10);
     
     setTimeout(() => {
         overlay.classList.add('leaving');

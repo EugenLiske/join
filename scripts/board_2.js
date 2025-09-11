@@ -35,31 +35,6 @@ async function initBoardPage() {
     updateHTML();          
   }
 
-// Statische Objekte zwecks Test
-
-// let allTasks = [
-//     {
-//         'id': 0,
-//         'title': "Präsentation erstellen",
-//         'kanbanBoardColumn': "to_do"
-//     },
-//     {
-//         'id': 1,
-//         'title': "Kühlschrank reinigen",
-//         'kanbanBoardColumn': "in_progress"
-//     },
-//     {
-//         'id': 2,
-//         'title': "Hochzeit planen",
-//         'kanbanBoardColumn': "await_feedback"
-//     },
-//     {
-//         'id': 3,
-//         'title': "Garten pflegen",
-//         'kanbanBoardColumn': "done"
-//     }
-// ]
-
 function updateHTML(){
     // To Do - Tasks
     let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
@@ -164,11 +139,13 @@ function endDragging(event){
 }
 
 async function moveToDifferentCategory(kanbanBoardColumn){
-    allTasks[currentDraggedTask]['kanbanBoardColumn'] = kanbanBoardColumn;
+    const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
+    if (actualIndex === -1) return; // Sicherheitsgurt, falls Task gerade entfernt wurde
+    allTasks[actualIndex]['kanbanBoardColumn'] = kanbanBoardColumn;
     updateHTML();
     console.log(allTasks);
 
-    let newKanbanColumn = allTasks[currentDraggedTask]['kanbanBoardColumn'];
+    let newKanbanColumn = allTasks[actualIndex]['kanbanBoardColumn'];
     console.log(newKanbanColumn);
 
     let path = `/tasks/task_${currentDraggedTask}/kanbanBoardColumn`
@@ -179,9 +156,11 @@ async function moveToDifferentCategory(kanbanBoardColumn){
 
 function showDropIndicator(columnId) {
     const container = document.getElementById(columnId);
+    const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
+    if (actualIndex === -1) return; // nichts „gegriffen“ oder Task nicht gefunden
 
     // Nicht im Ursprungs-Container anzeigen
-    const originCategory = allTasks[currentDraggedTask]['kanbanBoardColumn'];
+    const originCategory = allTasks[actualIndex]['kanbanBoardColumn'];
     if (originCategory === columnId) {
         hideDropIndicator(columnId);
         return;
@@ -201,3 +180,19 @@ function hideDropIndicator(columnId) {
     const indicator = container.querySelector('.drop_indicator');
     if (indicator) indicator.remove();
 }
+
+
+//save vor later --> deleteTaskById
+
+// function deleteTaskById(id) {
+//     // Lokal entfernen
+//     const idx = allTasks.findIndex(t => t.id === id);
+//     if (idx !== -1) allTasks.splice(idx, 1);
+//     updateHTML();
+
+//     // Falls gerade diese Task gezogen wurde → „Hand“ loslassen
+//     if (currentDraggedTask === id) currentDraggedTask = null;
+
+//     // DB entfernen (Realtime DB)
+//     // await fetch(`${BASE_URL}/tasks/task_${id}.json`, { method: 'DELETE' });
+// }

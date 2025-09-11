@@ -62,14 +62,14 @@ function deleteForm(){
 }
 
 
-async function checkAndCreateTask(){
+async function checkAndCreateTask(){ // hier kann man den Parameter für die verschiedenen Spalten als String übergeben
     let taskKey = "";
     let nextTaskId = -1;
     let newTask = null;
     
 
     if (checkRequiredFields()){
-        newTask = createTask();
+        newTask = await createTask(); // createTask ist async aufgrund der ID-Generierung
         nextTaskId = await getTaskCounter();
         taskKey = "task_" + nextTaskId;
         path = "/tasks/" + taskKey;
@@ -92,8 +92,9 @@ function checkAndEnableButton(){
 }
 
 
-function createTask(status = 0){
+async function createTask(status = 0){
     const newTask = createNewTaskObject();
+    newTask.id = await getTaskCounter(); // Neu zwecks ID-Speicherung im Objekt
     newTask.title = getTitle();
     newTask.description = getDescription();
     newTask.duedate = getDueDate();
@@ -102,19 +103,22 @@ function createTask(status = 0){
     newTask.assignedPersons = getAssignedPersons2();
     newTask.subtasks = getSubtasks();
     newTask.status = status;
+    newTask.kanbanBoardColumn = "to_do"; // Test für die Kanban-Spalte. Name "category" war vergeben.
     return newTask;
 }
 
 
 function createNewTaskObject(){
     return {
+        "id": "", // Neu zwecks ID-Speicherung im Objekt
         "title": "",
         "description": "",
         "duedate": "",
         "priority": "",
         "assignedPersons": {},
         "category": "",
-        "subtasks": {}
+        "subtasks": {},
+        "kanbanBoardColumn": "" // Test für die Kanban-Spalte. Name "category" war vergeben.
     };
 }
 

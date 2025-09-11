@@ -11,19 +11,19 @@
  /* MAIN HEADLINE */
 .edit_h1 {
    color: white;
-   font-family: inter;
+   font-family: inter, sans-serif;
    font-size: 61px;
-   font-weight: 600;
-   font-style: bold;
+   font-weight: 700;
+   line-height: 1.2;
    margin: 16px 0 0 16px;
 }   
 
 .edit_h3 {
    color: white;
-   font-family: inter;
-   font-size: 27px;
-   font-weight: 400;
-   font-style: regular;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.2;
    margin: 8px 0 0 16px;
 }
 /* BLUE UNDERLINE */
