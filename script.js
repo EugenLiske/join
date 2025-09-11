@@ -1,9 +1,10 @@
-let login = true;   //for mobile view
+export let login = true;   //for mobile view
 
-function toggleMenu() {
-    const menu = document.getElementById('side_menu');
-    menu.classList.toggle('open');
+export function loginSetter(value){
+    login = value;
 }
+
+
 
 
 function toggleOverlay(htmlId){

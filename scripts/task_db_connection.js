@@ -1,3 +1,7 @@
+import {
+  tasksSetter
+} from "../scripts/temp_db/task_db.js"
+
 const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app/";
 // Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
 // const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
@@ -5,8 +9,9 @@ const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebased
 // 
 
 
-async function getAllTasks(){
-  tasks = await getData("/tasks");
+export async function getAllTasks(){
+  let allTasks = await getData("/tasks");
+  tasksSetter(allTasks);
 }
 
 async function getData(path) {

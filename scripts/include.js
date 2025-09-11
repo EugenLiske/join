@@ -7,7 +7,7 @@
 //      id: navigation_bar
 // 
 
-function initNavigation(page){
+export function initNavigation(page){
     includePageNavigation(page);
     includePageHeader();
 }
@@ -163,7 +163,11 @@ function deactiveCurrentNavButton(element){
 
 // Bereinigung des Session Storage, innerhalb dessen die Initialen gespeichert sind
 
-function logoutUser(){
+export function logoutUser(){
     sessionStorage.clear();
 }
 
+export function toggleMenu() {
+    const menu = document.getElementById('side_menu');
+    menu.classList.toggle('open');
+}

@@ -1,3 +1,45 @@
+// --- Imports ----------------------------------------------------------------------------------
+
+import { 
+    initNavigation,
+    toggleMenu,
+    logoutUser
+} from "../scripts/include.js";
+
+import { 
+    getAllTasks
+} from "../scripts/task_db_connection.js";
+
+import { 
+    login,
+    loginSetter
+} from "../script.js";
+
+import { 
+    tasks
+} from "../scripts/temp_db/task_db.js";
+
+import {
+    currentUser
+} from "../scripts/temp_db/person_db.js"
+
+
+// --- Event Listener ---------------------------------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+    initSummary();
+})
+
+document.addEventListener('click', (event) => {
+    if (event.target.id == "login_initials"){
+        toggleMenu();
+    }
+    if (event.target.id == "logout"){
+        logoutUser();
+    }
+});
+
+// ----------------------------------------------------------------------------------------------
 
 let summaryContent = {
     "toDo": 0,
@@ -8,6 +50,7 @@ let summaryContent = {
     "inProgress": 0,
     "awaitingFeedback": 0
 };
+
 
 async function initSummary(){
     initNavigation("summary");  
@@ -31,10 +74,11 @@ function mobileWelcome() {
                 welcomeRef.classList.remove("welcome_show");
             }, 2000);
         }
-        login = false;
+        loginSetter(false);
     }
 
 }
+
 
 function calculateInformation() {
     let latestTask = null;
@@ -52,6 +96,7 @@ function calculateInformation() {
     summaryContent.deadline = latestTask;
 }
 
+
 function checkLatestDeadline(latestTask, task){
     let date = task["duedate"];
     let status = task["status"];
@@ -64,6 +109,7 @@ function checkLatestDeadline(latestTask, task){
     return latestTask;
 }
 
+
 function countUrgentTask(task){
     let priority = task["priority"];
     let status = task["status"];
@@ -72,6 +118,7 @@ function countUrgentTask(task){
         summaryContent.urgent += 1;
     }
 }
+
 
 function countTasks(task){
     let status = task["status"];
@@ -88,7 +135,7 @@ function countTasks(task){
 }
 
 
-// Diplay Data ----------------------------------------------------------------------
+// --- Diplay Data ----------------------------------------------------------------------
 
 function displaySummaryOnScreen(){
     let summaryKey = Object.keys(summaryContent);
@@ -105,6 +152,7 @@ function displaySummaryOnScreen(){
         }
     }
 }
+
 
 function convertDateFormat(date) {
     let dateObject = null;
