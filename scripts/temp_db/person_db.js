@@ -79,7 +79,7 @@ async function loadContacts() {
         }
 
         persons = await response.json();
-        console.log(persons);
+
     } catch (error) {
         console.error("Error loading contacts:", error);
     }

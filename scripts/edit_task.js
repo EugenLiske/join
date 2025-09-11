@@ -1,10 +1,11 @@
 
 
 async function displayEditTaskOverlay(taskId){
-    await getTaskFromDB(taskId);
-    
     await includeAddTaskForm();
+    await getTaskFromDB(taskId);
     manipulateTaskForm();
+    await loadContacts();
+
     setTaskFormData();
 }
 
@@ -68,15 +69,14 @@ function setTaskFormData(){
     if (taskKeys.includes("description")) document.getElementById("task_description_input").value = currentTask.description;
     if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
     if (taskKeys.includes("priority")) setPriority(currentTask.priority);
-    // Assigned To !!!!!!!!!!!!!!!!!!
-    // setAssignedToList({"contact_0": 0, "contact_2": 2});
+    if (taskKeys.includes("assignedPersons")) setAssignedToList(currentTask.assignedPersons);
     if (taskKeys.includes("category")) setCategory(currentTask.category);
     if (taskKeys.includes("subtasks")) setSubtasks(currentTask.subtasks);
 }
 
 
 function changeDateFormat(date){
-    const splitDate = date.split("-");
+    const splitDate = date.split("-");sss
     splitDate.reverse();
     return splitDate.join("/");
 }
@@ -88,11 +88,22 @@ function setPriority(priority){
 }
 
 
-function setAssignedToList(assignedToList){
-    const erf = document.getElementById("selection");
-    const listerf = erf.children;
-    console.log(listerf[0].innerHTML);
+function setAssignedToList(assignedPersons){
+    const personKeys = Object.keys(persons);
+    const assignedKeys = Object.keys(assignedPersons);
+    const searchHTMLList = document.getElementById("selection").children;
     
+    for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
+        for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
+            if (assignedPersons[assignedKeys[assignedKeyIdx]] == persons[personKeys[personKeyIdx]].id){
+                assignedToList[personKeyIdx] = true;    
+                selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);         
+                break;
+            }
+    
+        }    
+    }
+
 }
 
 
@@ -102,7 +113,6 @@ function setSubtasks(subtasks){
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         document.getElementById("subtask_input").value = subtasks[keys[keyIdx]].description;
         addSubtask();
-        
     }
 }
 

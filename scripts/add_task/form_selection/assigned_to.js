@@ -15,7 +15,7 @@ function getNameSearchList2(){
     }
 }
 
-
+ 
 function initAssignedToList(){
     assignedToList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {

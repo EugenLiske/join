@@ -28,7 +28,6 @@ async function initAddTaskOverlay(){
 
 async function initAddTask(){
     await loadContacts();
-    console.log(persons);
     
     initAssignedToList2();
     getNameSearchList2();
@@ -36,13 +35,6 @@ async function initAddTask(){
     renderSearchNames();
 
     renderCategoryOptions();
-
-    console.log(nameSearchList);
-    console.log(nameSearchListResult);
-    console.log(assignedToList);
-    
-    
-    
 }
 
 
