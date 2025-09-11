@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/board.css">
 </head>
-<body onload="initNavAndHeaderPage('board'); updateHTML()">
+<body onload="initBoardPage()">
     <div class="page_wrapper">
         <div id="page_navigation"></div>
         <div class="content_wrapper">
@@ -43,16 +43,12 @@
                             </div>
                             <div
                                 class="task_column_content"
+                                id="to_do"
                                 ondragover="allowDrop(event)"
                                 ondrop="moveToDifferentCategory('to_do')"
-                                id="to_do"
                                 ondragenter="showDropIndicator('to_do')"
                                 ondragleave="hideDropIndicator('to_do')"
-                                >
-
-                                <div class="no_tasks_placeholder">
-                                    No tasks To do
-                                </div>
+                            >
                             </div>
                         </div>
 
@@ -63,16 +59,12 @@
                             </div>
                             <div
                                 class="task_column_content"
+                                id="in_progress"
                                 ondragover="allowDrop(event)"
                                 ondrop="moveToDifferentCategory('in_progress')"
-                                id="in_progress"
                                 ondragenter="showDropIndicator('in_progress')"
                                 ondragleave="hideDropIndicator('in_progress')"
-                                >
-
-                                <div class="no_tasks_placeholder">
-                                    No tasks To do
-                                </div>
+                            >
                             </div>
                         </div>
 
@@ -83,16 +75,12 @@
                             </div>
                             <div
                                 class="task_column_content"
+                                id="await_feedback"
                                 ondragover="allowDrop(event)"
                                 ondrop="moveToDifferentCategory('await_feedback')"
-                                id="await_feedback"
                                 ondragenter="showDropIndicator('await_feedback')"
                                 ondragleave="hideDropIndicator('await_feedback')"
-                                >
-
-                                <div class="no_tasks_placeholder">
-                                    No tasks To do
-                                </div>
+                            >
                             </div>
                         </div>
 
@@ -102,16 +90,12 @@
                             </div>
                             <div
                                 class="task_column_content"
+                                id="done"
                                 ondragover="allowDrop(event)"
                                 ondrop="moveToDifferentCategory('done')"
-                                id="done"
                                 ondragenter="showDropIndicator('done')"
                                 ondragleave="hideDropIndicator('done')"
-                                >
-
-                                <div class="no_tasks_placeholder">
-                                    No tasks Done
-                                </div>
+                            >
                             </div>
                         </div>
                     </div>
@@ -123,5 +107,8 @@
 </body>
 <script src="../script.js"></script>
 <script src="../scripts/include.js"></script>
-<script src="../scripts/board.js"></script>
+<!-- <script src="../scripts/board.js"></script> -->
+<script src="../scripts/board_2.js"></script>
+<script src="../scripts/task_db_connection.js"></script>
+<script src="../scripts/add_task/add_tasks.js"></script>
 </html>

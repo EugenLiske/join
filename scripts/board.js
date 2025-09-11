@@ -7,34 +7,62 @@ function focusSearchInputField() {
 
 // Drag & Drop Mechanismus
 
+let allTasks = [];
+
+async function loadTasksFromDB(){
+    let taskResponse = await getData("/tasks");
+    let taskKeysArray = Object.keys(taskResponse);
+
+    for (let index = 0; index < taskKeysArray.length; index++) {
+        allTasks.push(
+            {
+                id:                 taskResponse[taskKeysArray[index]].id,
+                title:              taskResponse[taskKeysArray[index]].title,
+                kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn
+            }
+        )  
+    }
+    console.log(taskResponse);
+    console.log(taskKeysArray);
+    console.log(allTasks); 
+}
+
 let currentDraggedTask;
 
-let allTasks = [
-    {
-        'id': 0,
-        'title': "Präsentation erstellen",
-        'category': "to_do"
-    },
-    {
-        'id': 1,
-        'title': "Kühlschrank reinigen",
-        'category': "in_progress"
-    },
-    {
-        'id': 2,
-        'title': "Hochzeit planen",
-        'category': "await_feedback"
-    },
-    {
-        'id': 3,
-        'title': "Garten pflegen",
-        'category': "done"
-    }
-]
+async function initBoardPage() {
+    initNavAndHeaderPage('board');
+    await loadTasksFromDB();
+    updateHTML();          
+  }
+
+// Statische Objekte zwecks Test
+
+// let allTasks = [
+//     {
+//         'id': 0,
+//         'title': "Präsentation erstellen",
+//         'kanbanBoardColumn': "to_do"
+//     },
+//     {
+//         'id': 1,
+//         'title': "Kühlschrank reinigen",
+//         'kanbanBoardColumn': "in_progress"
+//     },
+//     {
+//         'id': 2,
+//         'title': "Hochzeit planen",
+//         'kanbanBoardColumn': "await_feedback"
+//     },
+//     {
+//         'id': 3,
+//         'title': "Garten pflegen",
+//         'kanbanBoardColumn': "done"
+//     }
+// ]
 
 function updateHTML(){
     // To Do - Tasks
-    let tasksToDo = allTasks.filter(task => task['category'] == 'to_do');
+    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
 
     const toDoColumn = document.getElementById('to_do');
     toDoColumn.innerHTML = '';
@@ -49,7 +77,7 @@ function updateHTML(){
     }
 
     // In progress - Tasks
-    let tasksInProgress = allTasks.filter(task => task['category'] == 'in_progress')
+    let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress')
 
     const inProgressColumn = document.getElementById('in_progress');
     inProgressColumn.innerHTML = '';
@@ -64,7 +92,7 @@ function updateHTML(){
     }
 
     // Await feedback - Tasks
-    let tasksAwaitFeedback = allTasks.filter(task => task['category'] == 'await_feedback')
+    let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback')
 
     const awaitFeedbackColumn = document.getElementById('await_feedback');
     awaitFeedbackColumn.innerHTML = '';
@@ -79,7 +107,7 @@ function updateHTML(){
     }
 
     // Done - Tasks
-    let tasksDone = allTasks.filter(task => task['category'] == 'done')
+    let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done')
 
     const doneColumn = document.getElementById('done');
     doneColumn.innerHTML = '';
@@ -107,7 +135,7 @@ function generateTodoHTML(element){
     `
 }
 
-function generatePlaceholderHTML(category) {
+function generatePlaceholderHTML(kanbanBoardColumn) {
     const texts = {
         'to_do': 'No tasks to do',
         'in_progress': 'No tasks in progress',
@@ -116,7 +144,7 @@ function generatePlaceholderHTML(category) {
     };
     return `
         <div class="no_tasks_placeholder">
-            ${texts[category]}
+            ${texts[kanbanBoardColumn]}
         </div>
     `;
 }
@@ -132,23 +160,28 @@ function startDragging(id, event){
 
 function endDragging(event){
     event.target.classList.remove('dragging');
+    currentDraggedTask = null;
 }
 
-function moveToDifferentCategory(category){
-    allTasks[currentDraggedTask]['category'] = category;
+async function moveToDifferentCategory(kanbanBoardColumn){
+    allTasks[currentDraggedTask]['kanbanBoardColumn'] = kanbanBoardColumn;
     updateHTML();
-    // Indikatoren überall entfernen (falls einer noch steht)
-    hideDropIndicator('to_do');
-    hideDropIndicator('in_progress');
-    hideDropIndicator('await_feedback');
-    hideDropIndicator('done');
+    console.log(allTasks);
+
+    let newKanbanColumn = allTasks[currentDraggedTask]['kanbanBoardColumn'];
+    console.log(newKanbanColumn);
+
+    let path = `/tasks/task_${currentDraggedTask}/kanbanBoardColumn`
+    console.log(path);
+    
+    await setData(newKanbanColumn, path);
 }
 
 function showDropIndicator(columnId) {
     const container = document.getElementById(columnId);
 
     // Nicht im Ursprungs-Container anzeigen
-    const originCategory = allTasks[currentDraggedTask] && allTasks[currentDraggedTask]['category'];
+    const originCategory = allTasks[currentDraggedTask]['kanbanBoardColumn'];
     if (originCategory === columnId) {
         hideDropIndicator(columnId);
         return;
@@ -168,4 +201,3 @@ function hideDropIndicator(columnId) {
     const indicator = container.querySelector('.drop_indicator');
     if (indicator) indicator.remove();
 }
-

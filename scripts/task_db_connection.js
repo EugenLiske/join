@@ -2,6 +2,8 @@
 // Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
+// 
+
 
 async function getAllTasks(){
   tasks = await getData("/tasks");
@@ -42,7 +44,7 @@ async function setData(data, path) {
 }
 
 async function getTaskCounter(){
-  return await getData("/task_counter");
+  return await getData("/task_counter"); // muss in der DB manuell gesetzt werden --> task_counter: 0
 }
 
 async function setTaskCounter(counter){
