@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Contacts</title>
+    <link rel="icon" href="../assets/img/logos/join_logo_dark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/root.css">
+    <link rel="stylesheet" href="../styles/fonts.css">
+    <link rel="stylesheet" href="../styles/menu.css">
+    <link rel="stylesheet" href="../styles/contacts/contacts_list.css">
+    <link rel="stylesheet" href="../styles/contacts/contacts_add_successful.css">
+    <link rel="stylesheet" href="../styles/contacts/contact_edit_add.css">
+    <link rel="stylesheet" href="../styles/toast_message.css">
+</head>
+<body onload="initNavAndHeaderPage('contacts')">
+    <div class="page_wrapper">
+        <!-- Navigation (wird per include.js geladen) -->
+        <div id="page_navigation"></div>
+        
+        <div class="content_wrapper">
+            <!-- Header (wird per include.js geladen) -->
+            <div id="page_header"></div>
+            
+            <!-- Main Content Container -->
+            <div class="main_wrapper">
+                <div class="main_container">
+                    <!-- Page Header -->
+                   
+                    
+                    <!-- Main Content Area (3 Columns) -->
+                    <div class="contacts_main_content">
+                        <!-- Left Column: Contacts List -->
+                        <div class="contacts_list_section">
+                            <!-- Add Contact Button (dauerhaft sichtbar, Toast-Stil) -->
+                            <div class="add_contact_container">
+                                <button id="add_contact_btn" class="add_contact_button" onclick="openAddContactOverlay()">
+                                    
+                                    <span>Add new contact</span>
+                                    <img src="../assets/img/icons/buttons/person_add.svg" alt="Add Contact">
+                                </button>
+                            </div>
+                            
+                            <!-- Contacts List Container -->
+                            <div class="contacts_list_container">
+                                <div id="contacts_list" class="contacts_list">
+                                    <!-- Kontakte werden hier dynamisch geladen -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column: Contact Details -->
+                        <div class="contact_details_section">
+                            <!-- Page Header -->
+                    <div class="main_header">
+                        <h1>Contacts</h1>
+                        <div class="header_separator"></div>
+                        <span>Better with a team</span>
+                        <hr class="mobile_header_separator">
+                    </div>
+                            <div id="contact_details_panel" class="contact_details_panel d_none">
+                                <!-- Success Panel wird hier eingeblendet -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contact Overlay (wird dynamisch geladen) -->
+    <div id="add_contact_overlay" class="overlay_wrapper d_none">
+        <!-- Overlay Content wird hier geladen -->
+    </div>
+
+    <!-- Edit Contact Overlay (wird dynamisch geladen) -->
+    <div id="edit_contact_overlay" class="overlay_wrapper d_none">
+        <!-- Overlay Content wird hier geladen -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/include.js"></script>
+    <script src="../script.js"></script>
+    <script type="module" src="../scripts/contacts/contacts_list.js"></script>
+</body>
+</html>
