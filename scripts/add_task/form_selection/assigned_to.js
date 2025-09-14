@@ -1,4 +1,25 @@
+
+import {
+    persons,
+    generateInitials
+} from "../../temp_db/person_db.js";
+
+import {
+    getListElementTemplate2,
+    getAssignedToTemplate
+} from "../templates.js";
+
+
+
 // Assigned To Selection ------------------------------------------------------------------
+
+
+let nameSearchList = []; //list with all names from contacts
+let nameSearchListResult = []; //list of idx of persons containing the search text
+let assignedToList = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
+
+
+
 // Initial Functions
 
 function getNameSearchList(){
@@ -8,7 +29,7 @@ function getNameSearchList(){
 }
 
 
-function getNameSearchList2(){
+export function getNameSearchList2(){
     const keys = Object.keys(persons);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         nameSearchList.push(persons[keys[keyIdx]].name);
@@ -24,7 +45,7 @@ function initAssignedToList(){
 }
 
 
-function initAssignedToList2(){
+export function initAssignedToList2(){
     const keys = Object.keys(persons);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         assignedToList.push(false);
@@ -34,7 +55,7 @@ function initAssignedToList2(){
 
 // Event Listener
 
-function closeDropDownAssignedToSelection(event){
+export function closeDropDownAssignedToSelection(event){
     const containerAssignedTo = document.getElementById('selection_container_assignedto');
     if (!containerAssignedTo.contains(event.target)) {
         if (!document.getElementById('selection').classList.contains("d_none")){
@@ -46,7 +67,7 @@ function closeDropDownAssignedToSelection(event){
 
 // Selection
 
-function startNameSearch(){
+export function startNameSearch(){
     let input = document.getElementById("task_assignedto_input").value;
     getSearchListResult(input);
     renderSearchNames();
@@ -55,7 +76,7 @@ function startNameSearch(){
 }
 
 
-function getSearchListResult(input){
+export function getSearchListResult(input){
     nameSearchListResult = [];
     for (let personIdx = 0; personIdx < nameSearchList.length; personIdx++) {
         if (nameSearchList[personIdx].toLowerCase().includes(input.toLowerCase())){
@@ -65,7 +86,7 @@ function getSearchListResult(input){
 }
 
 
-function renderSearchNames(){
+export function renderSearchNames(){
     let personSelectionRef = document.getElementById("selection");
     let selection = "";
     let personIdx = 0;
@@ -84,7 +105,7 @@ function renderSearchNames(){
 }
 
 
-function selectPerson(element, personIdx){
+export function selectPerson(element, personIdx){
     element.classList.toggle("person_selected");
 
     let checkbox = getCheckbox(element);
@@ -110,18 +131,18 @@ function toggleCheckbox(checked, checkbox){
 }
 
 
-function getCheckboxImg(checked){
+export function getCheckboxImg(checked){
     return checked ? "../assets/img/icons/task/checkbox_tick.svg" : "../assets/img/icons/task/checkbox.svg";
 }
 
 
-function toggleSelectionList(listId, iconId){
+export function toggleSelectionList(listId, iconId){
     document.getElementById(listId).classList.toggle("d_none");
     toggleDropDownIcon(listId, iconId);
 }
 
 
-function hideSelectionList(listId, iconId){
+export function hideSelectionList(listId, iconId){
     document.getElementById(listId).classList.add("d_none");
     toggleDropDownIcon(listId, iconId);
 }
@@ -140,7 +161,7 @@ function toggleDropDownIcon(inputId, iconId){
 }
 
 
-function toggleInputElement(){
+export function toggleInputElement(){
     document.getElementById("task_assignedto_button").classList.toggle("d_none");
     document.getElementById("task_assignedto_input").classList.toggle("d_none");
 

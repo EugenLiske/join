@@ -7,6 +7,10 @@
 //      id: navigation_bar
 // 
 
+import {
+    initAddTask
+} from "../scripts/add_task/add_tasks.js"
+
 export function initNavigation(page){
     includePageNavigation(page);
     includePageHeader();
@@ -105,7 +109,7 @@ function includePageHeaderExternal(){
     }     
 }
 
-async function includeAddTaskForm(){
+export async function includeAddTaskForm(){
     try{
         await fetch('../includes/add_task_form.html')
             .then(response => response.text())

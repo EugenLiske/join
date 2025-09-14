@@ -1,19 +1,168 @@
-let nameSearchList = []; //list with all names from contacts
-let nameSearchListResult = []; //list of idx of persons containing the search text
-let assignedToList = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
+// --- Imports ----------------------------------------------------------------------------------
 
-let nextSubtaskId = 0;
+import { 
+    initNavigation,
+    toggleMenu,
+    logoutUser,
+    includeAddTaskForm
+} from "../include.js";
+
+import {
+    loadContacts
+} from "../temp_db/person_db.js";
+
+import {
+    initAssignedToList2,
+    getNameSearchList2,
+    getSearchListResult,
+    renderSearchNames,
+    toggleSelectionList,
+    toggleInputElement,
+    selectPerson,
+    closeDropDownAssignedToSelection,
+    startNameSearch
+} from "../add_task/form_selection/assigned_to.js";
+
+import {
+    renderCategoryOptions,
+    closeDropDownCategorySelection,
+    setCategory
+} from "../add_task/form_selection/category.js";
+
+import {
+    setGlobalPriority
+} from "../add_task/form_selection/priority.js";
+
+import {
+    addTaskOrToggleIcons,
+    cancelSubtask,
+    addSubtask,
+    deleteSubtask,
+    openEditMode,
+    saveAndCloseEditMode
+} from "../add_task/form_selection/subtask.js";
 
 
-// EventListener -------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------
 
-document.addEventListener('click', function(event) {
+
+
+// --- EventListener ----------------------------------------------------------------------------
+
+// document.addEventListener('click', function(event) {
+//     closeDropDownAssignedToSelection(event);
+//     closeDropDownCategorySelection(event);
+// });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initAddTaskGlobal();
+})
+
+
+
+
+document.addEventListener('click', (event) => {
+
+    // if (event.target.id == "login_initials"){
+    //     toggleMenu();
+    // }
+    // if (event.target.id == "logout"){
+    //     logoutUser();
+    // }
+    // if (["urgent", "medium", "low"].includes(event.target.id)){
+    //     setGlobalPriority(event.target, event.target.id);
+    // }
+    // if (["urgent", "medium", "low"].includes(event.target.parentNode.id)){
+    //     setGlobalPriority(event.target.parentNode, event.target.parentNode.id);
+    // }
+    // if (["task_assignedto_button", "drop_down_persons"].includes(event.target.id)){
+    //     toggleInputElement();
+    // }
+    // if (["category_selection", "drop_down_categories"].includes(event.target.id)){
+    //     toggleSelectionList('category_options', 'drop_down_categories');
+    // }
+    // Prüft, ob ein übergeordnetes Element die id "selection" hat
+
     closeDropDownAssignedToSelection(event);
+    
+    const categoryParent = event.target.closest('#category_options');
+    if (categoryParent) {
+        // Prüft, ob event.target das direkte Kind von #selection ist
+        if (event.target.parentNode === categoryParent) {
+            setCategory(event.target.id);
+        } else {
+            // Holt das direkte Kind von #selection, das angeklickt wurde
+            const directChild = Array.from(categoryParent.children).find(child => child.contains(event.target));
+            if (directChild) {
+                setCategory(directChild.id);
+            }
+        }
+    }
+
     closeDropDownCategorySelection(event);
+    // if (event.target.id == "cancel_subtask"){
+    //     cancelSubtask();
+    // }
+    // if (event.target.id == "add_subtask"){
+    //     addSubtask();
+    // }
+
+    let subtaskId = event.target.id.split("_");
+    subtaskId = subtaskId[subtaskId.length - 1];    
+    // if (["delete_subtask_" + subtaskId, "delete_edit_subtask_" + subtaskId].includes(event.target.id)){
+    //     deleteSubtask(event, subtaskId);
+    // }
+    console.log(event.target);
+    
+    // Handle delete subtask for SVG elements (since closest doesn't work on SVG)
+    let deleteSubtaskElement = event.target;
+    while (deleteSubtaskElement && deleteSubtaskElement !== document) {
+        if (
+            deleteSubtaskElement.id === "delete_subtask_" + subtaskId ||
+            deleteSubtaskElement.id === "delete_edit_subtask_" + subtaskId
+        ) {
+            deleteSubtask(event, subtaskId);
+            break;
+        }
+        deleteSubtaskElement = deleteSubtaskElement.parentNode;
+    }
+
+    const subtaskOpenEditParent = event.target.closest("#open_edit_subtask_" + subtaskId);
+    if (subtaskOpenEditParent) {
+        // Prüft, ob event.target das direkte Kind von #selection ist
+        openEditMode(subtaskId);
+    }
+
+    const subtaskSaveEditParent = event.target.closest("#save_edit_subtask_" + subtaskId);
+    if (subtaskSaveEditParent) {
+        // Prüft, ob event.target das direkte Kind von #selection ist
+        saveAndCloseEditMode(event, subtaskId);
+    }
+
 });
 
+document.addEventListener('dblclick', (event) => {
+    let subtaskId = event.target.id.split("_");
+    subtaskId = subtaskId[subtaskId.length - 1];    
+    if (event.target.id == "subtask_element_" + subtaskId){
+        openEditMode(subtaskId);
+    }
+});
 
-// Initial Function -----------------------------------------------------------------
+document.addEventListener('keyup', (event) => {
+    if (["task_title_input", "task_deadline_input"].includes(event.target.id)){
+        checkAndEnableButton();
+    }
+    if (event.target.id == "task_assignedto_input"){
+        startNameSearch();
+    }
+    if (event.target.id == "subtask_input"){
+        addTaskOrToggleIcons(event);
+    }
+})
+
+// --- Initial Function -------------------------------------------------------------------------
 
 function initAddTaskGlobal(){
     initNavigation("add_task"); // important for displaying the navigation bar 
@@ -26,7 +175,7 @@ async function initAddTaskOverlay(){
 }
 
 
-async function initAddTask(){
+export async function initAddTask(){
     await loadContacts();
     
     initAssignedToList2();

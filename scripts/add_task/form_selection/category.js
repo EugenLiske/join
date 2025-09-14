@@ -1,6 +1,16 @@
+import {
+    categories
+} from "../../temp_db/task_db.js"
+
+import {
+    hideSelectionList
+} from "../form_selection/assigned_to.js"
+
 // Category Selection ---------------------------------------------------------------------
 
-function closeDropDownCategorySelection(event){
+let currentCategory = "";
+
+export function closeDropDownCategorySelection(event){
     const containerCategory = document.getElementById('selection_container_category');
     if (!containerCategory.contains(event.target)) {
         hideSelectionList('category_options', 'drop_down_categories')
@@ -9,20 +19,20 @@ function closeDropDownCategorySelection(event){
 }
 
 
-function renderCategoryOptions(){
+export function renderCategoryOptions(){
     let categoryOptionsRef = document.getElementById("category_options");
     let optionList = "";
 
     for (let catIdx = 0; catIdx < categories.length; catIdx++) {
         if (!checkCategorySelection(categories[catIdx])){
-            optionList += `<li onclick="setCategory('${categories[catIdx]}'); checkAndEnableButton();">${categories[catIdx]}</li>`
+            optionList += `<li id="${categories[catIdx]}" ; checkAndEnableButton();">${categories[catIdx]}</li>`
         }
     }
     categoryOptionsRef.innerHTML = optionList;
 }
 
 
-function setCategory(category){
+export function setCategory(category){
     currentCategory = category;
     showCategorySelection(category);
     renderCategoryOptions();

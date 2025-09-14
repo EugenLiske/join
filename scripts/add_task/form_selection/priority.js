@@ -1,10 +1,10 @@
 // Priority Selection -------------------------------------------------------------------
 
 let currentPriority = "medium";
-let currentCategory = "";
 
 
-function setGlobalPriority(element, priority){
+
+export function setGlobalPriority(element, priority){
     clearPriorityButtons("all");
 
     element.disabled = true;

@@ -1,6 +1,5 @@
-const contactsList = {};
 
-let persons = [];
+export let persons = [];
 
 export let currentUser = {
   "name": "Lala Kufmenk",
@@ -14,7 +13,7 @@ export let currentUser = {
 
 
 // TODO: Auslagern der Funktion... sollte hier nicht stehen
-async function loadContacts() {
+export async function loadContacts() {
     try {
         // Cache-Bypass durch Timestamp
         const response = await fetch(`https://join-476d1-default-rtdb.firebaseio.com/contacts/data.json?t=${Date.now()}`);
@@ -31,7 +30,7 @@ async function loadContacts() {
 }
 
 // TODO: Auslagern der Funktion... sollte hier nicht stehen
-function generateInitials(name) {
+export function generateInitials(name) {
     if (!name || typeof name !== 'string') return '';
     
     const words = name.trim().split(' ').filter(word => word.length > 0);
