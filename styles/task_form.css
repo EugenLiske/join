@@ -267,7 +267,7 @@ button.input_field{
 
 .edit_overlay{
     position: absolute;
-    width: 422px;
+    width: 100%;
     top: 0;
     left: 0;
     height: 32px;
