@@ -1,4 +1,4 @@
-let login = true;   //for mobile view
+let login = false;
 
 function toggleMenu() {
     const menu = document.getElementById('side_menu');

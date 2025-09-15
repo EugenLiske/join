@@ -1,4 +1,13 @@
-const contactsList = {};
+// let currentUser = {
+//   "name": "Lala Kufmenk",
+//   "email": "lala.kufmenk@yahoo.de",
+//   "password": "123Test",
+//   "initials": "LK",
+//   "color": "#a3d25f",
+//   "role": "user"
+// };
+
+//email, initials, name, password
 
 let persons = [
   {
