@@ -2,7 +2,7 @@
 
 function closeDropDownCategorySelection(event){
     const containerCategory = document.getElementById('selection_container_category');
-    if (!containerCategory.contains(event.target)) {
+    if (containerCategory && !containerCategory.contains(event.target)) {
         hideSelectionList('category_options', 'drop_down_categories')
     }        
 

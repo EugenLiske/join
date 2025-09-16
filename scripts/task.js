@@ -1,8 +1,5 @@
-import { testExportFunction } from "../export_test";
-
 
 async function displayTaskOverlay(taskId){
-    testExportFunction();
     await getTaskFromDB(taskId);
     // getTaskLocal(taskId);
 

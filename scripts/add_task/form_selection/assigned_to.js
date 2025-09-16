@@ -2,6 +2,7 @@
 // Initial Functions
 
 function getNameSearchList(){
+    nameSearchList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {
         nameSearchList.push(persons[personIdx].name);
     }
@@ -9,6 +10,7 @@ function getNameSearchList(){
 
 
 function getNameSearchList2(){
+    nameSearchList = [];
     const keys = Object.keys(persons);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         nameSearchList.push(persons[keys[keyIdx]].name);
@@ -36,7 +38,7 @@ function initAssignedToList2(){
 
 function closeDropDownAssignedToSelection(event){
     const containerAssignedTo = document.getElementById('selection_container_assignedto');
-    if (!containerAssignedTo.contains(event.target)) {
+    if (containerAssignedTo && !containerAssignedTo.contains(event.target)) {
         if (!document.getElementById('selection').classList.contains("d_none")){
             toggleInputElement();
         }
@@ -78,7 +80,10 @@ function renderSearchNames(){
         personIdx = nameSearchListResult[resultIdx];
         assignedTo = assignedToList[personIdx];
         selectedDesignClass = assignedTo == true ? "person_selected" : "";
-        selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
+
+        if (persons[personKeys[personIdx]].id){
+            selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
+        }
     }
     personSelectionRef.innerHTML = selection;
 }

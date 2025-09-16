@@ -10,7 +10,14 @@
     <link rel="stylesheet" href="../styles/root.css">
     <link rel="stylesheet" href="../styles/menu.css">
     <link rel="stylesheet" href="../styles/board.css">
+
+    <link rel="stylesheet" href="../styles/add_task.css">
+    <link rel="stylesheet" href="../styles/task_form.css">
     <link rel="stylesheet" href="../styles/task.css">
+    <link rel="stylesheet" href="../styles/toast_message.css">
+    <link rel="stylesheet" href="../styles/login_signup.css">
+    <link rel="stylesheet" href="../styles/button.css">
+
 </head>
 <body onload="initBoardPage()">
     <div class="page_wrapper">
@@ -29,7 +36,7 @@
                                     <button type="button" class="search_button" onclick="focusSearchInputField()"></button>
                                 </div>
                             </div>
-                            <button class="add_task_button">
+                            <button class="add_task_button" onclick="initAddTaskOverlay('todo'); toggleOverlay('overlay_add_task')">
                                 Add task
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
                             </button>
@@ -40,7 +47,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>To do</h3>
-                                <button class="add_task_button_kanban"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('to_do'); toggleOverlay('overlay_add_task')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -91,7 +98,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>In progress</h3>
-                                <button class="add_task_button_kanban"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('in_progress'); toggleOverlay('overlay_add_task')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -107,7 +114,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Await feedback</h3>
-                                <button class="add_task_button_kanban"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('await_feedback'); toggleOverlay('overlay_add_task')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -139,12 +146,43 @@
             </div>
         </div>
     </div>
-    
+    <div id="overlay_add_task" class="overlay_wrapper d_none">
+        <article class="overlay_add_task">
+            <header class="overlay_add_task_header">
+                <h1>Add Task</h1>
+                <button class="overlay_close_button" onclick="toggleOverlay('overlay_add_task')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+            </header>
+            <div id="add_task_form"></div>
+
+        </article>                    
+    </div>
+    <div id="overlay_container" class="overlay">
+        <div id="overlay_message" class="overlay_message">
+            Task added to board
+            <img src="../assets/img/icons/nav_bar/board.svg" alt="Board Icon">
+        </div>
+    </div>
 </body>
 <script src="../script.js"></script>
 <script src="../scripts/include.js"></script>
 <!-- <script src="../scripts/board.js"></script> -->
 <script src="../scripts/board_2.js"></script>
+
+
+
+<script src="../scripts/temp_db/task_db.js"></script>
+
+<script src="../scripts/add_task/templates.js"></script>
+
+<script src="../scripts/add_task/form_validation.js"></script>
+<script src="../scripts/add_task/form_reader.js"></script>
+
 <script src="../scripts/task_db_connection.js"></script>
 <script src="../scripts/add_task/add_tasks.js"></script>
+<script src="../scripts/temp_db/person_db.js"></script>
+<script src="../scripts/toast_message.js"></script>
+<script src="../scripts/add_task/form_selection/assigned_to.js"></script>
+<script src="../scripts/add_task/form_selection/category.js"></script>
+<script src="../scripts/add_task/form_selection/priority.js"></script>
+<script src="../scripts/add_task/form_selection/subtask.js"></script>
 </html>
