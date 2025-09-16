@@ -14,12 +14,12 @@ async function loadTasksFromDB(){
     let taskKeysArray = Object.keys(taskResponse);
 
     for (let index = 0; index < taskKeysArray.length; index++) {
-        allTasks.push(
-            {
-                id:                 taskResponse[taskKeysArray[index]].id,
-                title:              taskResponse[taskKeysArray[index]].title,
-                kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn
-            }
+        allTasks.push(taskResponse[taskKeysArray[index]]
+            // {
+                // id:                 taskResponse[taskKeysArray[index]].id,
+                // title:              taskResponse[taskKeysArray[index]].title,
+                // kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn
+            // }
         )  
     }
     console.log(taskResponse);
@@ -31,6 +31,7 @@ let currentDraggedTask;
 
 async function initBoardPage() {
     initNavAndHeaderPage('board');
+    await loadContacts();
     await loadTasksFromDB();
     updateHTML();          
   }
@@ -47,7 +48,7 @@ function updateHTML(){
     } else {
         for (let index = 0; index < tasksToDo.length; index++) {
             const singleTaskToDo = tasksToDo[index];
-            toDoColumn.innerHTML += generateTodoHTML(singleTaskToDo);
+            toDoColumn.innerHTML += getTaskCardTemplate(singleTaskToDo);
         }
     }
 
@@ -62,7 +63,7 @@ function updateHTML(){
     } else {
         for (let index = 0; index < tasksInProgress.length; index++) {
             const singleTaskInProgress = tasksInProgress[index];
-            inProgressColumn.innerHTML += generateTodoHTML(singleTaskInProgress);
+            inProgressColumn.innerHTML += getTaskCardTemplate(singleTaskInProgress);
         }
     }
 
@@ -77,7 +78,7 @@ function updateHTML(){
     } else {
         for (let index = 0; index < tasksAwaitFeedback.length; index++) {
             const singleTaskAwaitFeedback = tasksAwaitFeedback[index];
-            awaitFeedbackColumn.innerHTML += generateTodoHTML(singleTaskAwaitFeedback);
+            awaitFeedbackColumn.innerHTML += getTaskCardTemplate(singleTaskAwaitFeedback);
         }
     }
 
@@ -92,7 +93,7 @@ function updateHTML(){
     } else {
         for (let index = 0; index < tasksDone.length; index++) {
             const singleTaskDone = tasksDone[index];
-            doneColumn.innerHTML += generateTodoHTML(singleTaskDone);
+            doneColumn.innerHTML += getTaskCardTemplate(singleTaskDone);
         }
     }
 }

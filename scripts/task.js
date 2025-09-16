@@ -18,10 +18,10 @@ function toggleTaskOverlay(){
     document.getElementById("overlay_task").classList.toggle("d_none");
 }
 
-function getTaskLocal(taskId){
-    currentTaskKey = "task_" + taskId;
-    currentTask = tasks[currentTaskKey];
-}
+// function getTaskLocal(taskId){
+//     currentTaskKey = "task_" + taskId;
+//     currentTask = tasks[currentTaskKey];
+// }
 
 
 function renderCurrentTask(){
@@ -30,9 +30,9 @@ function renderCurrentTask(){
     if (taskKeys.includes("description")) document.getElementById("task_description").innerText = currentTask.description;
     if (taskKeys.includes("duedate")) document.getElementById("dueDate").innerText = changeDateFormat2(currentTask.duedate);
     if (taskKeys.includes("priority")) displayPriority(currentTask["priority"]);
-    // displayAssignedToPersons(currentTask["assignedTo"]);
+    if (taskKeys.includes("assignedPersons")) {displayAssignedToPersons(currentTask["assignedPersons"])} else {document.getElementById("task_overlay_assigned_to").innerHTML = ""};
     if (taskKeys.includes("category")) displayCategory(currentTask["category"]);
-    if (taskKeys.includes("subtasks")) displaySubtasks(currentTask["subtasks"]);
+    if (taskKeys.includes("subtasks")) {displaySubtasks(currentTask["subtasks"])} else {document.getElementById("subtask_list").innerHTML = ""};
 }
 
 
@@ -57,44 +57,44 @@ function removeCSSClassCategoryColor(){
 
 function displayPriority(priority){
     const priorityRef = document.getElementById("task_priority");
-    let priorityHTML = "";
+    // let priorityHTML = "";
 
-    if (priority === "urgent"){
-        priorityHTML = '<span>Urgent</span><img src="../assets/img/icons/task/priorities/urgent_red.svg" alt="">';
-    }
-    else if (priority === "medium"){
-        priorityHTML = '<span>Medium</span><img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt="">';
-    }
-    else if (priority === "low"){
-        priorityHTML = '<span>Low</span><img src="../assets/img/icons/task/priorities/low_green.svg" alt="">';
-    }
+    // if (priority === "urgent"){
+    //     priorityHTML = '';
+    // }
+    // else if (priority === "medium"){
+    //     priorityHTML = '<span>Medium</span><img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt="">';
+    // }
+    // else if (priority === "low"){
+    //     priorityHTML = '<span>Low</span><img src="../assets/img/icons/task/priorities/low_green.svg" alt="">';
+    // }
 
-    priorityRef.innerHTML = priorityHTML;
+    priorityRef.innerHTML = getPriorityTemplate(priority);
 }
 
 
-function displayAssignedToPersons(assignedToList){
-    const keys = Object.keys(assignedToList);
-    let id = -1;
-    const listContainerRef = document.getElementById("task_assigned_to");
+
+function displayAssignedToPersons(assignedPersons){
+    const assignedKeys = Object.keys(assignedPersons);
+    const personKeys = Object.keys(persons);
+
+    const listContainerRef = document.getElementById("task_overlay_assigned_to");
     listContainerRef.innerHTML = "";
-    for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
-        id = assignedToList[assignedToList[keyIdx]];
-        // get id
-        // get contact with id
-        // listContainerRef.innerHTML += assignedToListElementTemplate(person);
-    }
+    for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
+        for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
+            if (assignedPersons[assignedKeys[assignedKeyIdx]] == persons[personKeys[personKeyIdx]].id){ 
+                person = persons[personKeys[personKeyIdx]];
+                listContainerRef.innerHTML += assignedToListElementTemplate(person);
+                break;
+            }
+    
+        }    
+    }      
+    console.log(listContainerRef.innerHTML);
+    
+
 }
 
-
-function assignedToListElementTemplate(person){
-    return `<li>
-                <div class="person_icon" style="background-color: ${person.color}">
-                    ${person.initials}
-                </div>
-                    ${person.name}
-            </li>`;
-}
 
 
 function displaySubtasks(subtasks){
@@ -109,13 +109,6 @@ function displaySubtasks(subtasks){
     }    
 }
 
-
-function subtaskListElementTemplate(subtask, idx){
-    return `<li onclick="toggleCheckbox(${idx})">
-                <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckbox(subtask.status)}" alt="">
-                <span>${subtask.description}</span>
-            </li>`;
-}
 
 
 function getCheckbox(status){
@@ -132,7 +125,9 @@ function toggleCheckbox(idx){
 
 
 function saveChangesLocal(){
-    tasks[currentTaskKey]["subtasks"] = currentTask["subtasks"];
+    return true;
+    // if (!tasks[currentTaskKey]["subtasks"]) return;
+    // tasks[currentTaskKey]["subtasks"] = currentTask["subtasks"];
     // save Changes in DB
 }
 
@@ -148,4 +143,113 @@ function deleteCurrentTask(){
 function editCurrentTask(){
     console.log("Open edit!");
     // Open edit
+}
+
+
+// --- Board - Task Card -------------------------------------------------------------------------------------------------------
+
+
+function buildAssignedToTemplate(task){
+    if (task["assignedPersons"]){
+        let htmlContainer = `<ul id="task_assigned_to" class="bct_assigned_to_list">`;
+        const assignedPersons = task["assignedPersons"];
+        htmlContainer += getAssignedPersonsHTML(assignedPersons);
+        return htmlContainer + `</ul>`;
+
+    }
+    return "<ul></ul>";
+}
+
+function getAssignedPersonsHTML(assignedPersons){
+    let htmlContainer = "";
+    let counter = 0;
+    for (const personKey in assignedPersons) {
+        const assignedPerson = searchAssignedPersonInContacts(assignedPersons[personKey]);
+        if (assignedPerson){
+            if (counter < 3){
+                htmlContainer += getAssignedToIconTemplate(assignedPerson.avatarColor, generateInitials(assignedPerson.name));
+            }
+            counter++;
+        }
+    }        
+
+    return htmlContainer + getAssignedToPlaceholder(counter, 3);
+}
+
+function getAssignedToPlaceholder(counter, limit){
+    if (counter >= limit){
+        return getAssignedToIconTemplate("grey", "+ " + (counter - 3));
+    }
+    return "";
+}
+
+function searchAssignedPersonInContacts(assignedPersonId){
+    const contactKeys = Object.keys(persons);
+    let contact = null;
+    for (let contactKeyIdx = 0; contactKeyIdx < contactKeys.length; contactKeyIdx++) {
+        contact = persons[contactKeys[contactKeyIdx]];
+        if (assignedPersonId == contact.id){ 
+            return contact;
+        }
+    }     
+    return null;
+}
+
+
+function getCategory(category){
+    return getCategoryLabelTemplate(category)
+}
+
+function getCategoryNumber(category){
+    return ["User Story", "Technical Task"].indexOf(category);
+}
+
+
+function getPriorityIcon(priority){
+    if (priority == "urgent"){
+        return "urgent_red.svg";
+    }
+    if (priority == "medium"){
+        return "medium_yellow.svg";
+    }
+    return "low_green.svg";
+}
+
+function buildDescriptionContainer(task){
+    if(task["description"]){
+        return getShortDescriptionTemplate(task['description']);
+    }
+    return "";
+}
+
+
+function shortenText(text, limit) {
+    if (text.length <= limit) return text;
+    let cut = text.slice(0, limit);
+    
+    if (/\S/.test(text[limit])) {
+        cut = cut.replace(/\s+\S*$/, '');
+    }
+    return cut.trim() + '...';
+}
+
+function buildSubtaskProgressbar(task){
+    if (task["subtasks"]){
+        const subtasks = task["subtasks"];
+        const values = countArchievedSubtasks(subtasks);
+        return getProgressbarTemplate(values.counter, values.amount);
+    }
+    return "";
+}
+
+function countArchievedSubtasks(subtasks){
+    let subtaskKeys = Object.keys(subtasks);
+    let subtasksAmount = subtaskKeys.length;
+    let counter = 0;
+    for (let index = 0; index < subtasksAmount; index++) {
+        if (subtasks[subtaskKeys[index]].status){
+            counter++;
+        }
+    }
+    return {"amount": subtasksAmount, "counter": counter};
 }

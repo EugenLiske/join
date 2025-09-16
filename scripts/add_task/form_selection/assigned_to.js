@@ -75,7 +75,6 @@ function renderSearchNames(){
     let selectedDesignClass = "";
     let personKeys = Object.keys(persons);
 
-    // Iteriert über Namen aus dem Suchergebnis
     for (let resultIdx = 0; resultIdx < nameSearchListResult.length; resultIdx++) {
         personIdx = nameSearchListResult[resultIdx];
         assignedTo = assignedToList[personIdx];
@@ -166,7 +165,7 @@ function renderAssignedToList(){
     getFirstThreeAssignments2(firstThreeAssignments);
     
     if (firstThreeAssignments.counter > 3){
-        firstThreeAssignments.htmlTemplate += getAssignedToTemplate("grey", "+ " + (firstThreeAssignments.counter-3));
+        firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate("grey", "+ " + (firstThreeAssignments.counter-3));
     }
     selectedPersonContainer.innerHTML = firstThreeAssignments.htmlTemplate;
 }
@@ -177,7 +176,7 @@ function getFirstThreeAssignments(firstThreeAssignments){
         if (assignedToList[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
-                firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[persIdx].color, persons[persIdx].initials);
+                firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[persIdx].color, persons[persIdx].initials);
             }
         }
     }
@@ -191,7 +190,7 @@ function getFirstThreeAssignments2(firstThreeAssignments){
         if (assignedToList[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
-                firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
+                firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
             }
         }
     }
