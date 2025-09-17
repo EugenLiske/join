@@ -62,3 +62,26 @@ function firstLetterUpperCase(word) {
     if (!word) return '';
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
+
+function objectFound(object){
+    if (object == -1)
+    {
+        console.warn("Object doesn't exist!");
+        return false;
+    }
+    return true;
+}
+
+
+function getIdFromObjectKey(key){
+    let splitKey = key.split("_");
+    return splitKey[splitKey.length - 1];
+}
+
+
+function changeDateFormat(date){
+    const splitDate = date.split("-");
+    splitDate.reverse();
+    return splitDate.join("/");
+}

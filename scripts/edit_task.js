@@ -1,65 +1,29 @@
 
+// --- Task Edit Overlay --------------------------------------------------------------------------
+// Contacts have already been loaded from the board when displaying.
+
 async function displayEditTaskOverlay(taskId){
     await includeAddTaskForm();
-    await getTaskFromDB(taskId);
+    // await getTaskFromDB(taskId);
+    // ToDo: Toggle Overlays
     manipulateTaskForm();
-    await loadContacts();
+    // await loadContacts();
 
     setTaskFormData();
 }
 
 
-async function getTaskFromDB(taskId){
-    await getAllTasks();
-    currentTask = getElementWithId(tasks, taskId)
-    if (!objectFound(currentTask)) return false;
-    return true;
-}
-
-
-function getElementWithId(objects, getId) {
-    if (!objects) return -1;
-
-    const objectKeys = Object.keys(objects);
-
-    for (let keyIdx = 0; keyIdx < objectKeys.length; keyIdx++) {
-        if (getId == getIdFromObjectKey(objectKeys[keyIdx])){
-            return objects[objectKeys[keyIdx]];
-        }
-    }
-
-    return -1;
-}
-
-
-function getIdFromObjectKey(key){
-    let splitKey = key.split("_");
-    return splitKey[splitKey.length - 1];
-}
-
-
-function objectFound(object){
-    if (object == -1)
-    {
-        console.warn("Object doesn't exist!");
-        return false;
-    }
-    return true;
-}
-
 
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
-
 }
 
 
 function hideRequiredSymole(){
-    const symboles = document.getElementsByClassName("required_symbole");
-    for (let symboleIdx = 0; symboleIdx < symboles.length; symboleIdx++) {
-        symboles[symboleIdx].classList.add("d_none");
-        
+    const symbols = document.getElementsByClassName("required_symbole");
+    for (let symbolIdx = 0; symbolIdx < symbols.length; symbolIdx++) {
+        symbols[symbolIdx].classList.add("d_none");
     }
 }
 
@@ -69,27 +33,22 @@ function setTaskFormData(){
     if (taskKeys.includes("title")) document.getElementById("task_title_input").value = currentTask.title;
     if (taskKeys.includes("description")) document.getElementById("task_description_input").value = currentTask.description;
     if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
-    if (taskKeys.includes("priority")) setPriority(currentTask.priority);
-    if (taskKeys.includes("assignedPersons")) setAssignedToList(currentTask.assignedPersons);
-    if (taskKeys.includes("category")) setCategory(currentTask.category);
-    if (taskKeys.includes("subtasks")) setSubtasks(currentTask.subtasks);
+    if (taskKeys.includes("priority")) setPrioritySelection(currentTask.priority);
+    if (taskKeys.includes("assignedPersons")) setAssignedToSelection(currentTask.assignedPersons);
+    if (taskKeys.includes("category")) setCategorySelection(currentTask.category);
+    if (taskKeys.includes("subtasks")) setSubtasksList(currentTask.subtasks);
 }
 
 
-function changeDateFormat(date){
-    const splitDate = date.split("-");sss
-    splitDate.reverse();
-    return splitDate.join("/");
-}
 
-
-function setPriority(priority){
+function setPrisetPrioritySelectionrityInput(priority){
     const priorityButtonRef = document.getElementById(priority);
     setGlobalPriority(priorityButtonRef, priority);
 }
 
-
-function setAssignedToList(assignedPersons){
+// Suchliste markieren
+// Ausgewählte Personen anzeigen
+function setAssignedToSelection(assignedPersons){
     const personKeys = Object.keys(persons);
     const assignedKeys = Object.keys(assignedPersons);
     const searchHTMLList = document.getElementById("selection").children;
@@ -106,11 +65,11 @@ function setAssignedToList(assignedPersons){
 }
 
 
-function setSubtasks(subtasks){
-    const keys = Object.keys(subtasks);
+function setSubtasksList(subtasks){
+    const subtaskKeys = Object.keys(subtasks);
 
-    for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
+    for (let keyIdx = 0; keyIdx < subtaskKeys.length; keyIdx++) {
         document.getElementById("subtask_input").value = subtasks[keys[keyIdx]].description;
-        addSubtask();
+        addSubtaskToList();
     }
 }

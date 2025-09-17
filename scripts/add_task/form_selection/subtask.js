@@ -2,7 +2,7 @@
 
 function addTaskOrToggleIcons(event){
     if (event.key === 'Enter' && document.getElementById("subtask_input").value.length > 0) {
-        addSubtask();
+        addSubtaskToList();
     }
     else {
         toggleIcons();
@@ -28,7 +28,7 @@ function openEditMode(subtaskID){
 }
 
 
-function addSubtask(){
+function addSubtaskToList(){
     let inputSubtask = document.getElementById("subtask_input");
     let input = inputSubtask.value;
     let subtasksContainer = document.getElementById("subtasks_container");

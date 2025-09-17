@@ -21,7 +21,7 @@ function renderCategoryOptions(){
 }
 
 
-function setCategory(category){
+function setCategorySelection(category){
     currentCategory = category;
     showCategorySelection(category);
     renderCategoryOptions();

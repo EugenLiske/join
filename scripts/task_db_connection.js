@@ -54,3 +54,11 @@ async function setTaskCounter(counter){
 async function increaseTaskCounter(nextTaskId){
   await setTaskCounter(nextTaskId+1);       
 }
+
+
+async function getTaskFromDB(taskId){
+    await getAllTasks();
+    currentTask = getElementWithId(tasks, taskId)
+    if (!objectFound(currentTask)) return false;
+    return true;
+}

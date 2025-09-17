@@ -46,13 +46,13 @@ function getListElementTemplate2(selectedDesignClass, personIdx, personkey, chec
 }
 
 
-
 function assignedToListElementTemplate(person){
     return `<li>
                 ${getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name))}
                 ${person.name}
             </li>`;
 }
+
 
 function getOKButtonTemplate(){
     return `<button id="create_task_button" class="button_filled button_check" onclick="checkAndCreateTask()">
@@ -62,7 +62,6 @@ function getOKButtonTemplate(){
                 </svg>
             </button>`
 }
-
 
 
 function subtaskListElementTemplate(subtask, idx){
@@ -113,7 +112,7 @@ function getProgressbarTemplate(numberSubtasksCompleted, numberSubtasks){
 
 
 function getCategorySelectionListElementTemplate(category){
-    return `<li onclick="setCategory('${category}'); checkAndEnableButton();">${category}</li>`
+    return `<li onclick="setCategorySelection('${category}'); checkAndEnableButton();">${category}</li>`
 }
 
 
@@ -124,7 +123,7 @@ function getPriorityTemplate(priority){
 
 
 function getCategoryLabelTemplate(category){
-    return `<span id="bct_category" class="category category_bg_color${getCategoryNumber(category)}">${category}</span>`;
+    return `<span class="category category_bg_color${getCategoryNumber(category)}">${category}</span>`;
 }
 
 
