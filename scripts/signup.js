@@ -155,7 +155,7 @@ function createSuccessOverlaySignUp() {
   setTimeout(function () {
     signupOverlay.classList.add("leaving");
     setTimeout(function () {
-      window.location.href = "login.html";
+      window.location.href = "../index.html";
     }, 300);
   }, 2700);
 }

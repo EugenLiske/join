@@ -7,7 +7,7 @@ function focusSearchInputField() {
 
 // Drag & Drop Mechanismus
 
-let allTasks = [];
+let allTasks = []; // Anpassung seitens Anne
 
 async function loadTasksFromDB(){
     let taskResponse = await getData("/tasks");
@@ -36,12 +36,16 @@ async function initBoardPage() {
   }
 
 function updateHTML(){
-    // To Do - Tasks
-    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
+    generateTasksToDoHTML();
+    generateTasksInProgressHTML();
+    generateTasksAwaitFeedbackHTML();
+    generateTasksDoneHTML();
+}
 
+function generateTasksToDoHTML(){
+    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
     const toDoColumn = document.getElementById('to_do');
     toDoColumn.innerHTML = '';
-
     if (tasksToDo.length === 0) {
         toDoColumn.innerHTML = generatePlaceholderHTML('to_do');
     } else {
@@ -50,13 +54,12 @@ function updateHTML(){
             toDoColumn.innerHTML += generateTodoHTML(singleTaskToDo);
         }
     }
+}
 
-    // In progress - Tasks
+function generateTasksInProgressHTML(){
     let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress')
-
     const inProgressColumn = document.getElementById('in_progress');
     inProgressColumn.innerHTML = '';
-
     if (tasksInProgress.length === 0) {
         inProgressColumn.innerHTML = generatePlaceholderHTML('in_progress');
     } else {
@@ -65,13 +68,12 @@ function updateHTML(){
             inProgressColumn.innerHTML += generateTodoHTML(singleTaskInProgress);
         }
     }
+}
 
-    // Await feedback - Tasks
+function generateTasksAwaitFeedbackHTML(){
     let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback')
-
     const awaitFeedbackColumn = document.getElementById('await_feedback');
     awaitFeedbackColumn.innerHTML = '';
-
     if (tasksAwaitFeedback.length === 0) {
         awaitFeedbackColumn.innerHTML = generatePlaceholderHTML('await_feedback');
     } else {
@@ -80,13 +82,12 @@ function updateHTML(){
             awaitFeedbackColumn.innerHTML += generateTodoHTML(singleTaskAwaitFeedback);
         }
     }
+}
 
-    // Done - Tasks
+function generateTasksDoneHTML(){
     let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done')
-
     const doneColumn = document.getElementById('done');
     doneColumn.innerHTML = '';
-
     if (tasksDone.length === 0) {
         doneColumn.innerHTML = generatePlaceholderHTML('done');
     } else {
@@ -97,7 +98,7 @@ function updateHTML(){
     }
 }
 
-function generateTodoHTML(element){
+function generateTodoHTML(element){ // Anpassung seitens Anne
     return `
         <div
             draggable="true"
