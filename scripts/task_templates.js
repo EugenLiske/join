@@ -65,8 +65,8 @@ function getOKButtonTemplate(){
 
 
 function subtaskListElementTemplate(subtask, idx){
-    return `<li onclick="toggleCheckbox(${idx})">
-                <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckbox(subtask.status)}" alt="">
+    return `<li onclick="toggleCheckboxSubtask(${idx})">
+                <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckboxSubtask(subtask.status)}" alt="">
                 <span>${subtask.description}</span>
             </li>`;
 }

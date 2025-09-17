@@ -67,16 +67,16 @@ function displaySubtasks(subtasks){
 }
 
 
-function getCheckbox(status){
+function getCheckboxSubtask(status){
     return status ? "../assets/img/icons/task/checkbox_tick_dark.svg" : "../assets/img/icons/task/checkbox.svg";
 }
 
 
-function toggleCheckbox(idx){
+function toggleCheckboxSubtask(idx){
     const keys = Object.keys(currentTask.subtasks);
     const subtask = currentTask.subtasks[keys[idx]];
     subtask.status = !subtask.status;
-    document.getElementById("checkbox_" + idx).src = getCheckbox(subtask.status);
+    document.getElementById("checkbox_" + idx).src = getCheckboxSubtask(subtask.status);
 }
 
 
