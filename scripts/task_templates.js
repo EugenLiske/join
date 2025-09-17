@@ -28,10 +28,10 @@ function getSubtaskTemplate(input){
 }
 
 
-function getAssignedToIconTemplate(color, initials){
-    return `<div class="person_icon" style="background-color: ${color}">
+function getAssignedToIconTemplate(color, initials, container = "div"){
+    return `<${container} class="person_icon" style="background-color: ${color}">
                 ${initials}
-            </div>`;
+            </${container}>`;
 }
 
 
@@ -108,11 +108,11 @@ function getTaskCardTemplate(task){
  * @param {number} numberSubtasks 
  * @returns  - HTML container containing a progress bar that is filled according to the input value.
  */
-function getProgressbarTemplate(numberSubtasksCompleted, numberSubtasks){
-    return `<div class="progress-container">
-                <div class="progress-bar" id="myProgressBar" style="width: ${numberSubtasksCompleted/numberSubtasks*100}%"></div>
+function getProgressbarTemplate(taskId, numberSubtasksCompleted, numberSubtasks, progressbarColor){
+    return `<div class="progress_container">
+                <div class="progress_bar ${progressbarColor}" id="progressbar_${taskId}" style="width: ${numberSubtasksCompleted/numberSubtasks*100}%"></div>
             </div>
-            <span>${numberSubtasksCompleted}/${numberSubtasks} Subtasks</span>`;
+            <span id="progress_text_${taskId}" class="">${numberSubtasksCompleted}/${numberSubtasks} Subtasks</span>`;
 }
 
 

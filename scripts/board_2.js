@@ -197,3 +197,18 @@ function hideDropIndicator(columnId) {
 //     // DB entfernen (Realtime DB)
 //     // await fetch(`${BASE_URL}/tasks/task_${id}.json`, { method: 'DELETE' });
 // }
+
+
+function deleteTaskFromArray(taskId) {
+    const taskIdx = allTasks.findIndex(task => task.id === taskId);
+    if (taskIdx !== -1) {
+        allTasks.splice(taskIdx, 1);
+    }
+}
+
+function updateTask(taskId, update) {
+    const taskIdx = allTasks.findIndex(task => task.id === taskId);
+    if (taskIdx !== -1) {
+        allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
+    }
+}

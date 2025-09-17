@@ -80,20 +80,42 @@ function toggleCheckboxSubtask(idx){
 }
 
 
-function saveChangesLocal(){
+async function saveTaskChanges(){
+    if (currentTask["subtasks"]){
+        console.log(currentTask["subtasks"]);
+        updateTask(currentTask.id, {"subtasks": currentTask["subtasks"]});
+        await setData(currentTask["subtasks"], "/tasks/task_" + currentTask.id + "/subtasks");
+        console.log(currentTask);
+        updateProgressbar(currentTask.id);
+        
+    }
     return true;
-    // if (!tasks[currentTaskKey]["subtasks"]) return;
-    // tasks[currentTaskKey]["subtasks"] = currentTask["subtasks"];
-    // save Changes in DB
+
+}
+
+
+function updateProgressbar(taskId){
+    const progressbarRef = document.getElementById("progressbar_" + taskId);
+    const values = countArchievedSubtasks(currentTask["subtasks"]);
+    let percent = values.counter/values.amount*100;
+    progressbarRef.style = "width: " + percent + "%";
+    if (percent == 100){
+        progressbarRef.classList.replace("subtasks_outstanding", "all_subtasks_completed");
+    } else {
+        progressbarRef.classList.replace("all_subtasks_completed", "subtasks_outstanding");
+    }
+    const progressTextRef = document.getElementById("progress_text_" + taskId);
+    progressTextRef.innerText = values.counter + "/" + values.amount + " Subtasks";
 }
 
 
 async function deleteCurrentTask(){
     toggleOverlay("overlay_task");
-    delete allTasks[currentTask.id];
+    deleteTaskFromArray(currentTask.id)
     deleteTaskFromFirebase(currentTask.id);
     document.getElementById("task_card_" + currentTask.id).remove();
 }
+
 
 
 function editCurrentTask(){
@@ -101,7 +123,6 @@ function editCurrentTask(){
     toggleOverlay('overlay_task');
     toggleOverlay('overlay_edit_task');
     displayEditTaskOverlay(currentTask.id);
-    // Open edit
 }
 
 
@@ -113,7 +134,7 @@ function buildAssignedToTemplate(task){
     if (task["assignedPersons"]){
         let htmlContainer = `<ul id="task_assigned_to" class="bct_assigned_to_list">`;
         const assignedPersons = task["assignedPersons"];
-        htmlContainer += getAssignedPersonsHTML(assignedPersons, "icon", true);
+        htmlContainer += getAssignedPersonsHTML(assignedPersons, "icon", true, "li");
         return htmlContainer + `</ul>`;
 
     }
@@ -160,14 +181,17 @@ function shortenText(text, limit) {
     return cut.trim() + '...';
 }
 
+
 function buildSubtaskProgressbar(task){
     if (task["subtasks"]){
         const subtasks = task["subtasks"];
         const values = countArchievedSubtasks(subtasks);
-        return getProgressbarTemplate(values.counter, values.amount);
+        let progressbarColor = values.counter/values.amount == 1 ? "all_subtasks_completed" : "subtasks_outstanding";
+        return getProgressbarTemplate(task.id, values.counter, values.amount, progressbarColor);
     }
     return "";
 }
+
 
 function countArchievedSubtasks(subtasks){
     let subtaskKeys = Object.keys(subtasks);
@@ -195,25 +219,25 @@ function searchAssignedPersonInContacts(assignedPersonId){
 }
 
 
-function getAssignedPersonsHTML(assignedPersons, selection = "icon", limited = false){
+function getAssignedPersonsHTML(assignedPersons, selection = "icon", limited = false, container = "div"){
     let htmlContainer = "";
     let counter = 0;
     for (const personKey in assignedPersons) {
         const assignedPerson = searchAssignedPersonInContacts(assignedPersons[personKey]);
         if (assignedPerson){
             if (!limited || counter < 3){
-                htmlContainer += assignedToTemplateSelector(selection, assignedPerson);
+                htmlContainer += assignedToTemplateSelector(selection, assignedPerson, container);
             }
             counter++;
         }
     }        
-    return htmlContainer + getAssignedToPlaceholder(counter, 3, limited);
+    return htmlContainer + getAssignedToPlaceholder(counter, 3, limited, container);
 }
 
 
-function assignedToTemplateSelector(selection, person){
+function assignedToTemplateSelector(selection, person, container = "div"){
     if (selection === "icon"){
-        return getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name));
+        return getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name), container);
     }
     if (selection === "icon_and_name"){
         return assignedToListElementTemplate(person);
@@ -223,9 +247,9 @@ function assignedToTemplateSelector(selection, person){
 }
 
 
-function getAssignedToPlaceholder(counter, limit, limited = true){
+function getAssignedToPlaceholder(counter, limit, limited = true, container = "div"){
     if (limited && counter >= limit){
-        return getAssignedToIconTemplate("grey", "+ " + (counter - 3));
+        return getAssignedToIconTemplate("grey", "+ " + (counter - 3), container);
     }
     return "";
 }

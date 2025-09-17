@@ -274,8 +274,8 @@ p {
 }
 
 .board_card img{
-    height: 32px;
-    width: 32px;
+    height: 24px;
+    width: 24px;
 }
 
 .board_card p{
@@ -297,7 +297,6 @@ p {
     display: flex;
     padding: 0;
     overflow-y: auto;
-    margin-top: 8px;
     padding-left: 10px;
 }
 
@@ -317,7 +316,7 @@ p {
 
 /* Progressbar */
 
-.progress-container {
+.progress_container {
     width: 120px;
     height: 8px;
     background-color: #F4F4F4;
@@ -325,9 +324,16 @@ p {
     overflow: hidden;
 }
 
-.progress-bar {
+.progress_bar {
     height: 100%;
-    background-color: #4589FF;
     width: 20%;
     border-radius: 10px;
+}
+
+.subtasks_outstanding{
+    background-color: #4589FF;
+}
+
+.all_subtasks_completed{
+    background-color: #37b837;
 }
