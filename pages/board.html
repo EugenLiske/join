@@ -29,13 +29,34 @@
                     <div class="kanban_header">
                         <h1>Board</h1>
                         <div class="find_and_create_task_container">
-                            <div class="search_input_wrapper">
-                                <input id="searchInput" type="text" placeholder="Find Task">
+
+                            <div id="searchInputWrapper" class="search_input_wrapper">
+                                <div class="search_field_row">
+                                    <input
+                                        id="searchInput"
+                                        type="text"
+                                        placeholder="Find task (min. 1 character)"
+                                        oninput="onSearchInput()"
+                                    >
+                                    <div class="search_affix" onclick="focusSearchInputField()">
+                                        <div class="separator_input_field"></div>
+                                        <button
+                                            type="button"
+                                            class="search_button"
+                                            onclick="focusSearchInputField(); onSearchInput()">
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Fehlermeldung separat, unterhalb der Zeile -->
+                                <div id="search_error" class="search_error">Results not found. Adjust your search</div>
+                            </div>
+                            <!-- <div id="searchInputWrapper" class="search_input_wrapper">
+                                <input id="searchInput" type="text" placeholder="Find task (min. 1 character)" oninput="onSearchInput()">
                                 <div class="search_affix" onclick="focusSearchInputField()">
                                     <div class="separator_input_field"></div>
-                                    <button type="button" class="search_button" onclick="focusSearchInputField()"></button>
+                                    <button type="button" class="search_button" onclick="focusSearchInputField(); onSearchInput()"></button>
                                 </div>
-                            </div>
+                            </div> -->
                             <button class="add_task_button" onclick="initAddTaskOverlay('todo'); toggleOverlay('overlay_add_task')">
                                 Add task
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
@@ -57,40 +78,7 @@
                                 ondragenter="showDropIndicator('to_do')"
                                 ondragleave="hideDropIndicator('to_do')"
                             >
-                                <article class="board_card">
-                                    <span id="bct_category" class="category category_bg_color0">User Story</span>
-                                    <h4 id="bct_title">Kochwelt Page & Recipe Recommender</h4>
-                                    <p id="bct_description">Build start page with recipe recommendation...</p>
-                                        
-                                    <div class="subtask_wrapper">
-                                        <div class="progress-container">
-                                            <div class="progress-bar" id="myProgressBar" style="width: 50%"></div>
-                                        </div>
-                                        <span>1/2 Subtasks</span>
-                                    </div>
-                                    <div class="bct_footer">
-                                        <ul id="task_assigned_to" class="bct_assigned_to_list">
-                                            <li>
-                                                <div class="person_icon" style="background-color: #1FD7C1">
-                                                    EM
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="person_icon" style="background-color: #462F8A">
-                                                    MB
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="person_icon" style="background-color: #0038FF">
-                                                    AM
-                                                </div>
 
-                                            </li>
-                                        </ul>
-
-                                        <img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt="Priority">
-                                    </div>
-                                </article> 
                             </div>
 
                         </div>
