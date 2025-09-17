@@ -62,3 +62,21 @@ async function getTaskFromDB(taskId){
     if (!objectFound(currentTask)) return false;
     return true;
 }
+
+async function deleteTaskFromFirebase(taskId) {
+    try {
+        const response = await fetch(BASE_URL_TASKS + "/tasks/task_" + taskId + ".json", {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Failed to delete contact: ${response.statusText}`);
+        }
+        
+        return true;
+        
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        throw error;
+    }
+}

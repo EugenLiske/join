@@ -105,13 +105,13 @@ function includePageHeaderExternal(){
     }     
 }
 
-async function includeAddTaskForm(){
+async function includeAddTaskForm(containerId = "add_task_form"){
     try{
         await fetch('../includes/add_task_form.html')
             .then(response => response.text())
             .then(data => {
                 try{
-                    document.getElementById("add_task_form").innerHTML = data; 
+                    document.getElementById(containerId).innerHTML = data; 
                 }
                 catch{
                     console.warn("HTML container not available!");

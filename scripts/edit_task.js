@@ -3,8 +3,8 @@
 // Contacts have already been loaded from the board when displaying.
 
 async function displayEditTaskOverlay(taskId){
-    await includeAddTaskForm();
-    // await getTaskFromDB(taskId);
+    await includeAddTaskForm("edit_task_form");
+    await getTaskFromDB(taskId);
     // ToDo: Toggle Overlays
     manipulateTaskForm();
     // await loadContacts();
@@ -41,7 +41,7 @@ function setTaskFormData(){
 
 
 
-function setPrisetPrioritySelectionrityInput(priority){
+function setPrioritySelection(priority){
     const priorityButtonRef = document.getElementById(priority);
     setGlobalPriority(priorityButtonRef, priority);
 }
@@ -69,7 +69,7 @@ function setSubtasksList(subtasks){
     const subtaskKeys = Object.keys(subtasks);
 
     for (let keyIdx = 0; keyIdx < subtaskKeys.length; keyIdx++) {
-        document.getElementById("subtask_input").value = subtasks[keys[keyIdx]].description;
+        document.getElementById("subtask_input").value = subtasks[subtaskKeys[keyIdx]].description;
         addSubtaskToList();
     }
 }

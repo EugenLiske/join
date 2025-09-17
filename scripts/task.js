@@ -88,16 +88,19 @@ function saveChangesLocal(){
 }
 
 
-function deleteCurrentTask(){
+async function deleteCurrentTask(){
     toggleOverlay("overlay_task");
-    delete tasks[currentTaskKey];
-    console.log(tasks);
-    // save Changes in DB
+    delete allTasks[currentTask.id];
+    deleteTaskFromFirebase(currentTask.id);
+    document.getElementById("task_card_" + currentTask.id).remove();
 }
 
 
 function editCurrentTask(){
     console.log("Open edit!");
+    toggleOverlay('overlay_task');
+    toggleOverlay('overlay_edit_task');
+    displayEditTaskOverlay(currentTask.id);
     // Open edit
 }
 
