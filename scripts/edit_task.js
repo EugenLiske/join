@@ -17,6 +17,7 @@ async function displayEditTaskOverlay(taskId){
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
+    document.getElementById("category_wrapper").classList.add("d_none");
 }
 
 
@@ -35,7 +36,7 @@ function setTaskFormData(){
     if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
     if (taskKeys.includes("priority")) setPrioritySelection(currentTask.priority);
     if (taskKeys.includes("assignedPersons")) setAssignedToSelection(currentTask.assignedPersons);
-    if (taskKeys.includes("category")) setCategorySelection(currentTask.category);
+    // if (taskKeys.includes("category")) setCategorySelection(currentTask.category);
     if (taskKeys.includes("subtasks")) setSubtasksList(currentTask.subtasks);
 }
 
