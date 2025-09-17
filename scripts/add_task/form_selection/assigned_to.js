@@ -2,6 +2,7 @@
 // Initial Functions
 
 function getNameSearchList(){
+    nameSearchList = [];
     for (let personIdx = 0; personIdx < persons.length; personIdx++) {
         nameSearchList.push(persons[personIdx].name);
     }
@@ -9,6 +10,7 @@ function getNameSearchList(){
 
 
 function getNameSearchList2(){
+    nameSearchList = [];
     const keys = Object.keys(persons);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         nameSearchList.push(persons[keys[keyIdx]].name);
@@ -36,7 +38,7 @@ function initAssignedToList2(){
 
 function closeDropDownAssignedToSelection(event){
     const containerAssignedTo = document.getElementById('selection_container_assignedto');
-    if (!containerAssignedTo.contains(event.target)) {
+    if (containerAssignedTo && !containerAssignedTo.contains(event.target)) {
         if (!document.getElementById('selection').classList.contains("d_none")){
             toggleInputElement();
         }
@@ -73,12 +75,14 @@ function renderSearchNames(){
     let selectedDesignClass = "";
     let personKeys = Object.keys(persons);
 
-    // Iteriert über Namen aus dem Suchergebnis
     for (let resultIdx = 0; resultIdx < nameSearchListResult.length; resultIdx++) {
         personIdx = nameSearchListResult[resultIdx];
         assignedTo = assignedToList[personIdx];
         selectedDesignClass = assignedTo == true ? "person_selected" : "";
-        selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
+
+        if (persons[personKeys[personIdx]].id){
+            selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
+        }
     }
     personSelectionRef.innerHTML = selection;
 }
@@ -161,7 +165,7 @@ function renderAssignedToList(){
     getFirstThreeAssignments2(firstThreeAssignments);
     
     if (firstThreeAssignments.counter > 3){
-        firstThreeAssignments.htmlTemplate += getAssignedToTemplate("grey", "+ " + (firstThreeAssignments.counter-3));
+        firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate("grey", "+ " + (firstThreeAssignments.counter-3));
     }
     selectedPersonContainer.innerHTML = firstThreeAssignments.htmlTemplate;
 }
@@ -172,7 +176,7 @@ function getFirstThreeAssignments(firstThreeAssignments){
         if (assignedToList[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
-                firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[persIdx].color, persons[persIdx].initials);
+                firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[persIdx].color, persons[persIdx].initials);
             }
         }
     }
@@ -186,7 +190,7 @@ function getFirstThreeAssignments2(firstThreeAssignments){
         if (assignedToList[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
-                firstThreeAssignments.htmlTemplate += getAssignedToTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
+                firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
             }
         }
     }

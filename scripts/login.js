@@ -48,13 +48,25 @@ async function loginUser(event) {
     if (!matchedUser) return showLoginErrorAndStop();
     storeUserInitials(matchedUser);
     createSuccessOverlayLogin();
-    login = true;
+    setCurrentUserData(true, "user", matchedUser.name)
     return true;
   } catch (error) {
     console.error("loginUser failed:", error);
     showGenericLoginError();
     return false;
   }
+}
+
+function loginGuest(event) {
+  event.preventDefault();
+  setCurrentUserData(true, "guest", "");
+  window.location.href='./pages/summary.html';
+}
+
+function setCurrentUserData(login, role, name){
+    sessionStorage.setItem("login", login);
+    sessionStorage.setItem("role", role);
+    sessionStorage.setItem("name", name);  
 }
 
 // Hilfsfunktionen für die loginUser-Funktion
@@ -117,7 +129,7 @@ function createSuccessOverlayLogin() {
 
 // Validierungsfunktion - aktiviert den Login-Button bei validen Eingaben
 
-function checkLoginEnable() {
+function checkLoginEnable() {loginUser
   let emailValue = emailInput.value.trim();
   let passwordValue = passwordInput.value;
   let emailOk = emailValue !== "" && isEmailValid(emailValue);

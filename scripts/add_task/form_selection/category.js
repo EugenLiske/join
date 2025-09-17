@@ -2,10 +2,9 @@
 
 function closeDropDownCategorySelection(event){
     const containerCategory = document.getElementById('selection_container_category');
-    if (!containerCategory.contains(event.target)) {
+    if (containerCategory && !containerCategory.contains(event.target)) {
         hideSelectionList('category_options', 'drop_down_categories')
     }        
-
 }
 
 
@@ -15,14 +14,14 @@ function renderCategoryOptions(){
 
     for (let catIdx = 0; catIdx < categories.length; catIdx++) {
         if (!checkCategorySelection(categories[catIdx])){
-            optionList += `<li onclick="setCategory('${categories[catIdx]}'); checkAndEnableButton();">${categories[catIdx]}</li>`
+            optionList += getCategorySelectionListElementTemplate(categories[catIdx]);
         }
     }
     categoryOptionsRef.innerHTML = optionList;
 }
 
 
-function setCategory(category){
+function setCategorySelection(category){
     currentCategory = category;
     showCategorySelection(category);
     renderCategoryOptions();

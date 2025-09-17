@@ -1,4 +1,6 @@
 
+let currentUser = null;
+
 let summaryContent = {
     "toDo": 0,
     "done": 0,
@@ -10,18 +12,37 @@ let summaryContent = {
 };
 
 async function initSummary(){
-    initNavigation("summary");  
-    mobileWelcome();
+    getCurrentUserData();
+    initNavigation("summary");
+
+    displayWelcomeOnScreen();
+
     await getAllTasks();
     calculateInformation();
     displaySummaryOnScreen();
-    displayWelcomeOnScreen();
-    
+}
+
+
+function getCurrentUserData(){
+    currentUser = {
+        "login": sessionStorage.getItem("login"),
+        "role": sessionStorage.getItem("role"),
+        "name": sessionStorage.getItem("name")
+    }
+}
+
+
+function displayWelcomeOnScreen(){
+    if (currentUser) {
+        createWelcomeText("welcome_text", "welcome_name", currentUser.name);
+        createWelcomeText("welcome_text_mobile", "welcome_name_mobile", currentUser.name);   
+    }
+    mobileWelcome();
 }
 
 
 function mobileWelcome() {
-    if (login){
+    if (currentUser.login){
         const welcomeRef = document.getElementById("welcome_mobile");
 
         if (window.innerWidth <= 950) {
@@ -31,9 +52,22 @@ function mobileWelcome() {
                 welcomeRef.classList.remove("welcome_show");
             }, 2000);
         }
-        login = false;
+        sessionStorage.setItem("login", false);
     }
 
+}
+
+function createWelcomeText(textId, nameId, name){
+    if (currentUser.role === "guest"){
+        writeWelcomeText(textId, "Good morning!", nameId, name);
+    } else { //Normal User
+        writeWelcomeText(textId, "Good morning,", nameId, name);
+    }
+}
+
+function writeWelcomeText(textId, text, nameId, name){
+        document.getElementById(textId).innerText = text;
+        document.getElementById(nameId).innerText = name;    
 }
 
 function calculateInformation() {
@@ -123,11 +157,3 @@ function convertDateFormat(date) {
     return dateObject.toLocaleDateString('en-US', format);
 }
 
-
-function displayWelcomeOnScreen(){
-    const welcomeNameRef = document.getElementById("welcome_name");
-
-    if (currentUser.role === "user"){
-        welcomeNameRef.innerText = currentUser.name;
-    }
-}

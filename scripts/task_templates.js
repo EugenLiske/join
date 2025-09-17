@@ -28,34 +28,128 @@ function getSubtaskTemplate(input){
 }
 
 
-function getAssignedToTemplate(color, initials){
+function getAssignedToIconTemplate(color, initials){
     return `<div class="person_icon" style="background-color: ${color}">
                 ${initials}
             </div>`;
 }
 
 
-function getListElementTemplate(selectedDesignClass, personIdx, checked){
-    return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
-                <div class="person_info">
-                    <div class="person_icon" style="background-color: ${persons[personIdx].color}">
-                        ${persons[personIdx].initials}
-                    </div>
-                        ${persons[personIdx].name}
-                </div>
-                <img src="${getCheckboxImg(checked)}">
-            </li>`;
-}
-
-
 function getListElementTemplate2(selectedDesignClass, personIdx, personkey, checked){
     return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
                 <div class="person_info">
-                    <div class="person_icon" style="background-color: ${persons[personkey].avatarColor}">
-                        ${generateInitials(persons[personkey].name)}
-                    </div>
-                        ${persons[personkey].name}
+                    ${getAssignedToIconTemplate(persons[personkey].avatarColor, generateInitials(persons[personkey].name))}
+                    ${persons[personkey].name}
                 </div>
                 <img src="${getCheckboxImg(checked)}">
             </li>`;
 }
+
+
+function assignedToListElementTemplate(person){
+    return `<li>
+                ${getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name))}
+                ${person.name}
+            </li>`;
+}
+
+
+function getOKButtonTemplate(){
+    return `<button id="create_task_button" class="button_filled button_check" onclick="checkAndCreateTask()">
+                Ok
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.61905 9.15L14.0941 0.675C14.2941 0.475 14.5316 0.375 14.8066 0.375C15.0816 0.375 15.3191 0.475 15.5191 0.675C15.7191 0.875 15.8191 1.1125 15.8191 1.3875C15.8191 1.6625 15.7191 1.9 15.5191 2.1L6.31905 11.3C6.11905 11.5 5.88572 11.6 5.61905 11.6C5.35239 11.6 5.11905 11.5 4.91905 11.3L0.619055 7C0.419055 6.8 0.323221 6.5625 0.331555 6.2875C0.339888 6.0125 0.444055 5.775 0.644055 5.575C0.844055 5.375 1.08155 5.275 1.35655 5.275C1.63155 5.275 1.86905 5.375 2.06905 5.575L5.61905 9.15Z" fill="white"/>
+                </svg>
+            </button>`
+}
+
+
+function subtaskListElementTemplate(subtask, idx){
+    return `<li onclick="toggleCheckbox(${idx})">
+                <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckbox(subtask.status)}" alt="">
+                <span>${subtask.description}</span>
+            </li>`;
+}
+
+function getTaskCardTemplate(task){
+    return `<article
+                draggable="true"
+                ondragstart="startDragging(${task['id']}, event)"
+                ondragend="endDragging(event)"     
+                class="board_card"
+                onclick="displayTaskOverlay(${task['id']})"
+            >
+                ${getCategory(task['category'])}
+                <h4 id="bct_title">${task['title']}</h4>
+                ${buildDescriptionContainer(task)}
+                
+                    
+                <div class="subtask_wrapper">
+                    ${buildSubtaskProgressbar(task)}
+                    
+                </div>
+                <div class="bct_footer">
+                    ${buildAssignedToTemplate(task)}
+
+                    <img src="../assets/img/icons/task/priorities/${getPriorityIcon(task["priority"])}" alt="Priority">
+                </div>
+            </article> `;
+}
+
+
+/**
+ * 
+ * @param {number} numberSubtasksCompleted 
+ * @param {number} numberSubtasks 
+ * @returns  - HTML container containing a progress bar that is filled according to the input value.
+ */
+function getProgressbarTemplate(numberSubtasksCompleted, numberSubtasks){
+    return `<div class="progress-container">
+                <div class="progress-bar" id="myProgressBar" style="width: ${numberSubtasksCompleted/numberSubtasks*100}%"></div>
+            </div>
+            <span>${numberSubtasksCompleted}/${numberSubtasks} Subtasks</span>`;
+}
+
+
+function getCategorySelectionListElementTemplate(category){
+    return `<li onclick="setCategorySelection('${category}'); checkAndEnableButton();">${category}</li>`
+}
+
+
+function getPriorityTemplate(priority){
+    return `<span>${firstLetterUpperCase(priority)}</span><img src="../assets/img/icons/task/priorities/${getPriorityIcon(priority)}" alt="Priority Icon ${priority}">`;
+
+}
+
+
+function getCategoryLabelTemplate(category){
+    return `<span class="category category_bg_color${getCategoryNumber(category)}">${category}</span>`;
+}
+
+
+function getShortDescriptionTemplate(description){
+    return `<p id="bct_description">${shortenText(description, 40)}</p>`;
+}
+
+
+// Archiv
+
+
+// function getListElementTemplate(selectedDesignClass, personIdx, checked){
+//     return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
+//                 <div class="person_info">
+//                     <div class="person_icon" style="background-color: ${persons[personIdx].color}">
+//                         ${persons[personIdx].initials}
+//                     </div>
+//                         ${persons[personIdx].name}
+//                 </div>
+//                 <img src="${getCheckboxImg(checked)}">
+//             </li>`;
+// }
+
+
+// function getAssignedToListElementTemplate(color, initials){
+//     return `<li class="person_icon" style="background-color: ${color}">
+//                 ${initials}
+//             </li>`;
+// }

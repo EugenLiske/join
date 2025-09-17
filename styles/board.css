@@ -179,7 +179,10 @@
 }
 
 .task_column_content {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    gap: 16px;
 }
 
 .no_tasks_placeholder {
@@ -277,6 +280,10 @@ p {
 
 .board_card p{
     color: #A8A8A8;
+}
+
+.board_card:hover{
+    cursor: pointer;
 }
 
 .bct_footer{

@@ -112,7 +112,6 @@ async function includeAddTaskForm(){
             .then(data => {
                 try{
                     document.getElementById("add_task_form").innerHTML = data; 
-                    initAddTask();
                 }
                 catch{
                     console.warn("HTML container not available!");

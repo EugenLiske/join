@@ -1,30 +1,24 @@
-import { testExportFunction } from "../export_test";
+
+// --- Task Overlay --------------------------------------------------------------
+// Contacts have already been loaded from the board when displaying.
 
 
 async function displayTaskOverlay(taskId){
-    testExportFunction();
     await getTaskFromDB(taskId);
     // getTaskLocal(taskId);
-
-    toggleTaskOverlay();
+    toggleOverlay("overlay_task");
     renderCurrentTask();
 }
 
-async function getTaskFromDB(taskId){
-    await getAllTasks();
-    currentTask = getElementWithId(tasks, taskId)
-    if (!objectFound(currentTask)) return false;
-    return true;
-}
 
-function toggleTaskOverlay(){
-    document.getElementById("overlay_task").classList.toggle("d_none");
-}
-
-function getTaskLocal(taskId){
-    currentTaskKey = "task_" + taskId;
-    currentTask = tasks[currentTaskKey];
-}
+// function getTaskLocal(taskId){
+//     // currentTaskKey = "task_" + taskId;
+//     console.log(taskId);
+    
+//     console.log(allTasks[taskId]);
+    
+//     currentTask = allTasks[taskId];
+// }
 
 
 function renderCurrentTask(){
@@ -33,70 +27,30 @@ function renderCurrentTask(){
     if (taskKeys.includes("description")) document.getElementById("task_description").innerText = currentTask.description;
     if (taskKeys.includes("duedate")) document.getElementById("dueDate").innerText = changeDateFormat2(currentTask.duedate);
     if (taskKeys.includes("priority")) displayPriority(currentTask["priority"]);
-    // displayAssignedToPersons(currentTask["assignedTo"]);
+    if (taskKeys.includes("assignedPersons")) {displayAssignedToPersons(currentTask["assignedPersons"])} else {document.getElementById("task_overlay_assigned_to").innerHTML = ""};
     if (taskKeys.includes("category")) displayCategory(currentTask["category"]);
-    if (taskKeys.includes("subtasks")) displaySubtasks(currentTask["subtasks"]);
+    if (taskKeys.includes("subtasks")) {displaySubtasks(currentTask["subtasks"])} else {document.getElementById("subtask_list").innerHTML = ""};
 }
 
 
-
 function displayCategory(category){
-    let number = categories.indexOf(category);
+    let number = getCategoryNumber(category);
     const categoryRef = document.getElementById("task_category");
-    removeCSSClassCategoryColor();
+    categoryRef.classList = "category";
     categoryRef.classList.add("category_bg_color" + number);
     categoryRef.innerText = category;
 }
 
 
-function removeCSSClassCategoryColor(){
-    const categoryRef = document.getElementById("task_category");
-    let cssClass = "category_bg_color";
-    for (let categoryNumber = 1; categoryNumber <= categories.length; categoryNumber++) {
-        categoryRef.classList.remove(cssClass + categoryNumber);
-    }
-}
-
-
 function displayPriority(priority){
     const priorityRef = document.getElementById("task_priority");
-    let priorityHTML = "";
-
-    if (priority === "urgent"){
-        priorityHTML = '<span>Urgent</span><img src="../assets/img/icons/task/priorities/urgent_red.svg" alt="">';
-    }
-    else if (priority === "medium"){
-        priorityHTML = '<span>Medium</span><img src="../assets/img/icons/task/priorities/medium_yellow.svg" alt="">';
-    }
-    else if (priority === "low"){
-        priorityHTML = '<span>Low</span><img src="../assets/img/icons/task/priorities/low_green.svg" alt="">';
-    }
-
-    priorityRef.innerHTML = priorityHTML;
+    priorityRef.innerHTML = getPriorityTemplate(priority);
 }
 
 
-function displayAssignedToPersons(assignedToList){
-    const keys = Object.keys(assignedToList);
-    let id = -1;
-    const listContainerRef = document.getElementById("task_assigned_to");
-    listContainerRef.innerHTML = "";
-    for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
-        id = assignedToList[assignedToList[keyIdx]];
-        // get id
-        // get contact with id
-        // listContainerRef.innerHTML += assignedToListElementTemplate(person);
-    }
-}
-
-
-function assignedToListElementTemplate(person){
-    return `<li>
-                <div class="person_icon" style="background-color: ${person.color}">
-                    ${person.initials}
-                </div>
-                    ${person.name}
-            </li>`;
+function displayAssignedToPersons(assignedPersons){
+    const listContainerRef = document.getElementById("task_overlay_assigned_to");
+    listContainerRef.innerHTML = getAssignedPersonsHTML(assignedPersons, "icon_and_name", false);
 }
 
 
@@ -110,14 +64,6 @@ function displaySubtasks(subtasks){
         subtask = subtasks[keys[keyIdx]];
         listContainerRef.innerHTML += subtaskListElementTemplate(subtask, keyIdx);
     }    
-}
-
-
-function subtaskListElementTemplate(subtask, idx){
-    return `<li onclick="toggleCheckbox(${idx})">
-                <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckbox(subtask.status)}" alt="">
-                <span>${subtask.description}</span>
-            </li>`;
 }
 
 
@@ -135,13 +81,15 @@ function toggleCheckbox(idx){
 
 
 function saveChangesLocal(){
-    tasks[currentTaskKey]["subtasks"] = currentTask["subtasks"];
+    return true;
+    // if (!tasks[currentTaskKey]["subtasks"]) return;
+    // tasks[currentTaskKey]["subtasks"] = currentTask["subtasks"];
     // save Changes in DB
 }
 
 
 function deleteCurrentTask(){
-    toggleTaskOverlay();
+    toggleOverlay("overlay_task");
     delete tasks[currentTaskKey];
     console.log(tasks);
     // save Changes in DB
@@ -152,3 +100,147 @@ function editCurrentTask(){
     console.log("Open edit!");
     // Open edit
 }
+
+
+// --- Board - Task Card -------------------------------------------------------------------------------------------------------
+
+// Ausgewählte max. 3 ausgewählte Personen anzeigen
+// Container existiert noch nicht
+function buildAssignedToTemplate(task){
+    if (task["assignedPersons"]){
+        let htmlContainer = `<ul id="task_assigned_to" class="bct_assigned_to_list">`;
+        const assignedPersons = task["assignedPersons"];
+        htmlContainer += getAssignedPersonsHTML(assignedPersons, "icon", true);
+        return htmlContainer + `</ul>`;
+
+    }
+    return "<ul></ul>";
+}
+
+
+
+function getCategory(category){
+    return getCategoryLabelTemplate(category)
+}
+
+
+function getCategoryNumber(category){
+    return ["User Story", "Technical Task"].indexOf(category);
+}
+
+
+function getPriorityIcon(priority){
+    if (priority == "urgent"){
+        return "urgent_red.svg";
+    }
+    if (priority == "medium"){
+        return "medium_yellow.svg";
+    }
+    return "low_green.svg";
+}
+
+function buildDescriptionContainer(task){
+    if(task["description"]){
+        return getShortDescriptionTemplate(task['description']);
+    }
+    return "";
+}
+
+
+function shortenText(text, limit) {
+    if (text.length <= limit) return text;
+    let cut = text.slice(0, limit);
+    
+    if (/\S/.test(text[limit])) {
+        cut = cut.replace(/\s+\S*$/, '');
+    }
+    return cut.trim() + '...';
+}
+
+function buildSubtaskProgressbar(task){
+    if (task["subtasks"]){
+        const subtasks = task["subtasks"];
+        const values = countArchievedSubtasks(subtasks);
+        return getProgressbarTemplate(values.counter, values.amount);
+    }
+    return "";
+}
+
+function countArchievedSubtasks(subtasks){
+    let subtaskKeys = Object.keys(subtasks);
+    let subtasksAmount = subtaskKeys.length;
+    let counter = 0;
+    for (let index = 0; index < subtasksAmount; index++) {
+        if (subtasks[subtaskKeys[index]].status){
+            counter++;
+        }
+    }
+    return {"amount": subtasksAmount, "counter": counter};
+}
+
+
+// --- Globale Funktionen -----------------------------------------------------------------------------------------
+
+function searchAssignedPersonInContacts(assignedPersonId){
+    for (const key in persons) {
+        const contact = persons[key];
+        if (assignedPersonId == contact.id) {
+            return contact;
+        }
+    }
+    return null;
+}
+
+
+function getAssignedPersonsHTML(assignedPersons, selection = "icon", limited = false){
+    let htmlContainer = "";
+    let counter = 0;
+    for (const personKey in assignedPersons) {
+        const assignedPerson = searchAssignedPersonInContacts(assignedPersons[personKey]);
+        if (assignedPerson){
+            if (!limited || counter < 3){
+                htmlContainer += assignedToTemplateSelector(selection, assignedPerson);
+            }
+            counter++;
+        }
+    }        
+    return htmlContainer + getAssignedToPlaceholder(counter, 3, limited);
+}
+
+
+function assignedToTemplateSelector(selection, person){
+    if (selection === "icon"){
+        return getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name));
+    }
+    if (selection === "icon_and_name"){
+        return assignedToListElementTemplate(person);
+    }
+    if (selection === "")
+    return "";
+}
+
+
+function getAssignedToPlaceholder(counter, limit, limited = true){
+    if (limited && counter >= limit){
+        return getAssignedToIconTemplate("grey", "+ " + (counter - 3));
+    }
+    return "";
+}
+// Archiv ---------------------------------------------------------------------------------------------------------
+
+// function getTaskLocal(taskId){
+//     currentTaskKey = "task_" + taskId;
+//     currentTask = tasks[currentTaskKey];
+// }
+
+// function searchAssignedPersonInContacts(assignedPersonId){
+//     const contactKeys = Object.keys(persons);
+//     let contact = null;
+//     for (let contactKeyIdx = 0; contactKeyIdx < contactKeys.length; contactKeyIdx++) {
+//         contact = persons[contactKeys[contactKeyIdx]];
+//         if (assignedPersonId == contact.id){ 
+//             return contact;
+//         }
+//     }     
+//     return null;
+// }

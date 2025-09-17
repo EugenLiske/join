@@ -93,6 +93,7 @@ h1{
     left: 0;
     min-width: 100vw;
     min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.531);
 }
 
 .overlay_close_button{
@@ -152,17 +153,6 @@ h1{
     background-color: #EEEEEE;
 }
 
-.person_icon{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    height: 42px;
-    width: 42px;
-    border: 2px solid white;
-    color: var(--c-up-initials-var2);
-    font-size: 12px;
-}
 
 .d_none{
     display: none !important;
