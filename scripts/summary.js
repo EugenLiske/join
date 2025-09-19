@@ -1,3 +1,4 @@
+// --- SUMMARY -------------------------------------------------------------------------------------------------------------------------------------
 
 let currentUser = null;
 
@@ -18,6 +19,7 @@ async function initSummary(){
     displayWelcomeOnScreen();
 
     await getAllTasks();
+    
     calculateInformation();
     displaySummaryOnScreen();
 }
@@ -88,9 +90,9 @@ function calculateInformation() {
 
 function checkLatestDeadline(latestTask, task){
     let date = task["duedate"];
-    let status = task["status"];
+    let status = task["kanbanBoardColumn"];
 
-    if ((status == 0 || status == 1 || status == 2) && date) {
+    if ((status == "to_do" || status == "in_progress" || status == "await_feedback") && date) {
         if (!latestTask || new Date(date) < new Date(latestTask)) {
             latestTask = date;
         }
@@ -100,23 +102,22 @@ function checkLatestDeadline(latestTask, task){
 
 function countUrgentTask(task){
     let priority = task["priority"];
-    let status = task["status"];
+    let status = task["kanbanBoardColumn"];
 
-    if(priority == "urgent" && status != 3){
+    if(priority == "urgent" && status != "done"){
         summaryContent.urgent += 1;
     }
 }
 
 function countTasks(task){
-    let status = task["status"];
-
-    if (status == 0) {
+    let status = task["kanbanBoardColumn"];
+    if (status == "to_do") {
         summaryContent.toDo += 1;
-    } else if (status == 1) {
+    } else if (status == "in_progress") {
         summaryContent.inProgress += 1;
-    } else if (status == 2) {
+    } else if (status == "await_feedback") {
         summaryContent.awaitingFeedback += 1;
-    } else if (status == 3) {
+    } else if (status == "done") {
         summaryContent.done += 1;
     }
 }
