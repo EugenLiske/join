@@ -1,6 +1,6 @@
-const BASE_URL_TASKS = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
+const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
 // Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
-const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
+// const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 // 
 

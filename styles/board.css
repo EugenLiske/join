@@ -299,6 +299,7 @@ p {
     box-shadow: 0 0 10px 3px #00000014;
 
     background-color: white;
+    transition: transform 120ms ease;
 }
 
 .board_card img{
@@ -312,6 +313,10 @@ p {
 
 .board_card:hover{
     cursor: pointer;
+}
+
+.board_card.dragging {
+    transform: rotate(5deg); /* 15° im Uhrzeigersinn */
 }
 
 .bct_footer{

@@ -15,18 +15,18 @@ async function loadTasksFromDB(){
 
     for (let index = 0; index < taskKeysArray.length; index++) {
         allTasks.push(
-            // taskResponse[taskKeysArray[index]]
-            {
-                id:                 taskResponse[taskKeysArray[index]].id,
-                title:              taskResponse[taskKeysArray[index]].title,
-                kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
-                description:        taskResponse[taskKeysArray[index]].description,
-            }
+            taskResponse[taskKeysArray[index]]
+            // {
+            //     id:                 taskResponse[taskKeysArray[index]].id,
+            //     title:              taskResponse[taskKeysArray[index]].title,
+            //     kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
+            //     description:        taskResponse[taskKeysArray[index]].description,
+            // }
         )  
     }
-    console.log(taskResponse);
-    console.log(taskKeysArray);
-    console.log(allTasks); 
+    // console.log(taskResponse);
+    // console.log(taskKeysArray);
+    // console.log(allTasks); 
 }
 
 let currentDraggedTask;
