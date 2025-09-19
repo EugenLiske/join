@@ -1,6 +1,6 @@
-let nameSearchList = []; //list with all names from contacts
-let nameSearchListResult = []; //list of idx of persons containing the search text
-let assignedToList = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
+let contactListNames = []; //list with all names from contacts
+let idxOfSearchedContacts = []; //list of idx of persons containing the search text
+let assignedPersons = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
 
 let nextSubtaskId = 0;
 
@@ -37,10 +37,10 @@ async function initAddTaskOverlay(goalKanbanColumn = "to_do"){
 async function initAddTask(){
     await loadContacts();
     
-    initAssignedToList2();
-    getNameSearchList2();
-    getSearchListResult("");
-    renderSearchNames();
+    initAssignedPersons(persons);
+    initContactSearchList(persons);
+    getContactSearchResult("");
+    createContactDropDownSearchList(contactListNames, idxOfSearchedContacts);
 
     renderCategoryOptions();
 }
@@ -53,7 +53,7 @@ function deleteForm(){
     document.getElementById("task_description_input").value = "";
     document.getElementById("task_deadline_input").value = "";
     clearPriorityButtons("default");
-    clearAssignedToInputArea();
+    clearAssignedToInputArea(persons);
     clearCategoryInput();
     renderCategoryOptions();
     clearSubtasksInputArea();
@@ -97,7 +97,7 @@ async function createTask(){
         "id": await getTaskCounter(), // Neu zwecks ID-Speicherung im Objekt
         "title": getTitle(),
         "description": getDescription(),
-        "duedate": getDueDate(),
+        "duedate": getDuedate(),
         "priority": currentPriority,
         "assignedPersons": getAssignedPersons2(),
         "category": currentCategory,
@@ -110,7 +110,7 @@ function getFormContent(){
     return {
         "title": getTitle(),
         "description": getDescription(),
-        "duedate": getDueDate(),
+        "duedate": getDuedate(),
         "priority": currentPriority,
         "assignedPersons": getAssignedPersons2(),
         "subtasks": getSubtasks(),
@@ -120,8 +120,8 @@ function getFormContent(){
 
 function getAssignedPersons(){
     let assignedPersons = {};
-    for (let personIdx = 0; personIdx < assignedToList.length; personIdx++) {
-        if (assignedToList[personIdx]){
+    for (let personIdx = 0; personIdx < assignedPersons.length; personIdx++) {
+        if (assignedPersons[personIdx]){
             let personKey = "contact_" + personIdx;
             
             assignedPersons[personKey] = personIdx;
@@ -136,8 +136,8 @@ function getAssignedPersons2(){
     
     let assignedPersons = {};
     let personsKeys = Object.keys(persons);
-    for (let personIdx = 0; personIdx < assignedToList.length; personIdx++) {
-        if (assignedToList[personIdx]){
+    for (let personIdx = 0; personIdx < assignedPersons.length; personIdx++) {
+        if (assignedPersons[personIdx]){
             let personKey = "contact_" + persons[personsKeys[personIdx]].id;
             
             assignedPersons[personKey] = persons[personsKeys[personIdx]].id;

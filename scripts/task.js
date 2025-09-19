@@ -5,28 +5,17 @@
 
 async function displayTaskOverlay(taskId){
     await getTaskFromDB(taskId);
-    // getTaskLocal(taskId);
     toggleOverlay("overlay_task");
     renderCurrentTask();
     toggleScrollBehaviorOfBody('hidden');
 }
 
 
-// function getTaskLocal(taskId){
-//     // currentTaskKey = "task_" + taskId;
-//     console.log(taskId);
-    
-//     console.log(allTasks[taskId]);
-    
-//     currentTask = allTasks[taskId];
-// }
-
-
 function renderCurrentTask(){
     const taskKeys = Object.keys(currentTask);
     if (taskKeys.includes("title")) document.getElementById("task_title").innerText = currentTask.title;
     if (taskKeys.includes("description")) document.getElementById("task_description").innerText = currentTask.description;
-    if (taskKeys.includes("duedate")) document.getElementById("dueDate").innerText = changeDateFormat2(currentTask.duedate);
+    if (taskKeys.includes("duedate")) document.getElementById("duedate").innerText = changeDateFormat2(currentTask.duedate);
     if (taskKeys.includes("priority")) displayPriority(currentTask["priority"]);
     if (taskKeys.includes("assignedPersons")) {displayAssignedToPersons(currentTask["assignedPersons"])} else {document.getElementById("task_overlay_assigned_to").innerHTML = ""};
     if (taskKeys.includes("category")) displayCategory(currentTask["category"]);
@@ -73,7 +62,7 @@ function getCheckboxSubtask(status){
 }
 
 
-function toggleCheckboxSubtask(idx){
+function findSubtaskAndToggleCheckbox(idx){
     const keys = Object.keys(currentTask.subtasks);
     const subtask = currentTask.subtasks[keys[idx]];
     subtask.status = !subtask.status;

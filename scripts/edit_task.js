@@ -72,7 +72,7 @@ function setAssignedToSelection(assignedPersons){
 
         for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
             if (assignedPersons[assignedKeys[assignedKeyIdx]] == persons[personKeys[personKeyIdx]].id){
-                assignedToList[personKeyIdx] = true;    
+                assignedPersons[personKeyIdx] = true;    
                 selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);         
                 break;
             }

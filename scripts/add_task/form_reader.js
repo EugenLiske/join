@@ -15,9 +15,9 @@ function getDescription(){
 
 // Get Due Date -----------------------------------------------------
 
-function getDueDate(){
-    let dueDate = document.getElementById("task_deadline_input").value;
-    return changeDateFormat(dueDate);
+function getDuedate(){
+    let duedate = document.getElementById("task_deadline_input").value;
+    return changeDateFormat(duedate);
 }
 
 
@@ -31,7 +31,7 @@ function changeDateFormat(date){
 // Get Priority -> global "currentPriority" -------------------------
 
 
-// Get Assigned Persons -> global "assignedToList" ------------------
+// Get Assigned Persons -> global "assignedPersons" ------------------
 // -> getAssignedPersons() in add_tasks.js
 
 

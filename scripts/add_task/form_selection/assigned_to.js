@@ -1,35 +1,20 @@
 // Assigned To Selection ------------------------------------------------------------------
 // Initial Functions
 
-function getNameSearchList(){
-    nameSearchList = [];
-    for (let personIdx = 0; personIdx < persons.length; personIdx++) {
-        nameSearchList.push(persons[personIdx].name);
-    }
-}
 
-
-function getNameSearchList2(){
-    nameSearchList = [];
-    const keys = Object.keys(persons);
+function initContactSearchList(contacts){
+    contactListNames = [];
+    const keys = Object.keys(contacts);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
-        nameSearchList.push(persons[keys[keyIdx]].name);
-    }
-}
-
- 
-function initAssignedToList(){
-    assignedToList = [];
-    for (let personIdx = 0; personIdx < persons.length; personIdx++) {
-        assignedToList.push(false);
+        contactListNames.push(contacts[keys[keyIdx]].name);
     }
 }
 
 
-function initAssignedToList2(){
-    const keys = Object.keys(persons);
+function initAssignedPersons(contacts){
+    const keys = Object.keys(contacts);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
-        assignedToList.push(false);
+        assignedPersons.push(false);
     }
 }
 
@@ -50,36 +35,34 @@ function closeDropDownAssignedToSelection(event){
 
 function startNameSearch(){
     let input = document.getElementById("task_assignedto_input").value;
-    getSearchListResult(input);
-    renderSearchNames();
+    getContactSearchResult(input);
+    createContactDropDownSearchList();
     document.getElementById("selection").classList.remove("d_none");
     toggleDropDownIcon("task_assignedto_input", "drop_down_persons");
 }
 
 
-function getSearchListResult(input){
-    nameSearchListResult = [];
-    for (let personIdx = 0; personIdx < nameSearchList.length; personIdx++) {
-        if (nameSearchList[personIdx].toLowerCase().includes(input.toLowerCase())){
-            nameSearchListResult.push(personIdx);
+function getContactSearchResult(input){
+    idxOfSearchedContacts = [];
+    for (let personIdx = 0; personIdx < contactListNames.length; personIdx++) {
+        if (contactListNames[personIdx].toLowerCase().includes(input.toLowerCase())){
+            idxOfSearchedContacts.push(personIdx);
         }
     }
 }
 
 
-function renderSearchNames(){
+function createContactDropDownSearchList(){
     let personSelectionRef = document.getElementById("selection");
     let selection = "";
     let personIdx = 0;
     let assignedTo = false;
     let selectedDesignClass = "";
     let personKeys = Object.keys(persons);
-    console.log(nameSearchListResult.length);
     
-
-    for (let resultIdx = 0; resultIdx < nameSearchListResult.length; resultIdx++) {
-        personIdx = nameSearchListResult[resultIdx];
-        assignedTo = assignedToList[personIdx];
+    for (let resultIdx = 0; resultIdx < idxOfSearchedContacts.length; resultIdx++) {
+        personIdx = idxOfSearchedContacts[resultIdx];
+        assignedTo = assignedPersons[personIdx];
         selectedDesignClass = assignedTo == true ? "person_selected" : "";
         if (persons[personKeys[personIdx]].id !== undefined && persons[personKeys[personIdx]].id !== null){
             selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
@@ -95,7 +78,7 @@ function selectPerson(element, personIdx){
     let checkbox = getCheckbox(element);
     let checked = element.classList.contains("person_selected");
     toggleCheckbox(checked, checkbox);
-    assignedToList[personIdx] = checked;
+    assignedPersons[personIdx] = checked;
     renderAssignedToList();
 }
 
@@ -173,8 +156,8 @@ function renderAssignedToList(){
 
 
 function getFirstThreeAssignments(firstThreeAssignments){
-    for (let persIdx = 0; persIdx < assignedToList.length; persIdx++) {
-        if (assignedToList[persIdx]){
+    for (let persIdx = 0; persIdx < assignedPersons.length; persIdx++) {
+        if (assignedPersons[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
                 firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[persIdx].color, persons[persIdx].initials);
@@ -187,8 +170,8 @@ function getFirstThreeAssignments(firstThreeAssignments){
 function getFirstThreeAssignments2(firstThreeAssignments){
     let personsKeys = Object.keys(persons);
     
-    for (let persIdx = 0; persIdx < assignedToList.length; persIdx++) {
-        if (assignedToList[persIdx]){
+    for (let persIdx = 0; persIdx < assignedPersons.length; persIdx++) {
+        if (assignedPersons[persIdx]){
             firstThreeAssignments.counter++;
             if (firstThreeAssignments.counter <= 3){
                 firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
@@ -199,14 +182,14 @@ function getFirstThreeAssignments2(firstThreeAssignments){
 }
 
 
-function clearAssignedToInputArea(){
+function clearAssignedToInputArea(contacts){
     
     document.getElementById("selected_persons").innerHTML = "";
     document.getElementById("selected_persons").classList.remove("d_none");
 
-    initAssignedToList();
-    getSearchListResult("");
-    renderSearchNames();
+    initAssignedPersons(contacts);
+    getContactSearchResult("");
+    createContactDropDownSearchList();
 
     document.getElementById("task_assignedto_button").classList.remove("d_none");
     document.getElementById("task_assignedto_input").classList.add("d_none");
