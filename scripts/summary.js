@@ -2,7 +2,8 @@
 
 let currentUser = null;
 
-let summaryContent = {
+
+const summaryContent = {
     "toDo": 0,
     "done": 0,
     "urgent": 0,
@@ -12,15 +13,15 @@ let summaryContent = {
     "awaitingFeedback": 0
 };
 
+
 async function initSummary(){
     getCurrentUserData();
-    initNavigation("summary");
-
+    initNavigation("summary");  //include.js
     displayWelcomeOnScreen();
 
-    await getAllTasks();
+    const summaryTasks = await getAllTasks();   //task_db_connection.js
     
-    calculateInformation();
+    calculateInformation(summaryTasks);
     displaySummaryOnScreen();
 }
 
@@ -56,43 +57,43 @@ function mobileWelcome() {
         }
         sessionStorage.setItem("login", false);
     }
-
 }
+
 
 function createWelcomeText(textId, nameId, name){
     if (currentUser.role === "guest"){
         writeWelcomeText(textId, "Good morning!", nameId, name);
-    } else { //Normal User
+    } else {
         writeWelcomeText(textId, "Good morning,", nameId, name);
     }
 }
 
+
 function writeWelcomeText(textId, text, nameId, name){
-        document.getElementById(textId).innerText = text;
-        document.getElementById(nameId).innerText = name;    
+    document.getElementById(textId).innerText = text;
+    document.getElementById(nameId).innerText = name;    
 }
 
-function calculateInformation() {
-    let latestTask = null;
-    let taskKeys = Object.keys(tasks);
 
-    summaryContent.tasks = taskKeys.length;
-
-    for (let taskIdx = 0; taskIdx < taskKeys.length; taskIdx++) {
-        let task = tasks[taskKeys[taskIdx]];
+function calculateInformation(summaryTasks) {
+    let earliestDeadline = null;
+    
+    Object.values(summaryTasks).forEach(task => {
         countTasks(task);
         countUrgentTask(task);
-        latestTask = checkLatestDeadline(latestTask, task);
-    }
+        earliestDeadline = checkLatestDeadline(earliestDeadline, task);
+    });
 
-    summaryContent.deadline = latestTask;
+    summaryContent.deadline = earliestDeadline;
+    summaryContent.tasks = Object.keys(summaryTasks).length;
 }
 
-function checkLatestDeadline(latestTask, task){
-    let date = task["duedate"];
-    let status = task["kanbanBoardColumn"];
 
-    if ((status == "to_do" || status == "in_progress" || status == "await_feedback") && date) {
+function checkLatestDeadline(latestTask, task){
+    const date = task["duedate"];
+    const status = task["kanbanBoardColumn"];
+
+    if ((status === "to_do" || status === "in_progress" || status === "await_feedback") && date) {
         if (!latestTask || new Date(date) < new Date(latestTask)) {
             latestTask = date;
         }
@@ -100,24 +101,26 @@ function checkLatestDeadline(latestTask, task){
     return latestTask;
 }
 
+
 function countUrgentTask(task){
-    let priority = task["priority"];
-    let status = task["kanbanBoardColumn"];
+    const priority = task["priority"];
+    const status = task["kanbanBoardColumn"];
 
     if(priority == "urgent" && status != "done"){
         summaryContent.urgent += 1;
     }
 }
 
+
 function countTasks(task){
-    let status = task["kanbanBoardColumn"];
-    if (status == "to_do") {
+    const status = task["kanbanBoardColumn"];
+    if (status === "to_do") {
         summaryContent.toDo += 1;
-    } else if (status == "in_progress") {
+    } else if (status === "in_progress") {
         summaryContent.inProgress += 1;
-    } else if (status == "await_feedback") {
+    } else if (status === "await_feedback") {
         summaryContent.awaitingFeedback += 1;
-    } else if (status == "done") {
+    } else if (status === "done") {
         summaryContent.done += 1;
     }
 }
@@ -126,14 +129,14 @@ function countTasks(task){
 // Diplay Data ----------------------------------------------------------------------
 
 function displaySummaryOnScreen(){
-    let summaryKey = Object.keys(summaryContent);
+    const summaryKey = Object.keys(summaryContent);
     let htmlRef = null;
 
     for (let keyIdx = 0; keyIdx < summaryKey.length; keyIdx++) {
         htmlRef = document.getElementById("amount_" + summaryKey[keyIdx]);
         
         if (summaryKey[keyIdx] === "deadline"){
-            htmlRef.innerText = convertDateFormat(summaryContent[summaryKey[keyIdx]]);
+            htmlRef.innerText = convertDateInFull(summaryContent[summaryKey[keyIdx]]);
         }
         else{
             htmlRef.innerText = summaryContent[summaryKey[keyIdx]];
@@ -141,19 +144,16 @@ function displaySummaryOnScreen(){
     }
 }
 
-function convertDateFormat(date) {
+
+function convertDateInFull(date) {
     let dateObject = null;
     const format = { year: 'numeric', month: 'long', day: 'numeric' };
 
-    if (!date){
-        return "-";
-    } 
+    if (!date) return "-";
 
     dateObject = new Date(date);
 
-    if (isNaN(dateObject)){
-        return "-";
-    }
+    if (isNaN(dateObject)) return "-";
 
     return dateObject.toLocaleDateString('en-US', format);
 }

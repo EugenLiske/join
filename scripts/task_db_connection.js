@@ -5,8 +5,12 @@ const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebased
 // 
 
 
-async function getAllTasks(){
+async function setAllTasks(){
   tasks = await getData("/tasks");
+}
+
+async function getAllTasks(){
+  return await getData("/tasks");
 }
 
 async function getData(path) {
@@ -57,7 +61,7 @@ async function increaseTaskCounter(nextTaskId){
 
 
 async function getTaskFromDB(taskId){
-    await getAllTasks();
+    await setAllTasks();
     currentTask = getElementWithId(tasks, taskId)
     if (!objectFound(currentTask)) return false;
     return true;
