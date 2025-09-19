@@ -206,9 +206,19 @@ function deleteTaskFromArray(taskId) {
     }
 }
 
+
 function updateTask(taskId, update) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
     if (taskIdx !== -1) {
         allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
+    }
+}
+
+
+function updateTaskCardAtBoard(taskId) {
+    const taskIdx = allTasks.findIndex(task => task.id === taskId);
+    const taskCard = document.getElementById("task_card_" + taskId);
+    if (taskCard && taskIdx !== -1) {
+        taskCard.outerHTML = getTaskCardTemplate(allTasks[taskIdx]);
     }
 }

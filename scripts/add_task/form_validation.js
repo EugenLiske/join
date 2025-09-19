@@ -1,16 +1,20 @@
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 
-function simpleCheckRequiredFields(){
-    return checkTitle(false) && simpleCheckDueDate() && checkCategory(false);
+function simpleCheckRequiredFields(mode = "add_task"){
+    return checkTitle(false) && simpleCheckDueDate() && (mode === "add_task" ? checkCategory(false) : true);
 
 }
 
 
-function checkRequiredFields(){
+function checkRequiredFields(mode = "add_task"){
     let isCorrectTitle = checkTitle();
     let isCorrectDueDate = checkDueDate();
-    let isCorrectCategory = checkCategory();
+    let isCorrectCategory = true;
+    if (mode == "add_task"){
+        isCorrectCategory = checkCategory();
+    }
+
 
     return isCorrectTitle && isCorrectDueDate && isCorrectCategory;
 }

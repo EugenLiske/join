@@ -74,13 +74,14 @@ function renderSearchNames(){
     let assignedTo = false;
     let selectedDesignClass = "";
     let personKeys = Object.keys(persons);
+    console.log(nameSearchListResult.length);
+    
 
     for (let resultIdx = 0; resultIdx < nameSearchListResult.length; resultIdx++) {
         personIdx = nameSearchListResult[resultIdx];
         assignedTo = assignedToList[personIdx];
         selectedDesignClass = assignedTo == true ? "person_selected" : "";
-
-        if (persons[personKeys[personIdx]].id){
+        if (persons[personKeys[personIdx]].id !== undefined && persons[personKeys[personIdx]].id !== null){
             selection += getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + persons[personKeys[personIdx]].id, assignedTo);
         }
     }
@@ -192,6 +193,7 @@ function getFirstThreeAssignments2(firstThreeAssignments){
             if (firstThreeAssignments.counter <= 3){
                 firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[personsKeys[persIdx]].avatarColor, generateInitials(persons[personsKeys[persIdx]].name));
             }
+            
         }
     }
 }

@@ -58,7 +58,7 @@ function getOKButtonTemplate(){
     return `<button 
                 id="create_task_button" 
                 class="button_filled button_check" 
-                onclick="checkAndCreateTask()"
+                onclick="updateTaskAndGoBack()"
             >
                 Ok
                 <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">

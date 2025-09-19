@@ -8,6 +8,7 @@ async function displayTaskOverlay(taskId){
     // getTaskLocal(taskId);
     toggleOverlay("overlay_task");
     renderCurrentTask();
+    toggleScrollBehaviorOfBody('hidden');
 }
 
 
@@ -80,7 +81,7 @@ function toggleCheckboxSubtask(idx){
 }
 
 
-async function saveTaskChanges(){
+async function saveSubtaskChanges(){
     if (currentTask["subtasks"]){
         console.log(currentTask["subtasks"]);
         updateTask(currentTask.id, {"subtasks": currentTask["subtasks"]});
@@ -120,8 +121,7 @@ async function deleteCurrentTask(){
 
 function editCurrentTask(){
     console.log("Open edit!");
-    toggleOverlay('overlay_task');
-    toggleOverlay('overlay_edit_task');
+
     displayEditTaskOverlay(currentTask.id);
 }
 
@@ -248,7 +248,7 @@ function assignedToTemplateSelector(selection, person, container = "div"){
 
 
 function getAssignedToPlaceholder(counter, limit, limited = true, container = "div"){
-    if (limited && counter >= limit){
+    if (limited && counter > limit){
         return getAssignedToIconTemplate("grey", "+ " + (counter - 3), container);
     }
     return "";

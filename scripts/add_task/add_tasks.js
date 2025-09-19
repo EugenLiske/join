@@ -26,9 +26,11 @@ function initAddTaskGlobal(goalKanbanColumn = "to_do"){
 
 
 async function initAddTaskOverlay(goalKanbanColumn = "to_do"){
+    document.getElementById("edit_task_form").innerHTML = "";
     await includeAddTaskForm();
     initAddTask();
     kanbanColumn = goalKanbanColumn;
+    toggleScrollBehaviorOfBody('hidden');
 }
 
 
@@ -79,9 +81,9 @@ async function checkAndCreateTask(){ // hier kann man den Parameter für die ver
 }
 
 
-function checkAndEnableButton(){
+function checkAndEnableButton(mode = "add_task"){
     let createButtonRef = document.getElementById("create_task_button");
-    if (simpleCheckRequiredFields()){
+    if (simpleCheckRequiredFields(mode)){
         createButtonRef.disabled = false;
     }
     else {
@@ -101,6 +103,17 @@ async function createTask(){
         "category": currentCategory,
         "subtasks": getSubtasks(),
         "kanbanBoardColumn": kanbanColumn // Test für die Kanban-Spalte. Name "category" war vergeben.
+    };
+}
+
+function getFormContent(){
+    return {
+        "title": getTitle(),
+        "description": getDescription(),
+        "duedate": getDueDate(),
+        "priority": currentPriority,
+        "assignedPersons": getAssignedPersons2(),
+        "subtasks": getSubtasks(),
     };
 }
 

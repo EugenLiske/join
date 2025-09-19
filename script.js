@@ -85,3 +85,8 @@ function changeDateFormat(date){
     splitDate.reverse();
     return splitDate.join("/");
 }
+
+
+function toggleScrollBehaviorOfBody(mode = ""){
+    document.body.style.overflow = mode;
+}

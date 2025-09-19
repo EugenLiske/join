@@ -22,7 +22,7 @@
     padding-right: 24px;
 }
 
-.task_input_area{
+.edit_task_input_area{
     display: flex;
     flex-direction: column;
 
@@ -33,11 +33,11 @@
     overflow: auto;
 }
 
-.task_separator{
+.edit_task_separator{
     display: none;
 }
 
-.add_task_footer{
+.edit_add_task_footer{
     display: flex;
     justify-content: end;
     align-items: end;
