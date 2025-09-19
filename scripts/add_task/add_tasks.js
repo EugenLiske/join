@@ -119,30 +119,30 @@ function getFormContent(){
 
 
 function getAssignedPersons(){
-    let assignedPersons = {};
+    let assigned = {};
     for (let personIdx = 0; personIdx < assignedPersons.length; personIdx++) {
         if (assignedPersons[personIdx]){
             let personKey = "contact_" + personIdx;
             
-            assignedPersons[personKey] = personIdx;
+            assigned[personKey] = personIdx;
         }
     }
-    return assignedPersons;
+    return assigned;
 }
 
 
 function getAssignedPersons2(){
     // console.log(persons);
     
-    let assignedPersons = {};
+    let assigned = {};
     let personsKeys = Object.keys(persons);
     for (let personIdx = 0; personIdx < assignedPersons.length; personIdx++) {
         if (assignedPersons[personIdx]){
             let personKey = "contact_" + persons[personsKeys[personIdx]].id;
             
-            assignedPersons[personKey] = persons[personsKeys[personIdx]].id;
+            assigned[personKey] = persons[personsKeys[personIdx]].id;
         }
     }
-    return assignedPersons;
+    return assigned;
 }
 

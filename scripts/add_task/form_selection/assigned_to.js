@@ -12,6 +12,7 @@ function initContactSearchList(contacts){
 
 
 function initAssignedPersons(contacts){
+    assignedPersons = [];
     const keys = Object.keys(contacts);
     for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
         assignedPersons.push(false);

@@ -109,8 +109,6 @@ async function deleteCurrentTask(){
 
 
 function editCurrentTask(){
-    console.log("Open edit!");
-
     displayEditTaskOverlay(currentTask.id);
 }
 

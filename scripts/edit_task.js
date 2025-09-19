@@ -4,10 +4,10 @@
 
 async function displayEditTaskOverlay(taskId){
     document.getElementById("add_task_form").innerHTML = "";
+    document.getElementById("edit_task_form").innerHTML = "";
     await includeAddTaskForm("edit_task_form");
     await getTaskFromDB(taskId);
     await initAddTask();
-
     manipulateTaskForm();
 
     setTaskFormData();
@@ -94,6 +94,8 @@ function setSubtasksList(subtasks){
 async function updateTaskAndGoBack(){
     if (checkRequiredFields("edit_task")){
         const formContent = getFormContent();
+        console.log(formContent);
+        
         await saveFormContentInDB(formContent);
         updateTask(currentTask.id, formContent);
         updateTaskCardAtBoard(currentTask.id);
