@@ -201,8 +201,8 @@
 /* Side Menu */
 .side_menu {
     position: fixed;
-    right: -166px;
-    width: 150px;
+    right: -176px;
+    width: 160px;
     background-color: var(--bg-c-navigation);
     padding: 10px;
     border-radius: 20px 0 20px 20px;
