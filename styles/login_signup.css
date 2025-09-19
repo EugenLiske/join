@@ -20,16 +20,14 @@
 
 @keyframes moveLogo {
     from {
-        /* Start in der Mitte, stark vergrößert */
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%) scale(3); /* z. B. 3x größer */
+        transform: translate(-50%, -50%) scale(3);
     }
     to {
-        /* Ziel: oben links, normale Größe */
         left: 77px;
         top: 80px;
-        transform: translate(0, 0) scale(1); /* normale Größe */
+        transform: translate(0, 0) scale(1);
     }
 }
 
@@ -66,9 +64,9 @@
     width: 32px;
     height: 32px;
     background-image: url("../assets/img/icons/navigation/arrow_left.svg");
-    background-position: center;       /* Bild wird zentriert */
-    background-size: contain;          /* Bild so groß wie möglich, aber komplett sichtbar */
-    background-repeat: no-repeat;      /* Bild nicht wiederholen/kacheln */
+    background-position: center;
+    background-size: contain; 
+    background-repeat: no-repeat; 
 }
 
 .signup_arrow_left:hover {
@@ -86,9 +84,9 @@
    width: 150px;
    height: 5px;
    border: none;
-   background-color: #29ABE2;  /* Farbe hier */
+   background-color: #29ABE2;  
    margin-top: 16px;
-   border-radius: 1.5px; /* halbe Höhe → Enden rund */
+   border-radius: 1.5px; 
 }
 
 .input_fields {
@@ -354,8 +352,6 @@
     padding-bottom: 15px;
     padding-left: 16px;
     padding-right: 16px;
-
-    /* für sanften Übergang */
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -502,10 +498,33 @@ footer {
 }
 
 
-@media(max-width: 1000px){
-
-    .input_field{
-        font-size: 16px;
+@media(max-width: 852px){
+    .logo_signup_page {
+        width: 75px;
+        height: auto;
     }
 
+    .become_member_area {
+        
+    }
+    
+}
+
+@media(max-width: 652px){
+    .login_form {
+        width: 100%;
+    }
+
+    @keyframes moveLogo {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(3);
+        }
+    to {
+        left: 38.5px;
+        top: 40px;
+        transform: translate(0, 0) scale(1);
+        }
+    }
 }

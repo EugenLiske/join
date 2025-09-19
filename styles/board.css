@@ -40,9 +40,18 @@
     gap: 32px;
 }
 
+/* Wrapper jetzt Spalte: oben Feld, darunter Fehlermeldung */
 .search_input_wrapper {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+/* Hält Input + Affix zusammen */
+.search_field_row {
+    position: relative;    /* Bezugspunkt für die Lupe */
+    display: block;
+    height: 48px;          /* optional, entspricht deiner Input-Höhe */
 }
 
 .search_input_wrapper input {
@@ -56,6 +65,12 @@
     padding-left: 16px;
     padding-right: 56px;
     cursor: pointer;
+}
+
+.search_input_wrapper input::placeholder {
+    font-size: 16px;      
+    color: #A8A8A8;       
+    opacity: 1;        
 }
 
 .search_input_wrapper input:focus {
@@ -72,6 +87,19 @@
     align-items: center;
     gap: 16px;               
     pointer-events: auto;
+}
+
+/* Fehlermeldung unter dem Feld, rechtsbündig */
+.search_error {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 8px); /* 8px unter der Zeile */
+    font-size: 14px;
+    color: #E53935;
+    line-height: 1.2;
+    white-space: nowrap;
+    display: none;
+    z-index: 2;            /* über dem Board darunter */
 }
 
 .search_button {

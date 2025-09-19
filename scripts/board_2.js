@@ -7,19 +7,21 @@ function focusSearchInputField() {
 
 // Drag & Drop Mechanismus
 
-let allTasks = [];
+let allTasks = []; // Anpassung seitens Anne
 
 async function loadTasksFromDB(){
     let taskResponse = await getData("/tasks");
     let taskKeysArray = Object.keys(taskResponse);
 
     for (let index = 0; index < taskKeysArray.length; index++) {
-        allTasks.push(taskResponse[taskKeysArray[index]]
-            // {
-                // id:                 taskResponse[taskKeysArray[index]].id,
-                // title:              taskResponse[taskKeysArray[index]].title,
-                // kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn
-            // }
+        allTasks.push(
+            // taskResponse[taskKeysArray[index]]
+            {
+                id:                 taskResponse[taskKeysArray[index]].id,
+                title:              taskResponse[taskKeysArray[index]].title,
+                kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
+                description:        taskResponse[taskKeysArray[index]].description,
+            }
         )  
     }
     console.log(taskResponse);
@@ -37,12 +39,16 @@ async function initBoardPage() {
   }
 
 function updateHTML(){
-    // To Do - Tasks
-    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
+    generateTasksToDoHTML();
+    generateTasksInProgressHTML();
+    generateTasksAwaitFeedbackHTML();
+    generateTasksDoneHTML();
+}
 
+function generateTasksToDoHTML(){
+    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do' && doesTitleMatchSearchTerm(task));
     const toDoColumn = document.getElementById('to_do');
     toDoColumn.innerHTML = '';
-
     if (tasksToDo.length === 0) {
         toDoColumn.innerHTML = generatePlaceholderHTML('to_do');
     } else {
@@ -51,13 +57,12 @@ function updateHTML(){
             toDoColumn.innerHTML += getTaskCardTemplate(singleTaskToDo);
         }
     }
+}
 
-    // In progress - Tasks
-    let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress')
-
+function generateTasksInProgressHTML(){
+    let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress' && doesTitleMatchSearchTerm(task));
     const inProgressColumn = document.getElementById('in_progress');
     inProgressColumn.innerHTML = '';
-
     if (tasksInProgress.length === 0) {
         inProgressColumn.innerHTML = generatePlaceholderHTML('in_progress');
     } else {
@@ -66,13 +71,12 @@ function updateHTML(){
             inProgressColumn.innerHTML += getTaskCardTemplate(singleTaskInProgress);
         }
     }
+}
 
-    // Await feedback - Tasks
-    let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback')
-
+function generateTasksAwaitFeedbackHTML(){
+    let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback' && doesTitleMatchSearchTerm(task));
     const awaitFeedbackColumn = document.getElementById('await_feedback');
     awaitFeedbackColumn.innerHTML = '';
-
     if (tasksAwaitFeedback.length === 0) {
         awaitFeedbackColumn.innerHTML = generatePlaceholderHTML('await_feedback');
     } else {
@@ -81,13 +85,12 @@ function updateHTML(){
             awaitFeedbackColumn.innerHTML += getTaskCardTemplate(singleTaskAwaitFeedback);
         }
     }
+}
 
-    // Done - Tasks
-    let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done')
-
+function generateTasksDoneHTML(){
+    let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done' && doesTitleMatchSearchTerm(task));
     const doneColumn = document.getElementById('done');
     doneColumn.innerHTML = '';
-
     if (tasksDone.length === 0) {
         doneColumn.innerHTML = generatePlaceholderHTML('done');
     } else {
@@ -98,7 +101,64 @@ function updateHTML(){
     }
 }
 
-function generateTodoHTML(element){
+
+// function generateTasksToDoHTML(){
+//     let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do');
+//     const toDoColumn = document.getElementById('to_do');
+//     toDoColumn.innerHTML = '';
+//     if (tasksToDo.length === 0) {
+//         toDoColumn.innerHTML = generatePlaceholderHTML('to_do');
+//     } else {
+//         for (let index = 0; index < tasksToDo.length; index++) {
+//             const singleTaskToDo = tasksToDo[index];
+//             toDoColumn.innerHTML += getTaskCardTemplate(singleTaskToDo);
+//         }
+//     }
+// }
+
+// function generateTasksInProgressHTML(){
+//     let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress')
+//     const inProgressColumn = document.getElementById('in_progress');
+//     inProgressColumn.innerHTML = '';
+//     if (tasksInProgress.length === 0) {
+//         inProgressColumn.innerHTML = generatePlaceholderHTML('in_progress');
+//     } else {
+//         for (let index = 0; index < tasksInProgress.length; index++) {
+//             const singleTaskInProgress = tasksInProgress[index];
+//             inProgressColumn.innerHTML += getTaskCardTemplate(singleTaskInProgress);
+//         }
+//     }
+// }
+
+// function generateTasksAwaitFeedbackHTML(){
+//     let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback')
+//     const awaitFeedbackColumn = document.getElementById('await_feedback');
+//     awaitFeedbackColumn.innerHTML = '';
+//     if (tasksAwaitFeedback.length === 0) {
+//         awaitFeedbackColumn.innerHTML = generatePlaceholderHTML('await_feedback');
+//     } else {
+//         for (let index = 0; index < tasksAwaitFeedback.length; index++) {
+//             const singleTaskAwaitFeedback = tasksAwaitFeedback[index];
+//             awaitFeedbackColumn.innerHTML += getTaskCardTemplate(singleTaskAwaitFeedback);
+//         }
+//     }
+// }
+
+// function generateTasksDoneHTML(){
+//     let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done')
+//     const doneColumn = document.getElementById('done');
+//     doneColumn.innerHTML = '';
+//     if (tasksDone.length === 0) {
+//         doneColumn.innerHTML = generatePlaceholderHTML('done');
+//     } else {
+//         for (let index = 0; index < tasksDone.length; index++) {
+//             const singleTaskDone = tasksDone[index];
+//             doneColumn.innerHTML += getTaskCardTemplate(singleTaskDone);
+//         }
+//     }
+// }
+
+function generateTodoHTML(element){ // Anpassung seitens Anne
     return `
         <div
             draggable="true"
@@ -106,7 +166,8 @@ function generateTodoHTML(element){
             ondragend="endDragging(event)"
             class="task"
             >
-            ${element['title']}
+            ${element['title']} <br>
+            ${element['description']}
         </div>
     `
 }
@@ -180,6 +241,89 @@ function hideDropIndicator(columnId) {
     if (!container) return;
     const indicator = container.querySelector('.drop_indicator');
     if (indicator) indicator.remove();
+}
+
+// Suchfunktionen
+
+function getSearchTermFromInput() {
+    const searchInputElement = document.getElementById('searchInput');
+    if (!searchInputElement) {
+        return '';
+    }
+
+    const rawValue = searchInputElement.value;
+    if (typeof rawValue !== 'string') {
+        return '';
+    }
+
+    return rawValue.trim().toLowerCase();
+}
+
+function doesTitleMatchSearchTerm(task) {
+    const searchTerm = getSearchTermFromInput();
+
+    // Unter 3 Zeichen: keine Filterung
+    if (searchTerm.length === 0) {
+        return true;
+    }
+
+    // Titel immer vorhanden (laut deiner Vorgabe)
+    let taskTitleLower = '';
+    if (typeof task.title === 'string') {
+        taskTitleLower = task.title.toLowerCase();
+    }
+
+    // Beschreibung ist optional → falls nicht vorhanden, leeren String nutzen
+    let taskDescriptionLower = '';
+    if (typeof task.description === 'string') {
+        taskDescriptionLower = task.description.toLowerCase();
+    }
+
+    // Treffer, wenn Titel ODER Beschreibung den Suchbegriff enthält
+    const matchesTitle = taskTitleLower.includes(searchTerm);
+    const matchesDescription = taskDescriptionLower.includes(searchTerm);
+
+    return matchesTitle || matchesDescription;
+}
+
+// Wird vom oninput-Attribut am <input> aufgerufen
+function onSearchInput() {
+    updateHTML(); // Neu-Render, Filter passiert in den Generatoren
+    updateSearchErrorMessage();
+}
+
+// ==== Suche: Fehlermeldung steuern ====
+
+function updateSearchErrorMessage() {
+  const searchTerm = getSearchTermFromInput();
+  const errorElement = document.getElementById('search_error');
+  if (!errorElement) return;
+
+  if (searchTerm.length < 2) {
+    errorElement.style.display = 'none';
+    return;
+  }
+
+  let anyMatch = false;
+  for (let i = 0; i < allTasks.length; i++) {
+    if (doesTitleMatchSearchTerm(allTasks[i])) {
+      anyMatch = true;
+      break;
+    }
+  }
+  errorElement.style.display = anyMatch ? 'none' : 'block';
+}
+
+function showSearchError(wrapperElement, errorElement) {
+  wrapperElement.classList.add('search_input_wrapper--with-error');
+  errorElement.style.display = 'block';
+  // Optional: Text dynamisch setzen, falls du später lokalisieren willst
+  // errorElement.textContent = 'Results not found. Adjust your search';
+}
+
+function hideSearchError(wrapperElement, errorElement) {
+  wrapperElement.classList.remove('search_input_wrapper--with-error');
+  errorElement.style.display = 'none';
 }
 
 

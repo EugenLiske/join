@@ -1,6 +1,6 @@
 const BASE_URL_TASKS = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
 // Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
-// const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
+const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 // 
 
@@ -12,7 +12,7 @@ async function getAllTasks(){
 async function getData(path) {
   let fireBaseResponseAsJson = null;
   try {
-    let fireBaseResponse = await fetch(BASE_URL_TASKS + path + ".json");
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
     fireBaseResponseAsJson = await fireBaseResponse.json();
   }
   catch(error){
@@ -25,7 +25,7 @@ async function getData(path) {
 async function setData(data, path) {
   let response = null;
   try {
-    response = await fetch(BASE_URL_TASKS + path + ".json", {
+    response = await fetch(BASE_URL + path + ".json", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
