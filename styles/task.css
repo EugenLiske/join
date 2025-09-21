@@ -7,15 +7,18 @@
 
     box-shadow: 0 0 4px 0 #00000029;
 
+    max-width: 535px; 
+    width: 100%;
+
+    background-color: white;
+    margin: 8px;
+
     position: relative;
-    top: 0;
+    top: 16px;
     right: -100%;
     transition: right 0.8s ease;
-    
-    gap: 24px;
-    width: 535px;
-    background-color: white;
 
+    gap: 24px;
 }
 
 .overlay_task.active{
