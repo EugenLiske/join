@@ -58,7 +58,7 @@
                                     <button type="button" class="search_button" onclick="focusSearchInputField(); onSearchInput()"></button>
                                 </div>
                             </div> -->
-                            <button class="add_task_button" onclick="initAddTaskOverlay('todo'); toggleOverlay('overlay_add_task')">
+                            <button class="add_task_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
                                 Add task
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
                             </button>
@@ -69,7 +69,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>To do</h3>
-                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('to_do'); toggleOverlay('overlay_add_task')"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('to_do'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -87,7 +87,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>In progress</h3>
-                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('in_progress'); toggleOverlay('overlay_add_task')"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('in_progress'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -103,7 +103,7 @@
                         <div class="task_column">
                             <div class="task_column_header">
                                 <h3>Await feedback</h3>
-                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('await_feedback'); toggleOverlay('overlay_add_task')"></button>
+                                <button class="add_task_button_kanban" onclick="initAddTaskOverlay('await_feedback'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')"></button>
                             </div>
                             <div
                                 class="task_column_content"
@@ -135,11 +135,11 @@
             </div>
         </div>
     </div>
-    <div id="overlay_add_task" class="overlay_wrapper d_none">
-        <article class="overlay_add_task">
+    <div id="overlay_add_task" class="overlay_wrapper_animation d_none">
+        <article id="overlay_add_task_container" class="overlay_add_task">
             <header class="overlay_add_task_header">
                 <h1>Add Task</h1>
-                <button class="overlay_close_button" onclick="toggleOverlay('overlay_add_task'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+                <button class="overlay_close_button" onclick="hideAnimationOverlay('overlay_add_task', 'overlay_add_task_container'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
             </header>
             <div id="add_task_form"></div>
 

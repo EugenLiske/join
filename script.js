@@ -11,6 +11,32 @@ function toggleOverlay(htmlId){
     overlay.classList.toggle("d_none");
 }
 
+
+function showAnimationOverlay(wrapperId, containerId){
+    const overlay = document.getElementById(wrapperId);
+    overlay.classList.toggle("d_none");
+    const overlayContent = document.getElementById(containerId);
+    setTimeout(() => {
+        overlay.classList.add('active');
+        overlayContent.classList.add('active');    
+    }, 50);
+
+}
+
+
+function hideAnimationOverlay(wrapperId, containerId){
+    const overlay = document.getElementById(wrapperId);
+    const overlayContent = document.getElementById(containerId);
+    setTimeout(() => {
+        overlay.classList.remove('active');
+        overlayContent.classList.remove('active');          
+    }, 50);
+    setTimeout(() => {
+        overlay.classList.toggle("d_none");
+    }, 1000)
+}
+
+
 function initNavAndHeaderPage(page){
     initNavigation(page);
 }
