@@ -1,18 +1,21 @@
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 
-function simpleCheckRequiredFields(){
-    return checkTitle(false) && simpleCheckDueDate() && checkCategory(false);
-
+function checkRequiredFieldsToEnableButton(mode = "add_task"){
+    return checkTitle(false) && simpleCheckDuedate() && (mode === "add_task" ? checkCategory(false) : true);
 }
 
 
-function checkRequiredFields(){
+function checkRequiredFields(mode = "add_task"){
     let isCorrectTitle = checkTitle();
-    let isCorrectDueDate = checkDueDate();
-    let isCorrectCategory = checkCategory();
+    let isCorrectDuedate = checkDuedate();
+    let isCorrectCategory = true;
+    if (mode == "add_task"){
+        isCorrectCategory = checkCategory();
+    }
 
-    return isCorrectTitle && isCorrectDueDate && isCorrectCategory;
+
+    return isCorrectTitle && isCorrectDuedate && isCorrectCategory;
 }
 
 
@@ -71,18 +74,18 @@ function checkCategory(setWarning = true){
 
 // Check Date -------------------------------------------------------------------------
 
-function simpleCheckDueDate(){
-    let dueDateRef = document.getElementById("task_deadline_input");  
-    let isCorrect = dueDateRef.value.length > 0;
+function simpleCheckDuedate(){
+    let duedateRef = document.getElementById("task_deadline_input");  
+    let isCorrect = duedateRef.value.length > 0;
     return isCorrect;
 }
 
 
-function checkDueDate(){
-    let dueDateRef = document.getElementById("task_deadline_input");
-    let errorNumber = dateValidation(dueDateRef.value);
+function checkDuedate(){
+    let duedateRef = document.getElementById("task_deadline_input");
+    let errorNumber = dateValidation(duedateRef.value);
     let isCorrect = errorNumber == 0 ? true : false;
-    removeOrAddWarning(dueDateRef, "warning_deadline", isCorrect, getDateWarning(errorNumber));
+    removeOrAddWarning(duedateRef, "warning_deadline", isCorrect, getDateWarning(errorNumber));
     return isCorrect;
 }
 

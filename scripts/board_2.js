@@ -1,3 +1,25 @@
+let currentTask = null;
+
+function setCurrentTask(taskId){
+    currentTask = getElementWithId2(allTasks, taskId);
+}
+
+
+// function updateCurrentTask(task){
+//     currentTask = task;
+// }
+
+
+function getCurrentTask(){
+    return currentTask;
+}
+
+let boardContacts = null;
+
+function getBoardContacts(){
+    return boardContacts;
+}
+
 // erlaubt Fokus des Inputfelds beim Anklicken der Lupe trotz absoluter Positionierung und pointer-events:auto
 
 function focusSearchInputField() {
@@ -21,20 +43,19 @@ async function loadTasksFromDB(){
             //     title:              taskResponse[taskKeysArray[index]].title,
             //     kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
             //     description:        taskResponse[taskKeysArray[index]].description,
-                
             // }
         )  
     }
-    console.log(taskResponse);
-    console.log(taskKeysArray);
-    console.log(allTasks); 
+    // console.log(taskResponse);
+    // console.log(taskKeysArray);
+    // console.log(allTasks); 
 }
 
 let currentDraggedTask;
 
 async function initBoardPage() {
     initNavAndHeaderPage('board');
-    await loadContacts();
+    boardContacts = await getContacts();
     await loadTasksFromDB();
     updateHTML();          
   }
@@ -334,3 +355,24 @@ function updateSearchErrorMessage() {
 //     // DB entfernen (Realtime DB)
 //     // await fetch(`${BASE_URL}/tasks/task_${id}.json`, { method: 'DELETE' });
 // }
+
+function getBoardAllTasks(){
+    return allTasks;
+}
+
+
+function updateTask(taskId, update) {
+    const taskIdx = allTasks.findIndex(task => task.id === taskId);
+    if (taskIdx !== -1) {        
+        allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
+    }
+}
+
+
+function updateTaskCardAtBoard(taskId) {
+    const taskIdx = allTasks.findIndex(task => task.id === taskId);
+    const taskCard = document.getElementById("task_card_" + taskId);
+    if (taskCard && taskIdx !== -1) {
+        taskCard.outerHTML = getTaskCardTemplate(allTasks[taskIdx]);
+    }
+}

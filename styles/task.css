@@ -7,9 +7,22 @@
 
     box-shadow: 0 0 4px 0 #00000029;
 
-    gap: 24px;
-    width: 535px;
+    max-width: 535px; 
+    width: 100%;
+
     background-color: white;
+    margin: 8px;
+
+    position: relative;
+    top: 16px;
+    right: -100%;
+    transition: right 0.3s ease;
+
+    gap: 24px;
+}
+
+.overlay_task.active{
+    right: calc(100vw - 100%);
 }
 
 /* Category */
@@ -35,6 +48,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.task_title{
+    font-size: 61px;
 }
 
 /* Content */
@@ -158,4 +175,32 @@
     border-top: none;
     border-right: none;
     border-bottom: none;
+}
+
+@media (max-width: 850px){
+    .task_title{
+        font-size: 36px;
+    }
+
+    .overlay_task{
+        padding: 32px 24px;
+        max-width: 396px; 
+        width: 100%;
+
+        gap: 16px; 
+    }
+
+    .overlay_task section{
+        gap: 16px;
+    }
+
+    .overlay_task.active{
+        right: calc(94vw - 100%);
+    }
+}
+
+@media (max-width: 400px){
+    .overlay_task.active{
+        right: calc(88vw - 100%);
+    }    
 }

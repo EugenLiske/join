@@ -15,12 +15,21 @@
 /* Overlay */
 
 .overlay_add_task{
+    position: relative;
+    top: 0;
+    right: -100%;
+
     background-color: white;
     padding: 56px;
     border-radius: 16px;
     box-shadow: 0 0 4px 0 #0000001A;
+    transition: right 0.3s ease;
+    z-index: 1000;
 }
 
+.overlay_add_task.active {
+    right: calc(100vw - 100%);
+}
 
 .overlay_add_task header{
     display: flex;

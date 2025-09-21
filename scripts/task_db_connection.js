@@ -1,12 +1,16 @@
-const BASE_URL_TASKS = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
+const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
 // Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
-const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
+// const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 // 
 
 
+// async function setAllTasks(){
+//   tasks = await getData("/tasks");
+// }
+
 async function getAllTasks(){
-  tasks = await getData("/tasks");
+  return await getData("/tasks");
 }
 
 async function getData(path) {
@@ -57,8 +61,28 @@ async function increaseTaskCounter(nextTaskId){
 
 
 async function getTaskFromDB(taskId){
-    await getAllTasks();
+    await setAllTasks();
     currentTask = getElementWithId(tasks, taskId)
     if (!objectFound(currentTask)) return false;
     return true;
+}
+
+async function deleteTaskFromFirebase(taskId) {
+    console.log(taskId);
+    
+    try {
+        const response = await fetch(BASE_URL + "/tasks/task_" + taskId + ".json", {
+            method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Failed to delete contact: ${response.statusText}`);
+        }
+        
+        return true;
+        
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        throw error;
+    }
 }

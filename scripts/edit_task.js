@@ -3,20 +3,29 @@
 // Contacts have already been loaded from the board when displaying.
 
 async function displayEditTaskOverlay(taskId){
-    await includeAddTaskForm();
-    // await getTaskFromDB(taskId);
-    // ToDo: Toggle Overlays
-    manipulateTaskForm();
-    // await loadContacts();
+    deleteTaskForm("add");
+    toggleScrollBehaviorOfBody('hidden');
 
+    includeAddTaskForm("edit_task_form");
+    await initTaskForm();
+    
+    manipulateTaskForm();
     setTaskFormData();
+    setAnimtion('overlay_edit_task', 'overlay_edit_task_container');
+    toggleOverlay('overlay_task');
+    toggleOverlay('overlay_edit_task');
 }
 
-
-
+// Form Manipulation
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
+    document.getElementById("category_wrapper").classList.add("d_none");
+    changeCSSClasses("task_input_area", "edit_task_input_area");
+    changeCSSClasses("task_separator", "edit_task_separator");
+    changeCSSClasses("add_task_footer", "edit_add_task_footer");
+    document.getElementById("task_title_input").onkeyup = "checkAndEnableButton('edit_task')";
+    document.getElementById("task_deadline_input").onkeyup = "checkAndEnableButton('edit_task')";
 }
 
 
@@ -28,48 +37,103 @@ function hideRequiredSymole(){
 }
 
 
+function changeCSSClasses(oldCSSClass, newCSSClass){
+    const elementsRef = document.getElementsByClassName(oldCSSClass);
+    elementsRef[0].classList.replace(oldCSSClass, newCSSClass);
+}
+
+
+// Fill Form with Informations
 function setTaskFormData(){
-    const taskKeys = Object.keys(currentTask);
-    if (taskKeys.includes("title")) document.getElementById("task_title_input").value = currentTask.title;
-    if (taskKeys.includes("description")) document.getElementById("task_description_input").value = currentTask.description;
-    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
-    if (taskKeys.includes("priority")) setPrioritySelection(currentTask.priority);
-    if (taskKeys.includes("assignedPersons")) setAssignedToSelection(currentTask.assignedPersons);
-    if (taskKeys.includes("category")) setCategorySelection(currentTask.category);
-    if (taskKeys.includes("subtasks")) setSubtasksList(currentTask.subtasks);
+    const task = getCurrentTask();
+    const taskKeys = Object.keys(task);
+    if (taskKeys.includes("title")) document.getElementById("task_title_input").value = task.title;
+    if (taskKeys.includes("description")) document.getElementById("task_description_input").value = task.description;
+    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(task.duedate);
+    if (taskKeys.includes("priority")) setPrioritySelection(task.priority);
+    if (taskKeys.includes("assignedPersons")) setAssignedToSelection(task.assignedPersons);
+    if (taskKeys.includes("subtasks")) setSubtasksList(task.subtasks);
 }
 
 
-
-function setPrisetPrioritySelectionrityInput(priority){
+function setPrioritySelection(priority){
     const priorityButtonRef = document.getElementById(priority);
-    setGlobalPriority(priorityButtonRef, priority);
+    togglePriorityButtons(priorityButtonRef, priority);
 }
 
-// Suchliste markieren
-// Ausgewählte Personen anzeigen
-function setAssignedToSelection(assignedPersons){
-    const personKeys = Object.keys(persons);
-    const assignedKeys = Object.keys(assignedPersons);
+
+function setAssignedToSelection(assignedList){
+    const contacts = getFormContacts();
+    const personKeys = Object.keys(contacts);
+    const assignedKeys = Object.keys(assignedList);
+
     const searchHTMLList = document.getElementById("selection").children;
-    
-    for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
-        for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
-            if (assignedPersons[assignedKeys[assignedKeyIdx]] == persons[personKeys[personKeyIdx]].id){
-                assignedToList[personKeyIdx] = true;    
+
+    for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
+
+        searchHTMLList[personKeyIdx].classList.remove("person_selected");  
+
+        for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
+            if (assignedList[assignedKeys[assignedKeyIdx]] == contacts[personKeys[personKeyIdx]].id){
+                assignedList[personKeyIdx] = true;    
                 selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);         
                 break;
             }
-        }    
+        }   
     }
 }
 
 
 function setSubtasksList(subtasks){
     const subtaskKeys = Object.keys(subtasks);
-
+    const subtasksContainer = document.getElementById("subtasks_container");
+    let subtaskId = -1;
     for (let keyIdx = 0; keyIdx < subtaskKeys.length; keyIdx++) {
-        document.getElementById("subtask_input").value = subtasks[keys[keyIdx]].description;
-        addSubtaskToList();
+        console.log(getIdFromObjectKey(subtaskKeys[keyIdx]));
+        
+        subtaskId = getIdFromObjectKey(subtaskKeys[keyIdx]);
+        subtasksContainer.innerHTML += getSubtaskTemplate(subtasks[subtaskKeys[keyIdx]].description, subtaskId);
     }
+    subtaskId = parseInt(subtaskId) + 1;
+    console.log(subtaskId);
+    
+    setSubtaskId(subtaskId);
+}
+
+
+async function updateTaskAndGoBack(){
+    if (checkRequiredFields("edit_task")){
+        const formContent = getFormContent();
+        console.log(formContent);
+        
+        await saveFormContentInDB(formContent);
+        updateTask(currentTask.id, formContent);
+        updateTaskCardAtBoard(currentTask.id);
+        goBack();
+    }
+}
+
+async function saveFormContentInDB(formContent) {
+    for (const [key, value] of Object.entries(formContent)) {
+        await setData(value, `/tasks/task_${currentTask.id}/${key}`);
+    }
+}
+
+
+function goBack(){
+    displayTaskOverlay(currentTask.id);
+    toggleOverlay('overlay_edit_task');    
+}
+
+
+
+function getFormContent(){
+    return {
+        "title": getTitle(),
+        "description": getDescription(),
+        "duedate": getDuedate(),
+        "priority": getCurrentPriority(),
+        "assignedPersons": getAssignedPersons(),
+        "subtasks": getSubtasks(currentTask.subtasks),
+    };
 }

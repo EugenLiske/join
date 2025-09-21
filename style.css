@@ -26,20 +26,23 @@ h1{
     flex: 1;
 
     background-color: var(--bg-c-join);
+    width: calc(100% - 232px);
 }
 
 .main_wrapper{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     flex: 1;
     position: relative;
+
+    padding: 100px 70px 70px 70px;
+    width: 100%;
 }
 
 .main_container{
     display: flex;
     flex-direction: column;
-    padding: 16px;
     background-color: var(--bg-c-join);
 
     gap: 24px;
@@ -88,11 +91,31 @@ h1{
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    min-width: 100vw;
-    min-height: 100vh;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.531);
+}
+
+.overlay_wrapper_animation{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 16px;
+    background-color: transparent;
+    transition: background-color 2s ease;
+}
+
+.overlay_wrapper_animation.active {
     background-color: rgba(0, 0, 0, 0.531);
 }
 
@@ -125,37 +148,15 @@ h1{
     font-size: 12px;
 }
 
-.overlay_wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100vw;
-    min-height: 100vh;
-}
-
-.overlay_close_button{
-    background-color: transparent;
-    height: 38px;
-    width: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 0px;    
-}
-
-.overlay_close_button:hover{
-    background-color: #EEEEEE;
-}
-
-
 .d_none{
     display: none !important;
+}
+
+@media(max-width: 1000px){
+
+    .main_wrapper{
+        padding: 50px 20px 20px 20px;
+    }    
 }
 
 @media(max-width: 850px){
@@ -188,5 +189,23 @@ h1{
         border-right: none;
         border-bottom: 3px solid var(--c-separator-var2);
         margin: 0;
+    }
+}
+
+
+@media(max-width: 750px){
+    .main_wrapper{
+        align-items: center;
+    }
+
+    .content_wrapper{
+        width: 100%;
+    }
+}
+
+@media(max-width: 400px){
+    
+    .overlay_wrapper_animation{
+        padding: 8px;
     }
 }

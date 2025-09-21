@@ -11,10 +11,17 @@
     max-width: 535px; 
     width: 100%;
 
-
-
     background-color: white;
     margin: 8px;
+
+    position: relative;
+    top: 0;
+    right: -100%;
+    transition: right 0.3s ease;
+}
+
+.overlay_edit_task.active {
+    right: calc(100vw - 100%);
 }
 
 .overlay_edit_task_header{
@@ -23,7 +30,7 @@
     padding-right: 24px;
 }
 
-.task_input_area{
+.edit_task_input_area{
     display: flex;
     flex-direction: column;
 
@@ -34,11 +41,11 @@
     overflow: auto;
 }
 
-.task_separator{
+.edit_task_separator{
     display: none;
 }
 
-.add_task_footer{
+.edit_add_task_footer{
     display: flex;
     justify-content: end;
     align-items: end;
@@ -76,4 +83,46 @@
 
 ::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url("../assets/img/icons/scrollbar/button_down.svg");
+}
+
+
+@media (max-width: 850px){
+
+    .overlay_edit_task{
+        padding: 32px 24px;
+        max-width: 396px; 
+        width: 100%;
+
+        gap: 16px; 
+    }
+
+    .overlay_edit_task section{
+        gap: 16px;
+    }
+
+    .overlay_edit_task.active{
+        right: calc(94vw - 100%);
+    }
+}
+
+@media (max-width: 400px){
+    .overlay_edit_task.active{
+        right: calc(94vw - 100%);
+    }    
+
+    .edit_task_input_area{
+        padding-right: 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-button:single-button:vertical:decrement {
+        background-image: none;
+    }
+
+    ::-webkit-scrollbar-button:single-button:vertical:increment {
+        background-image: none;
+    }
 }
