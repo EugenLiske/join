@@ -75,11 +75,11 @@
 .separator{
     border: 1px solid var(--c-separator-var1);
     height: 60%;
+    margin: 0 24px;
 }
 
 .middle_box{
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-grow: 1;
     gap: 18px;
@@ -89,6 +89,14 @@
     display: flex;
     flex-direction: column;
     gap: 13px;
+}
+
+.box_left{
+    justify-content: end;    
+}
+
+.box_right{
+    justify-content: start;    
 }
 
 .deadline_date{
@@ -208,6 +216,22 @@
     .welcome_show{
         display: flex;
         justify-content: center;
+    }
+
+    .middle_box{
+        gap: 10px;
+    }
+
+    .middle_box p{
+        gap: 8px;
+    }
+
+    .summary_card{
+        padding: 0 8px;
+    }
+
+    .separator{
+        margin: 0 14px;
     }
 
 }

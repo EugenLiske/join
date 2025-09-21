@@ -17,7 +17,7 @@
     position: relative;
     top: 0;
     right: -100%;
-    transition: right 0.8s ease;
+    transition: right 0.3s ease;
 }
 
 .overlay_edit_task.active {
@@ -83,4 +83,46 @@
 
 ::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url("../assets/img/icons/scrollbar/button_down.svg");
+}
+
+
+@media (max-width: 850px){
+
+    .overlay_edit_task{
+        padding: 32px 24px;
+        max-width: 396px; 
+        width: 100%;
+
+        gap: 16px; 
+    }
+
+    .overlay_edit_task section{
+        gap: 16px;
+    }
+
+    .overlay_edit_task.active{
+        right: calc(94vw - 100%);
+    }
+}
+
+@media (max-width: 400px){
+    .overlay_edit_task.active{
+        right: calc(94vw - 100%);
+    }    
+
+    .edit_task_input_area{
+        padding-right: 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-button:single-button:vertical:decrement {
+        background-image: none;
+    }
+
+    ::-webkit-scrollbar-button:single-button:vertical:increment {
+        background-image: none;
+    }
 }

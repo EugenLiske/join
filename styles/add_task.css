@@ -23,7 +23,7 @@
     padding: 56px;
     border-radius: 16px;
     box-shadow: 0 0 4px 0 #0000001A;
-    transition: right 0.8s ease;
+    transition: right 0.3s ease;
     z-index: 1000;
 }
 

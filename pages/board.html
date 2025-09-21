@@ -28,7 +28,13 @@
             <div class="main_wrapper">
                 <article class="main_container_board">
                     <div class="kanban_header">
-                        <h1>Board</h1>
+                        <div class="media_header_container">
+                            <h1>Board</h1>
+                            <button class="add_task_button toggle_media_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
+                                <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
+                            </button>
+                        </div>
+                        
                         <div class="find_and_create_task_container">
 
                             <div id="searchInputWrapper" class="search_input_wrapper">
@@ -58,8 +64,8 @@
                                     <button type="button" class="search_button" onclick="focusSearchInputField(); onSearchInput()"></button>
                                 </div>
                             </div> -->
-                            <button class="add_task_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
-                                Add task
+                            <button class="add_task_button toggle_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
+                                <span class="add_task_lable">Add task</span>
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
                             </button>
                         </div>
@@ -157,7 +163,7 @@
                 <span id="task_category" class="category category_bg_color0"></span>
                 <button class="overlay_close_button" onclick="saveSubtaskChanges(); hideAnimationOverlay('overlay_task', 'overlay_task_container'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
             </header>
-            <h1 id="task_title"></h1>
+            <h2 id="task_title" class="task_title"></h2>
             <section>
                 <p id="task_description"></p>
                 <div class="task_info_one_line">
