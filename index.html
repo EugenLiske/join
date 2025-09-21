@@ -10,19 +10,11 @@
     <link rel="stylesheet" href="./styles/login_signup.css" />
   </head>
   <body>
-    <div class="become_member_area">
-      <span>Not a Join user?</span>
-      <button
-        class="signup_button_login_page"
-        onclick="window.location.href='./pages/signup.html'"
-      >
-        Sign up
-      </button>
-    </div>
+    <div id="splash" class="splash"></div>
     <div class="sign_up_page_content_div">
       <form id="login_form" class="login_form" onsubmit="return loginUser(event)">
         <h1 class="signup_headline">Log in</h1>
-        <hr class="signup_headline_underscore" />
+        <div class="signup_headline_underscore"></div>
 
         <div class="input_fields field_size">
           <div class="input_wrapper">
@@ -85,11 +77,31 @@
           <a href="./pages/privacy_policy_external.html" class="additional_information">Privacy Policy</a>
           <a href="./pages/legal_notice_external.html" class="additional_information">Legal Notice</a>
       </footer>
+      
       <img
+          class="logo_signup_page logo--dark"
+          src="./assets/img/logos/join_logo_dark.svg"
+          alt="join_logo dark" />
+
+      <img
+          class="logo_signup_page logo--light"
+          src="./assets/img/logos/join_logo_light.svg"
+          alt="join_logo light" />
+
+      <!-- <img
         class="logo_signup_page"
         src="./assets/img/logos/join_logo_dark.svg"
         alt="join_logo"
-      />
+      /> -->
+    </div>
+        <div class="become_member_area">
+      <span>Not a Join user?</span>
+      <button
+        class="signup_button_login_page"
+        onclick="window.location.href='./pages/signup.html'"
+      >
+        Sign up
+      </button>
     </div>
   </body>
 <script src="./scripts/temp_db/person_db.js"></script>

@@ -20,7 +20,7 @@
     padding-top: 100px;
     padding-left: 70px;
     padding-right: 70px;
-    padding-bottom: 70px;
+    padding-bottom: 100px;
 }
 
 .main_container_legal_notice {
@@ -66,4 +66,50 @@ h3 + p {
 
 .text_highlight_join {
     color: #29ABE2;
+}
+
+@media (max-width: 1000px) { 
+    .main_wrapper {
+        padding-top: 50px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 50px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 750px) { 
+    .main_wrapper {
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 24px;
+    }
+}
+
+@media (max-width: 560px) { 
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) { 
+    h1 {
+        font-size: 20px;
+    }
 }

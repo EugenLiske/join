@@ -9,6 +9,7 @@
     flex-direction: column;
     flex: 1;
     background-color: var(--bg-c-join);
+    min-width: 0; 
 }
 
 .main_wrapper {
@@ -21,6 +22,18 @@
     padding-left: 70px;
     padding-right: 70px;
     padding-bottom: 70px;
+    min-width: 0;    
+}
+
+.main_container_privacy_policy,
+.main_container_privacy_policy p,
+.main_container_privacy_policy li {
+    overflow-wrap: anywhere; /* moderne, sanfte Variante */
+    word-break: break-word;  /* Fallback */
+}
+
+.main_container_privacy_policy a {
+    word-break: break-all;   /* Links dürfen hart umbrechen */
 }
 
 .main_container_privacy_policy {
@@ -71,4 +84,50 @@ h3 + p {
 
 .text_highlight_join {
     color: #29ABE2;
+}
+
+@media (max-width: 1000px) { 
+    .main_wrapper {
+        padding-top: 50px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 50px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 750px) { 
+    .main_wrapper {
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 24px;
+    }
+}
+
+@media (max-width: 560px) { 
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) { 
+    h1 {
+        font-size: 20px;
+    }
 }

@@ -15,13 +15,14 @@ async function loadTasksFromDB(){
 
     for (let index = 0; index < taskKeysArray.length; index++) {
         allTasks.push(
-            // taskResponse[taskKeysArray[index]]
-            {
-                id:                 taskResponse[taskKeysArray[index]].id,
-                title:              taskResponse[taskKeysArray[index]].title,
-                kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
-                description:        taskResponse[taskKeysArray[index]].description,
-            }
+            taskResponse[taskKeysArray[index]]
+            // {
+            //     id:                 taskResponse[taskKeysArray[index]].id,
+            //     title:              taskResponse[taskKeysArray[index]].title,
+            //     kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
+            //     description:        taskResponse[taskKeysArray[index]].description,
+                
+            // }
         )  
     }
     console.log(taskResponse);
@@ -311,19 +312,11 @@ function updateSearchErrorMessage() {
       break;
     }
   }
-  errorElement.style.display = anyMatch ? 'none' : 'block';
-}
-
-function showSearchError(wrapperElement, errorElement) {
-  wrapperElement.classList.add('search_input_wrapper--with-error');
-  errorElement.style.display = 'block';
-  // Optional: Text dynamisch setzen, falls du später lokalisieren willst
-  // errorElement.textContent = 'Results not found. Adjust your search';
-}
-
-function hideSearchError(wrapperElement, errorElement) {
-  wrapperElement.classList.remove('search_input_wrapper--with-error');
-  errorElement.style.display = 'none';
+  if (anyMatch) {
+    errorElement.style.display = 'none';
+    } else {
+    errorElement.style.display = 'block';
+  }
 }
 
 

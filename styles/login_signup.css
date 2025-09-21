@@ -3,20 +3,58 @@
     box-sizing: border-box;
 }
 
+.splash {
+    position: fixed;
+    inset: 0;
+    background: #f6f7f8;
+    z-index: 10000;               /* über allem */
+    animation: splashFade 700ms ease-out both; /* 0.5s halten, 0.2s fade */
+    pointer-events: none;  
+}
+
+@keyframes splashFade {
+    0%, 60% { opacity: 1; }
+    100%    { opacity: 0; }
+}
+
+/* Gemeinsame Logo-Basis: relativ zum Viewport */
+.logo_signup_page {
+  position: fixed;                  /* WICHTIG: nicht relativ zu einem Wrapper */
+  width: 101px;
+  height: 122px;
+  z-index: 10001;                   /* über dem Splash */
+
+  /* Startzustand in der Mitte – sofort sichtbar */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(3);
+
+  animation: moveLogo 2000ms ease forwards;  /* Bewegung wie gehabt */
+}
+
+/* Ziel: oben links neben Formular */
+@keyframes moveLogo {
+  to {
+    left: 77px;
+    top: 80px;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Desktop: nur das Dark-Logo zeigen */
+.logo--light {
+    display: none;
+}
+
 /* Logo plus Animation */
 
-.logo_signup_page {
+/* .logo_signup_page {
     position: absolute;
     width: 101px;
     height: 122px;
     animation: moveLogo 2000ms ease forwards;
+    z-index: 10001; 
 }
-
-.field_size{
-    max-width: 422px;
-    width: 100%;
-}
-
 
 @keyframes moveLogo {
     from {
@@ -29,7 +67,8 @@
         top: 80px;
         transform: translate(0, 0) scale(1);
     }
-}
+} */
+
 
 .sign_up_page_content_div {
     height: 100vh;
@@ -44,7 +83,7 @@
 .signup_form {
     background-color: #ffffff;
     width: 598px;
-    height: 630px;
+    height: 680px;
     border-radius: 30px;
     box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
     padding-top: 48px;
@@ -498,23 +537,18 @@ footer {
 }
 
 
-@media(max-width: 852px){
+@media(max-width: 1000px){
     .logo_signup_page {
         width: 75px;
         height: auto;
     }
 
     .become_member_area {
-        
+        right: 80px;
     }
-    
 }
 
-@media(max-width: 652px){
-    .login_form {
-        width: 100%;
-    }
-
+@media (max-width: 900px) {
     @keyframes moveLogo {
     from {
         left: 50%;
@@ -526,5 +560,161 @@ footer {
         top: 40px;
         transform: translate(0, 0) scale(1);
         }
+    }
+}
+
+@media(max-width: 730px){
+    .become_member_area {
+        right: 48px;
+    }
+}
+
+@media(max-width: 652px){
+    .sign_up_page_content_div {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    
+    .login_form {
+        width: 100%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .signup_form {
+        width: 100%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .become_member_area {
+        right: 24px;
+        top: 40px;
+    }
+}
+
+@media(max-width: 550px){
+    .sign_up_page_content_div {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .become_member_area {
+        right: 12px;
+    }
+
+    .login_form {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .signup_arrow_left{
+        height: 20px;
+        width: 20px;
+    }
+}
+
+@media(max-width: 500px){
+    .login_form {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .signup_form {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+@media(max-width: 450px){
+    .signup_arrow_left {
+        left: 30px;
+    }
+}
+
+@media(max-width: 428px){
+    .splash {
+        background-color: #091931;
+    }
+
+    /* Beide Logos rendern, Swap per Opacity parallel zur Splash-Zeit */
+    .logo--light,
+    .logo--dark { display: block; }
+
+    /* Light: bis 60% sichtbar, dann ausblenden */
+    .logo--light {
+        animation:
+        moveLogo 2000ms ease forwards,
+        logoSwapLight 700ms linear forwards;   /* 700ms = Splash-Dauer */
+    }
+
+    /* Dark: bis 60% unsichtbar, ab 60% sichtbar */
+    .logo--dark {
+        animation:
+        moveLogo 2000ms ease forwards,
+        logoSwapDark 700ms linear forwards;
+    }
+
+    @keyframes logoSwapLight {
+        0%, 59.999% { opacity: 1; }
+        60%, 100%   { opacity: 0; }
+    }
+
+    @keyframes logoSwapDark {
+        0%, 59.999% { opacity: 0; }
+        60%, 100%   { opacity: 1; }
+    }
+
+    .signup_headline {
+        font-size: 48px;
+    }
+
+    .login_form {
+        height: 500px;
+    }
+
+    .login_button_area {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .login_button {
+        width: 177px;
+    }
+
+    .signup_button {
+        width: 180px;
+    }
+
+    .input_fields {
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+
+    .sign_up_page_content_div {
+        height: auto;          /* statt 100vh */
+        min-height: unset;     /* falls gesetzt */
+        padding-bottom: 24px;  /* etwas Luft nach unten */
+        padding-top: 200px;
+    }
+
+    .become_member_area {
+        position: static;      /* absolute aus */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;             /* etwas kleiner auf Mobile */
+        margin: 96px auto 0;   /* unterhalb des Formulars, zentriert */
+    }
+
+    .logo_signup_page {
+        width: 50px;
+        height: auto;
+    }
+}
+
+@media(max-width: 350px){
+    .signup_arrow_left {
+        left: 15px;
     }
 }

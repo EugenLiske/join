@@ -34,10 +34,6 @@
     justify-content: space-between;
 }
 
-h1 {
-    font-size: 61px;
-}
-
 .signup_arrow_left {
     display: inline-block;
     width: 32px;
@@ -57,11 +53,8 @@ h1 {
     margin-top: 30px;
 }
 
-p {
-    font-size: 16px;
-    font-weight: 400;
-    margin-top: 24px;  
-    margin-bottom: 24px;  
+h1 {
+    font-size: 61px;
 }
 
 h2 {
@@ -69,6 +62,13 @@ h2 {
     font-weight: 700;
     margin-top: 24px;
     margin-bottom: 24px;
+}
+
+p {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 24px;  
+    margin-bottom: 24px;  
 }
 
 /* 1) Liste vorbereiten */
@@ -122,4 +122,64 @@ h2 {
 
 .text_highlight_join {
     color: #29ABE2;
+}
+
+@media (max-width: 1000px) { 
+    .main_wrapper {
+        padding-top: 50px;
+        padding-left: 50px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 750px) { 
+    .main_wrapper {
+        padding-top: 24px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 24px;
+    }
+}
+
+@media (max-width: 560px) { 
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    .how_to_use_text .steps {
+    --marker-gap: 18px;
+    }
+
+    .how_to_use_text .steps li::before {
+      font-size: 20px;
+      line-height: normal;
+    }
+}
+
+@media (max-width: 480px) { 
+    h1 {
+        font-size: 20px;
+    }
+
+    .signup_arrow_left {
+      height: 20px;
+      width: 20px;
+    }
 }
