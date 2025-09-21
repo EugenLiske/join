@@ -11,7 +11,7 @@ async function displayEditTaskOverlay(taskId){
     
     manipulateTaskForm();
     setTaskFormData();
-
+    setAnimtion('overlay_edit_task', 'overlay_edit_task_container');
     toggleOverlay('overlay_task');
     toggleOverlay('overlay_edit_task');
 }

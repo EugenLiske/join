@@ -151,11 +151,11 @@
             <img src="../assets/img/icons/nav_bar/board.svg" alt="Board Icon">
         </div>
     </div>
-    <div id="overlay_task" class="overlay_wrapper d_none">
-        <article class="overlay_task">
+    <div id="overlay_task" class="overlay_wrapper_animation d_none">
+        <article id="overlay_task_container" class="overlay_task">
             <header class="task_header">
                 <span id="task_category" class="category category_bg_color0"></span>
-                <button class="overlay_close_button" onclick="saveSubtaskChanges(); toggleOverlay('overlay_task'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+                <button class="overlay_close_button" onclick="saveSubtaskChanges(); hideAnimationOverlay('overlay_task', 'overlay_task_container'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
             </header>
             <h1 id="task_title"></h1>
             <section>
@@ -197,10 +197,10 @@
             </section>
         </article>                    
     </div>
-    <div id="overlay_edit_task" class="overlay_wrapper d_none">
-        <article class="overlay_edit_task">
+    <div id="overlay_edit_task" class="overlay_wrapper_animation d_none">
+        <article id="overlay_edit_task_container" class="overlay_edit_task">
             <header class="overlay_edit_task_header">
-                <button class="overlay_close_button" onclick="toggleOverlay('overlay_edit_task'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
+                <button class="overlay_close_button" onclick="hideAnimationOverlay('overlay_edit_task', 'overlay_edit_task_container'); resetAnimation('overlay_task', 'overlay_task_container'); toggleScrollBehaviorOfBody('')"><img src="../assets/img/icons/navigation/cross.svg" alt=""></button>
             </header>
             <div id="edit_task_form"></div>
 

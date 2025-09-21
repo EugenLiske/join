@@ -14,6 +14,14 @@
     background-color: white;
     margin: 8px;
 
+    position: relative;
+    top: 0;
+    right: -100%;
+    transition: right 0.8s ease;
+}
+
+.overlay_edit_task.active {
+    right: calc(100vw - 100%);
 }
 
 .overlay_edit_task_header{

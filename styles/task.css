@@ -7,9 +7,19 @@
 
     box-shadow: 0 0 4px 0 #00000029;
 
+    position: relative;
+    top: 0;
+    right: -100%;
+    transition: right 0.8s ease;
+    
     gap: 24px;
     width: 535px;
     background-color: white;
+
+}
+
+.overlay_task.active{
+    right: calc(100vw - 100%);
 }
 
 /* Category */

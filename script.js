@@ -37,6 +37,21 @@ function hideAnimationOverlay(wrapperId, containerId){
 }
 
 
+function resetAnimation(wrapperId, containerId){
+    const overlay = document.getElementById(wrapperId);
+    const overlayContent = document.getElementById(containerId);
+    overlay.classList.remove('active');
+    overlayContent.classList.remove('active');       
+}
+
+
+function setAnimtion(wrapperId, containerId){
+    const overlay = document.getElementById(wrapperId);
+    const overlayContent = document.getElementById(containerId);
+    overlay.classList.add('active');
+    overlayContent.classList.add('active');       
+}
+
 function initNavAndHeaderPage(page){
     initNavigation(page);
 }

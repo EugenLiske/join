@@ -65,7 +65,7 @@ function getPriorityIcon(priority){
 
 async function displayTaskOverlay(taskId){
     setCurrentTask(taskId);
-    toggleOverlay("overlay_task");
+    showAnimationOverlay("overlay_task", "overlay_task_container");
     renderCurrentTask();
     toggleScrollBehaviorOfBody('hidden');
 }
@@ -160,6 +160,7 @@ function updateProgressbar(task){
 async function deleteCurrentTask(){
     const task = getCurrentTask();
     toggleOverlay("overlay_task");
+    resetAnimation("overlay_task", "overlay_task_container");
     deleteTaskFromArray(task.id)
     deleteTaskFromFirebase(task.id);
     document.getElementById("task_card_" + task.id).remove();
