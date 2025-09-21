@@ -5,9 +5,9 @@ const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebased
 // 
 
 
-async function setAllTasks(){
-  tasks = await getData("/tasks");
-}
+// async function setAllTasks(){
+//   tasks = await getData("/tasks");
+// }
 
 async function getAllTasks(){
   return await getData("/tasks");
@@ -68,8 +68,10 @@ async function getTaskFromDB(taskId){
 }
 
 async function deleteTaskFromFirebase(taskId) {
+    console.log(taskId);
+    
     try {
-        const response = await fetch(BASE_URL_TASKS + "/tasks/task_" + taskId + ".json", {
+        const response = await fetch(BASE_URL + "/tasks/task_" + taskId + ".json", {
             method: 'DELETE'
         });
         

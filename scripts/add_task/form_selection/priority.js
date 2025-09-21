@@ -1,20 +1,5 @@
 // Priority Selection -------------------------------------------------------------------
 
-let currentPriority = "medium";
-let currentCategory = "";
-
-
-function setGlobalPriority(element, priority){
-    clearPriorityButtons("all");
-
-    element.disabled = true;
-    element.classList.replace(priority + "_color_default", priority + "_color_click");
-    element.children[0].classList.remove("priority_btn_c_txt_default");
-    element.children[1].src = setIconPriority(priority);
-
-    currentPriority = priority;
-}
-
 
 function setIconPriority(priority){
     return "../assets/img/icons/task/priorities/" + priority + "_white.svg";
@@ -65,7 +50,6 @@ function setMediumButtonDefault(){
     document.getElementById("medium").classList.replace("medium_color_default", "medium_color_click");
     document.getElementById("medium").children[0].classList.remove("priority_btn_c_txt_default");
     document.getElementById("medium").children[1].src = setIconPriority("medium");
-    currentPriority = "medium";
 }
 
 

@@ -1,5 +1,10 @@
 // Category Selection ---------------------------------------------------------------------
 
+function getCurrentCategory(){
+    return document.getElementById("category_selection").innerText;
+}
+
+
 function closeDropDownCategorySelection(event){
     const containerCategory = document.getElementById('selection_container_category');
     if (containerCategory && !containerCategory.contains(event.target)) {
@@ -21,13 +26,6 @@ function renderCategoryOptions(){
 }
 
 
-function setCategorySelection(category){
-    currentCategory = category;
-    showCategorySelection(category);
-    renderCategoryOptions();
-}
-
-
 function checkCategorySelection(category){
     let categoryButtonRef = document.getElementById("category_selection");
     let choice = categoryButtonRef.innerText;
@@ -44,5 +42,4 @@ function showCategorySelection(category){
 function clearCategoryInput(){
     document.getElementById("category_selection").innerText = "Select task category";
     document.getElementById("category_options").classList.add("d_none");
-    currentCategory = "";
 }

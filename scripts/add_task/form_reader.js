@@ -21,14 +21,17 @@ function getDuedate(){
 }
 
 
-function changeDateFormat(date){
-    let splitDate = date.split("/");
-    let reverseDate = splitDate.reverse();
-    return reverseDate.join("-");
+// Get Priority  --------------------------------------------------
+
+function getCurrentPriority() {
+    const priorityButtons = document.getElementsByClassName("priority_button");
+    for (let btn of priorityButtons) {
+        if ([...btn.classList].some(cls => cls.endsWith("_color_click"))) {
+            return btn.id;
+        }
+    }
+    return null;
 }
-
-
-// Get Priority -> global "currentPriority" -------------------------
 
 
 // Get Assigned Persons -> global "assignedPersons" ------------------
@@ -40,21 +43,35 @@ function changeDateFormat(date){
 
 // Get Subtasks -----------------------------------------------------
 
-function getSubtasks(){
+function getSubtasks(oldSubtasks = null){
     let subtasksContainer = document.getElementById("subtasks_container").children;
     let subtasks = {};
     let subtaskNr = 0;
     let subtaskKey = "";
+    let status = false;
 
     for (let subtaskIdx = 0; subtaskIdx < subtasksContainer.length; subtaskIdx++) {
         subtaskNr = extractSubtaskNrFromId(subtasksContainer[subtaskIdx].id);
-        subtaskKey = "subtask_" + subtaskIdx;
-        subtasks[subtaskKey] = {"description": getSubtaskTxt(subtaskNr), "status": false};
+        subtaskKey = "subtask_" + subtaskNr;
+        if (checkIfOldSubtaskExists(oldSubtasks, subtaskKey)){
+            status = oldSubtasks[subtaskKey].status;
+        }
+        subtasks[subtaskKey] = {"description": getSubtaskTxt(subtaskNr), "status": status};
     }
 
     return subtasks;
 }
 
+function checkIfOldSubtaskExists(oldSubtasks, subtaskKey){
+    if (oldSubtasks !== null){
+        const keyOldSubtasks = Object.keys(oldSubtasks);
+        if (keyOldSubtasks.includes(subtaskKey)){
+            return true;
+        }        
+    }
+
+    return false;
+}
 
 function getSubtaskTxt(subtaskNr){
     let subtaskTxtSpan = document.getElementById("subtask_element_" + subtaskNr);

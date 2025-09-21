@@ -1,9 +1,8 @@
 const monthMaxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 
-function simpleCheckRequiredFields(mode = "add_task"){
+function checkRequiredFieldsToEnableButton(mode = "add_task"){
     return checkTitle(false) && simpleCheckDuedate() && (mode === "add_task" ? checkCategory(false) : true);
-
 }
 
 

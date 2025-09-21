@@ -1,3 +1,25 @@
+let currentTask = null;
+
+function setCurrentTask(taskId){
+    currentTask = getElementWithId2(allTasks, taskId);
+}
+
+
+// function updateCurrentTask(task){
+//     currentTask = task;
+// }
+
+
+function getCurrentTask(){
+    return currentTask;
+}
+
+let boardContacts = null;
+
+function getBoardContacts(){
+    return boardContacts;
+}
+
 // erlaubt Fokus des Inputfelds beim Anklicken der Lupe trotz absoluter Positionierung und pointer-events:auto
 
 function focusSearchInputField() {
@@ -33,7 +55,7 @@ let currentDraggedTask;
 
 async function initBoardPage() {
     initNavAndHeaderPage('board');
-    await loadContacts();
+    boardContacts = await getContacts();
     await loadTasksFromDB();
     updateHTML();          
   }
@@ -342,18 +364,14 @@ function hideSearchError(wrapperElement, errorElement) {
 //     // await fetch(`${BASE_URL}/tasks/task_${id}.json`, { method: 'DELETE' });
 // }
 
-
-function deleteTaskFromArray(taskId) {
-    const taskIdx = allTasks.findIndex(task => task.id === taskId);
-    if (taskIdx !== -1) {
-        allTasks.splice(taskIdx, 1);
-    }
+function getBoardAllTasks(){
+    return allTasks;
 }
 
 
 function updateTask(taskId, update) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
-    if (taskIdx !== -1) {
+    if (taskIdx !== -1) {        
         allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
     }
 }

@@ -35,15 +35,15 @@
             <div class="task_input_wrapper">
                 <span>Priority</span>
                 <div class="priority_input" id="task_priority_input">
-                    <button id="urgent" class="priority_button urgent_color_default" onclick="setGlobalPriority(this, 'urgent')">
+                    <button id="urgent" class="priority_button urgent_color_default" onclick="togglePriorityButtons(this, 'urgent')">
                         <span class="priority_btn_c_txt_default">Urgent</span>
                         <img src="../assets/img/icons/task/priorities/urgent_red.svg" alt="">
                     </button>
-                    <button id="medium" class="priority_button medium_color_click" onclick="setGlobalPriority(this, 'medium')">
+                    <button id="medium" class="priority_button medium_color_click" onclick="togglePriorityButtons(this, 'medium')">
                         <span>Medium</span>
                         <img src="../assets/img/icons/task/priorities/medium_white.svg" alt="">
                     </button>
-                    <button id="low" class="priority_button low_color_default" onclick="setGlobalPriority(this, 'low')">
+                    <button id="low" class="priority_button low_color_default" onclick="togglePriorityButtons(this, 'low')">
                         <span class="priority_btn_c_txt_default">Low</span>
                         <img src="../assets/img/icons/task/priorities/low_green.svg" alt="">
                     </button>
@@ -55,9 +55,9 @@
                 <label for="task_assignedto_input">Assigned to</label>
                 <div id="selection_container_assignedto" class="selection_color_container">
                     <div class="input_wrapper">
-                        <button id="task_assignedto_button" class="input_field" onclick="toggleInputElement()">Select contacts to assign</button>
+                        <button id="task_assignedto_button" class="input_field" onclick="toggleButtonAndInputElement()">Select contacts to assign</button>
                         <input onkeyup="startNameSearch()" id="task_assignedto_input" class="input_field d_none" placeholder="Search" autocomplete="off">  
-                        <img onclick="toggleInputElement()" id="drop_down_persons" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
+                        <img onclick="toggleButtonAndInputElement()" id="drop_down_persons" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
                     </div>
                     <ul class="selection d_none" id="selection">
 
@@ -73,8 +73,8 @@
                 <label for="category_selection">Category<span class="required_symbole">*</span></label>
                 <div id="selection_container_category" class="selection_color_container">
                     <div class="input_wrapper">
-                        <button id="category_selection" class="input_field" onclick="toggleSelectionList('category_options', 'drop_down_categories')">Select task category</button>
-                        <img id="drop_down_categories" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task" onclick="toggleSelectionList('category_options', 'drop_down_categories')">
+                        <button id="category_selection" class="input_field" onclick="toggleDropDownSelection('category_options', 'drop_down_categories')">Select task category</button>
+                        <img id="drop_down_categories" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task" onclick="toggleDropDownSelection('category_options', 'drop_down_categories')">
                     </div>
                     <ul class="category_options d_none selection" id="category_options">
 
@@ -86,11 +86,11 @@
             <div class="task_input_wrapper">
                 <label for="subtask_input">Subtasks</label>
                 <div class="input_wrapper">
-                    <input onkeyup="addTaskOrToggleIcons(event)" id="subtask_input" class="input_field subtask_focus" type="text" placeholder="Add new subtask" autocomplete="off">
+                    <input onkeyup="addSubtaskOrToggleIcons(event)" id="subtask_input" class="input_field subtask_focus" type="text" placeholder="Add new subtask" autocomplete="off">
                     <div id="subtask_icons" class="subtask_input_icon_wrapper d_none">
                         <img onclick="cancelSubtask()" src="../assets/img/icons/form/close.svg" class="input_field_icon_subtasks pad_8"></img>
                         <div class="icon_separator_input"></div>
-                        <img onclick="addSubtask()" src="../assets/img/icons/form/check.svg" class="input_field_icon_subtasks pad_8"></img>
+                        <img onclick="addSubtaskToList()" src="../assets/img/icons/form/check.svg" class="input_field_icon_subtasks pad_8"></img>
                     </div>              
                 </div>
                 <ul id="subtasks_container" class="subtasks_container">
@@ -103,7 +103,7 @@
     <div id="add_task_footer" class="add_task_footer">
         <span><span class="required_symbole">*</span>This field is required</span>
         <div class="add_task_buttons">
-            <button class="button_silhouette button_secondary" onclick="deleteForm()">
+            <button class="button_silhouette button_secondary" onclick="clearForm()">
                 Clear
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0692 12.0001L17.3122 17.2431M6.82617 17.2431L12.0692 12.0001L6.82617 17.2431ZM17.3122 6.75708L12.0682 12.0001L17.3122 6.75708ZM12.0682 12.0001L6.82617 6.75708L12.0682 12.0001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

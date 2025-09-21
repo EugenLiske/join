@@ -3,22 +3,20 @@
 // Contacts have already been loaded from the board when displaying.
 
 async function displayEditTaskOverlay(taskId){
-    document.getElementById("add_task_form").innerHTML = "";
-    document.getElementById("edit_task_form").innerHTML = "";
-    await includeAddTaskForm("edit_task_form");
-    await getTaskFromDB(taskId);
-    await initAddTask();
-    manipulateTaskForm();
-
-    setTaskFormData();
+    deleteTaskForm("add");
     toggleScrollBehaviorOfBody('hidden');
+
+    includeAddTaskForm("edit_task_form");
+    await initTaskForm();
+    
+    manipulateTaskForm();
+    setTaskFormData();
 
     toggleOverlay('overlay_task');
     toggleOverlay('overlay_edit_task');
 }
 
-
-
+// Form Manipulation
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
@@ -30,10 +28,6 @@ function manipulateTaskForm(){
     document.getElementById("task_deadline_input").onkeyup = "checkAndEnableButton('edit_task')";
 }
 
-function changeCSSClasses(oldCSSClass, newCSSClass){
-    const elementsRef = document.getElementsByClassName(oldCSSClass);
-    elementsRef[0].classList.replace(oldCSSClass, newCSSClass);
-}
 
 function hideRequiredSymole(){
     const symbols = document.getElementsByClassName("required_symbole");
@@ -43,26 +37,35 @@ function hideRequiredSymole(){
 }
 
 
+function changeCSSClasses(oldCSSClass, newCSSClass){
+    const elementsRef = document.getElementsByClassName(oldCSSClass);
+    elementsRef[0].classList.replace(oldCSSClass, newCSSClass);
+}
+
+
+// Fill Form with Informations
 function setTaskFormData(){
-    const taskKeys = Object.keys(currentTask);
-    if (taskKeys.includes("title")) document.getElementById("task_title_input").value = currentTask.title;
-    if (taskKeys.includes("description")) document.getElementById("task_description_input").value = currentTask.description;
-    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(currentTask.duedate);
-    if (taskKeys.includes("priority")) setPrioritySelection(currentTask.priority);
-    if (taskKeys.includes("assignedPersons")) setAssignedToSelection(currentTask.assignedPersons);
-    if (taskKeys.includes("subtasks")) setSubtasksList(currentTask.subtasks);
+    const task = getCurrentTask();
+    const taskKeys = Object.keys(task);
+    if (taskKeys.includes("title")) document.getElementById("task_title_input").value = task.title;
+    if (taskKeys.includes("description")) document.getElementById("task_description_input").value = task.description;
+    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(task.duedate);
+    if (taskKeys.includes("priority")) setPrioritySelection(task.priority);
+    if (taskKeys.includes("assignedPersons")) setAssignedToSelection(task.assignedPersons);
+    if (taskKeys.includes("subtasks")) setSubtasksList(task.subtasks);
 }
 
 
 function setPrioritySelection(priority){
     const priorityButtonRef = document.getElementById(priority);
-    setGlobalPriority(priorityButtonRef, priority);
+    togglePriorityButtons(priorityButtonRef, priority);
 }
 
 
-function setAssignedToSelection(assignedPersons){
-    const personKeys = Object.keys(persons);
-    const assignedKeys = Object.keys(assignedPersons);
+function setAssignedToSelection(assignedList){
+    const contacts = getFormContacts();
+    const personKeys = Object.keys(contacts);
+    const assignedKeys = Object.keys(assignedList);
 
     const searchHTMLList = document.getElementById("selection").children;
 
@@ -71,8 +74,8 @@ function setAssignedToSelection(assignedPersons){
         searchHTMLList[personKeyIdx].classList.remove("person_selected");  
 
         for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
-            if (assignedPersons[assignedKeys[assignedKeyIdx]] == persons[personKeys[personKeyIdx]].id){
-                assignedPersons[personKeyIdx] = true;    
+            if (assignedList[assignedKeys[assignedKeyIdx]] == contacts[personKeys[personKeyIdx]].id){
+                assignedList[personKeyIdx] = true;    
                 selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);         
                 break;
             }
@@ -83,11 +86,18 @@ function setAssignedToSelection(assignedPersons){
 
 function setSubtasksList(subtasks){
     const subtaskKeys = Object.keys(subtasks);
-
+    const subtasksContainer = document.getElementById("subtasks_container");
+    let subtaskId = -1;
     for (let keyIdx = 0; keyIdx < subtaskKeys.length; keyIdx++) {
-        document.getElementById("subtask_input").value = subtasks[subtaskKeys[keyIdx]].description;
-        addSubtaskToList();
+        console.log(getIdFromObjectKey(subtaskKeys[keyIdx]));
+        
+        subtaskId = getIdFromObjectKey(subtaskKeys[keyIdx]);
+        subtasksContainer.innerHTML += getSubtaskTemplate(subtasks[subtaskKeys[keyIdx]].description, subtaskId);
     }
+    subtaskId = parseInt(subtaskId) + 1;
+    console.log(subtaskId);
+    
+    setSubtaskId(subtaskId);
 }
 
 
@@ -113,4 +123,17 @@ async function saveFormContentInDB(formContent) {
 function goBack(){
     displayTaskOverlay(currentTask.id);
     toggleOverlay('overlay_edit_task');    
+}
+
+
+
+function getFormContent(){
+    return {
+        "title": getTitle(),
+        "description": getDescription(),
+        "duedate": getDuedate(),
+        "priority": getCurrentPriority(),
+        "assignedPersons": getAssignedPersons(),
+        "subtasks": getSubtasks(currentTask.subtasks),
+    };
 }
