@@ -81,6 +81,8 @@ export async function checkEmailExists(email) {
  * @param {number} currentContactId - ID of contact being edited to exclude from check
  * @returns {Promise<boolean>} True if email exists in another contact
  */
+// 
+
 export async function checkEmailExistsForEdit(email, currentContactId) {
     try {
         const contactsUrl = `${FIREBASE_URL}${FIREBASE_PATHS.CONTACTS_DATA}`;
@@ -93,15 +95,24 @@ export async function checkEmailExistsForEdit(email, currentContactId) {
         
         const emailLower = email.toLowerCase();
         
+        // Konvertiere currentContactId zu Number für sichere Vergleiche
+        const currentId = parseInt(currentContactId);
+        
         for (const contact of Object.values(contacts)) {
-            if (contact && contact.email && 
-                contact.email.toLowerCase() === emailLower && 
-                contact.id !== currentContactId) {
-                return true; // Email exists in another contact
+            if (contact && contact.email && contact.email.toLowerCase() === emailLower) {
+                // Wenn die E-Mail zum aktuellen Kontakt gehört → erlauben (return false)
+                if (parseInt(contact.id) === currentId) {
+                    console.log('Email belongs to current contact - allowing save');
+                    return false;
+                }
+                // Wenn die E-Mail zu einem ANDEREN Kontakt gehört → blockieren (return true)
+                console.log('Email belongs to different contact - blocking save');
+                return true;
             }
         }
         
-        return false; // Email is free or belongs to current contact
+        // E-Mail existiert nirgends → erlauben
+        return false;
         
     } catch (error) {
         console.error('Error checking email existence for edit:', error);

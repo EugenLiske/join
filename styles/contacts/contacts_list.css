@@ -1,4 +1,4 @@
-/* MF - Contacts List Styling */
+/* MF - contact_list.css */
 
 /* ================== MAIN LAYOUT ================== */
 .contacts_main_content {
@@ -19,13 +19,14 @@
     width: 456px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 0;
     height: 70vh; 
 }
 
 /* ================== ADD CONTACT BUTTON ================== */
 .add_contact_container {
     width: 100%;
+    margin-bottom: 0;
 }
 
 .add_contact_button {
@@ -77,7 +78,7 @@
     flex: 1;       
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 24px 0;
+    padding:  0;
     min-height: 0;
 }
 
@@ -92,7 +93,7 @@
     background-color: var(--bg-c-card);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* ================== CONTACT ITEM ================== */
@@ -171,6 +172,9 @@
 .contact_details_section {
     flex: 1;
     max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* ← Zentriert Kinder horizontal */
 }
 
 .contact_details_panel {
@@ -185,6 +189,17 @@
     align-items: center;
     justify-content: flex-start;
     transition: all 0.3s ease;
+}
+
+.main_header {
+    text-align: center;
+    margin-top: 80px; 
+    margin-bottom: 32px;
+}
+
+.main_header span {
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .contact_details_panel.show {
@@ -365,6 +380,19 @@
     border-top: 3px solid var(--c-btn-edit);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+.overlay_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
 }
 
 @keyframes spin {
