@@ -75,6 +75,32 @@ function subtaskListElementTemplate(subtask, idx){
             </li>`;
 }
 
+
+function buildDragAndDropMenu(column, taskId){
+
+    if (column === "to_do"){
+        return getDragOrDropMenuTemplate("arrow_downward.svg", "In progress", "in_progress", taskId);
+    }
+    if (column === "in_progress"){
+        return getDragOrDropMenuTemplate("arrow_upward.svg", "To do", "to_do", taskId) + getDragOrDropMenuTemplate("arrow_downward.svg", "Await feedback", "await_feedback", taskId);
+    }
+    if (column === "await_feedback"){
+        return getDragOrDropMenuTemplate("arrow_upward.svg", "In progress", "in_progress", taskId) + getDragOrDropMenuTemplate("arrow_downward.svg", "Done", "done", taskId);
+    }
+    if (column === "done"){
+        return getDragOrDropMenuTemplate("arrow_upward.svg", "Await feedback", "await_feedback", taskId);
+    }
+}
+
+
+function getDragOrDropMenuTemplate(icon, text, column, taskId){
+    return `<li onclick="moveTaskWithMenu(event, '${column}', ${taskId})">
+                <img class="drag_and_drop_icon" src="../assets/img/icons/task/${icon}">
+                ${text}
+            </li>`;
+}
+
+
 function getTaskCardTemplate(task){
     return `<article
                 id="task_card_${task['id']}"
@@ -84,7 +110,20 @@ function getTaskCardTemplate(task){
                 class="board_card"
                 onclick="displayTaskOverlay(${task['id']})"
             >
-                ${getCategory(task['category'])}
+                <div class="task_card_header">
+                    ${getCategory(task['category'])}  
+                    <div class="drag_and_drop_menu_wrapper">  
+                        <img onclick="openDragAndDropMenu(event, ${task['id']})" class="drag_and_drop_mobile" src="../assets/img/icons/task/drag_and_drop_mobile.svg"> 
+                        <menu id="drag_and_drop_menu_${task['id']}" class="drag_and_drop_menu_mobile d_none">
+                            <span>Move to</span>
+                            <ul class="drag_and_drop_buttons">
+                                ${buildDragAndDropMenu(task['kanbanBoardColumn'], task['id'])}
+                            </ul>
+                        </menu>    
+                    </div>       
+                </div>
+
+
                 <h4 id="bct_title">${task['title']}</h4>
                 ${buildDescriptionContainer(task)}
                 
@@ -96,7 +135,7 @@ function getTaskCardTemplate(task){
                 <div class="bct_footer">
                     ${buildAssignedToTemplate(task)}
 
-                    <img src="../assets/img/icons/task/priorities/${getPriorityIcon(task["priority"])}" alt="Priority">
+                    <img class="board_card_priority" src="../assets/img/icons/task/priorities/${getPriorityIcon(task["priority"])}" alt="Priority">
                 </div>
             </article> `;
 }

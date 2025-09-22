@@ -376,3 +376,16 @@ function updateTaskCardAtBoard(taskId) {
         taskCard.outerHTML = getTaskCardTemplate(allTasks[taskIdx]);
     }
 }
+
+
+function openDragAndDropMenu(event, taskId){
+    event.stopPropagation();
+    document.getElementById("drag_and_drop_menu_" + taskId).classList.remove("d_none");
+}
+
+
+function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
+    event.stopPropagation();
+    currentDraggedTask = taskId;
+    moveToDifferentCategory(kanbanBoardColumn);
+}

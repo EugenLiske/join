@@ -264,6 +264,67 @@ p {
 
 /* --- Board Card - Task --- */
 
+.task_card_header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.drag_and_drop_menu_wrapper{
+    position: relative;
+}
+
+.drag_and_drop_mobile{
+    display: none;
+}
+
+.drag_and_drop_menu_mobile {
+    position: absolute;
+    top: 0;
+    background-color: var(--bg-c-navigation);
+    padding: 16px 10px;
+    border-radius: 0 20px 20px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    gap: 16px;
+}
+
+.drag_and_drop_menu_mobile span{
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.drag_and_drop_buttons{
+    list-style-type: none;
+    padding: 0;
+    font-weight: 400;
+    font-size: 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.drag_and_drop_buttons li{
+    gap: 8px;
+    padding: 4px 10px;
+    border-radius: 8px;
+
+    display: flex;
+    white-space: nowrap;
+}
+
+.drag_and_drop_buttons li:hover{
+    background-color: #091931;
+}
+
+
+.drag_and_drop_icon{
+    height: 16px;
+}
+
 .board_card{
     width: 252px;
     min-width: 252px;
@@ -280,7 +341,7 @@ p {
     transition: transform 120ms ease;
 }
 
-.board_card img{
+.board_card_priority{
     height: 24px;
     width: 24px;
 }
@@ -361,6 +422,10 @@ p {
 
     .kanban_board {
         flex-direction: column;
+    }
+
+    .drag_and_drop_mobile{
+        display: block;
     }
 
     .task_column_content{
