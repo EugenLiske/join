@@ -30,7 +30,7 @@
                     <div class="kanban_header">
                         <div class="media_header_container">
                             <h1>Board</h1>
-                            <button class="add_task_button toggle_media_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
+                            <button class="add_task_button toggle_media_button" onclick="initAddTaskOverlay('to_do'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
                             </button>
                         </div>
@@ -54,17 +54,9 @@
                                         </button>
                                     </div>
                                 </div>
-                                <!-- Fehlermeldung separat, unterhalb der Zeile -->
                                 <div id="search_error" class="search_error">Results not found. Adjust your search.</div>
                             </div>
-                            <!-- <div id="searchInputWrapper" class="search_input_wrapper">
-                                <input id="searchInput" type="text" placeholder="Find task (min. 1 character)" oninput="onSearchInput()">
-                                <div class="search_affix" onclick="focusSearchInputField()">
-                                    <div class="separator_input_field"></div>
-                                    <button type="button" class="search_button" onclick="focusSearchInputField(); onSearchInput()"></button>
-                                </div>
-                            </div> -->
-                            <button class="add_task_button toggle_button" onclick="initAddTaskOverlay('todo'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
+                            <button class="add_task_button toggle_button" onclick="initAddTaskOverlay('to_do'); showAnimationOverlay('overlay_add_task', 'overlay_add_task_container')">
                                 <span class="add_task_lable">Add task</span>
                                 <img class="plus_sign" src="../assets/img/icons/buttons/plus.svg" alt="Pluszeichen">
                             </button>
