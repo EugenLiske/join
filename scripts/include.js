@@ -1,74 +1,24 @@
-// 
-// main_header.html
-// main_navigation.html
-// 
-// div-container:
-//      id: main_header
-//      id: navigation_bar
-// 
 
 function initNavigation(page){
-    includePageNavigation(page);
-    includePageHeader();
+    includePageNavigation(page, "page_navigation.html", "all");
+    includePageHeader("page_header.html", "all");
 }
 
-function includePageNavigation(page){
-    try{
-        fetch('../includes/page_navigation.html')
-            .then(response => response.text())
-            .then(data => {
-                try{
-                    document.getElementById("page_navigation").innerHTML = data; 
-                    changeActiveNavButton(page);
-                }
-                catch(error){
-                    console.warn("HTML container not available!");
-                }
-            });
-    }
-    catch(error){
-        console.warn("Include page navigation - Error: Navigation is not loaded!!!");
-    }
-}
-
-function includePageHeader(){
-    try{
-        fetch('../includes/page_header.html')
-            .then(response => response.text())
-            .then(data => {
-                try{
-                    document.getElementById("page_header").innerHTML = data;
-                    const initialsButton = document.getElementById("login_initials");
-                    const initials = sessionStorage.getItem("initials");
-                    if (initials && initials.trim() !== "") {
-                        initialsButton.textContent = initials;
-                    } else {
-                        initialsButton.textContent = "G";
-                    }
-                }
-                catch(error){
-                    console.warn("HTML container not available!");
-                }
-            });    
-    }
-    catch(error){
-        console.warn("Include page header - Error: Header is not loaded!!!");
-    }     
-}
 
 function initNavigationExternal(page){
-    includePageNavigationExternal(page);
-    includePageHeaderExternal();
+    includePageNavigation(page, 'page_navigation_external.html', "limited");
+    includePageHeader("page_header_external.html", "limited");
 }
 
-function includePageNavigationExternal(page){
+
+async function includePageNavigation(page, navigation = "page_navigation.html", mode = "limited"){
     try{
-        fetch('../includes/page_navigation_external.html')
+        fetch('../includes/' + navigation)
             .then(response => response.text())
             .then(data => {
                 try{
                     document.getElementById("page_navigation").innerHTML = data; 
-                    changeActiveNavButtonExternal(page);
+                    changeActiveNavButton(page, mode);
                 }
                 catch(error){
                     console.warn("HTML container not available!");
@@ -80,20 +30,15 @@ function includePageNavigationExternal(page){
     }
 }
 
-function includePageHeaderExternal(){
+
+async function includePageHeader(header, mode = "limited"){
     try{
-        fetch('../includes/page_header_external.html')
+        fetch('../includes/' + header)
             .then(response => response.text())
             .then(data => {
                 try{
                     document.getElementById("page_header").innerHTML = data;
-                    const initialsButton = document.getElementById("login_initials");
-                    const initials = sessionStorage.getItem("initials");
-                    if (initials && initials.trim() !== "") {
-                        initialsButton.textContent = initials;
-                    } else {
-                        initialsButton.textContent = "G";
-                    }
+                    if (mode !== "limited") includeInitialsToHeader();
                 }
                 catch(error){
                     console.warn("HTML container not available!");
@@ -104,6 +49,18 @@ function includePageHeaderExternal(){
         console.warn("Include page header - Error: Header is not loaded!!!");
     }     
 }
+
+
+function includeInitialsToHeader(){
+    const initialsButton = document.getElementById("login_initials");
+    const initials = sessionStorage.getItem("initials");
+    if (initials && initials.trim() !== "") {
+        initialsButton.textContent = initials;
+    } else {
+        initialsButton.textContent = "G";
+    }    
+}
+
 
 async function includeAddTaskForm(containerId = "add_task_form"){
     try{
@@ -123,46 +80,35 @@ async function includeAddTaskForm(containerId = "add_task_form"){
     }
 }
 
-function changeActiveNavButton(page){
+
+function changeActiveNavButton(page, mode){
     if (["summary", "add_task", "board", "contacts"].indexOf(page) >= 0){
-        toggleNavButtons("content", "footer", page);
+        toggleNavButtons("content", "footer", page, mode);
     }
     if (["privacy_policy", "legal_notice"].indexOf(page) >= 0){
-        toggleNavButtons("footer", "content", page);
+        toggleNavButtons("footer", "content", page, mode);
     }
     if (["help"].indexOf(page) >= 0){
-        deactiveCurrentNavButton("content");
+        if (mode !== "limited") deactiveCurrentNavButton("content");
         deactiveCurrentNavButton("footer");
     }
 }
 
-function toggleNavButtons(setElement, otherElement, page){
+
+function toggleNavButtons(setElement, otherElement, page, mode){
     deactiveCurrentNavButton(setElement);
-    deactiveCurrentNavButton(otherElement);
+    if (mode !== "limited") deactiveCurrentNavButton(otherElement);
     document.getElementById("nav_" + page).classList.replace("deactive_" + setElement, "active_" + setElement);               
 }
 
-function changeActiveNavButtonExternal(page){
-    if (["privacy_policy", "legal_notice"].indexOf(page) >= 0){
-        toggleNavButtonsExternal("footer", page);
-    }
-    if (["help"].indexOf(page) >= 0){
-        deactiveCurrentNavButton("footer");
-    }
-}
-
-function toggleNavButtonsExternal(setElement, page){
-    deactiveCurrentNavButton(setElement);
-    document.getElementById("nav_" + page).classList.replace("deactive_" + setElement, "active_" + setElement);               
-}
 
 function deactiveCurrentNavButton(element){
     document.getElementsByClassName("active_" + element)[0].classList.replace("active_" + element, "deactive_" + element);
 }
+
 
 // Bereinigung des Session Storage, innerhalb dessen die Initialen gespeichert sind
 
 function logoutUser(){
     sessionStorage.clear();
 }
-

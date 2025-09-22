@@ -1,7 +1,5 @@
-// --- SUMMARY -------------------------------------------------------------------------------------------------------------------------------------
 
 let currentUser = null;
-
 
 const summaryContent = {
     "toDo": 0,
@@ -126,7 +124,7 @@ function countTasks(task){
 }
 
 
-// Diplay Data ----------------------------------------------------------------------
+// Diplay Data
 
 function displaySummaryOnScreen(){
     const summaryKey = Object.keys(summaryContent);

@@ -5,6 +5,7 @@ function setIconPriority(priority){
     return "../assets/img/icons/task/priorities/" + priority + "_white.svg";
 }
 
+
 function setDefaultIconPriority(priority){
     let source = "../assets/img/icons/task/priorities/" + priority;
     if (priority == "low"){
@@ -21,6 +22,7 @@ function setDefaultIconPriority(priority){
     }
     return source;
 }
+
 
 function setPriorityButtonDefault(buttons, mode = "all"){
     setAllButtonInactive(buttons);

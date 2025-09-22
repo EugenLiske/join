@@ -14,7 +14,6 @@ function checkRequiredFields(mode = "add_task"){
         isCorrectCategory = checkCategory();
     }
 
-
     return isCorrectTitle && isCorrectDuedate && isCorrectCategory;
 }
 
@@ -77,6 +76,7 @@ function checkCategory(setWarning = true){
 function simpleCheckDuedate(){
     let duedateRef = document.getElementById("task_deadline_input");  
     let isCorrect = duedateRef.value.length > 0;
+
     return isCorrect;
 }
 
@@ -86,6 +86,7 @@ function checkDuedate(){
     let errorNumber = dateValidation(duedateRef.value);
     let isCorrect = errorNumber == 0 ? true : false;
     removeOrAddWarning(duedateRef, "warning_deadline", isCorrect, getDateWarning(errorNumber));
+    
     return isCorrect;
 }
 
@@ -127,6 +128,7 @@ function dateValidation(date) {
 function checkDate(day, month, year){
     if (!checkNumberInterval(day, month, year)) return 3;
     if (!isDateInFuture(day, month, year)) return 4;
+    
     return 0;
 }
 

@@ -124,3 +124,18 @@ function firstLetterUpperCase(word) {
 function toggleScrollBehaviorOfBody(mode = ""){
     document.body.style.overflow = mode;
 }
+
+
+function displayToastMessage(overlayId, messageId, page) {
+  const overlayRef = document.getElementById(overlayId);
+  const messageRef = document.getElementById(messageId);
+  
+  overlayRef.classList.add("active");
+  messageRef.classList.add("enter");
+  setTimeout(function () {
+    overlayRef.classList.add("leaving");
+    setTimeout(function () {
+    window.location.href = page;
+    }, 300);
+  }, 2700);
+}

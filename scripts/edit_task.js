@@ -16,7 +16,9 @@ async function displayEditTaskOverlay(taskId){
     toggleOverlay('overlay_edit_task');
 }
 
+
 // Form Manipulation
+
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
@@ -44,6 +46,7 @@ function changeCSSClasses(oldCSSClass, newCSSClass){
 
 
 // Fill Form with Informations
+
 function setTaskFormData(){
     const task = getCurrentTask();
     const taskKeys = Object.keys(task);
@@ -65,22 +68,27 @@ function setPrioritySelection(priority){
 function setAssignedToSelection(assignedList){
     const contacts = getFormContacts();
     const personKeys = Object.keys(contacts);
-    const assignedKeys = Object.keys(assignedList);
-
     const searchHTMLList = document.getElementById("selection").children;
+    let contact = null;
 
     for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
-
+        contact = contacts[personKeys[personKeyIdx]];
         searchHTMLList[personKeyIdx].classList.remove("person_selected");  
-
-        for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
-            if (assignedList[assignedKeys[assignedKeyIdx]] == contacts[personKeys[personKeyIdx]].id){
-                assignedList[personKeyIdx] = true;    
-                selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);         
-                break;
-            }
-        }   
+        if(searchPersonInAssigned(assignedList, personKeyIdx, contact.id)){
+            selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);  
+        }
     }
+}
+
+
+function searchPersonInAssigned(assignedList, contactID){
+    const assignedKeys = Object.keys(assignedList);
+    for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
+        if (assignedList[assignedKeys[assignedKeyIdx]] == contactID){
+            return true;
+        }
+    }      
+    return false; 
 }
 
 

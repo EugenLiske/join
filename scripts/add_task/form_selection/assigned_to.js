@@ -1,6 +1,6 @@
 // Assigned To Selection ------------------------------------------------------------------
-// Initial Functions
 
+// Initial Functions
 
 async function initContactSearchList(){
     const contacts = await getContacts();
@@ -47,6 +47,7 @@ function getContactSearchResult(input, nameList){
     return searchResult;
 }
 
+
 // Drop Down - Initial
 
 function createContactDropDownSearchList(searchedPersons, assignedList, contacts){
@@ -72,8 +73,8 @@ function createContactDropDownSearchListElement(searchedPersons, assignedList, s
     return false; 
 }
 
-// Drop Down - Selection
 
+// Drop Down - Selection
 
 function getCheckbox(parent){
     return parent.childNodes[3];
@@ -157,15 +158,3 @@ function defaultAssignedInput(){
     document.getElementById("task_assignedto_input").classList.add("d_none");    
 }
 
-
-
-// function getFirstThreeAssignments(firstThreeAssignments){
-//     for (let persIdx = 0; persIdx < assignedPersons.length; persIdx++) {
-//         if (assignedPersons[persIdx]){
-//             firstThreeAssignments.counter++;
-//             if (firstThreeAssignments.counter <= 3){
-//                 firstThreeAssignments.htmlTemplate += getAssignedToIconTemplate(persons[persIdx].color, persons[persIdx].initials);
-//             }
-//         }
-//     }
-// }

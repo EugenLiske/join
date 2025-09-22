@@ -70,7 +70,9 @@ async function displayTaskOverlay(taskId){
     toggleScrollBehaviorOfBody('hidden');
 }
 
+
 // Display Task
+
 function renderCurrentTask(){
     const task = getCurrentTask();
     const taskKeys = Object.keys(task);
@@ -117,7 +119,9 @@ function displaySubtasks(subtasks){
     }    
 }
 
+
 // Events
+
 function findSubtaskAndToggleCheckbox(idx){
     const task = getCurrentTask();
     const keys = Object.keys(task.subtasks);
@@ -180,7 +184,6 @@ function openEditTaskOverlay(){
     displayEditTaskOverlay(getCurrentTask().id);
 }
 
-// --- Globale Funktionen -----------------------------------------------------------------------------------------
 
 function getHTMLTemplateFromContactInfo(assignedPersonsList, selection = "icon", limited = false, container = "div"){
     let htmlContainer = "";
@@ -246,23 +249,3 @@ function countArchievedSubtasks(subtasks){
     }
     return {"amount": subtasksAmount, "counter": counter};
 }
-
-
-// Archiv ---------------------------------------------------------------------------------------------------------
-
-// function getTaskLocal(taskId){
-//     currentTaskKey = "task_" + taskId;
-//     currentTask = tasks[currentTaskKey];
-// }
-
-// function searchAssignedPersonInContacts(assignedPersonId){
-//     const contactKeys = Object.keys(persons);
-//     let contact = null;
-//     for (let contactKeyIdx = 0; contactKeyIdx < contactKeys.length; contactKeyIdx++) {
-//         contact = persons[contactKeys[contactKeyIdx]];
-//         if (assignedPersonId == contact.id){ 
-//             return contact;
-//         }
-//     }     
-//     return null;
-// }

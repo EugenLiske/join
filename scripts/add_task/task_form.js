@@ -1,33 +1,37 @@
-// Alle Funktionen die direkt über das Formular ausgeführt werden
 
-
-let contactListNames = []; //list with all names from contacts
-let idxOfSearchedContacts = []; //list of idx of persons containing the search text
-let assignedPersons = []; //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
+let contactListNames = [];          //list with all names from contacts
+let idxOfSearchedContacts = [];     //list of idx of persons containing the search text
+let assignedPersons = [];           //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
 
 let nextSubtaskId = 0;
 
 let formContacts = null;
 
+
 function getContactListNames(){
     return contactListNames;
 }
+
 
 function getSearchedContacts(){
     return idxOfSearchedContacts;
 }
 
+
 function getAssigned(){
     return assignedPersons;
 }
+
 
 function getFormContacts(){
     return formContacts;
 }
 
+
 function setSubtaskId(subtaskId){
     nextSubtaskId = subtaskId;
 }
+
 
 // EventListener -------------------------------------------------------------------
 
@@ -123,13 +127,17 @@ function getAssignedPersons(){
     return assigned;
 }
 
+
 // Category
+
 function setCategorySelection(category){
     showCategorySelection(category);
     renderCategoryOptions();
 }
 
+
 // Subtasks
+
 function addSubtaskOrToggleIcons(event){
     if (event.key === 'Enter' && document.getElementById("subtask_input").value.length > 0) {
         addSubtaskToList();
@@ -177,6 +185,7 @@ function saveAndCloseEditMode(event, subtaskID){
     document.getElementById("subtask_" + subtaskID).innerText = input;
     document.getElementById("edit_mode_" + subtaskID).classList.add("d_none");
 }
+
 
 // Create Task or Ok Button
 

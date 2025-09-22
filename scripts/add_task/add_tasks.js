@@ -1,6 +1,7 @@
 
 let kanbanColumn = "to_do";
 
+
 // Initial Function -----------------------------------------------------------------
 
 async function initAddTaskPage(goalKanbanColumn = "to_do"){
@@ -20,6 +21,7 @@ async function initAddTaskOverlay(goalKanbanColumn = "to_do"){
     await initTaskForm();
     kanbanColumn = goalKanbanColumn;
 }
+
 
 // Specific functions of Add Task ---------------------------------------------------
 

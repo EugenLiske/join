@@ -34,11 +34,10 @@ function getCurrentPriority() {
 }
 
 
-// Get Assigned Persons -> global "assignedPersons" ------------------
-// -> getAssignedPersons() in add_tasks.js
+// Get Assigned Persons
 
 
-// Get Category -> global "currentCategory" -------------------------
+// Get Category
 
 
 // Get Subtasks -----------------------------------------------------
@@ -46,21 +45,25 @@ function getCurrentPriority() {
 function getSubtasks(oldSubtasks = null){
     let subtasksContainer = document.getElementById("subtasks_container").children;
     let subtasks = {};
-    let subtaskNr = 0;
-    let subtaskKey = "";
-    let status = false;
+    let subtaskNr = "";
 
     for (let subtaskIdx = 0; subtaskIdx < subtasksContainer.length; subtaskIdx++) {
         subtaskNr = extractSubtaskNrFromId(subtasksContainer[subtaskIdx].id);
-        subtaskKey = "subtask_" + subtaskNr;
-        if (checkIfOldSubtaskExists(oldSubtasks, subtaskKey)){
-            status = oldSubtasks[subtaskKey].status;
-        }
-        subtasks[subtaskKey] = {"description": getSubtaskTxt(subtaskNr), "status": status};
+        subtasks["subtask_" + subtaskNr] = getSingleSubtask(oldSubtasks, subtaskNr);
     }
 
     return subtasks;
 }
+
+
+function getSingleSubtask(oldSubtasks, subtaskNr){
+    let status = false;
+    if (checkIfOldSubtaskExists(oldSubtasks, "subtask_" + subtaskNr)){
+        status = oldSubtasks["subtask_" + subtaskNr].status;
+    }
+    return {"description": getSubtaskTxt(subtaskNr), "status": status};    
+}
+
 
 function checkIfOldSubtaskExists(oldSubtasks, subtaskKey){
     if (oldSubtasks !== null){
@@ -72,6 +75,7 @@ function checkIfOldSubtaskExists(oldSubtasks, subtaskKey){
 
     return false;
 }
+
 
 function getSubtaskTxt(subtaskNr){
     let subtaskTxtSpan = document.getElementById("subtask_element_" + subtaskNr);
