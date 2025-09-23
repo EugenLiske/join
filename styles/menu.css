@@ -149,7 +149,8 @@
     box-shadow: 0 4px 4px 0 #0000001A;
     z-index: 100;
 
-    margin-bottom: 4px;
+    /* margin-bottom: 4px; */
+    position: relative;
 }
 
 .header_menu_right{
@@ -201,6 +202,7 @@
 /* Side Menu */
 .side_menu {
     position: fixed;
+    top: 96px;
     right: -176px;
     width: 160px;
     background-color: var(--bg-c-navigation);
@@ -227,6 +229,9 @@
 }
 
 @media(max-width: 1000px){
+    .side_menu {
+        top: 80px;
+    }
 
     .logo{
         width: 70px;

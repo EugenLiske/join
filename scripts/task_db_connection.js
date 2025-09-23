@@ -40,11 +40,6 @@ async function setData(data, path) {
     console.error(error);
     console.error(response);
   }
-
-
-  // let responseAsJson = await response.json();
-  // console.log(response);
-  // console.log(responseAsJson);
 }
 
 async function getTaskCounter(){
@@ -68,7 +63,6 @@ async function getTaskFromDB(taskId){
 }
 
 async function deleteTaskFromFirebase(taskId) {
-    console.log(taskId);
     
     try {
         const response = await fetch(BASE_URL + "/tasks/task_" + taskId + ".json", {

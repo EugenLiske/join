@@ -34,8 +34,6 @@
     transform: translateX(100vw);
     opacity: 0;
     transition: transform 0.5s cubic-bezier(.77,0,.18,1), opacity 0.5s;
-    
-
 }
 
 .overlay_add_task.active {

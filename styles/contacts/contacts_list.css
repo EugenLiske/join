@@ -20,17 +20,15 @@
 
 /* ================== LEFT SECTION - CONTACTS LIST ================== */
 .contacts_list_section {
-    position: relative;
     padding-top: 10px;
-    /* padding: 16px 20px; */
-    top: -4px;
     flex: 0 0 auto;
     width: 456px;
     display: flex;
     flex-direction: column;
     gap: 0;
-    height: calc(100vh - 102px);
+    height: calc(100vh - 96px);
     background-color: white;
+    z-index: 101;
 }
 
 /* ================== ADD CONTACT BUTTON ================== */

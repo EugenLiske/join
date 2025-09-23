@@ -125,7 +125,7 @@
 .checkbox_img_container{
     width: 24px;
     height: 24px;
-    transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.125s ease-in-out;
 }
 
 .task_buttons_container{
@@ -146,8 +146,8 @@
 
     color: var(--c-btn-default);
 
-    transition: color 0.2s ease-in-out;
-    transition: font-weight 0.2s ease-in-out;
+    transition: color 125ms ease-in-out;
+    transition: font-weight 125ms ease-in-out;
 }
 
 .task_buttons_container button:hover{

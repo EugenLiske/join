@@ -123,7 +123,7 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 125ms ease, transform 125ms ease, box-shadow 125ms ease;
 }
 
 .add_task_button:hover {
@@ -336,7 +336,7 @@ p {
     gap: 10px;
     box-shadow: 0 0 10px 3px #00000014;
     background-color: white;
-    transition: transform 120ms ease;
+    transition: transform 125ms ease;
 }
 
 .board_card_priority{
@@ -448,6 +448,10 @@ p {
 
     .drag_and_drop_mobile{
         display: block;
+    }
+
+    .drag_and_drop_mobile:hover{
+        transform: scale(1.1, 1.1);
     }
 
     .no_tasks_placeholder {
