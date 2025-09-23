@@ -76,7 +76,7 @@ function validateContactForm() {
  */
 function navigateToSuccessPage(contactData) {
     localStorage.setItem(STORAGE_KEYS.LAST_SAVED_CONTACT, JSON.stringify(contactData));
-    window.location.href = PAGES.SUCCESS_PAGE;
+    //window.location.href = PAGES.SUCCESS_PAGE;
 }
 
 /**
@@ -288,54 +288,101 @@ async function handleCreateMode(formData) {
  * @returns {Promise<boolean>} Success status
  */
 async function handleEditMode(formData, contactId) {
+    console.log('🟦🟦🟦 handleEditMode GESTARTET 🟦🟦🟦');
+    console.log('Empfangene Parameter:');
+    console.log('  formData:', formData);
+    console.log('  contactId:', contactId);
+    
     if (!contactId) {
+        console.log('❌ Kein contactId!');
         throw new Error('No contact ID found for editing');
-    }    
-    const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
-    if (emailExists) {
-         showOverlayMessage('This email address is already in use by another contact. Please use a different email.', 'error', 3000);
-        return false;
     }
     
+    console.log('📥 Lade existierenden Kontakt...');
+    const existingContact = await loadExistingContact(parseInt(contactId));
+    console.log('📦 Existierender Kontakt:', existingContact);
+    
+    if (!existingContact) {
+        throw new Error('Could not load existing contact');
+    }
+    
+    const formEmailLower = formData.email.toLowerCase();
+    const existingEmailLower = existingContact.email.toLowerCase();
+    
+    console.log('📧 E-Mail-Vergleich:');
+    console.log('  Formular:', formEmailLower);
+    console.log('  Existierend:', existingEmailLower);
+    console.log('  Gleich?', formEmailLower === existingEmailLower);
+    
+    if (formEmailLower !== existingEmailLower) {
+        console.log('⚠️ E-Mail geändert - prüfe Duplikat');
+        const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
+        console.log('Duplikat gefunden?', emailExists);
+        
+        if (emailExists) {
+            console.log('❌ FEHLER: E-Mail existiert bereits');
+            showOverlayMessage('This email address is already in use by another contact. Please use a different email.', 'error', 3000);
+            return false;
+        }
+    } else {
+        console.log('✅ E-Mail unverändert - überspringe Check');
+    }
+    
+    console.log('💾 Speichere in Firebase...');
     const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
+    console.log('✅ Gespeichert:', updatedContact);
+    
     showOverlayMessage('Contact updated successfully', 'success', 1500);
     
-    setTimeout(() => {
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
-        window.history.back();
-    }, 1800);
     return true;
 }
+
 
 /**
  * Main save function - coordinates CREATE/EDIT operations
  * @param {Event} event - Form submit event
  */
 async function saveContact(event) {
+    console.log('🔴 saveContact aufgerufen');
+    
     if (event) event.preventDefault();
     
     const formData = getFormData();
+    console.log('📝 formData:', formData);
+    console.log('📝 isValid:', formData.isValid);
+    
     if (!formData.isValid) {
-        // TODO: Replace with Toast
+        console.log('❌ Form ungültig');
         showOverlayMessage('Please correct the form errors before saving.');
-        return;
+        return false;
     }
     
-    const isEditMode = window.location.pathname.includes('contacts_edit.html');
     const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     
+    // ✅ GEÄNDERT: Prüfe ob contactId existiert statt URL-Check
+    const isEditMode = contactId !== null;
+    
+    console.log('🔧 isEditMode:', isEditMode);
+    console.log('🔧 contactId:', contactId);
+    
     try {
+        console.log('⏳ Rufe handle-Funktion auf...');
+        
         const success = isEditMode 
             ? await handleEditMode(formData, contactId)
             : await handleCreateMode(formData);
-            
-        if (!success) return;
+        
+        console.log('✅ Erfolg:', success);
+        
+        return success;
         
     } catch (error) {
-        console.error('Error saving contact:', error);
+        console.error('💥 Error saving contact:', error);
         showOverlayMessage('Error saving contact. Please check your connection and try again.');
+        return false;
     }
 }
+
 
 // ================== EVENT LISTENERS ==================
 
