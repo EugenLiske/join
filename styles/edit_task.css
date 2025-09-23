@@ -3,31 +3,33 @@
 .overlay_edit_task{
     border-radius: 30px;
     padding: 48px 16px 48px 40px;
+
     display: flex;
     flex-direction: column;
-
+    
+    transform: translateX(100vw);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(.77,0,.18,1), opacity 0.5s;
+    
     box-shadow: 0 0 4px 0 #00000029;
 
-    max-width: 535px; 
+    max-width: 525px; 
     width: 100%;
 
     background-color: white;
     margin: 8px;
-
-    position: relative;
-    top: 0;
-    right: -100%;
-    transition: right 0.3s ease;
 }
 
 .overlay_edit_task.active {
-    right: calc(100vw - 100%);
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .overlay_edit_task_header{
     display: flex;
     justify-content: end;
     padding-right: 24px;
+    width: 100%;
 }
 
 .edit_task_input_area{

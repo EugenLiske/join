@@ -389,3 +389,21 @@ function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
     currentDraggedTask = taskId;
     moveToDifferentCategory(kanbanBoardColumn);
 }
+
+
+document.addEventListener('click', function(event) {
+    closeDragAndDropMenuSelection(event);
+});
+
+
+function closeDragAndDropMenuSelection(event){
+    const menuContainers = document.getElementsByClassName('drag_and_drop_menu_mobile');
+    
+    if (menuContainers){
+        for (let i = 0; i < menuContainers.length; i++) {
+            if (menuContainers[i] && !menuContainers[i].contains(event.target) && !menuContainers[i].classList.contains('d_none')) {
+                menuContainers[i].classList.add('d_none');
+            }
+        }        
+    }
+}

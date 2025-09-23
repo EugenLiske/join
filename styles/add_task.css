@@ -15,26 +15,39 @@
 /* Overlay */
 
 .overlay_add_task{
-    position: relative;
-    top: 0;
-    right: -100%;
-
     background-color: white;
-    padding: 56px;
     border-radius: 16px;
-    box-shadow: 0 0 4px 0 #0000001A;
-    transition: right 0.3s ease;
-    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    padding: 32px; /*padding: 56px;*/
+    margin: 8px 0;
+    
+    /* position: relative; */
+    /* top: 10%; */
+
+    min-width: 320px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;    
+    
+    transform: translateX(100vw);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(.77,0,.18,1), opacity 0.5s;
+    
+
 }
 
 .overlay_add_task.active {
-    right: calc(100vw - 100%);
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .overlay_add_task header{
     display: flex;
     justify-content: space-between;
     padding-bottom: 32px;
+    width: 100%;
 }
 
 .add_task_footer{

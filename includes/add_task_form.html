@@ -9,19 +9,19 @@
             <!-- title -->
             <div class="task_input_wrapper">
                 <label for="task_title_input">Title<span class="required_symbole">*</span></label>
-                <input id="task_title_input" onkeyup="checkAndEnableButton()" class="input_field" type="text" placeholder="Enter a title" required autocomplete="off"> 
+                <input id="task_title_input" onkeyup="checkAndEnableButton()" class="input_field fs_mobil_16" type="text" placeholder="Enter a title" required autocomplete="off"> 
                 <span id="warning_title" class="warning d_none">This field is required!</span>                                   
             </div>
             <!-- Description -->
             <div class="task_input_wrapper">
                 <label for="task_description_input">Description</label>
-                <textarea id="task_description_input" class="input_field textarea_height" type="text" placeholder="Enter a Description" autocomplete="off"></textarea>                                    
+                <textarea id="task_description_input" class="input_field fs_mobil_16 textarea_height" type="text" placeholder="Enter a Description" autocomplete="off"></textarea>                                    
             </div>
             <!-- Due date -->
             <div class="task_input_wrapper">
                 <label for="task_deadline_input">Due date<span class="required_symbole">*</span></label>
                 <div class="input_wrapper">
-                    <input id="task_deadline_input" onkeyup="checkAndEnableButton()" class="input_field" type="text" placeholder="dd/mm/yyyy" required autocomplete="off">                                    
+                    <input id="task_deadline_input" onkeyup="checkAndEnableButton()" class="input_field fs_mobil_16" type="text" placeholder="dd/mm/yyyy" required autocomplete="off">                                    
                     <img src="../assets/img/icons/task/event.svg" class="input_field_icon"></img>
                 </div>
                 <span id="warning_deadline" class="warning d_none">This field is required! Check whether the date is in the correct format.</span> 
@@ -55,8 +55,8 @@
                 <label for="task_assignedto_input">Assigned to</label>
                 <div id="selection_container_assignedto" class="selection_color_container">
                     <div class="input_wrapper">
-                        <button id="task_assignedto_button" class="input_field" onclick="toggleButtonAndInputElement()">Select contacts to assign</button>
-                        <input onkeyup="startNameSearch()" id="task_assignedto_input" class="input_field d_none" placeholder="Search" autocomplete="off">  
+                        <button id="task_assignedto_button" class="input_field fs_mobil_16" onclick="toggleButtonAndInputElement()">Select contacts to assign</button>
+                        <input onkeyup="startNameSearch()" id="task_assignedto_input" class="input_field fs_mobil_16 d_none" placeholder="Search" autocomplete="off">  
                         <img onclick="toggleButtonAndInputElement()" id="drop_down_persons" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task">
                     </div>
                     <ul class="selection d_none" id="selection">
@@ -73,7 +73,7 @@
                 <label for="category_selection">Category<span class="required_symbole">*</span></label>
                 <div id="selection_container_category" class="selection_color_container">
                     <div class="input_wrapper">
-                        <button id="category_selection" class="input_field" onclick="toggleDropDownSelection('category_options', 'drop_down_categories')">Select task category</button>
+                        <button id="category_selection" class="input_field fs_mobil_16" onclick="toggleDropDownSelection('category_options', 'drop_down_categories')">Select task category</button>
                         <img id="drop_down_categories" src="../assets/img/icons/drop_down/arrow.svg" class="input_field_icon_task" onclick="toggleDropDownSelection('category_options', 'drop_down_categories')">
                     </div>
                     <ul class="category_options d_none selection" id="category_options">
@@ -86,7 +86,7 @@
             <div class="task_input_wrapper">
                 <label for="subtask_input">Subtasks</label>
                 <div class="input_wrapper">
-                    <input onkeyup="addSubtaskOrToggleIcons(event)" id="subtask_input" class="input_field subtask_focus" type="text" placeholder="Add new subtask" autocomplete="off">
+                    <input onkeyup="addSubtaskOrToggleIcons(event)" id="subtask_input" class="input_field fs_mobil_16 subtask_focus" type="text" placeholder="Add new subtask" autocomplete="off">
                     <div id="subtask_icons" class="subtask_input_icon_wrapper d_none">
                         <img onclick="cancelSubtask()" src="../assets/img/icons/form/close.svg" class="input_field_icon_subtasks pad_8"></img>
                         <div class="icon_separator_input"></div>
