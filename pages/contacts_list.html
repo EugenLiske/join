@@ -34,16 +34,18 @@
                         <!-- Left Column: Contacts List -->
                         <div class="contacts_list_section">
                             <!-- Add Contact Button (dauerhaft sichtbar, Toast-Stil) -->
-                            <div class="add_contact_container">
-                                <button id="add_contact_btn" class="add_contact_button" onclick="openAddContactOverlay()">
-                                    
-                                    <span>Add new contact</span>
-                                    <img src="../assets/img/icons/buttons/person_add.svg" alt="Add Contact">
-                                </button>
-                            </div>
+                            <!-- <div class="add_contact_container"> -->
+
+                            <!-- </div> -->
                             
                             <!-- Contacts List Container -->
                             <div class="contacts_list_container">
+                                <div class="spacer">
+                                    <button id="add_contact_btn" class="add_contact_button" onclick="openAddContactOverlay()">
+                                        <span>Add new contact</span>
+                                        <img src="../assets/img/icons/buttons/person_add.svg" alt="Add Contact">
+                                    </button>                                    
+                                </div>
                                 <div id="contacts_list" class="contacts_list">
                                     <!-- Kontakte werden hier dynamisch geladen -->
                                 </div>
