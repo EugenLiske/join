@@ -41,34 +41,9 @@
   }
 }
 
-/* Desktop: nur das Dark-Logo zeigen */
 .logo--light {
     display: none;
 }
-
-/* Logo plus Animation */
-
-/* .logo_signup_page {
-    position: absolute;
-    width: 101px;
-    height: 122px;
-    animation: moveLogo 2000ms ease forwards;
-    z-index: 10001; 
-}
-
-@keyframes moveLogo {
-    from {
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) scale(3);
-    }
-    to {
-        left: 77px;
-        top: 80px;
-        transform: translate(0, 0) scale(1);
-    }
-} */
-
 
 .sign_up_page_content_div {
     height: 100vh;

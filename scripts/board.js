@@ -27,49 +27,52 @@ function focusSearchInputField() {
     searchInput.focus();
 }
 
+// Drag & Drop Mechanismus - Deaktivierung bei unter 1460 Pixel
+
+function isDragDropActive() {
+    if (typeof window === 'undefined') {
+        return true;
+    } 
+    if (window.innerWidth > 1460) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function setCardsDraggableState() {
+    let cards = document.getElementsByClassName('board_card');
+    let draggableValue = 'false';
+    if (isDragDropActive()) {
+        draggableValue = 'true';
+    }
+    for (i = 0; i < cards.length; i++) {
+        cards[i].setAttribute('draggable', draggableValue);
+    }
+}
+
+function clearAllDropIndicators() {
+    let columns = ['to_do', 'in_progress', 'await_feedback', 'done'];
+    for ( i = 0; i < columns.length; i++) {
+        let container = document.getElementById(columns[i]);
+        if (container) {
+            let indicator = container.querySelector('.drop_indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+    }
+}
+
+window.onresize = function () {
+    setCardsDraggableState();
+    if (!isDragDropActive()) {
+        clearAllDropIndicators();
+        updateAllOverflowHints();
+    }
+};
+
 // Drag & Drop Mechanismus
-
-/* NEU */ function isDragDropActive() {
-/* NEU */     if (typeof window === 'undefined') {
-/* NEU */         return true;
-/* NEU */     } 
-/* NEU */     if (window.innerWidth > 1460) {
-/* NEU */         return true;
-/* NEU */     } else {
-/* NEU */         return false;
-/* NEU */     }
-/* NEU */ }
-
-/* NEU */ function setCardsDraggableState() {
-/* NEU */      cards = document.getElementsByClassName('board_card');
-/* NEU */      draggableValue = 'false';
-/* NEU */     if (isDragDropActive()) {
-/* NEU */         draggableValue = 'true';
-/* NEU */     }
-/* NEU */     for ( i = 0; i < cards.length; i++) {
-/* NEU */         cards[i].setAttribute('draggable', draggableValue);
-/* NEU */     }
-/* NEU */ }
-
-/* NEU */ function clearAllDropIndicators() {
-/* NEU */      columns = ['to_do', 'in_progress', 'await_feedback', 'done'];
-/* NEU */     for ( i = 0; i < columns.length; i++) {
-/* NEU */          container = document.getElementById(columns[i]);
-/* NEU */         if (container) {
-/* NEU */              indicator = container.querySelector('.drop_indicator');
-/* NEU */             if (indicator) {
-/* NEU */                 indicator.remove();
-/* NEU */             }
-/* NEU */         }
-/* NEU */     }
-/* NEU */ }
-
-/* NEU */ window.onresize = function () {
-/* NEU */     setCardsDraggableState();
-/* NEU */     if (!isDragDropActive()) {
-/* NEU */         clearAllDropIndicators();
-/* NEU */     }
-/* NEU */ };
 
 let allTasks = []; // Anpassung seitens Anne
 
@@ -80,17 +83,8 @@ async function loadTasksFromDB(){
     for (let index = 0; index < taskKeysArray.length; index++) {
         allTasks.push(
             taskResponse[taskKeysArray[index]]
-            // {
-            //     id:                 taskResponse[taskKeysArray[index]].id,
-            //     title:              taskResponse[taskKeysArray[index]].title,
-            //     kanbanBoardColumn:  taskResponse[taskKeysArray[index]].kanbanBoardColumn,
-            //     description:        taskResponse[taskKeysArray[index]].description,
-            // }
         )  
     }
-    // console.log(taskResponse);
-    // console.log(taskKeysArray);
-    // console.log(allTasks); 
 }
 
 let currentDraggedTask;
@@ -100,7 +94,8 @@ async function initBoardPage() {
     boardContacts = await getContacts();
     await loadTasksFromDB();
     updateHTML();
-    setCardsDraggableState();       
+    setCardsDraggableState();
+    updateAllOverflowHints();       
 }
 
 function updateHTML(){
@@ -109,6 +104,7 @@ function updateHTML(){
     generateTasksAwaitFeedbackHTML();
     generateTasksDoneHTML();
     setCardsDraggableState();
+    updateAllOverflowHints();
 }
 
 function generateTasksToDoHTML(){
@@ -196,25 +192,25 @@ function generatePlaceholderHTML(kanbanBoardColumn) {
 }
 
 function allowDrop(event) {
-    if (!isDragDropActive()) { return; } /* NEU */
+    if (!isDragDropActive()) { return; } 
     event.preventDefault();
 }
 
 function startDragging(id, event){
-    if (!isDragDropActive()) { return; } /* NEU */
+    if (!isDragDropActive()) { return; } 
     currentDraggedTask = id;
     event.target.classList.add('dragging');
 }
 
 function endDragging(event){
-    if (!isDragDropActive()) { return; } /* NEU */
+    if (!isDragDropActive()) { return; } 
     event.target.classList.remove('dragging');
     currentDraggedTask = null;
 }
 
 async function moveToDifferentCategory(kanbanBoardColumn){
     const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
-    if (actualIndex === -1) return; // Sicherheitsgurt, falls Task gerade entfernt wurde
+    if (actualIndex === -1) return; 
     allTasks[actualIndex]['kanbanBoardColumn'] = kanbanBoardColumn;
     updateHTML();
     console.log(allTasks);
@@ -229,19 +225,17 @@ async function moveToDifferentCategory(kanbanBoardColumn){
 }
 
 function showDropIndicator(columnId) {
-    if (!isDragDropActive()) { return; } /* NEU */
+    if (!isDragDropActive()) { return; }
     const container = document.getElementById(columnId);
     const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
-    if (actualIndex === -1) return; // nichts „gegriffen“ oder Task nicht gefunden
+    if (actualIndex === -1) return; 
 
-    // Nicht im Ursprungs-Container anzeigen
     const originCategory = allTasks[actualIndex]['kanbanBoardColumn'];
     if (originCategory === columnId) {
         hideDropIndicator(columnId);
         return;
     }
 
-    // Nur einen Indikator pro Spalte
     if (!container.querySelector('.drop_indicator')) {
         const indicator = document.createElement('div');
         indicator.className = 'drop_indicator';
@@ -250,7 +244,7 @@ function showDropIndicator(columnId) {
 }
 
 function hideDropIndicator(columnId) {
-    if (!isDragDropActive()) { return; } /* NEU */
+    if (!isDragDropActive()) { return; }
     const container = document.getElementById(columnId);
     if (!container) return;
     const indicator = container.querySelector('.drop_indicator');
@@ -276,37 +270,30 @@ function getSearchTermFromInput() {
 function doesTitleMatchSearchTerm(task) {
     const searchTerm = getSearchTermFromInput();
 
-    // Unter 3 Zeichen: keine Filterung
     if (searchTerm.length === 0) {
         return true;
     }
 
-    // Titel immer vorhanden (laut deiner Vorgabe)
     let taskTitleLower = '';
     if (typeof task.title === 'string') {
         taskTitleLower = task.title.toLowerCase();
     }
 
-    // Beschreibung ist optional → falls nicht vorhanden, leeren String nutzen
     let taskDescriptionLower = '';
     if (typeof task.description === 'string') {
         taskDescriptionLower = task.description.toLowerCase();
     }
 
-    // Treffer, wenn Titel ODER Beschreibung den Suchbegriff enthält
     const matchesTitle = taskTitleLower.includes(searchTerm);
     const matchesDescription = taskDescriptionLower.includes(searchTerm);
 
     return matchesTitle || matchesDescription;
 }
 
-// Wird vom oninput-Attribut am <input> aufgerufen
 function onSearchInput() {
-    updateHTML(); // Neu-Render, Filter passiert in den Generatoren
+    updateHTML();
     updateSearchErrorMessage();
 }
-
-// ==== Suche: Fehlermeldung steuern ====
 
 function updateSearchErrorMessage() {
   const searchTerm = getSearchTermFromInput();
@@ -332,22 +319,6 @@ function updateSearchErrorMessage() {
   }
 }
 
-
-//save vor later --> deleteTaskById
-
-// function deleteTaskById(id) {
-//     // Lokal entfernen
-//     const idx = allTasks.findIndex(t => t.id === id);
-//     if (idx !== -1) allTasks.splice(idx, 1);
-//     updateHTML();
-
-//     // Falls gerade diese Task gezogen wurde → „Hand“ loslassen
-//     if (currentDraggedTask === id) currentDraggedTask = null;
-
-//     // DB entfernen (Realtime DB)
-//     // await fetch(`${BASE_URL}/tasks/task_${id}.json`, { method: 'DELETE' });
-// }
-
 function getBoardAllTasks(){
     return allTasks;
 }
@@ -367,6 +338,7 @@ function updateTaskCardAtBoard(taskId) {
     if (taskCard && taskIdx !== -1) {
         taskCard.outerHTML = getTaskCardTemplate(allTasks[taskIdx]);
         setCardsDraggableState();
+        updateAllOverflowHints();
     }
 }
 
@@ -400,3 +372,54 @@ function closeDragAndDropMenuSelection(event){
         }        
     }
 }
+
+
+function getBoardColumnsList() {                 
+    return ['to_do', 'in_progress', 'await_feedback', 'done'];  
+}                                                
+
+/* Helfer */
+function hasHorizontalOverflow(el) {
+    if (!el) { return false; }                         
+    var cards = el.getElementsByClassName('board_card');
+    if (cards.length <= 1) { return false; }       
+    return el.scrollWidth > el.clientWidth + 1;      
+}
+
+function isAtRightEnd(el) {
+    return (el.scrollLeft + el.clientWidth) >= (el.scrollWidth - 1);
+}
+
+function setOverflowClasses(el) {
+    el.classList.add('has-overflow');
+    if (isAtRightEnd(el)) {
+        el.classList.add('at-end');
+    } else {
+        el.classList.remove('at-end');
+    }
+}
+
+function clearOverflowClasses(el) {
+    el.classList.remove('has-overflow');
+    el.classList.remove('at-end');
+}
+
+/* <= 14 Zeilen */
+function updateOverflowHintFor(columnId) {
+    const el = document.getElementById(columnId);
+    if (!el) { return; }
+    if (hasHorizontalOverflow(el)) {
+        setOverflowClasses(el);
+        el.onscroll = function () { setOverflowClasses(el); };
+    } else {
+        clearOverflowClasses(el);
+        el.onscroll = null;
+    }
+}                                               
+
+function updateAllOverflowHints() {               
+    let cols = getBoardColumnsList();             
+    for (var i = 0; i < cols.length; i++) {       
+        updateOverflowHintFor(cols[i]);           
+    }                                             
+}    

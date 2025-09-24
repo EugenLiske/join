@@ -148,6 +148,7 @@
     display: flex;
     gap: 26px;
     justify-content: space-between;
+    align-items: flex-start;   /* NEU: Spalten wachsen eigenständig nach unten */
 }
 
 .task_column {
@@ -188,7 +189,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    height: 100vh;
+    height: auto;    
+    position: relative;
 }
 
 .no_tasks_placeholder {
@@ -455,35 +457,38 @@ p {
     }
 
     .no_tasks_placeholder {
-        height: 100%;
+        height: 100%;                  
+        min-width: 0; 
     }
 
     .task_column_content{
         flex-direction: row;
-        /* height: 100%; */
-        max-height: 260px;
+        height: 260px;
         overflow-x: auto;
         padding: 16px;
-        scrollbar-width: none;
-        overflow-y: hidden; /* NEU */
-        -webkit-overflow-scrolling: touch; /* NEU: sanftes Scrollen iOS */
-        touch-action: pan-x; /* NEU: explizit horizontale Gesten zulassen */
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        scrollbar-width: thin;
+        scrollbar-color: #B9C1D0 transparent;
     }
 
-    /* .task_column_content{
-        flex-direction: row;
-        height: 100%;
-        max-height: 260px;
-        overflow-x: auto; */
-        /* -webkit-overflow-scrolling:; */
-        /* -webkit-overflow-scrolling: touch; */
-        /* padding: 16px;
-        scrollbar-width: none;
-    } */
+    .task_column_content::-webkit-scrollbar {  
+        height: 8px;
+    }                                   
 
-    .task_column_content::-webkit-scrollbar {
-        display: none;
-    }
+    .task_column_content::-webkit-scrollbar-track {  
+        background: transparent;                     
+    }                                                
+
+    .task_column_content::-webkit-scrollbar-thumb {  
+        background: #B9C1D0;                         
+        border-radius: 8px;                          
+    }                                                
+
+    .task_column_content::-webkit-scrollbar-thumb:hover { 
+        background: #91A0B8;                             
+    }      
 
     .task_column{
         width: 100%;
@@ -535,4 +540,38 @@ p {
     .no_tasks_placeholder {
         width: 100%;
     }
+}
+
+/* ===== Nur ≤ 320px: dezenter Pfeil rechts, kein Overlay/Fade ===== */ 
+@media (max-width: 320px) {                                             
+  .task_column_content.has-overflow::before {                           
+    content: "";                                                        
+    position: absolute;                                                 
+    top: 50%;                                                           
+    right: 2px;                                                         
+    width: 10px;                                                        
+    height: 10px;                                                       
+    border-top: 2px solid #A8A8A8;                                      
+    border-right: 2px solid #A8A8A8;                                    
+    transform: translateY(-50%) rotate(45deg);                          
+    opacity: 0.9;                                                       
+    pointer-events: none;                                               
+    transition: opacity 150ms ease;                                     
+  }                                                                     
+
+  .task_column_content.at-end::before {                                 
+    opacity: 0;                                                         
+  }
+  
+  .board_card {
+    box-shadow: 0 2px 7px 0 #00000014;
+  }
+
+  .search_input_wrapper input {
+    width: 280px;
+ }
+
+ .search_affix {
+    gap: 8px;
+ }
 }
