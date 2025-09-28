@@ -3,12 +3,18 @@
     box-sizing: border-box;
 }
 
+.page {
+    max-width: 2000px;
+    margin: 0 auto;
+    position: relative;
+}
+
 .splash {
     position: fixed;
     inset: 0;
     background: #f6f7f8;
-    z-index: 10000;               /* über allem */
-    animation: splashFade 700ms ease-out both; /* 0.5s halten, 0.2s fade */
+    z-index: 10000;
+    animation: splashFade 700ms ease-out both;
     pointer-events: none;  
 }
 
@@ -17,29 +23,52 @@
     100%    { opacity: 0; }
 }
 
-/* Gemeinsame Logo-Basis: relativ zum Viewport */
 .logo_signup_page {
-  position: fixed;                  /* WICHTIG: nicht relativ zu einem Wrapper */
+  position: fixed;
   width: 101px;
   height: 122px;
-  z-index: 10001;                   /* über dem Splash */
-
-  /* Startzustand in der Mitte – sofort sichtbar */
+  z-index: 10001;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%) scale(3);
-
-  animation: moveLogo 2000ms ease forwards;  /* Bewegung wie gehabt */
+  animation: moveLogo 2000ms ease forwards;
 }
 
-/* Ziel: oben links neben Formular */
+/* === globale Variablen === */
+:root{
+  --content-max: 2000px;     /* deine Content-Grenze */
+  --logo-base-left: 77px;    /* deine bisherige Ziel-Left-Position */
+  --logo-top-final: 80px;    /* deine bisherige Ziel-Top-Position */
+  --logo-nudge: 0px;         /* feiner Rechts-Offset wegen Asymmetrie (z.B. 8px) */
+  --logo-left-final: calc(var(--logo-base-left) + var(--logo-nudge));
+}
+
+/* Ab 2000px: Linken Rand um den Gutter erweitern */
+@media (min-width: 2000px){
+  :root{
+    --logo-left-final: max(
+      12px, /* Minimaler Sicherheitsrand */
+      calc((100vw - var(--content-max)) / 2 + var(--logo-base-left) + var(--logo-nudge))
+    );
+  }
+}
+
+/* Zielposition benutzt jetzt Variablen */
 @keyframes moveLogo {
+  to {
+    left: var(--logo-left-final);
+    top: var(--logo-top-final);
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* @keyframes moveLogo {
   to {
     left: 77px;
     top: 80px;
     transform: translate(0, 0) scale(1);
   }
-}
+} */
 
 .logo--light {
     display: none;

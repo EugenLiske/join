@@ -95,7 +95,8 @@ async function initBoardPage() {
     await loadTasksFromDB();
     updateHTML();
     setCardsDraggableState();
-    updateAllOverflowHints();       
+    updateAllOverflowHints();
+    setupOverlayOutsideClickClose();      
 }
 
 function updateHTML(){
@@ -200,12 +201,15 @@ function startDragging(id, event){
     if (!isDragDropActive()) { return; } 
     currentDraggedTask = id;
     event.target.classList.add('dragging');
+    document.querySelectorAll('.task_column_content').forEach(el => el.classList.add('drag-target-active'));
 }
 
 function endDragging(event){
     if (!isDragDropActive()) { return; } 
     event.target.classList.remove('dragging');
     currentDraggedTask = null;
+    document.querySelectorAll('.task_column_content').forEach(el => el.classList.remove('drag-target-active'));
+    clearAllDropIndicators();
 }
 
 async function moveToDifferentCategory(kanbanBoardColumn){
@@ -381,7 +385,7 @@ function getBoardColumnsList() {
 /* Helfer */
 function hasHorizontalOverflow(el) {
     if (!el) { return false; }                         
-    var cards = el.getElementsByClassName('board_card');
+    let cards = el.getElementsByClassName('board_card');
     if (cards.length <= 1) { return false; }       
     return el.scrollWidth > el.clientWidth + 1;      
 }
@@ -419,7 +423,7 @@ function updateOverflowHintFor(columnId) {
 
 function updateAllOverflowHints() {               
     let cols = getBoardColumnsList();             
-    for (var i = 0; i < cols.length; i++) {       
+    for (let i = 0; i < cols.length; i++) {       
         updateOverflowHintFor(cols[i]);           
     }                                             
 }    

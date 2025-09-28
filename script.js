@@ -139,3 +139,30 @@ function displayToastMessage(overlayId, messageId, page) {
     }, 300);
   }, 2700);
 }
+
+// Schließung des Overlays beim Klicken außerhalb des Overlays
+
+function setupOverlayOutsideClickClose() {
+  let taskOverlay = document.getElementById('overlay_task');
+  if (taskOverlay) {
+    taskOverlay.onclick = function (event) {
+      if (event.target === taskOverlay) {
+        saveSubtaskChanges();
+        hideAnimationOverlay('overlay_task', 'overlay_task_container');
+        toggleScrollBehaviorOfBody('');
+      }
+    };
+  }
+
+  let editOverlay = document.getElementById('overlay_edit_task');
+  if (editOverlay) {
+    
+    editOverlay.onclick = function (event) {
+      if (event.target === editOverlay) {
+        hideAnimationOverlay('overlay_edit_task', 'overlay_edit_task_container');
+        resetAnimation('overlay_task', 'overlay_task_container');
+        toggleScrollBehaviorOfBody('');
+      }
+    };
+  }
+}

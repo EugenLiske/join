@@ -12,6 +12,15 @@
     min-width: 0; 
 }
 
+/* NEU: links andocken, rechts flexibel */
+.content_inner {
+    max-width: 2000px;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: auto;
+}
+
 .main_wrapper {
     display: flex;
     flex-direction: column;
@@ -105,6 +114,10 @@ h3 + p {
         padding-left: 16px;
         padding-right: 16px;
         padding-bottom: 24px;
+    }
+
+    .content_inner {
+        margin: 0 auto;
     }
 }
 

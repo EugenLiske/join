@@ -137,20 +137,37 @@
 
 /* Header --------------------------------------------------------------- */
 
-.board_header{
+/* .board_header{
     height: 96px;
     background-color: var(--bg-c-header);
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 0 40px 0 116px;
     box-shadow: 0 4px 4px 0 #0000001A;
     z-index: 100;
-
-    /* margin-bottom: 4px; */
     position: relative;
+} */
+
+.board_header {
+    height: 96px;
+    background-color: var(--bg-c-header); /* Balken läuft über volle Breite */
+    box-shadow: 0 4px 4px 0 #0000001A;
+    position: relative;
+    z-index: 100;
+}
+
+/* NEU: links andocken, rechts flexibel */
+.board_header_inner {
+  max-width: 2000px;
+  width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 0 116px; /* bleibt wie bei dir */
 }
 
 .header_menu_right{
@@ -315,6 +332,10 @@
 
     .board_header{
         padding: 0px 16px;
+    }
+
+    .board_header_inner {
+        margin: 0 auto;
     }
 
     .board_header span{
