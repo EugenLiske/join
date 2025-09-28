@@ -17,6 +17,7 @@
    border-radius: 30px;
    position: relative;
    background-color: #ffffff;
+   z-index: 201;
 }
 
 /* LEFT SIDE - HEADER SECTION */
@@ -278,140 +279,7 @@
    color: initial;
 }
 
-/* ================== RESPONSIVE DESIGN ================== */
 
-/* Tablets (768px - 1024px) */
-@media (max-width: 1024px) {
-   .button_container {
-      width: calc(100% - 96px);
-      left: 48px;
-      max-width: none;
-   }
-   
-   .button_wrapper {
-      gap: 20px;
-   }
-   
-   .delete_button,
-   .add_edit_button {
-      font-size: 18px;
-      padding: 12px 20px;
-      min-height: 48px;
-      height: 48px;
-   }
-}
-
-/* Mobile Landscape (481px - 767px) */
-@media (max-width: 767px) {
-   .button_container {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: 100%;
-      margin-top: 32px;
-   }
-   
-   .button_wrapper {
-      flex-direction: column;
-      gap: 16px;
-      height: auto;
-   }
-   
-   .delete_button,
-   .add_edit_button {
-      width: 100%;
-      min-width: auto;
-      max-width: 300px;
-      margin: 0 auto;
-   }
-   
-   .delete_button.cancel,
-   .add_edit_button.create-contact {
-      min-width: auto;
-   }
-}
-
-/* Mobile Portrait (max 480px) */
-@media (max-width: 480px) {
-   .button_wrapper {
-      gap: 12px;
-   }
-   
-   .delete_button,
-   .add_edit_button {
-      font-size: 16px;
-      padding: 10px 16px;
-      height: 44px;
-      min-height: 44px;
-   }
-   
-   /* Stack buttons on very small screens */
-   .button_wrapper {
-      flex-direction: column-reverse; /* Save button on top */
-   }
-}
-
-/* ================== CONTAINER RESPONSIVE ADJUSTMENTS ================== */
-
-/* Adjust main container for smaller screens */
-@media (max-width: 1024px) {
-   .edit_main {
-      width: 90%;
-      max-width: 900px;
-      height: auto;
-      min-height: 500px;
-   }
-   
-   .content_area {
-      padding: 32px;
-   }
-   
-   .input_container {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: 100%;
-      margin-top: 80px; /* Space for avatar */
-   }
-   
-   .input_field {
-      width: 100%;
-      max-width: 400px;
-   }
-}
-
-@media (max-width: 767px) {
-   .edit_main {
-      flex-direction: column;
-      width: 95%;
-      height: auto;
-   }
-   
-   .edit_contact {
-      width: 100%;
-      max-width: none;
-      height: auto;
-      padding: 20px;
-      border-radius: 20px 20px 0 0;
-   }
-   
-   .content_area {
-      padding: 20px;
-   }
-   
-   .contact_avatar {
-      position: relative;
-      top: auto;
-      left: auto;
-      margin: -60px auto 20px auto;
-      width: 100px;
-      height: 100px;
-   }
-   
-   .input_container {
-      margin-top: 20px;
-   }
-}
 
 /* ================== BUTTON FOCUS STATES ================== */
 .delete_button:focus-visible,
@@ -574,68 +442,495 @@
 
 /* ================== OVERLAY RESPONSIVE ================== */
 
-@media (max-width: 480px) {
-    .confirm-dialog {
-        margin: 20px;
-        min-width: auto;
-        padding: 24px 20px 20px 20px;
+/* Overlay Anpassung unter 1240px ###########################################*/
+@media (max-width: 1240px) {
+    /* Gesamtes Overlay schmaler */
+    .edit_main {
+        width: 95%;
+        max-width: 1000px; /* Von 1212px reduzieren */
     }
     
-    .confirm-message {
-        font-size: 15px;
-        margin-bottom: 20px;
+    /* Avatar kleiner und näher zur linken Seite */
+    .contact_avatar {
+        width: 100px; /* Von 120px auf 100px */
+        height: 100px;
+        left: 50px; /* Von 97px auf 50px - näher zur linken Seite */
+        top: 180px; /* Etwas höher positionieren */
     }
     
-    .confirm-buttons {
+    .avatar_initials {
+        font-size: 40px; /* Von 48px auf 40px */
+    }
+    
+    .avatar_initials img {
+        width: 40px; /* Von 48px auf 40px */
+        height: 40px;
+    }
+    
+    /* Input Container anpassen */
+    .input_container {
+        width: 350px; /* Von 422px auf 350px */
+        left: 180px; /* Weniger Abstand zum Avatar */
+        top: 120px; /* Höher positionieren */
+    }
+    
+    /* Input Fields schmaler */
+    .input_field {
+        width: 350px; /* Von 422px auf 350px */
+        font-size: 18px; /* Von 20px auf 18px */
+    }
+    
+    /* Button Container anpassen */
+    .button_container {
+        max-width: 350px; /* Von 422px auf 350px */
+        left: 180px; /* Gleich wie Input Container */
+        top: 360px; /* Angepasst an neue Input Position */
+    }
+    
+    /* Linker Bereich etwas schmaler */
+    .edit_contact {
+        max-width: 400px; /* Von 453px auf 400px */
+    }
+    
+    /* Logo und Text anpassen für schmaleren Bereich */
+    .logo_light {
+        width: 48px; /* Von 54px auf 48px */
+        height: 58px; /* Von 66px auf 58px */
+        margin: 0 0 0 12px; /* Von 16px auf 12px */
+    }
+    
+    .edit_h1 {
+        font-size: 52px; /* Von 61px auf 52px */
+        margin: 12px 0 0 12px; /* Von 16px auf 12px */
+    }
+    
+    .edit_h3 {
+        font-size: 24px; /* contact_add: Von 27px auf 24px */
+        margin: 6px 0 0 12px; /* Von 8px/16px auf 6px/12px */
+    }
+    
+    /* Für Edit Overlay (größere h3) */
+    .edit_h3.edit-version {
+        font-size: 52px; /* contact_edit: Von 61px auf 52px */
+    }
+    
+    .edit_blue_line {
+        width: 80px; /* Von 90px auf 80px */
+        margin: 12px 0 0 12px; /* Von 16px auf 12px */
+        margin-bottom: 50px; /* contact_add: Von 60px auf 50px */
+    }
+    
+    /* Für Edit Version der Linie */
+    .edit_blue_line.edit-version {
+        margin-bottom: 60px; /* contact_edit: Von 72px auf 60px */
+    }
+}
+
+/* Overlay Anpassung unter 1030px  ##############################################*/
+@media (max-width: 1030px) {
+    /* Avatar noch kleiner und höher positionieren */
+    .contact_avatar {
+        width: 80px;
+        height: 80px;
+        left: 30px;
+        top: 140px; /* Höher, um Platz für Input zu schaffen */
+    }
+    
+    .avatar_initials {
+        font-size: 32px;
+    }
+    
+    .avatar_initials img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    /* Input Container noch weiter nach links und höher */
+    .input_container {
+        width: 280px; /* Von 320px auf 280px */
+        left: 140px; /* Weiter nach links */
+        top: 90px; /* Höher positionieren */
+    }
+    
+    .input_field {
+        width: 280px; /* Von 320px auf 280px */
+        height: 42px; /* Von 48px auf 42px */
+        font-size: 16px; /* Von 18px auf 16px */
+        padding: 10px 16px 10px 18px; /* Kleinere Paddings */
+    }
+    
+    /* Button Container entsprechend anpassen */
+    .button_container {
+        max-width: 280px; /* Von 320px auf 280px */
+        left: 140px;
+        top: 320px; /* Höher, da Input höher ist */
+    }
+    
+    /* Buttons kleiner */
+    .delete_button,
+    .add_edit_button {
+        font-size: 16px; /* Von 18px auf 16px */
+        padding: 10px 16px; /* Kleinere Paddings */
+        height: 42px; /* Von 44px auf 42px */
+        min-height: 42px;
+        min-width: 80px; /* Kleinere Mindestbreite */
+    }
+    
+    /* Button Gap anpassen */
+    .button_wrapper {
+        gap: 16px; /* Von 25px auf 16px */
+    }
+    
+    /* Linker Bereich noch schmaler */
+    .edit_contact {
+        max-width: 290px;
+    }
+    
+    /* Gesamtes Overlay anpassen */
+    .edit_main {
+        max-width: 800px;
+    }
+}
+
+
+
+
+
+
+
+/* Overlay Anpassung unter 810px ###########################################*/
+@media (max-width: 810px) {
+    /* Gesamtes Overlay kleiner */
+    .edit_main {
+        max-width: 680px;
+        width: 95%;
+    }
+    
+    /* Linker Bereich - edit_contact verkleinern */
+    .edit_contact {
+        max-width: 240px;
+        padding: 16px; /* Von 24px auf 16px */
+    }
+    
+    /* Logo kleiner */
+    .logo_light {
+        width: 42px; /* Von 50px auf 42px */
+        height: 51px; /* Von 61px auf 51px */
+        margin: 0 0 0 10px; /* Von 14px auf 10px */
+    }
+    
+    /* H1 kleiner */
+    .edit_h1 {
+        font-size: 36px; /* Von 48px auf 36px */
+        margin: 10px 0 0 10px; /* Von 14px auf 10px */
+    }
+    
+    /* H3 kleiner */
+    .edit_h3 {
+        font-size: 18px; /* Von 22px auf 18px */
+        margin: 5px 0 0 10px; /* Von 7px/14px auf 5px/10px */
+    }
+    
+    /* Für Edit Overlay (größere h3) */
+    .edit_h3.edit-version {
+        font-size: 36px; /* Von größer auf 36px */
+    }
+    
+    /* Blaue Linie kleiner */
+    .edit_blue_line {
+        width: 60px; /* Von 80px auf 60px */
+        margin: 10px 0 0 10px; /* Von 12px auf 10px */
+        margin-bottom: 30px; /* Von 50px auf 30px */
+    }
+    
+    /* Für Edit Version der Linie */
+    .edit_blue_line.edit-version {
+        margin-bottom: 40px; /* Von 60px auf 40px */
+    }
+    
+    /* Avatar kleiner */
+    .contact_avatar {
+        width: 70px; /* Von 80px auf 70px */
+        height: 70px;
+        left: 25px; /* Von 30px auf 25px */
+        top: 120px; /* Von 140px auf 120px */
+    }
+    
+    .avatar_initials {
+        font-size: 28px; /* Von 32px auf 28px */
+    }
+    
+    .avatar_initials img {
+        width: 28px; /* Von 32px auf 28px */
+        height: 28px;
+    }
+    
+    /* Input Container kleiner */
+    .input_container {
+        width: 240px; /* Von 280px auf 240px */
+        left: 120px; /* Von 140px auf 120px */
+        top: 80px; /* Von 90px auf 80px */
+    }
+    
+    /* Input Fields kleiner */
+    .input_field {
+        width: 240px; /* Von 280px auf 240px */
+        height: 38px; /* Von 42px auf 38px */
+        font-size: 14px; /* Von 16px auf 14px */
+        padding: 8px 14px 8px 16px; /* Kleinere Paddings */
+    }
+    
+    /* Button Container anpassen */
+    .button_container {
+        max-width: 240px; /* Von 280px auf 240px */
+        left: 120px; /* Von 140px auf 120px */
+        top: 280px; /* Von 320px auf 280px */
+    }
+    
+      /* Cancel Button deutlich kleiner */
+    .delete_button {
+        font-size: 13px; /* Von 16px auf 13px */
+        padding: 6px 8px; /* Von 8px 14px auf 6px 8px - weniger Padding */
+        height: 32px; /* Von 34px auf 32px */
+        min-height: 32px;
+        min-width: 40px; /* Von 50px auf 60px - minimal für "Cancel X" */
+        max-width: 50px;
+    }
+    
+    /* Create Contact Button bekommt mehr Platz */
+    .add_edit_button {
+        font-size: 15px; /* Von 16px auf 15px - nur leicht kleiner */
+        padding: 8px 12px; /* Von 9px 14px auf 8px 12px */
+        height: 36px; /* Von 38px auf 36px */
+        min-height: 36px;
+        min-width: 120px; /* Von 100px auf 120px - mehr Platz für Text */
+        flex: 1; /* Nimmt verfügbaren Platz ein */
+    }
+    
+    /* Button Gap anpassen für bessere Verteilung */
+    .button_wrapper {
+        gap: 10px; /* Von 12px auf 10px */
+    }
+}
+
+/* Column Layout ab 750px #####################################################*/
+/* Über 750px: Kreuz im weißen Bereich anzeigen, Kreuz im dunklen Bereich verstecken */
+@media (min-width: 751px) {
+    .close_button_white {
+        display: block; /* Kreuz im content_area sichtbar */
+    }
+    
+    .close_button_dark {
+        display: none; /* Kreuz im edit_contact versteckt */
+    }
+}
+
+/* Column Layout ab 750px - ZUSAMMENGEFASST */
+@media (max-width: 750px) {
+    /* Hauptcontainer zu Column Layout */
+    .edit_main {
         flex-direction: column;
-        gap: 8px;
+        width: 95%;
+        max-width: 500px;
+        height: auto;
+        min-height: 600px;
     }
     
-    .confirm-btn,
-    .cancel-btn {
+    /* Dunkler Header-Bereich oben */
+    .edit_contact {
         width: 100%;
+        max-width: none;
+        height: 200px;
+        border-radius: 30px 30px 0 0;
+        padding: 24px;
+        position: relative;
+    }
+    
+    /* Logo bleibt linksbündig */
+    .logo_light {
+        display: none;
+    }
+    
+    /* Titel linksbündig */
+    .edit_h1 {
+        font-size: 36px;
+        margin: 8px 0 0 0;
+    }
+    
+    /* H3 für Add Overlay */
+    .edit_h3 {
+        font-size: 20px;
+        margin: 4px 0 0 0;
+    }
+    
+    /* H3 für Edit Overlay (falls größer) */
+    .edit_h3.edit-version {
+        font-size: 20px;
+    }
+    
+    /* Blauer Strich linksbündig mit Titel */
+    .edit_blue_line {
+        width: 80px;
+        height: 3px;
+        margin: 12px 0 0 0;
+        border: none;
+        background-color: var(--c-btn-delete);
+    }
+    
+    /* Content Area - heller Bereich */
+    .content_area {
+        flex: 1;
+        padding: 60px 24px 24px 24px; /* Oben Platz für Avatar */
+        background-color: white;
+        border-radius: 0 0 30px 30px;
+        position: relative;
+    }
+    
+    /* ========== KREUZ RULES ========== */
+    /* Kreuz im weißen Bereich verstecken */
+   .close_button_white {
+        display: none;
+    }
+    
+   .close_button_dark {
+        display: block;
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 24px;
+        height: 24px;
+        background: none !important;
+        border: none;
+        cursor: pointer;
+        z-index: 999;
+        transition: all 0.2s ease;
+        border-radius: 4px; /* Leicht abgerundete Ecken für den blauen Hintergrund */
+    }
+    
+   /* SVG als Mask verwenden - macht nur das Icon weiß */
+   .close_button_dark::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* Weiße Farbe */
+        mask: url("../../assets/img/icons/navigation/cross.svg") center/contain no-repeat;
+        -webkit-mask: url("../../assets/img/icons/navigation/cross.svg") center/contain no-repeat;
+        pointer-events: none;
+        transition: all 0.2s ease;
+    }
+    
+   /* Active/Click-Effekt mit blauem Hintergrund */
+    .close_button_dark:active {
+        background-color: var(--c-btn-delete); /* #29ABE2 */
+        transform: scale(0.95); /* Leichter Drück-Effekt */
+   }
+    
+   /* Icon bleibt weiß auch beim Klicken */
+   .close_button_dark:active::before {
+        background-color: white;
+   }
+    
+   /* ========== AVATAR ========== */
+   /* Avatar mittig - halb dunkel/halb hell */
+   .contact_avatar {
+        position: absolute;
+        top: 120px; /* 200px Header - 80px (halbe Avatar-Höhe) = 120px */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 100px;
+        z-index: 10;
+   }
+    
+    .avatar_initials {
+        font-size: 40px;
+   }
+    
+   .avatar_initials img {
+        width: 40px;
+        height: 40px;
+   }
+    
+    /* ========== INPUTS ========== */
+    /* Input Container zentriert unter Avatar */
+    .input_container {
+        position: static;
+        width: 100%;
+        max-width: 350px;
+        margin: 40px auto 32px auto; /* Abstand zum Avatar und zu Buttons */
+        transform: none;
+    }
+    
+    /* Input Fields */
+    .input_fields {
+        gap: 20px;
+    }
+    
+    .input_field {
+        width: 100%;
+        height: 48px;
+        font-size: 16px;
+        padding: 12px 48px 12px 16px;
+    }
+    
+    /* ========== BUTTONS ========== */
+    /* Button Container zentriert */
+    .button_container {
+        position: static;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        transform: none;
+    }
+    
+    /* Button Wrapper */
+    .button_wrapper {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    /* Buttons normale Größe */
+    .delete_button,
+    .add_edit_button {
+        height: 48px;
+        font-size: 16px;
+        padding: 12px 20px;
         min-width: auto;
     }
-}
-/* ================== ADDITIONAL TOAST POSITIONS ==================
-
-/* Optional: Different toast positions */
-/* .toast-bottom-right {
-    bottom: 20px;
-    top: auto;
-    right: 20px;
-}
-
-.toast-bottom-center {
-    bottom: 20px;
-    top: auto;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) translateY(100px);
-}
-
-.toast-bottom-center.toast-show {
-    transform: translateX(-50%) translateY(0);
-}
-
-.toast-bottom-center.toast-hide {
-    transform: translateX(-50%) translateY(100px);
-}
-
-.toast-top-center {
-    top: 20px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) translateY(-100px);
+    
+    /* Cancel Button für Add Overlay ausblenden */
+    .add-overlay .delete_button.cancel {
+        display: none;
+    }
+    
+    /* Create Contact Button in Add Overlay - volle Breite */
+    .add-overlay .button_wrapper {
+        justify-content: stretch;
+    }
+    
+    .add-overlay .add_edit_button {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    /* Edit Overlay - beide Buttons nebeneinander */
+    .edit-overlay .delete_button {
+        flex: 1;
+        min-width: 100px;
+    }
+    
+    .edit-overlay .add_edit_button {
+        flex: 1;
+        min-width: 100px;
+    }
 }
 
-.toast-top-center.toast-show {
-    transform: translateX(-50%) translateY(0);
-}
 
-.toast-top-center.toast-hide {
-    transform: translateX(-50%) translateY(-100px);
-} */
 
 /* ================== FIGMA TOAST OVERLAY ================== */
 .overlay {

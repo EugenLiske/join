@@ -33,7 +33,7 @@ export const PAGES = {
     EDIT_CONTACT: '../../overlays/contacts/contacts_edit.html',
     SUCCESS_PAGE: '../../overlays/contacts/contacts_add_successful.html',
     CONTACTS_LIST: '../../overlays/contacts/contacts.html',
-    MAIN_PAGE: '../../templates/contact_test.html' // für die Startseite aus der add aufgerufen wird 
+    MAIN_PAGE: '../../pages/contacts_list.html',
 };
 
 // LocalStorage Keys - prevents typos and centralizes key management

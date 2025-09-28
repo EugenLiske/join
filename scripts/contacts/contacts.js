@@ -321,7 +321,7 @@ async function handleEditMode(formData, contactId) {
         
         if (emailExists) {
             console.log('❌ FEHLER: E-Mail existiert bereits');
-            showOverlayMessage('This email address is already in use by another contact. Please use a different email.', 'error', 3000);
+            showOverlayMessage('This email address is already in use. Please use a different email.', 'error', 3000);
             return false;
         }
     } else {

@@ -425,7 +425,7 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
+    z-index: 200;
 }
 
 @keyframes spin {
@@ -433,37 +433,166 @@
     100% { transform: rotate(360deg); }
 }
 
-/* ================== RESPONSIVE DESIGN ================== */
-@media (max-width: 1200px) {
-    .contacts_main_content {
+/* ================== RESPONSIVE DESIGN ==================########################################## */
+@media (max-width: 1240px) {
+    /* Header Layout ändern - vertikal statt horizontal */
+    .main_header {
+        display: flex;
         flex-direction: column;
-        gap: 24px;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 32px;
     }
     
-    .contacts_list_section,
-    .contact_details_section {
-        max-width: none;
+    /* Contacts Überschrift */
+    .main_header h1 {
+        margin-bottom: 16px;
     }
     
-    .contact_details_panel {
-        min-height: 300px;
+    /* Blauer Strich direkt unter "Contacts" */
+    .main_header h1::after {
+        content: '';
+        display: block;
+        width: 90px;
+        height: 3px;
+        background-color: var(--c-btn-delete);
+        margin: 16px auto 0 auto;
     }
     
+    /* "Better with a team" unter dem blauen Strich */
+    .main_header span {
+        font-family: 'Inter', sans-serif;
+        font-size: 27px;
+        font-weight: 400;
+        color: var(--c-btn-default);
+        margin-top: 16px;
+    }
+    
+    /* Desktop-Separatoren ausblenden */
+    .header_separator,
+    .mobile_header_separator {
+        display: none;
+    }
+
+    /* Contact Details - weniger Abstand nach links*/
+        .contact_details_section {
+        padding: 100px 70px 70px 20px; 
+    }
+    
+    /* Contact Details Header mittig ausrichten */
     .contact_details_header {
-        gap: 32px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+        margin-top: 32px;
     }
     
+    /* Avatar mittig positionieren */
     .contact_details_avatar {
         width: 100px;
         height: 100px;
         font-size: 40px;
+        margin: 0 auto;
+    }
+    
+    /* Name und Buttons unter Avatar */
+    .contact_details_info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
     }
     
     .contact_details_name {
         font-size: 36px;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+    
+    /* Edit/Delete Buttons unter dem Namen */
+    .contact_details_actions {
+        justify-content: center;
+        gap: 24px;
     }
 }
 
+/* ========== 1040px BREAKPOINT ========== ##############################################*/
+@media (max-width: 1040px) {
+    /* Erheblich weniger Abstand nach links */
+    .contact_details_section {
+        padding: 80px 20px 70px 8px;
+    }
+    
+    /* Auch Kontaktliste weniger Abstand wenn nötig */
+    .contacts_list_section {
+        padding-left: 10px;
+    }
+    
+    .contacts_list {
+        padding: 0 20px; /* Von 40px auf 20px */
+        margin-top: 90px;
+    }
+}
+
+/* ========== 900px BREAKPOINT ========== ###################################################*/
+@media (max-width: 900px) {
+    /* Kontaktliste verkleinern */
+    .contacts_list_section {
+        width: 350px; /* Von 456px auf 350px */
+    }
+    
+    /* Kontaktliste - Schriftarten kleiner */
+    .contact_name {
+        font-size: 18px; /* Von 20px auf 18px */
+    }
+    
+    .contact_email {
+        font-size: 14px; /* Von 16px auf 14px */
+    }
+    
+    .contact_avatar_small {
+        width: 36px; /* Von 42px auf 36px */
+        height: 36px;
+        font-size: 10px; /* Bleibt bei 10px (war schon klein) */
+    }
+    
+    /* Show Contact Details - Schriftarten kleiner */
+    .contact_details_name {
+        font-size: 28px; /* Von 36px auf 28px */
+    }
+    
+    .contact_details_avatar {
+        width: 80px; /* Von 100px auf 80px */
+        height: 80px;
+        font-size: 32px; /* Von 40px auf 32px */
+    }
+    
+    .contact_details_section_title {
+        font-size: 18px; /* Von 20px auf 18px */
+    }
+    
+    .contact_details_field_label {
+        font-size: 14px; /* Von 16px auf 14px */
+    }
+    
+    .contact_details_field_value {
+        font-size: 14px; /* Von 16px auf 14px */
+    }
+    
+    /* Spacer Breite anpassen für kleinere Kontaktliste */
+    .spacer {
+        width: 334px; /* Angepasst an neue Breite (350px - 16px) */
+    }
+    
+    /* Add Contact Button anpassen */
+    .add_contact_button {
+        font-size: 18px; /* Von 21px auf 18px */
+        height: 48px; /* Von 56px auf 48px */
+    }
+}
+
+/* ========== 768px BREAKPOINT ========== ########################################*/
 @media (max-width: 768px) {
     .add_contact_button {
         height: 48px;
@@ -517,27 +646,273 @@
     }
 }
 
-@media (max-width: 480px) {
+/* ========== 750px BREAKPOINT ========== ##################################*/
+@media (max-width: 750px) {
+    /* Add Contact Button und Contact List - gleiche Abstände */
+    .add_contact_button {
+        margin: 16px 20px; /* Gleicher Abstand wie Contact List */
+    }
+    
+    .contacts_list {
+        padding: 0 20px; /* Bestätigt - 20px seitlich */
+    }
+    
+    /* Sticky Bottom Navigation - NUR ab 750px */
+    #page_navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+    
+    /* Platz für das sticky Menu */
     .contacts_main_content {
-        gap: 16px;
+        padding-bottom: 80px;
+    }
+}
+
+/* Mobile Vollbild unter 600px ############################################################*/
+@media (max-width: 600px) {
+    .contacts_list_section {
+    display: flex; /* Kontaktliste sichtbar machen */
+    width: 100%;
     }
     
-    .contacts_list_container {
-        border-radius: 20px;
+    /* Contact Details über komplette Breite */
+    .contact_details_section {
+        display: none;
+        width: 100%;
+        padding: 20px; /* Minimales padding rundherum */
+        height: auto;
+        height: calc(100vh - 160px); /* Volle Höhe minus Nav Menu */
+        overflow-y: visible; /* Falls Inhalt zu lang wird */
     }
     
+    /* Main Content über volle Breite */
+    .contacts_main_content {
+        gap: 0;
+        padding-bottom: 80px; /* Platz für sticky Nav Menu */
+    }
+    
+    /* Main Header linksbündig */
+    .main_header {
+        margin-bottom: 16px;
+        align-items: flex-start; /* Linksbündig statt zentriert */
+        text-align: left; /* Text linksbündig */
+    }
+    
+    /* "Better with a team" höher positionieren */
+    .main_header span {
+        margin-top: 8px; /* Weniger Abstand nach oben */
+        margin-bottom: 0; /* Kein Abstand nach unten */
+    }
+    
+    /* Blauen Strich unter "Better with a team" statt unter "Contacts" */
+    .main_header h1::after {
+        display: none; /* Strich unter Contacts entfernen */
+    }
+    
+    .main_header span::after {
+        content: '';
+        display: block;
+        width: 90px;
+        height: 3px;
+        background-color: var(--c-btn-delete);
+        margin-top: 8px; /* Direkt unter "Better with a team" */
+    }
+    
+    /* Contact Details Panel anpassen */
     .contact_details_panel {
-        border-radius: 20px;
-        padding: 24px 16px;
+        margin-top: 20px;
+        min-height: auto;
     }
     
-    .alphabet_separator {
-        padding: 12px 16px;
-        font-size: 18px;
+    /* Contact Details Header - Avatar neben Name (horizontal) */
+    .contact_details_header {
+        flex-direction: row; /* Horizontal statt vertikal */
+        align-items: flex-start; /* Oben ausrichten */
+        text-align: left; /* Linksbündig */
+        gap: 20px; /* Abstand zwischen Avatar und Info */
+        margin-top: 20px;
     }
     
-    .contact_item {
-        padding: 10px 16px;
+    /* Edit/Delete Buttons unter 600px ausblenden */
+    .contact_details_actions {
+    display: none;
+    }
+
+    /* Avatar kleiner für Mobile neben Name */
+    .contact_details_avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+        margin: 0; /* Kein auto margin */
+        flex-shrink: 0; /* Avatar behält Größe */
+    }
+    
+    /* Contact Info linksbündig */
+    .contact_details_info {
+        align-items: flex-start; /* Linksbündig statt zentriert */
+        text-align: left;
+        gap: 8px;
+    }
+    
+    /* Name linksbündig */
+    .contact_details_name {
+        font-size: 28px;
+        margin-bottom: 8px;
+        text-align: left; /* Linksbündig */
+    }
+    
+    /* Actions linksbündig
+    .contact_details_actions {
+        justify-content: flex-start; 
         gap: 16px;
+    } */
+    
+    /* Contact Details Body linksbündig */
+    .contact_details_body {
+        text-align: left;
+        margin-top: 20px;
     }
+
+    /* 3-Punkt Menu Button unten rechts unter 600px */
+    .mobile_menu_button {
+        display:none;
+        position: fixed;
+        bottom: 100px; /* Abstand zum Nav Menu (80px + 20px) */
+        right: 20px; /* Abstand zum rechten Rand */
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--c-btn-edit);
+        border: none;
+        cursor: pointer;
+    /*    display: flex;  */
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 99;
+        transition: all 0.2s ease;
+    }
+    
+    .mobile_menu_button:hover {
+        background-color: var(--c-btn-delete);
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile_menu_button:active {
+        transform: scale(0.95);
+    }
+    
+    /* 3 vertikale Punkte */
+    .mobile_menu_button::after {
+        content: '⋮';
+        color: var(--c-btn-text-var2);
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    /* Wenn Contact Details aktiv sind */
+    .mobile_view_contact_details .contacts_list_section {
+        display: none; /* Kontaktliste ausblenden */
+    }
+
+    .mobile_view_contact_details .contact_details_section {
+        display: flex; /* Contact Details zeigen */
+        width: 100%;
+        padding: 20px;
+        height: auto;
+        min-height: calc(100vh - 160px);
+        overflow-y: visible;
+        flex-direction: column;
+    }
+
+    .mobile_view_contact_details .mobile_menu_button {
+        display: flex; /* 3-Punkt Menu zeigen */
+    }
+
+    /* Ursprünglichen Add Contact Button ausblenden */
+    .add_contact_button {
+        display: none;
+    }
+    
+    /* Runder Add Contact Button unten rechts */
+    .mobile_add_contact_button {
+        position: fixed;
+        bottom: 100px; /* Über dem Nav Menu */
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--c-btn-edit);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 102; /* Unter dem 3-Punkt Menu (99) ?? */
+        transition: all 0.2s ease;
+    }
+    
+    .mobile_add_contact_button:hover {
+        background-color: var(--c-btn-delete);
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile_add_contact_button:active {
+        transform: scale(0.95);
+    }
+    
+    .mobile_add_contact_button img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1); /* Weiße Farbe für das Icon */
+    }
+    
+    /* Mobile Add Button nur in Kontaktlisten-Ansicht zeigen */
+    .mobile_view_contact_details .mobile_add_contact_button {
+        display: none; /* In Detail-Ansicht ausblenden */
+    }
+    /* Back Button für Mobile */
+.mobile_back_button {
+    display: none; /* Standardmäßig versteckt */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--c-btn-edit);
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 98;
+    transition: all 0.2s ease;
+}
+
+.mobile_back_button:hover {
+    background-color: var(--c-btn-delete);
+    transform: scale(1.05);
+}
+
+/* Zurück-Pfeil */
+.mobile_back_button::after {
+    content: '←';
+    color: var(--c-btn-text-var2);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Back Button nur zeigen wenn Contact Details aktiv */
+.mobile_view_contact_details .mobile_back_button {
+    display: flex;
+}
 }

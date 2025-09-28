@@ -138,6 +138,11 @@ function createContactElement(contact) {
 
 // ================== CONTACT SELECTION ==================
 
+// Mobile View Functions
+function showMobileContactList() {
+    document.body.classList.remove('mobile_view_contact_details');
+}
+
 /**
  * Selects a contact and shows details panel mit Toggle-Funktionalität
  * @param {Object} contact - Selected contact object
@@ -165,6 +170,10 @@ function selectContact(contact) {
     
     // Details anzeigen
     displayContactDetails(contact);
+
+    if (window.innerWidth <= 600) {
+    document.body.classList.add('mobile_view_contact_details');
+}
 }
 
 /**
@@ -296,26 +305,6 @@ async function loadContactScripts() {
 /**
  * Opens the Edit Contact overlay for selected contact
  */
-// async function editSelectedContact() {
-//     if (!currentSelectedContact) return;
-    
-//     try {
-//         localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, currentSelectedContact.id);
-        
-//         const response = await fetch('../overlays/contacts/contacts_edit.html');
-//         const html = await response.text();
-        
-//         const overlay = document.getElementById('edit_contact_overlay');
-//         overlay.innerHTML = html;
-//         overlay.classList.remove('d_none');
-        
-//         await loadContactScripts();
-//         initializeEditContactOverlay();
-        
-//     } catch (error) {
-//         console.error('Error loading edit contact overlay:', error);
-//     }
-// }
 async function editSelectedContact() {
     if (!currentSelectedContact) return;
     
@@ -422,142 +411,6 @@ function initializeAddContactOverlay() {
 /**
  * Initializes the Edit Contact overlay
  */
-// function initializeEditContactOverlay() {
-//     const closeBtn = document.querySelector('#edit_contact_overlay .close_button');
-//     if (closeBtn) {
-//         closeBtn.onclick = closeEditContactOverlay;
-//     }
-    
-//     const overlay = document.getElementById('edit_contact_overlay');
-//     overlay.onclick = (e) => {
-//         if (e.target === overlay) {
-//             closeEditContactOverlay();
-//         }
-//     };
-    
-//     // NEU: Edit-Formular mit Kontaktdaten befüllen
-//     if (currentSelectedContact && window.displayContactDataInForm) {
-//         setTimeout(() => {
-//             window.displayContactDataInForm(currentSelectedContact);
-//             if (window.validateContactForm) {
-//                 window.validateContactForm();
-//             }
-//         }, 100);
-//     }
-    
-//     const originalSaveContact = window.saveContact;
-//     window.saveContact = async (event) => {
-//         const editedContactId = currentSelectedContact?.id;
-        
-//         const result = await originalSaveContact(event);
-//         if (result !== false) {
-//             closeEditContactOverlay();
-//             showToastMessage('Contact updated successfully', 'success');
-            
-//             setTimeout(async () => {
-//                 await loadAllContacts();
-                
-//                 if (editedContactId) {
-//                     selectContactById(editedContactId);
-//                 }
-//             }, 1000);
-//         }
-//         return result;
-//     };
-// }
-
-/**
- * Initializes the Edit Contact overlay
- */
-// function initializeEditContactOverlay() {
-//     const closeBtn = document.querySelector('#edit_contact_overlay .close_button');
-//     if (closeBtn) {
-//         closeBtn.onclick = closeEditContactOverlay;
-//     }
-    
-//     const overlay = document.getElementById('edit_contact_overlay');
-//     overlay.onclick = (e) => {
-//         if (e.target === overlay) {
-//             closeEditContactOverlay();
-//         }
-//     };
-    
-//     // Email-Validierung SOFORT überschreiben
-//     const currentContactEmail = currentSelectedContact?.email?.toLowerCase();
-    
-//     window.checkEmailExists = async (email) => {
-//         const emailLower = email.toLowerCase();
-        
-//         if (emailLower === currentContactEmail) {
-//             console.log('Email unchanged - allowing save');
-//             return false;
-//         }
-        
-//         console.log('Email changed - checking Firebase');
-//         return await originalCheckEmailInFirebase(email);
-//     };
-    
-//     window.checkEmailExistsForEdit = async (email, contactId) => {
-//         const emailLower = email.toLowerCase();
-        
-//         if (emailLower === currentContactEmail) {
-//             console.log('Email unchanged - allowing save');
-//             return false;
-//         }
-        
-//         console.log('Email changed - checking Firebase');
-//         return await originalCheckEmailInFirebase(email);
-//     };
-    
-//     console.log(`Email validation overridden: "${currentContactEmail}" is allowed`);
-    
-//     // Formular befüllen
-//     if (currentSelectedContact) {
-//         setTimeout(() => {
-//             const nameInput = document.getElementById('name_input');
-//             const emailInput = document.getElementById('email_input');
-//             const phoneInput = document.getElementById('telephone_input');
-            
-//             if (nameInput) nameInput.value = currentSelectedContact.name || '';
-//             if (emailInput) emailInput.value = currentSelectedContact.email || '';
-//             if (phoneInput) phoneInput.value = currentSelectedContact.phone || '';
-//         }, 200);
-//     }
-    
-//     const originalSaveContact = window.saveContact;
-//     window.saveContact = async (event) => {
-//         // HIER DAS DEBUG EINFÜGEN:
-//         console.log('=== SAVE DEBUGGING ===');
-//         console.log('Current contact email:', currentSelectedContact?.email);
-//         console.log('Form email value:', document.getElementById('email_input')?.value);
-//         console.log('checkEmailExists overridden:', window.checkEmailExists.toString().substring(0, 100));
-        
-//         const editedContactId = currentSelectedContact?.id;
-        
-//         try {
-//             const result = await originalSaveContact(event);
-//             console.log('Save result:', result);
-            
-//             if (result !== false) {
-//                 closeEditContactOverlay();
-//                 showToastMessage('Contact updated successfully', 'success');
-                
-//                 setTimeout(async () => {
-//                     await loadAllContacts();
-                    
-//                     if (editedContactId) {
-//                         selectContactById(editedContactId);
-//                     }
-//                 }, 1000);
-//             }
-//         } catch (error) {
-//             console.error('Save failed with error:', error);
-//         }
-        
-//         return result;
-//     };
-// }
-
 function initializeEditContactOverlay() {
     const closeBtn = document.querySelector('#edit_contact_overlay .close_button');
     if (closeBtn) {
@@ -747,7 +600,21 @@ function showToastMessage(message, type = 'success') {
     }, 2000);
 }
 
+window.addEventListener('resize', function() {
+    if (window.innerWidth <= 600) {
+        // Unter 600px: Prüfen ob ein Kontakt ausgewählt ist
+        if (!currentSelectedContact) {
+            // Kein Kontakt ausgewählt → Zurück zur Kontaktliste
+            document.body.classList.remove('mobile_view_contact_details');
+        }
+    } else {
+        // Über 600px: Mobile View Class entfernen
+        document.body.classList.remove('mobile_view_contact_details');
+    }
+});
+
 // ================== GLOBAL EXPORTS ==================
 window.openAddContactOverlay = openAddContactOverlay;
 window.editSelectedContact = editSelectedContact;
 window.deleteSelectedContact = deleteSelectedContact;
+window.showMobileContactList = showMobileContactList;

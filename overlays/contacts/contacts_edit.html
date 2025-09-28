@@ -1,92 +1,55 @@
+<!-- EDIT CONTACT HTML -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Contact</title>
-<link rel="stylesheet" href="../../styles/contacts/contact_edit_add.css" />
-<link rel="stylesheet" href="../../styles/root.css" />
-<link rel="stylesheet" href="../../styles/contacts/contact_edit.css">
-<link rel="stylesheet" href="../../styles/fonts.css" />
+    <link rel="stylesheet" href="../../styles/contacts/contact_edit_add.css" />
+    <link rel="stylesheet" href="../../styles/root.css" />
+    <link rel="stylesheet" href="../../styles/contacts/contact_edit.css">
+    <link rel="stylesheet" href="../../styles/fonts.css" />
   </head>
   <body>
-    <main class="edit_main">
+    <main class="edit_main edit-overlay">
       <!-- LEFT SIDE - HEADER SECTION -->
       <div class="edit_contact">
-        <img
-          class="logo_light"
-          src="../../assets/img/logos/join_logo_light.svg"
-          alt="Join Logo"
-        />
+        <!-- Kreuz für unter 750px -->
+        <button class="close_button close_button_dark" onclick="closeEditContact()">
+          <img src="../../assets/img/icons/navigation/cross.svg" alt="Close">
+        </button>
+        <img class="logo_light" src="../../assets/img/logos/join_logo_light.svg" alt="Join Logo" />
         <h1 class="edit_h1">Edit contact</h1>
         <div class="edit_blue_line"></div>
       </div>
 
       <!-- RIGHT SIDE - CONTENT AREA -->
       <div class="content_area">
-
-        <!-- CLOSE BUTTON TOP RIGHT -->
-        <button class="close_button" onclick="closeEditContact()"></button>
+        <!-- Kreuz für über 750px -->
+        <button class="close_button close_button_white" onclick="closeEditContact()"></button>
 
         <!-- PROFILE AVATAR CIRCLE -->
         <div class="contact_avatar" id="contact_avatar">
           <span class="avatar_initials" id="avatar_initials">
-           <img
-                src="../../assets/img/icons/form/person.svg"
-                class="input_field_icon"
-                alt="Person Icon"
-              /></span>
+           <img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" /></span>
         </div>
 
         <!-- INPUT CONTAINER -->
         <div class="input_container">
           <div class="input_fields">
             <div class="input_wrapper">
-              <input
-                id="name_input"
-                class="input_field"
-                type="text"
-                placeholder="Name"
-                oninput="validateContactForm()"
-                required
-              />
-              <img
-                src="../../assets/img/icons/form/person.svg"
-                class="input_field_icon"
-                alt="Person Icon"
-              />
+              <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="validateContactForm()" required />
+              <img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />
             </div>
 
             <div class="input_wrapper">
-              <input
-                id="email_input"
-                class="input_field"
-                type="email"
-                placeholder="Email"
-                oninput="validateContactForm()"
-                required
-              />
-              <img
-                src="../../assets/img/icons/form/mail.svg"
-                class="input_field_icon"
-                alt="Mail Icon"
-              />
+              <input id="email_input" class="input_field" type="email" placeholder="Email" oninput="validateContactForm()" required />
+              <img src="../../assets/img/icons/form/mail.svg" class="input_field_icon" alt="Mail Icon" />
             </div>
 
             <div class="input_wrapper">
-              <input
-                id="telephone_input"
-                class="input_field"
-                type="tel"
-                placeholder="Phone"
-                oninput="validateContactForm()"
-                required
-              />
-              <img
-                src="../../assets/img/icons/form/call.svg"
-                class="input_field_icon"
-                alt="Phone Icon"
-              />
+              <input id="telephone_input" class="input_field" type="tel" placeholder="Phone" oninput="validateContactForm()" required />
+              <img src="../../assets/img/icons/form/call.svg" class="input_field_icon" alt="Phone Icon" />
             </div>
           </div>
         </div>
@@ -94,30 +57,17 @@
         <!-- BUTTON CONTAINER -->
         <div class="button_container">
           <div class="button_wrapper">
-            <button
-              type="button"
-              id="delete_button"
-              class="delete_button"
-              onclick="deleteContact()"
-            >
+            <button type="button" id="delete_button" class="delete_button" onclick="deleteContact()">
               Delete
             </button>
 
-            <button
-              type="submit"
-              id="save_button"
-              class="add_edit_button"
-              onclick="saveContact(event)"
-            >
+            <button type="submit" id="save_button" class="add_edit_button" onclick="saveContact(event)">
               <span id="button_text">Save &#10004</span>
-              
             </button>
           </div>
         </div>
       </div>
     </main>
-
-    
   </body>
   <script type="module" src="../../scripts/contacts/contacts.js"></script>
 </html>

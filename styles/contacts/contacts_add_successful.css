@@ -198,3 +198,22 @@
         opacity: 1;
     }
 }
+
+/* Zurück-Pfeil für Mobile unter 600px - oben rechts */
+@media (max-width: 600px) {
+    /* Zurück-Pfeil nur in Contact Details Ansicht anzeigen */
+    .signup_arrow_left {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url("../assets/img/icons/navigation/arrow_left.svg");
+    background-position: center;       /* Bild wird zentriert */
+    background-size: contain;          /* Bild so groß wie möglich, aber komplett sichtbar */
+    background-repeat: no-repeat;      /* Bild nicht wiederholen/kacheln */
+}
+    
+    /* In Kontaktlisten-Ansicht verstecken */
+    .signup_arrow_left {
+        display: none;
+    }
+}
