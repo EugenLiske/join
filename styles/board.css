@@ -532,6 +532,18 @@ p {
         gap: 16px;
     }
 
+    .find_and_create_task_container{
+        width: 100%;
+    }
+
+    .search_input_wrapper{
+        width: 100%;
+    }
+
+    .search_input_wrapper input {
+        width: 100%;
+    }
+
     .media_header_container{
         display: flex;
         align-items: center;
@@ -544,6 +556,10 @@ p {
 
     .no_tasks_placeholder {
         width: 100%;
+    }
+
+    .search_affix{
+        gap: 8px;
     }
 }
 
@@ -572,11 +588,4 @@ p {
     box-shadow: 0 2px 7px 0 #00000014;
   }
 
-  .search_input_wrapper input {
-    width: 280px;
- }
-
- .search_affix {
-    gap: 8px;
- }
 }
