@@ -42,7 +42,7 @@
     height: 56px;
     background-color: var(--c-btn-edit);
     color: var(--c-btn-text-var2);
-    border: none;
+    border: 0;
     border-radius: 10px;
     font-family: 'Inter', sans-serif;
     font-size: 21px;
@@ -107,10 +107,6 @@
     padding: 0 40px;
     margin-top: 90px;
 }
-
-/* .contacts_list_container::-webkit-scrollbar {
-  z-index: 1000;
-} */
 
 /* ================== ALPHABET SEPARATOR ================== */
 .alphabet_separator {
@@ -202,38 +198,20 @@
 /* ================== RIGHT SECTION - CONTACT DETAILS ================== */
 .contact_details_section {
     flex: 1;
-    /* max-width: none; */
     display: flex;
     flex-direction: column;
-    /* align-items: center;  ← Zentriert Kinder horizontal */
     padding: 100px 70px 70px 70px;
 }
 
 .contact_details_panel {
-    /* background-color: var(--bg-c-card); */
-    /* border-radius: 30px; */
-    /* box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1); */
-    /* padding: 64px 46px; */
     height: fit-content;
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: flex-start;
     transition: all 0.3s ease;
     margin-top: 50px;
 }
-
-/* .main_header {
-    text-align: center;
-    margin-top: 80px; 
-    margin-bottom: 32px;
-}
-
-.main_header span {
-    white-space: nowrap;
-    display: inline-block;
-} */
 
 .contact_details_panel.show {
     animation: slideInFromRight 0.3s ease-out;
@@ -263,7 +241,7 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 3px solid var(--c-btn-text-var2);
+    border: 2px solid var(--c-btn-text-var2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -302,7 +280,7 @@
     align-items: center;
     gap: 8px;
     background: none;
-    border: none;
+    border: 0;
     color: var(--c-btn-edit);
     font-family: 'Inter', sans-serif;
     font-size: 16px;
@@ -433,7 +411,7 @@
     100% { transform: rotate(360deg); }
 }
 
-/* ================== RESPONSIVE DESIGN ==================########################################## */
+/* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 1240px) {
     /* Header Layout ändern - vertikal statt horizontal */
     .main_header {
@@ -517,7 +495,7 @@
     }
 }
 
-/* ========== 1040px BREAKPOINT ========== ##############################################*/
+/* ========== 1040px BREAKPOINT ======================= */
 @media (max-width: 1040px) {
     /* Erheblich weniger Abstand nach links */
     .contact_details_section {
@@ -535,7 +513,7 @@
     }
 }
 
-/* ========== 900px BREAKPOINT ========== ###################################################*/
+/* ========== 900px BREAKPOINT =================================== */
 @media (max-width: 900px) {
     /* Kontaktliste verkleinern */
     .contacts_list_section {
@@ -592,7 +570,7 @@
     }
 }
 
-/* ========== 768px BREAKPOINT ========== ########################################*/
+/* ========== 768px BREAKPOINT ================================ */
 @media (max-width: 768px) {
     .add_contact_button {
         height: 48px;
@@ -646,7 +624,7 @@
     }
 }
 
-/* ========== 750px BREAKPOINT ========== ##################################*/
+/* ========== 750px BREAKPOINT ============================  */
 @media (max-width: 750px) {
     /* Add Contact Button und Contact List - gleiche Abstände */
     .add_contact_button {
@@ -672,7 +650,7 @@
     }
 }
 
-/* Mobile Vollbild unter 600px ############################################################*/
+/* Mobile Vollbild unter 600px ============================ */
 @media (max-width: 600px) {
     .contacts_list_section {
     display: flex; /* Kontaktliste sichtbar machen */
@@ -787,9 +765,8 @@
         height: 56px;
         border-radius: 50%;
         background-color: var(--c-btn-edit);
-        border: none;
+        border: 0;
         cursor: pointer;
-    /*    display: flex;  */
         align-items: center;
         justify-content: center;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -849,7 +826,7 @@
         height: 56px;
         border-radius: 50%;
         background-color: var(--c-btn-edit);
-        border: none;
+        border: 0;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -894,7 +871,7 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: none;
+    border: 0;
     cursor: pointer;
     align-items: center;
     justify-content: center;
@@ -947,7 +924,7 @@
 }
 
 .mobile_action_item:last-child {
-    border-bottom: none;
+    border-bottom: 0;
 }
 
 /* Hover-Effekt mit Figma Blau */
@@ -962,7 +939,7 @@
 
 .mobile_action_item:hover img {
     filter: brightness(0) saturate(100%) invert(58%) sepia(94%) saturate(1847%) hue-rotate(169deg) brightness(95%) contrast(89%);
-     filter: brightness(0) saturate(100%) invert(56%) sepia(85%) saturate(2392%) hue-rotate(170deg) brightness(99%) contrast(89%) !important;
+     
 }
 
 .mobile_action_item:first-child {

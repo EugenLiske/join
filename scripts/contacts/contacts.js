@@ -287,20 +287,12 @@ async function handleCreateMode(formData) {
  * @param {string} contactId - ID of contact being edited
  * @returns {Promise<boolean>} Success status
  */
-async function handleEditMode(formData, contactId) {
-    console.log('🟦🟦🟦 handleEditMode GESTARTET 🟦🟦🟦');
-    console.log('Empfangene Parameter:');
-    console.log('  formData:', formData);
-    console.log('  contactId:', contactId);
-    
+async function handleEditMode(formData, contactId) {    
     if (!contactId) {
-        console.log('❌ Kein contactId!');
         throw new Error('No contact ID found for editing');
     }
     
-    console.log('📥 Lade existierenden Kontakt...');
     const existingContact = await loadExistingContact(parseInt(contactId));
-    console.log('📦 Existierender Kontakt:', existingContact);
     
     if (!existingContact) {
         throw new Error('Could not load existing contact');
@@ -309,28 +301,16 @@ async function handleEditMode(formData, contactId) {
     const formEmailLower = formData.email.toLowerCase();
     const existingEmailLower = existingContact.email.toLowerCase();
     
-    console.log('📧 E-Mail-Vergleich:');
-    console.log('  Formular:', formEmailLower);
-    console.log('  Existierend:', existingEmailLower);
-    console.log('  Gleich?', formEmailLower === existingEmailLower);
-    
     if (formEmailLower !== existingEmailLower) {
-        console.log('⚠️ E-Mail geändert - prüfe Duplikat');
         const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
-        console.log('Duplikat gefunden?', emailExists);
         
         if (emailExists) {
-            console.log('❌ FEHLER: E-Mail existiert bereits');
-            showOverlayMessage('This email address is already in use. Please use a different email.', 'error', 3000);
+            showOverlayMessage('This email address is already in use.', 'error', 3000);
             return false;
         }
-    } else {
-        console.log('✅ E-Mail unverändert - überspringe Check');
-    }
+    } 
     
-    console.log('💾 Speichere in Firebase...');
     const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
-    console.log('✅ Gespeichert:', updatedContact);
     
     showOverlayMessage('Contact updated successfully', 'success', 1500);
     
@@ -342,17 +322,12 @@ async function handleEditMode(formData, contactId) {
  * Main save function - coordinates CREATE/EDIT operations
  * @param {Event} event - Form submit event
  */
-async function saveContact(event) {
-    console.log('🔴 saveContact aufgerufen');
-    
+async function saveContact(event) {    
     if (event) event.preventDefault();
     
     const formData = getFormData();
-    console.log('📝 formData:', formData);
-    console.log('📝 isValid:', formData.isValid);
     
     if (!formData.isValid) {
-        console.log('❌ Form ungültig');
         showOverlayMessage('Please correct the form errors before saving.');
         return false;
     }
@@ -360,24 +335,14 @@ async function saveContact(event) {
     const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     
     // ✅ GEÄNDERT: Prüfe ob contactId existiert statt URL-Check
-    const isEditMode = contactId !== null;
-    
-    console.log('🔧 isEditMode:', isEditMode);
-    console.log('🔧 contactId:', contactId);
-    
+    const isEditMode = contactId !== null;    
     try {
-        console.log('⏳ Rufe handle-Funktion auf...');
-        
         const success = isEditMode 
             ? await handleEditMode(formData, contactId)
-            : await handleCreateMode(formData);
-        
-        console.log('✅ Erfolg:', success);
-        
+            : await handleCreateMode(formData);        
         return success;
         
     } catch (error) {
-        console.error('💥 Error saving contact:', error);
         showOverlayMessage('Error saving contact. Please check your connection and try again.');
         return false;
     }

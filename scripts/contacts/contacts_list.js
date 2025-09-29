@@ -240,14 +240,9 @@ function displayContactDetails(contact) {
  * @param {number|string} contactId - Contact ID to select
  */
 function selectContactById(contactId) {
-    console.log('=== selectContactById called ===');
-    console.log('Looking for contact ID:', contactId);
-    console.log('Available contacts in contactsData:', Object.keys(contactsData));
     
     // Kontakt in contactsData finden
     const contact = Object.values(contactsData).find(c => c && c.id == contactId);
-    
-    console.log('Found contact:', contact);
     
     if (contact) {
         // Alle vorherigen Auswahlen entfernen
@@ -257,7 +252,6 @@ function selectContactById(contactId) {
         
         // Den entsprechenden DOM-Eintrag visuell markieren
         const contactElement = document.querySelector(`[data-contact-id="${contactId}"]`);
-        console.log('Found DOM element:', contactElement);
         
         if (contactElement) {
             contactElement.classList.add('selected');
@@ -266,11 +260,7 @@ function selectContactById(contactId) {
         // Globalen Status setzen und Details anzeigen
         currentSelectedContact = contact;
         displayContactDetails(contact);
-        
-        console.log('Contact successfully selected:', contact.name);
-    } else {
-        console.log('ERROR: Contact not found with ID:', contactId);
-    }
+    } 
 }
 
 // ================== OVERLAY MANAGEMENT ==================
@@ -319,32 +309,22 @@ async function loadContactScripts() {
  * Opens the Edit Contact overlay for selected contact
  */
 async function editSelectedContact() {
-    if (!currentSelectedContact) return;
-    
-    console.log('=== editSelectedContact called ===');
-    console.log('Current selected contact:', currentSelectedContact);
-    
+    if (!currentSelectedContact) return;    
     try {
         // NEU: Mobile View deaktivieren damit Pfeil verschwindet
         document.body.classList.remove('mobile_view_contact_details');
 
         localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, currentSelectedContact.id);
-        console.log('Stored in localStorage:', currentSelectedContact.id);
         
         const response = await fetch('../overlays/contacts/contacts_edit.html');
         const html = await response.text();
-        console.log('Edit HTML loaded, length:', html.length);
         
         const overlay = document.getElementById('edit_contact_overlay');
         overlay.innerHTML = html;
         overlay.classList.remove('d_none');
         
-        await loadContactScripts();
-        console.log('Contact scripts loaded');
-        
-        initializeEditContactOverlay();
-        console.log('Edit overlay initialized');
-        
+        await loadContactScripts();        
+        initializeEditContactOverlay();        
     } catch (error) {
         console.error('Error loading edit contact overlay:', error);
     }
@@ -413,9 +393,6 @@ function initializeAddContactOverlay() {
                 const newestContact = allContacts.reduce((prev, current) => {
                     return (prev.id > current.id) ? prev : current;
                 });
-                
-                console.log('Newest contact by ID:', newestContact);
-                
                 if (newestContact) {
                     selectContactById(newestContact.id);
                 }
