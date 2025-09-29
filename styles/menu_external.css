@@ -144,7 +144,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 40px 0 116px;
+    padding: 0 40px 0 70px;
     box-shadow: 0 4px 4px 0 #0000001A;
     z-index: 100;
 
@@ -252,7 +252,7 @@
 
     .board_header{
         height: 80px;
-        padding: 0 40px 0 40px;
+        padding: 0 40px 0 30px;
         font-size: 14px;
     }
 

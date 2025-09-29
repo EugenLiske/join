@@ -167,12 +167,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px 0 116px; /* bleibt wie bei dir */
+  padding: 0 40px 0 70px; /* bleibt wie bei dir */
 }
 
 .header_menu_right{
     display: flex;
     gap: 16px;
+    position: relative;
 }
 
 .help_button{
@@ -217,29 +218,49 @@
 }
 
 /* Side Menu */
+
+/* NEU: Menü an den Header-Inhalt binden, nicht an den Viewport */
 .side_menu {
-    position: fixed;
-    top: 96px;
-    right: -176px;
+    position: absolute;
+    top: calc(100% + 8px);       /* direkt unter dem Button; Abstand 8px */
+    right: 0;                    /* an der rechten Kante der 2000px-Inhaltsfläche */
     width: 160px;
+
     background-color: var(--bg-c-navigation);
     padding: 10px;
     border-radius: 20px 0 20px 20px;
-    transition: right 0.5s ease;
     z-index: 1000;
 
     display: flex;
     flex-direction: column;
     margin: 0;
-    margin-right: 16px;
     overflow: hidden;
+
+    /* HIDDEN + kleiner Offsetschub nach rechts, damit es von rechts „reinkommt“ */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(12px);
+
+    transition:
+    opacity 0.2s ease,
+    transform 0.25s ease,
+    visibility 0s linear 0.25s; /* Sichtbarkeit erst nach der Animation auf hidden */
 }
 
 .side_menu.open {
-    right: 0;
+    /* VISIBLE */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    transition:
+    opacity 0.2s ease,
+    transform 0.25s ease,
+    visibility 0s; /* sofort sichtbar */
 }
 
-.side_menu a{
+.side_menu a {
     text-decoration: none;
     color: var(--c-m-text-default);
     padding: 8px 16px;
@@ -247,8 +268,12 @@
 
 @media(max-width: 1000px){
     .side_menu {
-        top: 80px;
+        top: calc(100% + 8px); /* bleibt an den Button/Container gekoppelt */
     }
+
+    /* .side_menu {
+        top: 80px;
+    } */
 
     .logo{
         width: 70px;
@@ -275,8 +300,16 @@
 
     .board_header{
         height: 80px;
-        padding: 0 40px 0 40px;
+        /* padding: 0 40px 0 40px; */
+        padding: 0;
         font-size: 14px;
+    }
+
+    .board_header_inner {
+        max-width: none; /* <-- bricht die 2000px-Grenze für kleine Screens */
+        width: 100%;
+        margin: 0;       /* <-- NICHT zentrieren, links andocken */
+        padding: 0 30px; /* <-- schlankeres Padding statt 40/116 */
     }
 
     .menu_button{
@@ -288,6 +321,40 @@
 }
 
 @media(max-width: 750px){
+
+    /* Äußerer Header: kein Außen-Padding, damit nichts "quetscht" */
+    .board_header {
+        padding: 0;
+        height: 80px; /* falls du die geringere Höhe beibehalten willst */
+    }
+
+      /* Innerer Header-Container: volle Breite, links andocken, kleines Innen-Padding */
+    .board_header_inner {
+        max-width: none;     /* volle Breite, keine sichtbaren Ränder */
+        width: 100%;
+        margin: 0;           /* NICHT zentrieren */
+        padding: 0 16px;     /* schlankes, symmetrisches Padding */
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Logo links, Menü rechts */
+        gap: 12px;                      /* optional: etwas Luft zwischen Elementen */
+    }
+
+      /* Menüblock rechts soll wirklich ganz nach rechts – notfalls zusätzlich schieben */
+    .header_menu_right {
+        position: relative; /* Anker fürs Dropdown */
+        margin-left: auto;  /* schiebt ihn an den rechten Rand des inneren Containers */
+        display: flex;
+        gap: 12px;
+    }
+
+    /* Dropdown bleibt an den Container gekoppelt */
+    .side_menu {
+        top: calc(100% + 8px);
+        right: 0;
+    }
 
     .logo{
         display: none;
@@ -306,6 +373,14 @@
         width: 100%;
         height: 80px;
         padding: 0px;
+    }
+
+    #page_navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
     }
 
     .nav_content{
@@ -331,7 +406,7 @@
     }    
 
     .board_header{
-        padding: 0px 16px;
+        padding: 0px;
     }
 
     .board_header_inner {

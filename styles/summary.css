@@ -6,6 +6,14 @@
     width: 100%;
 }
 
+.content_inner {
+    max-width: 2000px;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;   
+    margin-right: auto; 
+}
+
 .df_row{
     display: flex;
     align-items: center;
@@ -139,6 +147,12 @@
     font-size: 64px;
     font-weight: bold;
     color: var(--c-text-name);
+}
+
+@media(min-width: 2000px){
+    .main_wrapper {
+        align-items: start;
+    }
 }
 
 @media(max-width: 1000px){

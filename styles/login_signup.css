@@ -23,6 +23,19 @@
     100%    { opacity: 0; }
 }
 
+/* .logo_signup_page--no_animation {
+  position: absolute;
+  left: 77px;
+  top: 80px;
+} */
+
+.logo_signup_page--static {
+    position: absolute;
+    left: 77px;
+    top: 80px;
+    z-index: 10001;
+}
+
 .logo_signup_page {
   position: fixed;
   width: 101px;
