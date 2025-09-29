@@ -156,3 +156,7 @@ function convertDateInFull(date) {
     return dateObject.toLocaleDateString('en-US', format);
 }
 
+
+function openKanbanBoard(){
+    window.location.href = "board.html";
+}
