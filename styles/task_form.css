@@ -286,6 +286,10 @@ button.input_field{
     color: transparent;
 }
 
+.subtask_icon_wrapper svg:hover{
+    transform: scale(1.1);
+}
+
 .icon_separator_subtask{
     border-right: 1px solid transparent;
     border-top: none;
