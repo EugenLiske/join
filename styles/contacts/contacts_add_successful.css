@@ -199,21 +199,55 @@
     }
 }
 
-/* Zurück-Pfeil für Mobile unter 600px - oben rechts */
-@media (max-width: 600px) {
-    /* Zurück-Pfeil nur in Contact Details Ansicht anzeigen */
-    .signup_arrow_left {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background-image: url("../assets/img/icons/navigation/arrow_left.svg");
-    background-position: center;       /* Bild wird zentriert */
-    background-size: contain;          /* Bild so groß wie möglich, aber komplett sichtbar */
-    background-repeat: no-repeat;      /* Bild nicht wiederholen/kacheln */
+
+.signup_arrow_left {
+    display: block !important;
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 50px !important;
+    height: 50px !important;
+    background-color: red !important;
+    border: 3px solid yellow !important;
+    z-index: 99999 !important;
 }
-    
-    /* In Kontaktlisten-Ansicht verstecken */
+
+/* DEBUG VERSION - Macht den Pfeil sehr auffällig */
+@media (max-width: 600px) {
     .signup_arrow_left {
-        display: none;
+        display: block !important;
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        width: 50px !important; /* Größer für Debug */
+        height: 50px !important;
+        
+        /* Sehr auffälliger roter Hintergrund für Debug */
+        background-color: red !important;
+        border: 3px solid yellow !important;
+        border-radius: 50% !important;
+        
+        /* Icon darüber */
+        background-image: url("../../assets/img/icons/navigation/arrow_left.svg") !important;
+        background-position: center !important;
+        background-size: 24px 24px !important; /* Kleineres Icon im größeren Button */
+        background-repeat: no-repeat !important;
+        
+        z-index: 9999 !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    .signup_arrow_left:hover {
+        background-color: orange !important;
+        transform: scale(1.1) !important;
     }
 }
+
+/* Über 600px - Pfeil komplett verstecken */
+/* @media (min-width: 601px) {
+    .signup_arrow_left {
+        display: none !important;
+    }
+} */

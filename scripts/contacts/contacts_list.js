@@ -141,6 +141,19 @@ function createContactElement(contact) {
 // Mobile View Functions
 function showMobileContactList() {
     document.body.classList.remove('mobile_view_contact_details');
+
+      // 2. Contact Details Panel ausblenden
+    if (contactDetailsPanel) {
+        contactDetailsPanel.classList.add('d_none');
+    }
+    
+    // 3. Aktuelle Kontakt-Auswahl zurücksetzen
+    document.querySelectorAll('.contact_item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // 4. Globalen Status zurücksetzen
+    currentSelectedContact = null;
 }
 
 /**
@@ -312,6 +325,9 @@ async function editSelectedContact() {
     console.log('Current selected contact:', currentSelectedContact);
     
     try {
+        // NEU: Mobile View deaktivieren damit Pfeil verschwindet
+        document.body.classList.remove('mobile_view_contact_details');
+
         localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, currentSelectedContact.id);
         console.log('Stored in localStorage:', currentSelectedContact.id);
         
@@ -341,6 +357,8 @@ async function deleteSelectedContact() {
     if (!currentSelectedContact) return;
     
     try {
+        closeMobileActionMenu();
+        
         const response = await fetch(`${FIREBASE_URL}${FIREBASE_PATHS.SINGLE_CONTACT(currentSelectedContact.id)}`, {
             method: 'DELETE'
         });
@@ -527,6 +545,15 @@ function closeEditContactOverlay() {
     overlay.classList.add('d_none');
     overlay.innerHTML = '';
     localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+
+    closeMobileActionMenu();
+    
+    // Mobile View wieder aktivieren wenn unter 600px UND ein Kontakt ausgewählt ist
+    if (window.innerWidth <= 600 && currentSelectedContact) {
+        setTimeout(() => {
+            document.body.classList.add('mobile_view_contact_details');
+        }, 100);
+    }
 }
 
 // ================== STATE MANAGEMENT ==================
@@ -612,6 +639,58 @@ window.addEventListener('resize', function() {
         document.body.classList.remove('mobile_view_contact_details');
     }
 });
+
+/**
+ * Toggles the mobile action menu
+ */
+function toggleMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        const isVisible = menu.classList.contains('show');
+        
+        if (isVisible) {
+            closeMobileActionMenu();
+        } else {
+            openMobileActionMenu();
+        }
+    }
+}
+
+/**
+ * Opens the mobile action menu
+ */
+function openMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        overlay.classList.add('show');
+        setTimeout(() => {
+            menu.classList.add('show');
+        }, 50);
+    }
+}
+
+/**
+ * Closes the mobile action menu
+ */
+function closeMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        menu.classList.remove('show');
+        setTimeout(() => {
+            overlay.classList.remove('show');
+        }, 300);
+    }
+}
+
+// Am Ende zu den anderen window exports hinzufügen:
+window.toggleMobileActionMenu = toggleMobileActionMenu;
+window.closeMobileActionMenu = closeMobileActionMenu;
 
 // ================== GLOBAL EXPORTS ==================
 window.openAddContactOverlay = openAddContactOverlay;

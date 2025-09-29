@@ -725,7 +725,7 @@
     }
 }
 
-/* Column Layout ab 750px - ZUSAMMENGEFASST */
+/* Column Layout ab 750px */
 @media (max-width: 750px) {
     /* Hauptcontainer zu Column Layout */
     .edit_main {
@@ -837,7 +837,7 @@
    /* Avatar mittig - halb dunkel/halb hell */
    .contact_avatar {
         position: absolute;
-        top: 120px; /* 200px Header - 80px (halbe Avatar-Höhe) = 120px */
+        top: -50px; 
         left: 50%;
         transform: translateX(-50%);
         width: 100px;
