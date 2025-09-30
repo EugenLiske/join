@@ -163,10 +163,13 @@ function updateProgressbar(task){
 
 async function deleteCurrentTask(){
     const task = getCurrentTask();
-    toggleOverlay("overlay_task");
+    displayToastMessage("overlay_container_task_deleted", "overlay_message_task_deleted");
+    setTimeout(function () {toggleOverlay("overlay_task");}, 2700);
+    
     resetAnimation("overlay_task", "overlay_task_container");
     deleteTaskFromArray(task.id)
     deleteTaskFromFirebase(task.id);
+
     document.getElementById("task_card_" + task.id).remove();
 }
 

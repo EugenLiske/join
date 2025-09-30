@@ -126,18 +126,23 @@ function toggleScrollBehaviorOfBody(mode = ""){
 }
 
 
-function displayToastMessage(overlayId, messageId, page) {
+function displayToastMessage(overlayId, messageId, page = "") {
   const overlayRef = document.getElementById(overlayId);
   const messageRef = document.getElementById(messageId);
   
   overlayRef.classList.add("active");
   messageRef.classList.add("enter");
   setTimeout(function () {
+    overlayRef.classList.remove("active");
+    messageRef.classList.remove("enter");
     overlayRef.classList.add("leaving");
-    setTimeout(function () {
-    window.location.href = page;
-    }, 300);
+    if (page !== ""){
+        setTimeout(function () {
+        window.location.href = page;
+        }, 300);        
+    }
   }, 2700);
+  overlayRef.classList.remove("leaving");
 }
 
 // Schließung des Overlays beim Klicken außerhalb des Overlays
