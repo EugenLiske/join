@@ -111,7 +111,8 @@ async function updateTaskAndGoBack(){
         await saveFormContentInDB(formContent);
         updateTask(currentTask.id, formContent);
         updateTaskCardAtBoard(currentTask.id);
-        goBack();
+        displayToastMessage("overlay_container_edit", "overlay_message_edit");
+        setTimeout(function () {goBack();}, 2700);
     }
 }
 
