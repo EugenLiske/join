@@ -6,7 +6,7 @@
  */
 
 // Firebase Configuration
-export const FIREBASE_URL = 'https://join-476d1-default-rtdb.firebaseio.com';
+export const FIREBASE_URL = `https://join-476d1-default-rtdb.firebaseio.com/`; //'https://join-476d1-default-rtdb.firebaseio.com';
 
 // Avatar Colors from CSS Variables (15 predefined colors)
 export const AVATAR_COLORS = [
