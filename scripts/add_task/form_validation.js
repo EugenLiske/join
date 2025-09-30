@@ -98,7 +98,7 @@ function getDateWarning(errorNumber){
             message = "This field is required!";
             break;
         case 2:
-            message = "The date must be entered in the correct format dd/mm/yyyy!";
+            message = "Enter date as dd/mm/yyyy!";
             break;
         case 3:
             message = "This date does not exist!";
