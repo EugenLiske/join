@@ -184,6 +184,9 @@
     color: var(--c-btn-default);
     line-height: 1.2;
     margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .contact_email {
@@ -193,6 +196,9 @@
     color: var(--c-con-mail);
     line-height: 1.2;
     margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* ================== RIGHT SECTION - CONTACT DETAILS ================== */

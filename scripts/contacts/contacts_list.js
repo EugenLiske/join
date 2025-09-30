@@ -196,41 +196,59 @@ function selectContact(contact) {
 function displayContactDetails(contact) {
     if (!contactDetailsPanel) return;
     
+    contactDetailsPanel.innerHTML = createContactDetailsHTML(contact);
+    showContactDetailsPanel();
+}
+
+function createContactDetailsHTML(contact) {
     const initials = generateInitials(contact.name);
     
-    contactDetailsPanel.innerHTML = `
+    return `
         <div class="contact_details_header">
-            <div class="contact_details_avatar" style="background-color: ${contact.avatarColor}">
-                ${initials}
-            </div>
-            <div class="contact_details_info">
-                <h1 class="contact_details_name">${contact.name}</h1>
-                <div class="contact_details_actions">
-                    <button class="contact_action_button" onclick="editSelectedContact()">
-                        <img src="../assets/img/icons/edit_and_delete/edit.svg" alt="Edit">
-                        <span>Edit</span>
-                    </button>
-                    <button class="contact_action_button" onclick="deleteSelectedContact()">
-                        <img src="../assets/img/icons/edit_and_delete/delete.svg" alt="Delete">
-                        <span>Delete</span>
-                    </button>
-                </div>
-            </div>
+            ${createContactHeader(contact, initials)}
         </div>
         <div class="contact_details_body">
-            <h2 class="contact_details_section_title">Contact Information</h2>
-            <div class="contact_details_field">
-                <div class="contact_details_field_label">Email</div>
-                <div class="contact_details_field_value email">${contact.email}</div>
-            </div>
-            <div class="contact_details_field">
-                <div class="contact_details_field_label">Phone</div>
-                <div class="contact_details_field_value phone">${contact.phone || 'No phone number'}</div>
+            ${createContactBody(contact)}
+        </div>
+    `;
+}
+
+function createContactHeader(contact, initials) {
+    return `
+        <div class="contact_details_avatar" style="background-color: ${contact.avatarColor}">
+            ${initials}
+        </div>
+        <div class="contact_details_info">
+            <h1 class="contact_details_name">${contact.name}</h1>
+            <div class="contact_details_actions">
+                <button class="contact_action_button" onclick="editSelectedContact()">
+                    <img src="../assets/img/icons/edit_and_delete/edit.svg" alt="Edit">
+                    <span>Edit</span>
+                </button>
+                <button class="contact_action_button" onclick="deleteSelectedContact()">
+                    <img src="../assets/img/icons/edit_and_delete/delete.svg" alt="Delete">
+                    <span>Delete</span>
+                </button>
             </div>
         </div>
     `;
-    
-    // Show panel with animation
+}
+
+function createContactBody(contact) {
+    return `
+        <h2 class="contact_details_section_title">Contact Information</h2>
+        <div class="contact_details_field">
+            <div class="contact_details_field_label">Email</div>
+            <div class="contact_details_field_value email">${contact.email}</div>
+        </div>
+        <div class="contact_details_field">
+            <div class="contact_details_field_label">Phone</div>
+            <div class="contact_details_field_value phone">${contact.phone || 'No phone number'}</div>
+        </div>
+    `;
+}
+
+function showContactDetailsPanel() {
     contactDetailsPanel.classList.remove('d_none');
     contactDetailsPanel.classList.add('show');
 }
@@ -311,7 +329,6 @@ async function loadContactScripts() {
 async function editSelectedContact() {
     if (!currentSelectedContact) return;    
     try {
-        // NEU: Mobile View deaktivieren damit Pfeil verschwindet
         document.body.classList.remove('mobile_view_contact_details');
 
         localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, currentSelectedContact.id);
@@ -368,101 +385,149 @@ async function deleteSelectedContact() {
  * Initializes the Add Contact overlay
  */
 function initializeAddContactOverlay() {
-    const closeBtn = document.querySelector('#add_contact_overlay .close_button');
+    setupOverlayCloseHandlers('add_contact_overlay', closeAddContactOverlay);
+
+    // Event Listeners für Overlay-Inputs aktivieren
+    setTimeout(() => {
+        const nameInput = document.getElementById('name_input');
+        const emailInput = document.getElementById('email_input');
+        const phoneInput = document.getElementById('telephone_input');
+        
+        if (nameInput) nameInput.addEventListener('input', window.validateContactForm);
+        if (emailInput) emailInput.addEventListener('input', window.validateContactForm);
+        if (phoneInput) phoneInput.addEventListener('input', window.validateContactForm);
+        
+        // Initial validation
+        if (window.validateContactForm) {
+            window.validateContactForm();
+        }
+    }, 100);
+    wrapSaveContactForAdd();
+}
+
+function setupOverlayCloseHandlers(overlayId, closeCallback) {
+    const closeBtn = document.querySelector(`#${overlayId} .close_button`);
     if (closeBtn) {
-        closeBtn.onclick = closeAddContactOverlay;
+        closeBtn.onclick = closeCallback;
     }
     
-    const overlay = document.getElementById('add_contact_overlay');
+    const overlay = document.getElementById(overlayId);
     overlay.onclick = (e) => {
         if (e.target === overlay) {
-            closeAddContactOverlay();
+            closeCallback();
         }
     };
-    
+}
+
+function wrapSaveContactForAdd() {
     const originalSaveContact = window.saveContact;
     window.saveContact = async (event) => {
         const result = await originalSaveContact(event);
         if (result !== false) {
-            closeAddContactOverlay();
-            showToastMessage('Contact created successfully', 'success');
-            
-            setTimeout(async () => {
-                await loadAllContacts();
-                const allContacts = Object.values(contactsData).filter(c => c && c.id);
-                const newestContact = allContacts.reduce((prev, current) => {
-                    return (prev.id > current.id) ? prev : current;
-                });
-                if (newestContact) {
-                    selectContactById(newestContact.id);
-                }
-                
-            }, 1000);
+            handleSuccessfulContactAdd();
         }
         return result;
     };
+}
+
+async function handleSuccessfulContactAdd() {
+    closeAddContactOverlay();
+    showToastMessage('Contact created successfully', 'success');
+    
+    setTimeout(async () => {
+        await loadAllContacts();
+        selectNewestContact();
+    }, 1000);
+}
+
+function selectNewestContact() {
+    const allContacts = Object.values(contactsData).filter(c => c && c.id);
+    const newestContact = allContacts.reduce((prev, current) => {
+        return (prev.id > current.id) ? prev : current;
+    });
+    
+    if (newestContact) {
+        selectContactById(newestContact.id);
+    }
 }
 
 /**
  * Initializes the Edit Contact overlay
  */
 function initializeEditContactOverlay() {
-    const closeBtn = document.querySelector('#edit_contact_overlay .close_button');
-    if (closeBtn) {
-        closeBtn.onclick = closeEditContactOverlay;
-    }
-    
-    const overlay = document.getElementById('edit_contact_overlay');
-    overlay.onclick = (e) => {
-        if (e.target === overlay) {
-            closeEditContactOverlay();
+    setupOverlayCloseHandlers('edit_contact_overlay', closeEditContactOverlay);
+    populateEditForm();
+    // Event Listeners für Edit-Overlay-Inputs aktivieren
+    setTimeout(() => {
+        const nameInput = document.getElementById('name_input');
+        const emailInput = document.getElementById('email_input');
+        const phoneInput = document.getElementById('telephone_input');
+        
+        if (nameInput) nameInput.addEventListener('input', window.validateContactForm);
+        if (emailInput) emailInput.addEventListener('input', window.validateContactForm);
+        if (phoneInput) phoneInput.addEventListener('input', window.validateContactForm);
+        
+        // Initial validation ausführen
+        if (window.validateContactForm) {
+            window.validateContactForm();
         }
-    };
+    }, 200); // Gleicher Timeout wie populateEditForm
+    wrapSaveContactForEdit();
+}
+
+function populateEditForm() {
+    if (!currentSelectedContact) return;
     
-    // Formular befüllen
-    if (currentSelectedContact) {
-        setTimeout(() => {
-            const nameInput = document.getElementById('name_input');
-            const emailInput = document.getElementById('email_input');
-            const phoneInput = document.getElementById('telephone_input');
-            
-            if (nameInput) nameInput.value = currentSelectedContact.name || '';
-            if (emailInput) emailInput.value = currentSelectedContact.email || '';
-            if (phoneInput) phoneInput.value = currentSelectedContact.phone || '';
-            
-            if (window.validateContactForm) {
-                window.validateContactForm();
-            }
-        }, 200);
-    }
+    setTimeout(() => {
+        fillFormInputs();
+        if (window.validateContactForm) {
+            window.validateContactForm();
+        }
+    }, 200);
+}
+
+function fillFormInputs() {
+    const nameInput = document.getElementById('name_input');
+    const emailInput = document.getElementById('email_input');
+    const phoneInput = document.getElementById('telephone_input');
     
+    if (nameInput) nameInput.value = currentSelectedContact.name || '';
+    if (emailInput) emailInput.value = currentSelectedContact.email || '';
+    if (phoneInput) phoneInput.value = currentSelectedContact.phone || '';
+}
+
+function wrapSaveContactForEdit() {
     const originalSaveContact = window.saveContact;
     window.saveContact = async (event) => {
         const editedContactId = currentSelectedContact?.id;
-        let result = false;
+        const result = await executeSaveContact(originalSaveContact, event);
         
-        try {
-            result = await originalSaveContact(event);
-            
-            if (result === true) {
-                closeEditContactOverlay();
-                showToastMessage('Contact updated successfully', 'success');
-                
-                setTimeout(async () => {
-                    await loadAllContacts();
-                    
-                    if (editedContactId) {
-                        selectContactById(editedContactId);
-                    }
-                }, 1000);
-            }
-        } catch (error) {
-            console.error('Save failed with error:', error);
-            result = false;
+        if (result === true) {
+            handleSuccessfulContactEdit(editedContactId);
         }
         
         return result;
     };
+}
+
+async function executeSaveContact(originalSaveContact, event) {
+    try {
+        return await originalSaveContact(event);
+    } catch (error) {
+        return false;
+    }
+}
+
+function handleSuccessfulContactEdit(editedContactId) {
+    closeEditContactOverlay();
+    showToastMessage('Contact updated successfully', 'success');
+    
+    setTimeout(async () => {
+        await loadAllContacts();
+        if (editedContactId) {
+            selectContactById(editedContactId);
+        }
+    }, 1000);
 }
 
 // Original Email-Prüfung beibehalten

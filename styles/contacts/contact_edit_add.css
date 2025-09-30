@@ -167,6 +167,21 @@
    pointer-events: none;
 }
 
+/* Fehlermeldung unter dem Input */
+.input_error {
+    display: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--c-warn);
+    margin-top: 4px;
+    padding-left: 4px;
+    min-height: 16px;
+}
+
+.input_error.show {
+    display: block;
+}
+
 /* ================== BUTTON CONTAINER ================== */
 .button_container {
    width: 100%;

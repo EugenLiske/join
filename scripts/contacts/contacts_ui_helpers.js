@@ -15,17 +15,76 @@ import { generateInitials } from './contacts_validation.js';
 export function updateFieldValidation(inputElement, validationResult) {
     if (!inputElement) return;
     
-    inputElement.style.borderColor = '';
+    const errorElement = inputElement.parentElement.querySelector('.input_error');
     
     if (validationResult.isValid) {
-        inputElement.style.borderColor = 'var(--c-active)';
-        inputElement.title = '';
+        setValidState(inputElement, errorElement);
     } else if (inputElement.value.length > 0) {
-        inputElement.style.borderColor = 'var(--c-warn)';
-        inputElement.title = validationResult.message;
+        setErrorState(inputElement, errorElement, validationResult.message);
     } else {
-        inputElement.style.borderColor = 'var(--c-default)';
-        inputElement.title = '';
+        setDefaultState(inputElement, errorElement);
+    }
+}
+
+function setValidState(inputElement, errorElement) {
+    inputElement.style.borderColor = 'var(--c-active)';
+    inputElement.title = '';
+    if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+}
+
+function setErrorState(inputElement, errorElement, message) {
+    console.log('=== setErrorState DEBUG ===');
+    console.log('inputElement:', inputElement);
+    console.log('inputElement.id:', inputElement?.id);
+    console.log('errorElement:', errorElement);
+    console.log('message:', message);
+    
+    inputElement.style.borderColor = 'var(--c-warn)';
+    inputElement.title = message;
+    
+    if (errorElement) {
+        console.log('✅ Error element found!');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+        console.log('Error element after changes:', errorElement);
+    } else {
+        console.log('❌ Error element NOT found!');
+        // Alternative Suche
+        const wrapper = inputElement.parentElement;
+        console.log('Parent wrapper:', wrapper);
+        console.log('Children:', wrapper?.children);
+        
+        // Direkte Suche nach ID
+        const inputId = inputElement.id;
+        const errorId = inputId.replace('_input', '_error');
+        console.log('Looking for error ID:', errorId);
+        const errorById = document.getElementById(errorId);
+        console.log('Found by ID:', errorById);
+        
+        if (errorById) {
+            errorById.textContent = message;
+            errorById.classList.add('show');
+        }
+    }
+}
+// function setErrorState(inputElement, errorElement, message) {
+//     inputElement.style.borderColor = 'var(--c-warn)';
+//     inputElement.title = message;
+//     if (errorElement) {
+//         errorElement.textContent = message;
+//         errorElement.classList.add('show');
+//     }
+// }
+
+function setDefaultState(inputElement, errorElement) {
+    inputElement.style.borderColor = 'var(--c-default)';
+    inputElement.title = '';
+    if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
     }
 }
 
@@ -66,27 +125,26 @@ export function updateSaveButtonState(isFormValid) {
 
 
 export function displayContactSuccess(contactData) {
-    if (!contactData) {
-        return;
-    }
+    if (!contactData) return;
     
+    updateContactDisplayElements(contactData);
+    updateContactAvatar(contactData);
+    setupContactButtons(contactData);
+}
+
+function updateContactDisplayElements(contactData) {
     const contentHeadName = document.getElementById('content_head_name');
     const contactEmailDisplay = document.getElementById('contact_email');
     const contactPhoneDisplay = document.getElementById('contact_phone');
+    
+    if (contentHeadName) contentHeadName.textContent = contactData.name;
+    if (contactEmailDisplay) contactEmailDisplay.textContent = contactData.email;
+    if (contactPhoneDisplay) contactPhoneDisplay.textContent = contactData.phone;
+}
+
+function updateContactAvatar(contactData) {
     const contactAvatar = document.getElementById('contact_avatar');
     const avatarInitials = document.getElementById('avatar_initials');
-    
-    if (contentHeadName) {
-        contentHeadName.textContent = contactData.name;
-    }
-    
-    if (contactEmailDisplay) {
-        contactEmailDisplay.textContent = contactData.email;
-    }
-    
-    if (contactPhoneDisplay) {
-        contactPhoneDisplay.textContent = contactData.phone;
-    }
     
     if (contactData.avatarColor && contactAvatar) {
         contactAvatar.style.backgroundColor = contactData.avatarColor;
@@ -96,16 +154,19 @@ export function displayContactSuccess(contactData) {
         const initials = generateInitials(contactData.name);
         avatarInitials.textContent = initials;
     }
+}
+
+function setupContactButtons(contactData) {
+    if (!contactData.id) return;
+    
     const editButton = document.getElementById('edit_contact_btn');
-    if (editButton && contactData.id) {
+    if (editButton) {
         editButton.onclick = () => window.editContact(contactData.id);
-        editButton.style.cursor = 'pointer';
     }
     
     const deleteButton = document.getElementById('delete_contact_btn');
-    if (deleteButton && contactData.id) {
+    if (deleteButton) {
         deleteButton.onclick = () => window.deleteContactFromSuccessPage(contactData.id);
-        deleteButton.style.cursor = 'pointer';
     }
 }
 

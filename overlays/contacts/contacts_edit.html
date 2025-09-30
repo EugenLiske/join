@@ -37,20 +37,28 @@
         <!-- INPUT CONTAINER -->
         <div class="input_container">
           <div class="input_fields">
+
             <div class="input_wrapper">
-              <input id="name_input" class="input_field" type="text" placeholder="Name" oninput="validateContactForm()" required />
+              <input type="text" id="name_input" class="input_field" placeholder="Name Surname" />
+              <span class="input_error" id="name_error"></span>
               <img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />
+              
             </div>
 
             <div class="input_wrapper">
-              <input id="email_input" class="input_field" type="email" placeholder="Email" oninput="validateContactForm()" required />
-              <img src="../../assets/img/icons/form/mail.svg" class="input_field_icon" alt="Mail Icon" />
+                <input type="email" id="email_input" class="input_field" placeholder="Email" />
+                <span class="input_error" id="email_error"></span>
+                <img src="../../assets/img/icons/form/mail.svg" class="input_field_icon" alt="Mail Icon" />
+                
             </div>
 
             <div class="input_wrapper">
-              <input id="telephone_input" class="input_field" type="tel" placeholder="Phone" oninput="validateContactForm()" required />
-              <img src="../../assets/img/icons/form/call.svg" class="input_field_icon" alt="Phone Icon" />
+                <input type="tel" id="telephone_input" class="input_field" placeholder="Phone" />
+                <span class="input_error" id="phone_error"></span>
+                <img src="../../assets/img/icons/form/call.svg" class="input_field_icon" alt="Phone Icon" />
+                
             </div>
+
           </div>
         </div>
 

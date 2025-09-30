@@ -55,18 +55,18 @@ const CONTACT_PHONE_DISPLAY = document.getElementById('contact_phone');
  * Orchestrates complete form validation and UI updates
  * @returns {Object} Complete form validation results
  */
-function validateContactForm() {
-    const formData = getFormData();
+// function validateContactForm() {
+//     const formData = getFormData();
     
-    updateFieldValidation(NAME_INPUT, formData.nameValidation);
-    updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
-    updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
+//     updateFieldValidation(NAME_INPUT, formData.nameValidation);
+//     updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
+//     updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
     
-    updateAvatarPreview(formData.name);
-    updateSaveButtonState(formData.isValid);
+//     updateAvatarPreview(formData.name);
+//     updateSaveButtonState(formData.isValid);
     
-    return formData;
-}
+//     return formData;
+// }
 
 // ================== NAVIGATION FUNCTIONS ==================
 
@@ -287,34 +287,42 @@ async function handleCreateMode(formData) {
  * @param {string} contactId - ID of contact being edited
  * @returns {Promise<boolean>} Success status
  */
-async function handleEditMode(formData, contactId) {    
+async function handleEditMode(formData, contactId) {
     if (!contactId) {
         throw new Error('No contact ID found for editing');
     }
     
     const existingContact = await loadExistingContact(parseInt(contactId));
-    
     if (!existingContact) {
         throw new Error('Could not load existing contact');
     }
     
-    const formEmailLower = formData.email.toLowerCase();
-    const existingEmailLower = existingContact.email.toLowerCase();
+    const emailChanged = hasEmailChanged(formData.email, existingContact.email);
     
-    if (formEmailLower !== existingEmailLower) {
-        const emailExists = await checkEmailExistsForEdit(formData.email, parseInt(contactId));
-        
-        if (emailExists) {
-            showOverlayMessage('This email address is already in use.', 'error', 3000);
-            return false;
-        }
-    } 
+    if (emailChanged) {
+        const isDuplicate = await checkForDuplicateEmail(formData.email, contactId);
+        if (isDuplicate) return false;
+    }
     
-    const updatedContact = await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
-    
+    await saveEditContactToFirebase(parseInt(contactId), formData.contactData);
     showOverlayMessage('Contact updated successfully', 'success', 1500);
     
     return true;
+}
+
+function hasEmailChanged(newEmail, existingEmail) {
+    return newEmail.toLowerCase() !== existingEmail.toLowerCase();
+}
+
+async function checkForDuplicateEmail(email, currentContactId) {
+    const emailExists = await checkEmailExistsForEdit(email, parseInt(currentContactId));
+    
+    if (emailExists) {
+        showOverlayMessage('This email address is already in use. Please use a different email.', 'error', 3000);
+        return true;
+    }
+    
+    return false;
 }
 
 
@@ -322,32 +330,52 @@ async function handleEditMode(formData, contactId) {
  * Main save function - coordinates CREATE/EDIT operations
  * @param {Event} event - Form submit event
  */
-async function saveContact(event) {    
+async function saveContact(event) {
     if (event) event.preventDefault();
     
     const formData = getFormData();
-    
     if (!formData.isValid) {
         showOverlayMessage('Please correct the form errors before saving.');
         return false;
     }
     
     const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+    const isEditMode = contactId !== null;
     
-    // ✅ GEÄNDERT: Prüfe ob contactId existiert statt URL-Check
-    const isEditMode = contactId !== null;    
+    return await executeSave(formData, isEditMode, contactId);
+}
+
+async function executeSave(formData, isEditMode, contactId) {
     try {
         const success = isEditMode 
             ? await handleEditMode(formData, contactId)
-            : await handleCreateMode(formData);        
-        return success;
+            : await handleCreateMode(formData);
         
+        return success;
     } catch (error) {
         showOverlayMessage('Error saving contact. Please check your connection and try again.');
         return false;
     }
 }
 
+//Debugg
+function validateContactForm() {
+    console.log('🔵 validateContactForm called');
+    
+    const formData = getFormData();
+    console.log('📝 Form data:', formData);
+    
+    updateFieldValidation(NAME_INPUT, formData.nameValidation);
+    console.log('✅ Name validation done');
+    
+    updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
+    updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
+    
+    updateAvatarPreview(formData.name);
+    updateSaveButtonState(formData.isValid);
+    
+    return formData;
+}
 
 // ================== EVENT LISTENERS ==================
 
