@@ -310,7 +310,8 @@ p {
 
 .drag_and_drop_menu_mobile {
     position: absolute;
-    top: 0;
+    top: -4px;
+    left: -4px;
     background-color: var(--bg-c-navigation);
     padding: 16px 10px;
     border-radius: 0 20px 20px 20px;
