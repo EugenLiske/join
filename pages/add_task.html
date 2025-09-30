@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Add task</title>
-    
-    <link rel="icon" href="../assets/img/logos/join_logo_dark.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../styles/fonts.css">
-    <link rel="stylesheet" href="../styles/root.css">
-    <link rel="stylesheet" href="../styles/menu.css">
-    <link rel="stylesheet" href="../styles/add_task.css">
-    <link rel="stylesheet" href="../styles/task_form.css">
-    <link rel="stylesheet" href="../styles/login_signup.css">
-    <link rel="stylesheet" href="../styles/button.css">
-    <link rel="stylesheet" href="../styles/toast_message.css">
 
-    
+    <link
+      rel="icon"
+      href="../assets/img/logos/join_logo_dark.svg"
+      type="image/svg+xml"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
+    <link rel="stylesheet" href="../styles/root.css" />
+    <link rel="stylesheet" href="../styles/menu.css" />
+    <link rel="stylesheet" href="../styles/add_task.css" />
+    <link rel="stylesheet" href="../styles/task_form.css" />
+    <link rel="stylesheet" href="../styles/login_signup.css" />
+    <link rel="stylesheet" href="../styles/button.css" />
+    <link rel="stylesheet" href="../styles/toast_message.css" />
+
     <script src="../script.js"></script>
     <script src="../scripts/add_task/task_form.js"></script>
-    
+
     <script src="../scripts/temp_db/task_db.js"></script>
     <script src="../scripts/temp_db/person_db.js"></script>
 
     <script src="../scripts/task_templates.js"></script>
-    
+
     <script src="../scripts/add_task/form_validation.js"></script>
     <script src="../scripts/add_task/form_reader.js"></script>
 
@@ -35,31 +38,30 @@
     <script src="../scripts/add_task/form_selection/subtask.js"></script>
     <script src="../scripts/task_db_connection.js"></script>
     <script src="../scripts/include.js"></script>
+  </head>
 
-</head>
-
-<body onload="initAddTaskPage('to_do')">
+  <body onload="initAddTaskPage('to_do')">
     <div class="page_wrapper">
-        <div id="page_navigation"></div>
-        <div class="content_wrapper">
-            <div id="page_header" class="board_header"></div>
-            <div class="main_wrapper">
-                <article class="main_container">
-                    <header class="main_header">
-                        <h1>Add Task</h1>
-                    </header>
-                    <div id="add_task_form"></div>
-
-                </article>
-            </div>
+      <div id="page_navigation"></div>
+      <div class="content_wrapper">
+        <div id="page_header" class="board_header"></div>
+        <div class="content_inner">
+          <div class="main_wrapper">
+            <article class="main_container">
+              <header class="main_header">
+                <h1>Add Task</h1>
+              </header>
+              <div id="add_task_form"></div>
+            </article>
+          </div>
         </div>
+      </div>
     </div>
     <div id="overlay_container" class="overlay">
-        <div id="overlay_message" class="overlay_message">
-            Task added to board
-            <img src="../assets/img/icons/nav_bar/board.svg" alt="Board Icon">
-        </div>
+      <div id="overlay_message" class="overlay_message">
+        Task added to board
+        <img src="../assets/img/icons/nav_bar/board.svg" alt="Board Icon" />
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

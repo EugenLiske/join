@@ -4,103 +4,122 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join - Login</title>
-    <link rel="icon" href="./assets/img/logos/join_logo_dark.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./styles/fonts.css">
+    <link
+      rel="icon"
+      href="./assets/img/logos/join_logo_dark.svg"
+      type="image/svg+xml"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
     <link rel="stylesheet" href="./styles/login_signup.css" />
   </head>
   <body>
     <div class="page">
-    <div id="splash" class="splash"></div>
-    <div class="sign_up_page_content_div">
-      <form id="login_form" class="login_form" onsubmit="return loginUser(event)">
-        <h1 class="signup_headline">Log in</h1>
-        <div class="signup_headline_underscore"></div>
+      <div id="splash" class="splash"></div>
+      <div class="sign_up_page_content_div">
+        <form
+          id="login_form"
+          class="login_form"
+          onsubmit="return loginUser(event)"
+        >
+          <h1 class="signup_headline">Log in</h1>
+          <div class="signup_headline_underscore"></div>
 
-        <div class="input_fields field_size">
-          <div class="input_wrapper">
-            <input
-              id="email_input"
-              class="input_field"
-              type="email"
-              placeholder="Email"
-              oninput="checkLoginEnable()"
-            />
-            <img
-              src="./assets/img/icons/form/mail.svg"
-              class="input_field_icon"
-            />
+          <div class="input_fields field_size">
+            <div class="input_wrapper">
+              <input
+                id="email_input"
+                class="input_field"
+                type="email"
+                placeholder="Email"
+                oninput="checkLoginEnable()"
+              />
+              <img
+                src="./assets/img/icons/form/mail.svg"
+                class="input_field_icon"
+              />
+            </div>
+
+            <div class="input_wrapper input_wrapper--with-error">
+              <input
+                id="password_input"
+                class="input_field"
+                type="password"
+                placeholder="Password"
+                oninput="checkLoginEnable(); handleLoginPasswordInput('password_input','login_password_icon')"
+              />
+              <img
+                id="login_password_icon"
+                src="./assets/img/icons/form/lock.svg"
+                class="input_field_icon input_field_icon--btn input_field_icon--confirm_login"
+                onclick="toggleLoginVisibility('password_input','login_password_icon')"
+              />
+              <div id="login_error" class="error_text"></div>
+            </div>
           </div>
 
-          <!-- Fehlerzone unten im Passwortfeld-Wrapper -->
-          <div class="input_wrapper input_wrapper--with-error">
-            <input
-              id="password_input"
-              class="input_field"
-              type="password"
-              placeholder="Password"
-              oninput="checkLoginEnable(); handleLoginPasswordInput('password_input','login_password_icon')"
-            />
-            <img
-              id="login_password_icon"
-              src="./assets/img/icons/form/lock.svg"
-              class="input_field_icon input_field_icon--btn input_field_icon--confirm_login "
-              onclick="toggleLoginVisibility('password_input','login_password_icon')"
-            />
-            <div id="login_error" class="error_text"></div>
-            <!-- ← Fehlermeldung -->
+          <div class="login_button_area">
+            <button
+              id="login_button"
+              class="login_button"
+              type="submit"
+              disabled
+            >
+              Log in
+            </button>
+            <button
+              id="guest_login_button"
+              class="guest_login_button"
+              type="button"
+              onclick="loginGuest(event)"
+            >
+              Guest Log in
+            </button>
           </div>
-        </div>
+        </form>
 
-        <div class="login_button_area">
-          <button id="login_button" class="login_button" type="submit" disabled>
-            Log in
-          </button>
-          <button
-            id="guest_login_button"
-            class="guest_login_button"
-            type="button"
-            onclick="loginGuest(event)"
-          >
-            Guest Log in
-          </button>
-        </div>
-      </form>
-
-      <!-- Overlay -->
-      <div id="signup_overlay" class="overlay">
+        <div id="signup_overlay" class="overlay">
           <div id="overlay_message" class="overlay_message">
-              You logged in successfully
+            You logged in successfully
           </div>
+        </div>
       </div>
 
-      <footer>
-          <a href="./pages/privacy_policy_external.html" class="additional_information">Privacy Policy</a>
-          <a href="./pages/legal_notice_external.html" class="additional_information">Legal Notice</a>
-      </footer>
-      
       <img
-          class="logo_signup_page logo--dark"
-          src="./assets/img/logos/join_logo_dark.svg"
-          alt="join_logo dark" />
+        class="logo_signup_page logo--dark"
+        src="./assets/img/logos/join_logo_dark.svg"
+        alt="join_logo dark"
+      />
 
       <img
-          class="logo_signup_page logo--light"
-          src="./assets/img/logos/join_logo_light.svg"
-          alt="join_logo light" />
+        class="logo_signup_page logo--light"
+        src="./assets/img/logos/join_logo_light.svg"
+        alt="join_logo light"
+      />
+      <div class="become_member_area">
+        <span>Not a Join user?</span>
+        <button
+          class="signup_button_login_page"
+          onclick="window.location.href='./pages/signup.html'"
+        >
+          Sign up
+        </button>
+      </div>
     </div>
-        <div class="become_member_area">
-      <span>Not a Join user?</span>
-      <button
-        class="signup_button_login_page"
-        onclick="window.location.href='./pages/signup.html'"
+    <footer>
+      <a
+        href="./pages/privacy_policy_external.html"
+        class="additional_information"
+        >Privacy Policy</a
       >
-        Sign up
-      </button>
-    </div>
-    </div>
+      <a
+        href="./pages/legal_notice_external.html"
+        class="additional_information"
+        >Legal Notice</a
+      >
+    </footer>
   </body>
-<script src="./scripts/temp_db/person_db.js"></script>
-<script src="./scripts/login.js"></script>
-<script src="./script.js"></script>
+  <script src="./scripts/temp_db/person_db.js"></script>
+  <script src="./scripts/login.js"></script>
+  <script src="./script.js"></script>
 </html>

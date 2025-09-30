@@ -1,3 +1,6 @@
+/* Allgemein (Logo, Animation, etc.) */
+
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -7,6 +10,7 @@
     max-width: 2000px;
     margin: 0 auto;
     position: relative;
+    height: 100vh;
 }
 
 .splash {
@@ -23,12 +27,6 @@
     100%    { opacity: 0; }
 }
 
-/* .logo_signup_page--no_animation {
-  position: absolute;
-  left: 77px;
-  top: 80px;
-} */
-
 .logo_signup_page--static {
     position: absolute;
     left: 77px;
@@ -37,36 +35,33 @@
 }
 
 .logo_signup_page {
-  position: fixed;
-  width: 101px;
-  height: 122px;
-  z-index: 10001;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(3);
-  animation: moveLogo 2000ms ease forwards;
+    position: fixed;
+    width: 101px;
+    height: 122px;
+    z-index: 10001;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(3);
+    animation: moveLogo 2000ms ease forwards;
 }
 
-/* === globale Variablen === */
 :root{
-  --content-max: 2000px;     /* deine Content-Grenze */
-  --logo-base-left: 77px;    /* deine bisherige Ziel-Left-Position */
-  --logo-top-final: 80px;    /* deine bisherige Ziel-Top-Position */
-  --logo-nudge: 0px;         /* feiner Rechts-Offset wegen Asymmetrie (z.B. 8px) */
-  --logo-left-final: calc(var(--logo-base-left) + var(--logo-nudge));
+    --content-max: 2000px; 
+    --logo-base-left: 77px; 
+    --logo-top-final: 80px; 
+    --logo-nudge: 0px;
+    --logo-left-final: calc(var(--logo-base-left) + var(--logo-nudge));
 }
 
-/* Ab 2000px: Linken Rand um den Gutter erweitern */
 @media (min-width: 2000px){
   :root{
     --logo-left-final: max(
-      12px, /* Minimaler Sicherheitsrand */
+      12px,
       calc((100vw - var(--content-max)) / 2 + var(--logo-base-left) + var(--logo-nudge))
     );
   }
 }
 
-/* Zielposition benutzt jetzt Variablen */
 @keyframes moveLogo {
   to {
     left: var(--logo-left-final);
@@ -74,14 +69,6 @@
     transform: translate(0, 0) scale(1);
   }
 }
-
-/* @keyframes moveLogo {
-  to {
-    left: 77px;
-    top: 80px;
-    transform: translate(0, 0) scale(1);
-  }
-} */
 
 .logo--light {
     display: none;
@@ -153,30 +140,27 @@
     margin-bottom: 32px;
 }
 
-/* Wrapper-Basis */
 .input_wrapper {
     position: relative;
-    display: block;          /* stabiler als inline-block */
+    display: block;
     width: 100%;
 }
 
-/* Nur für das Confirm-Feld: Platz für die Meldung reservieren */
 .input_wrapper--with-error {
-    padding-bottom: 28px;    /* ~14px Texthöhe + 8px Abstand + etwas Luft */
+    padding-bottom: 28px; 
 }
 
-/* Fehlermeldung exakt 8px unter der Unterkante des Inputs */
+/* Fehlermeldung */
 .error_text {
     position: absolute;
     left: 0;
-    margin-top: 8px;         /* der gewünschte Abstand */
+    margin-top: 8px; 
     font-size: 14px;
     color: #E53935;
     line-height: 1.2;
     display: none;
 }
 
-/* roter Rahmen am Confirm-Feld bei Fehler */
 .input_field.error {
     border: 2px solid #E53935 !important;
 }
@@ -187,7 +171,7 @@
     border-radius: 10px;
     border: 1px solid #d1d1d1;
     padding-left: 21px;
-    padding-right: 48px;      /* 👉 Platz für das Icon rechts schaffen */
+    padding-right: 48px;
     padding-top: 12px;
     padding-bottom: 12px;
     font-size: 20px;
@@ -195,7 +179,7 @@
 }
 
 .input_field::placeholder {
-    color: #d1d1d1;  /* hellgrau für Platzhalter */
+    color: #d1d1d1; 
 }
 
 .input_field:focus {
@@ -205,12 +189,12 @@
 
 .input_field_icon {
     position: absolute;
-    right: 21px;              /* 👉 gleicher Abstand wie padding-right */
-    top: 50%;                 /* vertikal mittig */
+    right: 21px;              
+    top: 50%;                 
     transform: translateY(-50%);
-    width: 24px;              /* Icon-Größe */
+    width: 24px;              
     height: 24px;
-    pointer-events: none;     /* Klicks blockieren Input nicht */
+    pointer-events: none;     
 }
 
 .input_field_icon--btn {
@@ -218,47 +202,46 @@
     cursor: pointer;
 }
 
-/* Ausnahme: nur für das Confirm-Feld-Icon */
+
 .input_field_icon--confirm {
-    top: 12px; /* Feinanpassung */
-    transform: translateY(0); /* Zentrierung aufheben */
+    top: 12px;
+    transform: translateY(0);
 }
 
 .checkbox_wrapper {
-    display: flex;                /* Checkbox + Text in einer Zeile */
-    align-items: center;          /* vertikal ausrichten */
+    display: flex;               
+    align-items: center;          
     margin-bottom: 32px;
 }
 
 .checkbox_field {
-    /* Standard-Styles entfernen */
     -webkit-appearance: none;
     appearance: none;
-
-    /* Eigenes Quadrat */
-    width: 24px;           /* etwas größer */
+    width: 24px;          
     height: 24px;
-    border: 3px solid #333; /* dickere Ränder */
-    border-radius: 4px;     /* optional: leicht abgerundet */
+    border: 3px solid #333;
+    border-radius: 4px;     
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
     background-color: #fff;
     margin-right: 8px;
 
-      /* für den Haken */
     background-repeat: no-repeat;
     background-position: center;
     background-size: 12px 12px;
 
-    /* optional, smooth */
     transition: background-color 120ms, border-color 120ms;
+}
+
+.checkbox_field:hover {
+    background-color: #29aae283; 
 }
 
 
 .checkbox_field:checked {
-    background-color: #29ABE2;   /* Füllung blau */
-    border-color: #29ABE2;       /* Rahmen blau */
+    background-color: #29ABE2;  
+    border-color: #29ABE2;    
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5 11-11'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
@@ -274,7 +257,7 @@
 
 .privacy_link {
     color: #29ABE2;
-    text-decoration: none;   /* unterstrichen, klar als Link erkennbar */
+    text-decoration: none;
     cursor: pointer;
 }
 
@@ -292,30 +275,27 @@
     padding-bottom: 15px;
     padding-left: 24px;
     padding-right: 24px;
-    
-    /* für sanften Übergang */
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.125s ease, transform 0.125s ease, box-shadow 0.125s ease;
 }
 
 .signup_button:hover {
     background-color: #29ABE2;
-    transform: translateX(-1px); /* Button hebt sich leicht an */
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+    transform: translateX(-1px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); 
 }
 
 .signup_button:active {
-    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
-    transform: translateY(0);  /* Hover-Translate zurücknehmen */
-    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+    background-color: #091931;
+    transform: translateY(0);
+    box-shadow: none;
 }
 
-/* Optional: disabled-Style für den Button */
 .signup_button[disabled] {
     opacity: .5;
     cursor: not-allowed;
 }
 .signup_button[disabled]:hover {
-    background-color: #2A3647; /* Hover-Effekte neutralisieren */
+    background-color: #2A3647;
     transform: none;
     box-shadow: none;
 }
@@ -354,10 +334,9 @@
     font-weight: 400;
     font-size: 20px;
     text-align: center;
-      /* Inhalt in der Mitte zentrieren */
     display: flex;
-    align-items: center;    /* vertikal */
-    justify-content: center;/* horizontal */
+    align-items: center; 
+    justify-content: center;
     transform: translateY(100%);
     opacity: 0;
 }
@@ -413,14 +392,14 @@
 
 .signup_button_login_page:hover {
     background-color: #29ABE2;
-    transform: translateX(-1px); /* Button hebt sich leicht an */
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+    transform: translateX(-1px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); 
 }
 
 .signup_button_login_page:active {
-    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
-    transform: translateY(0);  /* Hover-Translate zurücknehmen */
-    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+    background-color: #091931; 
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 /* Log In Formular */
@@ -448,7 +427,7 @@
     background-color: #2A3647;
     color: white;
     font-weight: 700;
-    font-size: 20px; /* ist 21px im figma */
+    font-size: 20px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -456,21 +435,19 @@
     padding-bottom: 15px;
     padding-left: 24px;
     padding-right: 24px;
-
-    /* für sanften Übergang */
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.125s ease, transform 0.125s ease, box-shadow 0.125s ease;
 }
 
 .login_button:hover {
     background-color: #29ABE2;
-    transform: translateX(-1px); /* Button hebt sich leicht an */
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+    transform: translateX(-1px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
 .login_button:active {
-    background-color: #091931; /* etwas dunkleres Blau beim Klicken */
-    transform: translateY(0);  /* Hover-Translate zurücknehmen */
-    box-shadow: none;          /* Schatten verschwindet = "eingedrückt" */
+    background-color: #091931;
+    transform: translateY(0); 
+    box-shadow: none; 
 }
 
 /* Guest Log In Button */
@@ -486,32 +463,29 @@
     width: 177px;
     height: 48px;
     border-radius: 8px;
-    border: 2px solid #2A3647;   /* etwas kräftigerer Rand */
-    background-color: #ffffff;   /* bleibt weiß */
-    color: #2A3647;              /* dunkler Text */
+    border: 2px solid #2A3647;   
+    background-color: #ffffff; 
+    color: #2A3647;
     font-weight: 700;
-    font-size: 20px; /* ist 21px im figma */
+    font-size: 20px; 
     cursor: pointer;
-
-    /* sanfte Übergänge */
-    transition: color 0.2s ease, border-color 0.2s ease,
-                transform 0.2s ease, box-shadow 0.2s ease;
+    transition: color 0.125s ease, border-color 0.125s ease, transform 0.125s ease, box-shadow 0.125s ease;
 }
 
 .guest_login_button:hover {
-    background-color: #ffffff;   /* bleibt weiß */
-    color: #29ABE2;              /* Text wechselt */
-    border-color: #29ABE2;       /* Rahmen wechselt */
-    transform: translateX(-1px); /* Button hebt sich leicht an */
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); /* sanfter Schatten */
+    background-color: #ffffff;   
+    color: #29ABE2;   
+    border-color: #29ABE2;      
+    transform: translateX(-1px); 
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3); 
 }
 
 .guest_login_button:active {
-    background-color: #ffffff;   /* bleibt weiß */
-    color: #091931;              /* Text dunkler beim Klicken */
-    border-color: #091931;       /* Rahmen ebenfalls dunkler */
-    transform: translateY(0);    /* Hover-Translate zurücknehmen */
-    box-shadow: none;            /* Schatten verschwindet = "eingedrückt" */
+    background-color: #ffffff;
+    color: #091931;
+    border-color: #091931;      
+    transform: translateY(0);    
+    box-shadow: none;            
 }
 
 .login_button[disabled] {
@@ -520,25 +494,24 @@
 }
 
 .login_button[disabled]:hover {
-    background-color: #2A3647; /* Hover-Effekte neutralisieren */
+    background-color: #2A3647; 
     transform: none;
     box-shadow: none;
 }
 
-/* Ausnahme: nur für das Passwordfeld-Icon */
 .input_field_icon--confirm_login {
-    top: 12px; /* Feinanpassung */
-    transform: translateY(0); /* Zentrierung aufheben */
+    top: 12px; 
+    transform: translateY(0); 
 }
 
 footer {
     position: absolute;
     left: 0;
-    right: 0;            /* damit er voll breit ist */
-    bottom: 32px;        /* fixer Abstand zum unteren Rand */
+    right: 0;   
+    bottom: 16px;      
     display: flex;
     justify-content: center;
-    gap: 16px;           /* Abstand zwischen den Links */
+    gap: 16px;         
 }
 
 .additional_information {
@@ -558,6 +531,17 @@ footer {
     .logo_signup_page {
         width: 75px;
         height: auto;
+    }
+
+    .signup_form {
+        margin-top: 64px;
+    }
+
+    .logo_signup_page--static {
+        width: 75px;
+        height: auto;
+        left: 37.5px;
+        top: 40px;
     }
 
     .become_member_area {
@@ -650,22 +634,26 @@ footer {
 }
 
 @media(max-width: 428px){
+    
+    .signup_form {
+        margin-top: 0px;
+        height: 600px;
+    }
+
     .splash {
         background-color: #091931;
     }
 
-    /* Beide Logos rendern, Swap per Opacity parallel zur Splash-Zeit */
-    .logo--light,
-    .logo--dark { display: block; }
+    .logo--light, .logo--dark {
+        display: block;
+    }
 
-    /* Light: bis 60% sichtbar, dann ausblenden */
     .logo--light {
         animation:
         moveLogo 2000ms ease forwards,
-        logoSwapLight 700ms linear forwards;   /* 700ms = Splash-Dauer */
+        logoSwapLight 700ms linear forwards; 
     }
 
-    /* Dark: bis 60% unsichtbar, ab 60% sichtbar */
     .logo--dark {
         animation:
         moveLogo 2000ms ease forwards,
@@ -704,24 +692,24 @@ footer {
     }
 
     .input_fields {
-        margin-top: 16px;
-        margin-bottom: 16px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .sign_up_page_content_div {
-        height: auto;          /* statt 100vh */
-        min-height: unset;     /* falls gesetzt */
-        padding-bottom: 24px;  /* etwas Luft nach unten */
+        height: auto;        
+        min-height: unset;   
+        padding-bottom: 24px;  
         padding-top: 200px;
     }
 
     .become_member_area {
-        position: static;      /* absolute aus */
+        position: static; 
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 32px;             /* etwas kleiner auf Mobile */
-        margin: 96px auto 0;   /* unterhalb des Formulars, zentriert */
+        gap: 32px;
+        margin-top: 32px;
     }
 
     .logo_signup_page {

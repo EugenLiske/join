@@ -4,12 +4,6 @@ function setCurrentTask(taskId){
     currentTask = getElementWithId2(allTasks, taskId);
 }
 
-
-// function updateCurrentTask(task){
-//     currentTask = task;
-// }
-
-
 function getCurrentTask(){
     return currentTask;
 }
@@ -27,17 +21,28 @@ function focusSearchInputField() {
     searchInput.focus();
 }
 
-// Drag & Drop Mechanismus - Deaktivierung bei unter 1460 Pixel
+// Drag & Drop Mechanismus - Deaktivierung bei mobilen Geräten
+
+function hasCoarsePointer() {
+    if (typeof window === 'undefined') {
+        return false;
+    }
+    if (typeof window.matchMedia === 'function') {
+        try {
+            return window.matchMedia('(pointer: coarse)').matches;
+        } catch (_) {
+            // Fallback weiter unten
+        }
+    }
+    // Fallback: ältere Browser/Engines
+    return (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+}
 
 function isDragDropActive() {
     if (typeof window === 'undefined') {
         return true;
-    } 
-    if (window.innerWidth > 1460) {
-        return true;
-    } else {
-        return false;
     }
+    return !hasCoarsePointer();
 }
 
 function setCardsDraggableState() {
@@ -46,7 +51,7 @@ function setCardsDraggableState() {
     if (isDragDropActive()) {
         draggableValue = 'true';
     }
-    for (i = 0; i < cards.length; i++) {
+    for (let i = 0; i < cards.length; i++) {
         cards[i].setAttribute('draggable', draggableValue);
     }
 }
@@ -218,13 +223,10 @@ async function moveToDifferentCategory(kanbanBoardColumn){
     allTasks[actualIndex]['kanbanBoardColumn'] = kanbanBoardColumn;
     updateHTML();
     console.log(allTasks);
-
     let newKanbanColumn = allTasks[actualIndex]['kanbanBoardColumn'];
     console.log(newKanbanColumn);
-
     let path = `/tasks/task_${currentDraggedTask}/kanbanBoardColumn`
     console.log(path);
-    
     await setData(newKanbanColumn, path);
 }
 
@@ -304,7 +306,7 @@ function updateSearchErrorMessage() {
   const errorElement = document.getElementById('search_error');
   if (!errorElement) return;
 
-  if (searchTerm.length < 2) {
+  if (searchTerm.length < 1) {
     errorElement.style.display = 'none';
     return;
   }

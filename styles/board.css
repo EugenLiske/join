@@ -216,10 +216,6 @@
     min-height: 0;
 }
 
-.task_column_content.drag-target-active {
-  min-height: 100vh;
-}
-
 .no_tasks_placeholder {
     background-color: #E7E7E7;
     border-color: #A8A8A8;
@@ -466,6 +462,12 @@ p {
     }
 }
 
+@media (min-width: 1461px) {
+    .task_column_content.drag-target-active {
+        min-height: 100vh; /* <u>NEU: hierher verlagert</u> */
+    }
+}
+
 @media (max-width: 1460px){
     .main_wrapper {
         padding-right: 20px;  
@@ -479,8 +481,8 @@ p {
         margin-bottom: 8px;
     }
 
-    .drag_and_drop_mobile{
-        display: block;
+    .task_column_content.drag-target-active {
+        min-height: 0; /* <u>NEU: verhindert Stretch der Karten im Drag</u> */
     }
 
     .drag_and_drop_mobile:hover{
@@ -502,6 +504,7 @@ p {
         touch-action: pan-x;
         scrollbar-width: thin;
         scrollbar-color: #B9C1D0 transparent;
+        align-items: flex-start; /* <u>NEU: verhindert Höhen-Stretch</u> */
     }
 
     .task_column_content::-webkit-scrollbar {  
@@ -524,7 +527,15 @@ p {
     .task_column{
         width: 100%;
         max-width: 100%;
+    }
 
+    .board_card {
+        flex: 0 0 auto; /* <u>NEU: verhindert Flex-Shrink/Stretch der Karte</u> */
+    }
+
+    .drop_indicator {
+        height: 100%;
+        width: 48px;
     }
 }
 
@@ -602,7 +613,7 @@ p {
 @media (max-width: 500px){
 
     .no_tasks_placeholder {
-        width: 100%;
+        width: 252px;
     }
 
     .search_affix{
@@ -635,4 +646,10 @@ p {
     box-shadow: 0 2px 7px 0 #00000014;
   }
 
+}
+
+@media (pointer: coarse) {
+    .drag_and_drop_mobile {
+        display: block;
+    }
 }

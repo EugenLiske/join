@@ -236,6 +236,23 @@ h1{
     .main_container{
         max-width: 500px;
     }
+
+    :root {
+        --nav-footer-height: 80px; /* <u>NEU</u> */
+    }
+
+    .content_inner {
+        padding-bottom: calc(var(--nav-footer-height) + 32px + env(safe-area-inset-bottom));
+    }
+
+    html {
+        scroll-padding-bottom: calc(var(--nav-footer-height) + env(safe-area-inset-bottom));
+    }
+
+    .main_navigation {
+        height: calc(var(--nav-footer-height) + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }
 
 @media(max-width: 400px){
