@@ -100,10 +100,10 @@ function checkEveryUserEmail(userResponse, emailToCheck) {
       existingEmail = String(userResponse[singleUserKey].email).toLowerCase().trim();
     }
     if (existingEmail !== "" && existingEmail === emailToCheck) {
-      return true; // sofort Abbruch → Mail gefunden
+      return true;
     }
   }
-  return false; // nichts gefunden nachdem man alle Mailadressen durchsucht hat
+  return false;
 }
 
 function calculateNextUserID(userResponse) {
@@ -115,7 +115,7 @@ function calculateNextUserID(userResponse) {
     if (singleUserKey.startsWith("user_")) {
       let userIdString = singleUserKey.slice(5);
       let userIdNumber = parseInt(userIdString, 10);
-      if (!isNaN(userIdNumber) && userIdNumber > highestUserID) highestUserID = userIdNumber; // Nur ein Statement, daher keine geschweiften Klammern
+      if (!isNaN(userIdNumber) && userIdNumber > highestUserID) highestUserID = userIdNumber; 
     }
   }
   return highestUserID + 1;

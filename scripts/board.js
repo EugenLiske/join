@@ -31,10 +31,8 @@ function hasCoarsePointer() {
         try {
             return window.matchMedia('(pointer: coarse)').matches;
         } catch (_) {
-            // Fallback weiter unten
         }
     }
-    // Fallback: ältere Browser/Engines
     return (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
 }
 
@@ -79,12 +77,11 @@ window.onresize = function () {
 
 // Drag & Drop Mechanismus
 
-let allTasks = []; // Anpassung seitens Anne
+let allTasks = [];
 
 async function loadTasksFromDB(){
     let taskResponse = await getData("/tasks");
     let taskKeysArray = Object.keys(taskResponse);
-
     for (let index = 0; index < taskKeysArray.length; index++) {
         allTasks.push(
             taskResponse[taskKeysArray[index]]
@@ -169,20 +166,6 @@ function generateTasksDoneHTML(){
     }
 }
 
-function generateTodoHTML(element){ // Anpassung seitens Anne
-    return `
-        <div
-            draggable="true"
-            ondragstart="startDragging(${element['id']}, event)"
-            ondragend="endDragging(event)"
-            class="task"
-            >
-            ${element['title']} <br>
-            ${element['description']}
-        </div>
-    `
-}
-
 function generatePlaceholderHTML(kanbanBoardColumn) {
     const texts = {
         'to_do': 'No tasks to do',
@@ -259,76 +242,86 @@ function hideDropIndicator(columnId) {
 
 // Suchfunktionen
 
-function getSearchTermFromInput() {
-    const searchInputElement = document.getElementById('searchInput');
-    if (!searchInputElement) {
-        return '';
-    }
-
-    const rawValue = searchInputElement.value;
-    if (typeof rawValue !== 'string') {
-        return '';
-    }
-
-    return rawValue.trim().toLowerCase();
-}
-
-function doesTitleMatchSearchTerm(task) {
-    const searchTerm = getSearchTermFromInput();
-
-    if (searchTerm.length === 0) {
-        return true;
-    }
-
-    let taskTitleLower = '';
-    if (typeof task.title === 'string') {
-        taskTitleLower = task.title.toLowerCase();
-    }
-
-    let taskDescriptionLower = '';
-    if (typeof task.description === 'string') {
-        taskDescriptionLower = task.description.toLowerCase();
-    }
-
-    const matchesTitle = taskTitleLower.includes(searchTerm);
-    const matchesDescription = taskDescriptionLower.includes(searchTerm);
-
-    return matchesTitle || matchesDescription;
-}
-
 function onSearchInput() {
     updateHTML();
     updateSearchErrorMessage();
 }
 
-function updateSearchErrorMessage() {
-  const searchTerm = getSearchTermFromInput();
-  const errorElement = document.getElementById('search_error');
-  if (!errorElement) return;
-
-  if (searchTerm.length < 1) {
-    errorElement.style.display = 'none';
-    return;
-  }
-
-  let anyMatch = false;
-  for (let i = 0; i < allTasks.length; i++) {
-    if (doesTitleMatchSearchTerm(allTasks[i])) {
-      anyMatch = true;
-      break;
+function getSearchTermFromInput() {
+    const searchInputElement = document.getElementById('searchInput');
+    if (!searchInputElement) {
+        return '';
     }
-  }
-  if (anyMatch) {
-    errorElement.style.display = 'none';
-    } else {
-    errorElement.style.display = 'block';
-  }
+    const rawValue = searchInputElement.value;
+    if (typeof rawValue !== 'string') {
+        return '';
+    }
+    return rawValue.trim().toLowerCase();
+}
+
+function getNormalizedSearchTerm() {
+    const term = getSearchTermFromInput();
+    if (typeof term === 'string') {
+        return term.trim().toLowerCase();
+    }
+    return '';
+}
+
+function getNormalizedTextOrEmpty(value) {
+    if (typeof value === 'string') {
+        return value.toLowerCase();
+    }
+    return '';
+}
+
+function textMatchesSearchTerm(text, searchTerm) {
+    return text.includes(searchTerm);
+}
+
+function doesTitleMatchSearchTerm(task) {
+    const searchTerm = getNormalizedSearchTerm();
+    if (searchTerm.length === 0) return true;
+
+    const normalizedTitle = getNormalizedTextOrEmpty(task.title);
+    const normalizedDescription = getNormalizedTextOrEmpty(task.description);
+
+    return textMatchesSearchTerm(normalizedTitle, searchTerm)
+        || textMatchesSearchTerm(normalizedDescription, searchTerm);
+}
+
+// Fehlermeldung unter dem Suchfeld
+
+function getSearchErrorElement() {
+    return document.getElementById('search_error');
+}
+
+function hasSearchTerm() {
+    return getSearchTermFromInput().length > 0;
+}
+
+function shouldShowSearchError() {
+    if (!hasSearchTerm()) return false;
+    for (let taskIndex = 0; taskIndex < allTasks.length; taskIndex++) {
+        if (doesTitleMatchSearchTerm(allTasks[taskIndex])) return false;
+    }
+    return true;
+}
+
+function toggleSearchErrorVisibility(shouldShow) {
+    const errorElement = getSearchErrorElement();
+    if (!errorElement) return;
+    errorElement.style.display = shouldShow ? 'block' : 'none';
+}
+
+function updateSearchErrorMessage() {
+    const errorElement = getSearchErrorElement();
+    if (!errorElement) return;
+    toggleSearchErrorVisibility(shouldShowSearchError());
 }
 
 function getBoardAllTasks(){
     return allTasks;
 }
-
 
 function updateTask(taskId, update) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
@@ -336,7 +329,6 @@ function updateTask(taskId, update) {
         allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
     }
 }
-
 
 function updateTaskCardAtBoard(taskId) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
@@ -348,12 +340,10 @@ function updateTaskCardAtBoard(taskId) {
     }
 }
 
-
 function openDragAndDropMenu(event, taskId){
     event.stopPropagation();
     document.getElementById("drag_and_drop_menu_" + taskId).classList.remove("d_none");
 }
-
 
 function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
     event.stopPropagation();
@@ -361,15 +351,12 @@ function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
     moveToDifferentCategory(kanbanBoardColumn);
 }
 
-
 document.addEventListener('click', function(event) {
     closeDragAndDropMenuSelection(event);
 });
 
-
 function closeDragAndDropMenuSelection(event){
     const menuContainers = document.getElementsByClassName('drag_and_drop_menu_mobile');
-    
     if (menuContainers){
         for (let i = 0; i < menuContainers.length; i++) {
             if (menuContainers[i] && !menuContainers[i].contains(event.target) && !menuContainers[i].classList.contains('d_none')) {
@@ -379,12 +366,12 @@ function closeDragAndDropMenuSelection(event){
     }
 }
 
+/* Anzeige des Pfeils um Scrollen zu implizieren bei 320 Pixel und mehr als einem Task in einer Reihe */
 
 function getBoardColumnsList() {                 
     return ['to_do', 'in_progress', 'await_feedback', 'done'];  
 }                                                
 
-/* Helfer */
 function hasHorizontalOverflow(el) {
     if (!el) { return false; }                         
     let cards = el.getElementsByClassName('board_card');
@@ -410,7 +397,6 @@ function clearOverflowClasses(el) {
     el.classList.remove('at-end');
 }
 
-/* <= 14 Zeilen */
 function updateOverflowHintFor(columnId) {
     const el = document.getElementById(columnId);
     if (!el) { return; }
