@@ -219,46 +219,31 @@
 
 /* Side Menu */
 
-/* NEU: Menü an den Header-Inhalt binden, nicht an den Viewport */
 .side_menu {
     position: absolute;
-    top: calc(100% + 8px);       /* direkt unter dem Button; Abstand 8px */
-    right: 0;                    /* an der rechten Kante der 2000px-Inhaltsfläche */
-    width: 160px;
+    top: 76px;
+    right: 0;
 
+    width: 160px;
     background-color: var(--bg-c-navigation);
     padding: 10px;
     border-radius: 20px 0 20px 20px;
+
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform: translateX(100%);
+    opacity: 0;
     z-index: 1000;
     pointer-events: none;
 
     display: flex;
     flex-direction: column;
     margin: 0;
-    overflow: hidden;
-
-    /* HIDDEN + kleiner Offsetschub nach rechts, damit es von rechts „reinkommt“ */
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateX(12px);
-
-    transition:
-    opacity 0.2s ease,
-    transform 0.25s ease,
-    visibility 0s linear 0.25s; /* Sichtbarkeit erst nach der Animation auf hidden */
 }
 
 .side_menu.open {
-    /* VISIBLE */
+    transform: translateX(0%);
     opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(0);
-    transition:
-    opacity 0.2s ease,
-    transform 0.25s ease,
-    visibility 0s; /* sofort sichtbar */
+    pointer-events: all;
 }
 
 .side_menu a {
@@ -270,7 +255,7 @@
 @media(max-width: 1000px){
 
     .side_menu {
-        top: calc(100% + 8px); /* bleibt an den Button/Container gekoppelt */
+        top: 60px;
     }
 
     /* .side_menu {
@@ -353,10 +338,6 @@
     }
 
     /* Dropdown bleibt an den Container gekoppelt */
-    .side_menu {
-        top: calc(100% + 8px);
-        right: 0;
-    }
 
     .logo{
         display: none;
