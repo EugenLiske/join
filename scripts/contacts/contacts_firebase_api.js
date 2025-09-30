@@ -1,4 +1,4 @@
-// MF
+// MF contact_firebase_api.js
 
 /**
  * Contacts Firebase API Module
@@ -102,11 +102,8 @@ export async function checkEmailExistsForEdit(email, currentContactId) {
             if (contact && contact.email && contact.email.toLowerCase() === emailLower) {
                 // Wenn die E-Mail zum aktuellen Kontakt gehört → erlauben (return false)
                 if (parseInt(contact.id) === currentId) {
-                    console.log('Email belongs to current contact - allowing save');
                     return false;
                 }
-                // Wenn die E-Mail zu einem ANDEREN Kontakt gehört → blockieren (return true)
-                console.log('Email belongs to different contact - blocking save');
                 return true;
             }
         }
@@ -115,7 +112,6 @@ export async function checkEmailExistsForEdit(email, currentContactId) {
         return false;
         
     } catch (error) {
-        console.error('Error checking email existence for edit:', error);
         return false;
     }
 }
@@ -147,7 +143,6 @@ export async function loadExistingContact(contactId) {
         return contactData;
         
     } catch (error) {
-        console.error('Error loading existing contact:', error);
         return null;
     }
 }
@@ -177,8 +172,6 @@ export async function saveContactToFirebase(contactData) {
     if (!response.ok) {
         throw new Error(`Failed to save contact: ${response.statusText}`);
     }
-    
-    console.log('Contact saved to Firebase:', contactWithMetadata);
     return contactWithMetadata;
 }
 
@@ -212,8 +205,6 @@ export async function saveEditContactToFirebase(contactId, contactData) {
         if (!response.ok) {
             throw new Error(`Failed to update contact: ${response.statusText}`);
         }
-        
-        console.log('Contact updated in Firebase:', updatedContact);
         return updatedContact;
         
     } catch (error) {
@@ -237,12 +228,9 @@ export async function deleteContactFromFirebase(contactId) {
         if (!response.ok) {
             throw new Error(`Failed to delete contact: ${response.statusText}`);
         }
-        
-        console.log('Contact deleted from Firebase:', contactId);
         return true;
         
     } catch (error) {
-        console.error('Error deleting contact:', error);
         throw error;
     }
 }

@@ -141,6 +141,19 @@ function createContactElement(contact) {
 // Mobile View Functions
 function showMobileContactList() {
     document.body.classList.remove('mobile_view_contact_details');
+
+      // 2. Contact Details Panel ausblenden
+    if (contactDetailsPanel) {
+        contactDetailsPanel.classList.add('d_none');
+    }
+    
+    // 3. Aktuelle Kontakt-Auswahl zurücksetzen
+    document.querySelectorAll('.contact_item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // 4. Globalen Status zurücksetzen
+    currentSelectedContact = null;
 }
 
 /**
@@ -227,14 +240,9 @@ function displayContactDetails(contact) {
  * @param {number|string} contactId - Contact ID to select
  */
 function selectContactById(contactId) {
-    console.log('=== selectContactById called ===');
-    console.log('Looking for contact ID:', contactId);
-    console.log('Available contacts in contactsData:', Object.keys(contactsData));
     
     // Kontakt in contactsData finden
     const contact = Object.values(contactsData).find(c => c && c.id == contactId);
-    
-    console.log('Found contact:', contact);
     
     if (contact) {
         // Alle vorherigen Auswahlen entfernen
@@ -244,7 +252,6 @@ function selectContactById(contactId) {
         
         // Den entsprechenden DOM-Eintrag visuell markieren
         const contactElement = document.querySelector(`[data-contact-id="${contactId}"]`);
-        console.log('Found DOM element:', contactElement);
         
         if (contactElement) {
             contactElement.classList.add('selected');
@@ -253,11 +260,7 @@ function selectContactById(contactId) {
         // Globalen Status setzen und Details anzeigen
         currentSelectedContact = contact;
         displayContactDetails(contact);
-        
-        console.log('Contact successfully selected:', contact.name);
-    } else {
-        console.log('ERROR: Contact not found with ID:', contactId);
-    }
+    } 
 }
 
 // ================== OVERLAY MANAGEMENT ==================
@@ -306,29 +309,22 @@ async function loadContactScripts() {
  * Opens the Edit Contact overlay for selected contact
  */
 async function editSelectedContact() {
-    if (!currentSelectedContact) return;
-    
-    console.log('=== editSelectedContact called ===');
-    console.log('Current selected contact:', currentSelectedContact);
-    
+    if (!currentSelectedContact) return;    
     try {
+        // NEU: Mobile View deaktivieren damit Pfeil verschwindet
+        document.body.classList.remove('mobile_view_contact_details');
+
         localStorage.setItem(STORAGE_KEYS.CURRENT_EDIT_ID, currentSelectedContact.id);
-        console.log('Stored in localStorage:', currentSelectedContact.id);
         
         const response = await fetch('../overlays/contacts/contacts_edit.html');
         const html = await response.text();
-        console.log('Edit HTML loaded, length:', html.length);
         
         const overlay = document.getElementById('edit_contact_overlay');
         overlay.innerHTML = html;
         overlay.classList.remove('d_none');
         
-        await loadContactScripts();
-        console.log('Contact scripts loaded');
-        
-        initializeEditContactOverlay();
-        console.log('Edit overlay initialized');
-        
+        await loadContactScripts();        
+        initializeEditContactOverlay();        
     } catch (error) {
         console.error('Error loading edit contact overlay:', error);
     }
@@ -341,6 +337,8 @@ async function deleteSelectedContact() {
     if (!currentSelectedContact) return;
     
     try {
+        closeMobileActionMenu();
+        
         const response = await fetch(`${FIREBASE_URL}${FIREBASE_PATHS.SINGLE_CONTACT(currentSelectedContact.id)}`, {
             method: 'DELETE'
         });
@@ -395,9 +393,6 @@ function initializeAddContactOverlay() {
                 const newestContact = allContacts.reduce((prev, current) => {
                     return (prev.id > current.id) ? prev : current;
                 });
-                
-                console.log('Newest contact by ID:', newestContact);
-                
                 if (newestContact) {
                     selectContactById(newestContact.id);
                 }
@@ -527,6 +522,15 @@ function closeEditContactOverlay() {
     overlay.classList.add('d_none');
     overlay.innerHTML = '';
     localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
+
+    closeMobileActionMenu();
+    
+    // Mobile View wieder aktivieren wenn unter 600px UND ein Kontakt ausgewählt ist
+    if (window.innerWidth <= 600 && currentSelectedContact) {
+        setTimeout(() => {
+            document.body.classList.add('mobile_view_contact_details');
+        }, 100);
+    }
 }
 
 // ================== STATE MANAGEMENT ==================
@@ -612,6 +616,58 @@ window.addEventListener('resize', function() {
         document.body.classList.remove('mobile_view_contact_details');
     }
 });
+
+/**
+ * Toggles the mobile action menu
+ */
+function toggleMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        const isVisible = menu.classList.contains('show');
+        
+        if (isVisible) {
+            closeMobileActionMenu();
+        } else {
+            openMobileActionMenu();
+        }
+    }
+}
+
+/**
+ * Opens the mobile action menu
+ */
+function openMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        overlay.classList.add('show');
+        setTimeout(() => {
+            menu.classList.add('show');
+        }, 50);
+    }
+}
+
+/**
+ * Closes the mobile action menu
+ */
+function closeMobileActionMenu() {
+    const menu = document.getElementById('mobile_action_menu');
+    const overlay = document.getElementById('mobile_menu_overlay');
+    
+    if (menu && overlay) {
+        menu.classList.remove('show');
+        setTimeout(() => {
+            overlay.classList.remove('show');
+        }, 300);
+    }
+}
+
+// Am Ende zu den anderen window exports hinzufügen:
+window.toggleMobileActionMenu = toggleMobileActionMenu;
+window.closeMobileActionMenu = closeMobileActionMenu;
 
 // ================== GLOBAL EXPORTS ==================
 window.openAddContactOverlay = openAddContactOverlay;
