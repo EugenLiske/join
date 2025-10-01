@@ -29,7 +29,7 @@ export async function deleteContact() {
         
         setTimeout(() => {
             localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);        
-            window.history.back();
+            window.location.href = PAGES.MAIN_PAGE;
         }, 1800);
         
     } catch (error) {
