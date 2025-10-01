@@ -100,7 +100,7 @@ function getDragOrDropMenuTemplate(icon, text, column, taskId){
             </li>`;
 }
 
-// <div class="task_card_position_helper"> hinzufügen in Zeile 113 und 136
+
 function getTaskCardTemplate(task){
     return `<article
                 id="task_card_${task['id']}"
@@ -177,25 +177,3 @@ function getShortDescriptionTemplate(description){
     return `<p id="bct_description">${shortenText(description, 40)}</p>`;
 }
 
-
-// Archiv
-
-
-// function getListElementTemplate(selectedDesignClass, personIdx, checked){
-//     return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
-//                 <div class="person_info">
-//                     <div class="person_icon" style="background-color: ${persons[personIdx].color}">
-//                         ${persons[personIdx].initials}
-//                     </div>
-//                         ${persons[personIdx].name}
-//                 </div>
-//                 <img src="${getCheckboxImg(checked)}">
-//             </li>`;
-// }
-
-
-// function getAssignedToListElementTemplate(color, initials){
-//     return `<li class="person_icon" style="background-color: ${color}">
-//                 ${initials}
-//             </li>`;
-// }

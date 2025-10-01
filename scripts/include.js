@@ -107,8 +107,6 @@ function deactiveCurrentNavButton(element){
 }
 
 
-// Bereinigung des Session Storage, innerhalb dessen die Initialen gespeichert sind
-
 function logoutUser(){
     sessionStorage.clear();
 }

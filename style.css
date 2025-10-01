@@ -122,7 +122,7 @@ h1{
     align-items: start;
     justify-content: center;
 
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 
     overflow-x: hidden;
@@ -132,6 +132,8 @@ h1{
     background-color: transparent;
     transition: background-color 2s ease;
     z-index: 103;
+
+    padding-bottom: 80px;
 }
 
 .overlay_wrapper_animation.active {
@@ -259,6 +261,7 @@ h1{
     
     .overlay_wrapper_animation{
         padding: 8px;
+        padding-bottom: 80px;
     }
 }
 
