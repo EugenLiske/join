@@ -64,7 +64,7 @@ function checkTitle(setWarning = true){
 function checkCategory(setWarning = true){
     let categoryButtonRef = document.getElementById("category_selection");
     let choice = categoryButtonRef.innerText;
-    let isCorrect = categories.indexOf(choice) >= 0 ? true : false;
+    let isCorrect = ["User Story", "Technical Task"].indexOf(choice) >= 0 ? true : false;
     if (setWarning) removeOrAddWarning(categoryButtonRef, "warning_category", isCorrect, "This field is required!");
 
     return isCorrect;

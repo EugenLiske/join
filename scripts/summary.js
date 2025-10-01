@@ -124,8 +124,6 @@ function countTasks(task){
 }
 
 
-// Diplay Data
-
 function displaySummaryOnScreen(){
     const summaryKey = Object.keys(summaryContent);
     let htmlRef = null;

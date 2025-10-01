@@ -13,16 +13,3 @@ async function getContacts() {
         console.error("Error loading contacts:", error);
     }
 }
-
-
-function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}
