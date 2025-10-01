@@ -148,26 +148,29 @@ function displayToastMessage(overlayId, messageId, page = "") {
 // Schließung des Overlays beim Klicken außerhalb des Overlays
 
 function setupOverlayOutsideClickClose() {
-  let taskOverlay = document.getElementById('overlay_task');
-  if (taskOverlay) {
-    taskOverlay.onclick = function (event) {
-      if (event.target === taskOverlay) {
-        saveSubtaskChanges();
-        hideAnimationOverlay('overlay_task', 'overlay_task_container');
-        toggleScrollBehaviorOfBody('');
-      }
-    };
-  }
+  wireOverlayBackgroundClose('overlay_task', onTaskOverlayBackgroundClick);
+  wireOverlayBackgroundClose('overlay_edit_task', onEditOverlayBackgroundClick);
+}
 
-  let editOverlay = document.getElementById('overlay_edit_task');
-  if (editOverlay) {
-    
-    editOverlay.onclick = function (event) {
-      if (event.target === editOverlay) {
-        hideAnimationOverlay('overlay_edit_task', 'overlay_edit_task_container');
-        resetAnimation('overlay_task', 'overlay_task_container');
-        toggleScrollBehaviorOfBody('');
-      }
-    };
-  }
+function wireOverlayBackgroundClose(overlayId, onBackgroundClick) {
+  const overlayElement = document.getElementById(overlayId);
+  if (!overlayElement) return;
+
+  overlayElement.onclick = function (event) {
+    if (event.target === overlayElement) {
+      onBackgroundClick();
+    }
+  };
+}
+
+function onTaskOverlayBackgroundClick() {
+  saveSubtaskChanges();
+  hideAnimationOverlay('overlay_task', 'overlay_task_container');
+  toggleScrollBehaviorOfBody('');
+}
+
+function onEditOverlayBackgroundClick() {
+  hideAnimationOverlay('overlay_edit_task', 'overlay_edit_task_container');
+  resetAnimation('overlay_task', 'overlay_task_container');
+  toggleScrollBehaviorOfBody('');
 }

@@ -281,10 +281,8 @@ function textMatchesSearchTerm(text, searchTerm) {
 function doesTitleMatchSearchTerm(task) {
     const searchTerm = getNormalizedSearchTerm();
     if (searchTerm.length === 0) return true;
-
     const normalizedTitle = getNormalizedTextOrEmpty(task.title);
     const normalizedDescription = getNormalizedTextOrEmpty(task.description);
-
     return textMatchesSearchTerm(normalizedTitle, searchTerm)
         || textMatchesSearchTerm(normalizedDescription, searchTerm);
 }

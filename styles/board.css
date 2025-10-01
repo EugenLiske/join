@@ -530,7 +530,7 @@ p {
     }
 
     .board_card {
-        flex: 0 0 auto; /* <u>NEU: verhindert Flex-Shrink/Stretch der Karte</u> */
+        flex: 0 0 auto;
     }
 
     .drop_indicator {
