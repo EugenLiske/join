@@ -100,7 +100,7 @@ function getDragOrDropMenuTemplate(icon, text, column, taskId){
             </li>`;
 }
 
-
+// <div class="task_card_position_helper"> hinzufügen in Zeile 113 und 136
 function getTaskCardTemplate(task){
     return `<article
                 id="task_card_${task['id']}"
@@ -110,28 +110,30 @@ function getTaskCardTemplate(task){
                 class="board_card"
                 onclick="displayTaskOverlay(${task['id']})"
             >
-                <div class="task_card_header">
-                    ${getCategory(task['category'])}  
-                    <div class="drag_and_drop_menu_wrapper">  
-                        <img onclick="openDragAndDropMenu(event, ${task['id']})" class="drag_and_drop_mobile" src="../assets/img/icons/task/drag_and_drop_mobile.svg"> 
-                        <menu id="drag_and_drop_menu_${task['id']}" class="drag_and_drop_menu_mobile d_none">
-                            <span>Move to</span>
-                            <ul class="drag_and_drop_buttons">
-                                ${buildDragAndDropMenu(task['kanbanBoardColumn'], task['id'])}
-                            </ul>
-                        </menu>    
-                    </div>       
-                </div>
+                
+                    <div class="task_card_header">
+                        ${getCategory(task['category'])}  
+                        <div class="drag_and_drop_menu_wrapper">  
+                            <img onclick="openDragAndDropMenu(event, ${task['id']})" class="drag_and_drop_mobile" src="../assets/img/icons/task/drag_and_drop_mobile.svg"> 
+                            <menu id="drag_and_drop_menu_${task['id']}" class="drag_and_drop_menu_mobile d_none">
+                                <span>Move to</span>
+                                <ul class="drag_and_drop_buttons">
+                                    ${buildDragAndDropMenu(task['kanbanBoardColumn'], task['id'])}
+                                </ul>
+                            </menu>    
+                        </div>       
+                    </div>
 
 
-                <h4 id="bct_title">${task['title']}</h4>
-                ${buildDescriptionContainer(task)}
+                    <h4 id="bct_title">${task['title']}</h4>
+                    ${buildDescriptionContainer(task)}
                 
                     
-                <div class="subtask_wrapper">
-                    ${buildSubtaskProgressbar(task)}
+                    <div class="subtask_wrapper">
+                        ${buildSubtaskProgressbar(task)}
                     
-                </div>
+                    </div>
+                
                 <div class="bct_footer">
                     ${buildAssignedToTemplate(task)}
 

@@ -6,6 +6,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
+
 .page {
     max-width: 2000px;
     margin: 0 auto;
@@ -634,6 +639,60 @@ footer {
 }
 
 @media(max-width: 428px){
+
+    /* Body wird zur Spalte mit Mindesthöhe = Viewport */
+    body {
+        min-height: 100dvh;        /* dVH für mobile Browser */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Die Seite füllt den verfügbaren Platz,
+     keine feste Höhe, damit der Inhalt natürlich wächst */
+    .page {
+        flex: 1 0 auto;
+        height: auto;              /* überschreibt height: 100vh */
+    }
+
+    /* Footer kommt im normalen Flow ans Ende und klebt unten,
+     ohne sich über Inhalte zu legen */
+    footer {
+        position: static;
+        margin-top: auto;      /* bleibt unten im Flex-Layout */
+        padding-top: 40px;
+        padding-right: 0;
+        padding-bottom: 16px;
+        padding-left: 0;
+  }
+
+    /* Bereich für "Not a Join user?" im normalen Flow unter dem Formular */
+    .become_member_area {
+        position: static;          /* hast du schon gesetzt */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        margin-top: 32px;
+    }
+
+    .signup_headline_underscore {
+        width: 88px;
+        margin-top: 8px;
+        height: 3px;
+    }
+
+    @keyframes moveLogo {
+    from {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(3);
+        }
+    to {
+        left: 15px;
+        top: 15px;
+        transform: translate(0, 0) scale(1);
+        }
+    }
     
     .signup_form {
         margin-top: 0px;
@@ -675,12 +734,15 @@ footer {
     }
 
     .login_form {
-        height: 500px;
+        height: 450px;
+        padding-top: 16px;
+        padding-bottom: 16px;
     }
 
     .login_button_area {
         flex-direction: column;
         gap: 16px;
+        margin-top: 32px;
     }
 
     .login_button {
@@ -700,21 +762,20 @@ footer {
         height: auto;        
         min-height: unset;   
         padding-bottom: 24px;  
-        padding-top: 200px;
-    }
-
-    .become_member_area {
-        position: static; 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 32px;
-        margin-top: 32px;
+        padding-top: 140px;
+        padding-bottom: 24px;
     }
 
     .logo_signup_page {
         width: 50px;
         height: auto;
+    }
+
+    .logo_signup_page--static {
+        width: 50px;
+        height: auto;
+        left: 15px;
+        top: 15px;
     }
 }
 
