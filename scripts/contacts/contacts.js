@@ -1,4 +1,4 @@
-// MF
+// MF - contact.js
 
 /**
  * Contact Management - Main Orchestration
@@ -360,14 +360,9 @@ async function executeSave(formData, isEditMode, contactId) {
 
 //Debugg
 function validateContactForm() {
-    console.log('🔵 validateContactForm called');
-    
     const formData = getFormData();
-    console.log('📝 Form data:', formData);
     
     updateFieldValidation(NAME_INPUT, formData.nameValidation);
-    console.log('✅ Name validation done');
-    
     updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
     updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
     

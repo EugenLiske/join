@@ -1,4 +1,4 @@
-// MF
+// MF - contacts_ui_helpers.js
 
 /**
  * Contacts UI Helpers Module
@@ -36,48 +36,15 @@ function setValidState(inputElement, errorElement) {
 }
 
 function setErrorState(inputElement, errorElement, message) {
-    console.log('=== setErrorState DEBUG ===');
-    console.log('inputElement:', inputElement);
-    console.log('inputElement.id:', inputElement?.id);
-    console.log('errorElement:', errorElement);
-    console.log('message:', message);
     
     inputElement.style.borderColor = 'var(--c-warn)';
     inputElement.title = message;
     
     if (errorElement) {
-        console.log('✅ Error element found!');
         errorElement.textContent = message;
         errorElement.classList.add('show');
-        console.log('Error element after changes:', errorElement);
-    } else {
-        console.log('❌ Error element NOT found!');
-        // Alternative Suche
-        const wrapper = inputElement.parentElement;
-        console.log('Parent wrapper:', wrapper);
-        console.log('Children:', wrapper?.children);
-        
-        // Direkte Suche nach ID
-        const inputId = inputElement.id;
-        const errorId = inputId.replace('_input', '_error');
-        console.log('Looking for error ID:', errorId);
-        const errorById = document.getElementById(errorId);
-        console.log('Found by ID:', errorById);
-        
-        if (errorById) {
-            errorById.textContent = message;
-            errorById.classList.add('show');
-        }
-    }
+    } 
 }
-// function setErrorState(inputElement, errorElement, message) {
-//     inputElement.style.borderColor = 'var(--c-warn)';
-//     inputElement.title = message;
-//     if (errorElement) {
-//         errorElement.textContent = message;
-//         errorElement.classList.add('show');
-//     }
-// }
 
 function setDefaultState(inputElement, errorElement) {
     inputElement.style.borderColor = 'var(--c-default)';

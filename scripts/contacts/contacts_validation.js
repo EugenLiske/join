@@ -1,4 +1,4 @@
-// MF
+// MF - contacts_validation.js
 
 /**
  * Contacts Validation Module
