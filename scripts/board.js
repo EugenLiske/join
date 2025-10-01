@@ -1,18 +1,23 @@
 let currentTask = null;
 
+
 function setCurrentTask(taskId){
     currentTask = getElementWithId2(allTasks, taskId);
 }
+
 
 function getCurrentTask(){
     return currentTask;
 }
 
+
 let boardContacts = null;
+
 
 function getBoardContacts(){
     return boardContacts;
 }
+
 
 // erlaubt Fokus des Inputfelds beim Anklicken der Lupe trotz absoluter Positionierung und pointer-events:auto
 
@@ -20,6 +25,7 @@ function focusSearchInputField() {
     let searchInput = document.getElementById('searchInput');
     searchInput.focus();
 }
+
 
 // Drag & Drop Mechanismus - Deaktivierung bei mobilen Geräten
 
@@ -36,12 +42,14 @@ function hasCoarsePointer() {
     return (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
 }
 
+
 function isDragDropActive() {
     if (typeof window === 'undefined') {
         return true;
     }
     return !hasCoarsePointer();
 }
+
 
 function setCardsDraggableState() {
     let cards = document.getElementsByClassName('board_card');
@@ -53,6 +61,7 @@ function setCardsDraggableState() {
         cards[i].setAttribute('draggable', draggableValue);
     }
 }
+
 
 function clearAllDropIndicators() {
     let columns = ['to_do', 'in_progress', 'await_feedback', 'done'];
@@ -67,6 +76,7 @@ function clearAllDropIndicators() {
     }
 }
 
+
 window.onresize = function () {
     setCardsDraggableState();
     if (!isDragDropActive()) {
@@ -75,9 +85,11 @@ window.onresize = function () {
     }
 };
 
+
 // Drag & Drop Mechanismus
 
 let allTasks = [];
+
 
 async function loadTasksFromDB(){
     let taskResponse = await getData("/tasks");
@@ -89,7 +101,9 @@ async function loadTasksFromDB(){
     }
 }
 
+
 let currentDraggedTask;
+
 
 async function initBoardPage() {
     initNavAndHeaderPage('board');
@@ -101,6 +115,7 @@ async function initBoardPage() {
     setupOverlayOutsideClickClose();      
 }
 
+
 function updateHTML(){
     generateTasksToDoHTML();
     generateTasksInProgressHTML();
@@ -109,6 +124,7 @@ function updateHTML(){
     setCardsDraggableState();
     updateAllOverflowHints();
 }
+
 
 function generateTasksToDoHTML(){
     let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do' && doesTitleMatchSearchTerm(task));
@@ -124,6 +140,7 @@ function generateTasksToDoHTML(){
     }
 }
 
+
 function generateTasksInProgressHTML(){
     let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress' && doesTitleMatchSearchTerm(task));
     const inProgressColumn = document.getElementById('in_progress');
@@ -137,6 +154,7 @@ function generateTasksInProgressHTML(){
         }
     }
 }
+
 
 function generateTasksAwaitFeedbackHTML(){
     let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback' && doesTitleMatchSearchTerm(task));
@@ -152,6 +170,7 @@ function generateTasksAwaitFeedbackHTML(){
     }
 }
 
+
 function generateTasksDoneHTML(){
     let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done' && doesTitleMatchSearchTerm(task));
     const doneColumn = document.getElementById('done');
@@ -165,6 +184,7 @@ function generateTasksDoneHTML(){
         }
     }
 }
+
 
 function generatePlaceholderHTML(kanbanBoardColumn) {
     const texts = {
@@ -180,10 +200,12 @@ function generatePlaceholderHTML(kanbanBoardColumn) {
     `;
 }
 
+
 function allowDrop(event) {
     if (!isDragDropActive()) { return; } 
     event.preventDefault();
 }
+
 
 function startDragging(id, event){
     if (!isDragDropActive()) { return; } 
@@ -192,6 +214,7 @@ function startDragging(id, event){
     document.querySelectorAll('.task_column_content').forEach(el => el.classList.add('drag-target-active'));
 }
 
+
 function endDragging(event){
     if (!isDragDropActive()) { return; } 
     event.target.classList.remove('dragging');
@@ -199,6 +222,7 @@ function endDragging(event){
     document.querySelectorAll('.task_column_content').forEach(el => el.classList.remove('drag-target-active'));
     clearAllDropIndicators();
 }
+
 
 async function moveToDifferentCategory(kanbanBoardColumn){
     const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
@@ -212,6 +236,7 @@ async function moveToDifferentCategory(kanbanBoardColumn){
     console.log(path);
     await setData(newKanbanColumn, path);
 }
+
 
 function showDropIndicator(columnId) {
     if (!isDragDropActive()) { return; }
@@ -232,6 +257,7 @@ function showDropIndicator(columnId) {
     }
 }
 
+
 function hideDropIndicator(columnId) {
     if (!isDragDropActive()) { return; }
     const container = document.getElementById(columnId);
@@ -240,12 +266,14 @@ function hideDropIndicator(columnId) {
     if (indicator) indicator.remove();
 }
 
+
 // Suchfunktionen
 
 function onSearchInput() {
     updateHTML();
     updateSearchErrorMessage();
 }
+
 
 function getSearchTermFromInput() {
     const searchInputElement = document.getElementById('searchInput');
@@ -259,6 +287,7 @@ function getSearchTermFromInput() {
     return rawValue.trim().toLowerCase();
 }
 
+
 function getNormalizedSearchTerm() {
     const term = getSearchTermFromInput();
     if (typeof term === 'string') {
@@ -267,6 +296,7 @@ function getNormalizedSearchTerm() {
     return '';
 }
 
+
 function getNormalizedTextOrEmpty(value) {
     if (typeof value === 'string') {
         return value.toLowerCase();
@@ -274,20 +304,21 @@ function getNormalizedTextOrEmpty(value) {
     return '';
 }
 
+
 function textMatchesSearchTerm(text, searchTerm) {
     return text.includes(searchTerm);
 }
 
+
 function doesTitleMatchSearchTerm(task) {
     const searchTerm = getNormalizedSearchTerm();
     if (searchTerm.length === 0) return true;
-
     const normalizedTitle = getNormalizedTextOrEmpty(task.title);
     const normalizedDescription = getNormalizedTextOrEmpty(task.description);
-
     return textMatchesSearchTerm(normalizedTitle, searchTerm)
         || textMatchesSearchTerm(normalizedDescription, searchTerm);
 }
+
 
 // Fehlermeldung unter dem Suchfeld
 
@@ -295,9 +326,11 @@ function getSearchErrorElement() {
     return document.getElementById('search_error');
 }
 
+
 function hasSearchTerm() {
     return getSearchTermFromInput().length > 0;
 }
+
 
 function shouldShowSearchError() {
     if (!hasSearchTerm()) return false;
@@ -307,11 +340,13 @@ function shouldShowSearchError() {
     return true;
 }
 
+
 function toggleSearchErrorVisibility(shouldShow) {
     const errorElement = getSearchErrorElement();
     if (!errorElement) return;
     errorElement.style.display = shouldShow ? 'block' : 'none';
 }
+
 
 function updateSearchErrorMessage() {
     const errorElement = getSearchErrorElement();
@@ -319,9 +354,11 @@ function updateSearchErrorMessage() {
     toggleSearchErrorVisibility(shouldShowSearchError());
 }
 
+
 function getBoardAllTasks(){
     return allTasks;
 }
+
 
 function updateTask(taskId, update) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
@@ -329,6 +366,7 @@ function updateTask(taskId, update) {
         allTasks[taskIdx] = { ...allTasks[taskIdx], ...update };
     }
 }
+
 
 function updateTaskCardAtBoard(taskId) {
     const taskIdx = allTasks.findIndex(task => task.id === taskId);
@@ -340,10 +378,12 @@ function updateTaskCardAtBoard(taskId) {
     }
 }
 
+
 function openDragAndDropMenu(event, taskId){
     event.stopPropagation();
     document.getElementById("drag_and_drop_menu_" + taskId).classList.remove("d_none");
 }
+
 
 function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
     event.stopPropagation();
@@ -351,9 +391,11 @@ function moveTaskWithMenu(event, kanbanBoardColumn, taskId){
     moveToDifferentCategory(kanbanBoardColumn);
 }
 
+
 document.addEventListener('click', function(event) {
     closeDragAndDropMenuSelection(event);
 });
+
 
 function closeDragAndDropMenuSelection(event){
     const menuContainers = document.getElementsByClassName('drag_and_drop_menu_mobile');
@@ -366,11 +408,13 @@ function closeDragAndDropMenuSelection(event){
     }
 }
 
+
 /* Anzeige des Pfeils um Scrollen zu implizieren bei 320 Pixel und mehr als einem Task in einer Reihe */
 
 function getBoardColumnsList() {                 
     return ['to_do', 'in_progress', 'await_feedback', 'done'];  
-}                                                
+}   
+
 
 function hasHorizontalOverflow(el) {
     if (!el) { return false; }                         
@@ -379,9 +423,11 @@ function hasHorizontalOverflow(el) {
     return el.scrollWidth > el.clientWidth + 1;      
 }
 
+
 function isAtRightEnd(el) {
     return (el.scrollLeft + el.clientWidth) >= (el.scrollWidth - 1);
 }
+
 
 function setOverflowClasses(el) {
     el.classList.add('has-overflow');
@@ -392,10 +438,12 @@ function setOverflowClasses(el) {
     }
 }
 
+
 function clearOverflowClasses(el) {
     el.classList.remove('has-overflow');
     el.classList.remove('at-end');
 }
+
 
 function updateOverflowHintFor(columnId) {
     const el = document.getElementById(columnId);
@@ -407,7 +455,8 @@ function updateOverflowHintFor(columnId) {
         clearOverflowClasses(el);
         el.onscroll = null;
     }
-}                                               
+}   
+                                            
 
 function updateAllOverflowHints() {               
     let cols = getBoardColumnsList();             

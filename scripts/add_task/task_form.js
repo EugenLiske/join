@@ -1,7 +1,7 @@
 
-let contactListNames = [];          //list with all names from contacts
-let idxOfSearchedContacts = [];     //list of idx of persons containing the search text
-let assignedPersons = [];           //list with boolean - one entry for a person from the search list; if the person contains the search text, then true, otherwise false
+let contactListNames = [];
+let idxOfSearchedContacts = [];
+let assignedPersons = [];
 
 let nextSubtaskId = 0;
 

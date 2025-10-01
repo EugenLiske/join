@@ -16,6 +16,7 @@ function closeDropDownCategorySelection(event){
 function renderCategoryOptions(){
     let categoryOptionsRef = document.getElementById("category_options");
     let optionList = "";
+    const categories = ["User Story", "Technical Task"];
 
     for (let catIdx = 0; catIdx < categories.length; catIdx++) {
         if (!checkCategorySelection(categories[catIdx])){
