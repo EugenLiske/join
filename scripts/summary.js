@@ -51,7 +51,7 @@ function mobileWelcome() {
 
             setTimeout(() => {
                 welcomeRef.classList.remove("welcome_show");
-            }, 200000);
+            }, 5000);
         }
         sessionStorage.setItem("login", false);
     }

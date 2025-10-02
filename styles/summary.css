@@ -218,7 +218,7 @@
         width: 100%;
         top: 0;
         left: 0;
-        height: 100%;
+        height: calc(100vh - 160px);
         cursor: default;
     }
 
