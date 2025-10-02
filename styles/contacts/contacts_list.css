@@ -659,8 +659,10 @@
 /* Mobile Vollbild unter 600px ============================ */
 @media (max-width: 600px) {
     .contacts_list_section {
-    display: flex; /* Kontaktliste sichtbar machen */
+    display: flex; 
     width: 100%;
+    padding-top: 0;
+    margin-top: 0;
     }
     
     /* Contact Details über komplette Breite */
@@ -863,8 +865,24 @@
         display: none; /* In Detail-Ansicht ausblenden */
     }
 
+    /* Spacer komplett entfernen oder Höhe reduzieren */
+    .spacer {
+        display: none;  
+    }
+    
+    /* Kontaktliste ohne margin-top */
+    .contacts_list {
+        margin-top: 0; 
+        padding: 0;
+    }
+
+    .alphabet_separator {
+    top: -1px;
+    z-index: 1;
+}
+
     /* Back Button für Mobile */
-    .mobile_back_button {
+    .mobile_back_container{
     display: none;
     }
 

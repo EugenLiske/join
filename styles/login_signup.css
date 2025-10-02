@@ -531,6 +531,10 @@ footer {
     font-weight: 700;
 }
 
+.right_information {
+    text-align: end;
+}
+
 
 @media(max-width: 1000px){
     .logo_signup_page {
@@ -639,6 +643,22 @@ footer {
 }
 
 @media(max-width: 428px){
+
+    /* Logo nach der Animation: im Flow, oben links */
+    .logo_signup_page.logo-final{
+        position: static;
+        animation: none;
+        left: auto;
+        top: auto;
+        transform: none;
+        z-index: 1;
+
+        width: 50px;
+        height: auto;
+        display: block;
+        margin-top: 15px;
+        margin-left: 15px;
+    }
 
     /* Body wird zur Spalte mit Mindesthöhe = Viewport */
     body {

@@ -189,3 +189,37 @@ function toggleLoginVisibility() {
     passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
   }
 }
+
+function finalizeMobileLogoAfterAnimation() {
+    let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
+    if (!isSmallScreen) {
+      return;
+    }
+
+    function applyFinalLogoState() {
+      let logos = document.querySelectorAll('.logo_signup_page');
+      for (let i = 0; i < logos.length; i++) {
+        logos[i].classList.add('logo-final');
+      }
+    }
+
+    // Deine Animation läuft 2000ms – kleiner Puffer dazu:
+    setTimeout(applyFinalLogoState, 2100);
+  }
+
+  // Einfach direkt aufrufen (kein Event-Listener)
+finalizeMobileLogoAfterAnimation();
+
+function removeLightLogoAfterSplash() {
+    let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
+    if (!isSmallScreen) return;
+
+    let lightLogo = document.querySelector('.logo--light');
+    if (!lightLogo) return;
+
+    setTimeout(function(){
+      lightLogo.remove();
+    }, 700); // nach der logoSwapLight-Dauer
+  }
+
+removeLightLogoAfterSplash();
