@@ -1,15 +1,6 @@
-// Category Selection ---------------------------------------------------------------------
 
 function getCurrentCategory(){
     return document.getElementById("category_selection").innerText;
-}
-
-
-function closeDropDownCategorySelection(event){
-    const containerCategory = document.getElementById('selection_container_category');
-    if (containerCategory && !containerCategory.contains(event.target)) {
-        hideSelectionList('category_options', 'drop_down_categories')
-    }        
 }
 
 
@@ -27,6 +18,12 @@ function renderCategoryOptions(){
 }
 
 
+/**
+ * Checks if the currently selected category matches the provided category.
+ *
+ * @param {string} category - The category to check against the current selection.
+ * @returns {boolean} True if the selected category matches the provided category, otherwise false.
+ */
 function checkCategorySelection(category){
     let categoryButtonRef = document.getElementById("category_selection");
     let choice = categoryButtonRef.innerText;
@@ -34,6 +31,11 @@ function checkCategorySelection(category){
 }
 
 
+/**
+ * Updates the category selection button text to display the selected category.
+ *
+ * @param {string} category - The name of the category to display on the selection button.
+ */
 function showCategorySelection(category){
     let categoryButtonRef = document.getElementById("category_selection");
     categoryButtonRef.innerText = category;

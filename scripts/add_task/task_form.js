@@ -35,20 +35,68 @@ function setSubtaskId(subtaskId){
 
 // EventListener -------------------------------------------------------------------
 
+/**
+ * Global click event listener.
+ * 
+ * Closes any open dropdowns related to:
+ * - Assigned persons selection
+ * - Category selection
+ * 
+ * @param {MouseEvent} event - The click event object.
+ */
 document.addEventListener('click', function(event) {
     closeDropDownAssignedToSelection(event);
     closeDropDownCategorySelection(event);
 });
 
 
-// Initial Function -----------------------------------------------------------------
+function closeDropDownCategorySelection(event){
+    const containerCategory = document.getElementById('selection_container_category');
+    if (containerCategory && !containerCategory.contains(event.target)) {
+        hideSelectionList('category_options', 'drop_down_categories')
+    }        
+}
 
+
+/**
+ * Hides the selection list by adding the "d_none" class to the element with the given listId,
+ * and toggles the dropdown icon associated with the list.
+ *
+ * @param {string} listId - The ID of the selection list element to hide.
+ * @param {string} iconId - The ID of the dropdown icon element to toggle.
+ */
+function hideSelectionList(listId, iconId){
+    document.getElementById(listId).classList.add("d_none");
+    toggleDropDownIcon(listId, iconId);
+}
+
+
+function closeDropDownAssignedToSelection(event){
+    const containerAssignedTo = document.getElementById('selection_container_assignedto');
+    if (containerAssignedTo && !containerAssignedTo.contains(event.target)) {
+        if (!document.getElementById('selection').classList.contains("d_none")){
+            toggleButtonAndInputElement();
+        }
+    }    
+}
+
+
+/**
+ * Initializes the task form.
+ * 
+ * - Loads contact data and initializes the assigned persons array.
+ * - Creates the dropdown list for contact search results.
+ * - Renders category options.
+ * - Resets the subtask ID counter.
+ * 
+ * @async
+ */
 async function initTaskForm(){
     formContacts = await getContacts();
     contactListNames = await initContactSearchList();
     assignedPersons = initAssignedPersons(contactListNames);
     
-    idxOfSearchedContacts = getContactSearchResult("", contactListNames);
+    idxOfSearchedContacts = getContactNameSearchIndices("", contactListNames);
     createContactDropDownSearchList(idxOfSearchedContacts, assignedPersons, formContacts);
 
     renderCategoryOptions();
@@ -56,16 +104,24 @@ async function initTaskForm(){
 }
 
 
-// Specific Functions Task From ---------------------------------------------------
-
-
+/**
+ * Toggles the visibility of a dropdown and its associated icon.
+ * 
+ * @param {string} listId - The ID of the dropdown list element.
+ * @param {string} iconId - The ID of the dropdown icon element to toggle.
+ */
 function toggleDropDownSelection(listId, iconId){
     document.getElementById(listId).classList.toggle("d_none");
     toggleDropDownIcon(listId, iconId);
 }
 
 
-// Priority
+/**
+ * Toggles the priority selection for a task.
+ * 
+ * @param {HTMLElement} element - The button element that was clicked.
+ * @param {string} priority - The selected priority (e.g., 'urgent', 'medium', 'low').
+ */
 function togglePriorityButtons(element, priority){
     clearPriorityButtons("all");
 
@@ -74,6 +130,7 @@ function togglePriorityButtons(element, priority){
     element.children[0].classList.remove("priority_btn_c_txt_default");
     element.children[1].src = setIconPriority(priority);
 }
+
 
 // Assigned to
 function toggleButtonAndInputElement(){
@@ -87,13 +144,23 @@ function toggleButtonAndInputElement(){
 
 function startNameSearch(){
     let input = document.getElementById("task_assignedto_input").value;
-    idxOfSearchedContacts = getContactSearchResult(input, contactListNames);
+    idxOfSearchedContacts = getContactNameSearchIndices(input, contactListNames);
     createContactDropDownSearchList(idxOfSearchedContacts, assignedPersons, formContacts);
     document.getElementById("selection").classList.remove("d_none");
     toggleDropDownIcon("task_assignedto_input", "drop_down_persons");
 }
 
 
+/**
+ * Toggles the selection of a person in the assigned contacts list.
+ * 
+ * - Updates the checkbox and visual state of the element.
+ * - Updates the `assignedPersons` array accordingly.
+ * - Re-renders the list of selected person icons.
+ * 
+ * @param {HTMLElement} element - The HTML element representing the person.
+ * @param {number} personIdx - The index of the person in the `assignedPersons` array.
+ */
 function selectPerson(element, personIdx){
     element.classList.toggle("person_selected");
 
@@ -108,12 +175,20 @@ function selectPerson(element, personIdx){
 function clearAssignedToInputArea(){
     clearPersonIcons();
     assignedPersons = initAssignedPersons(formContacts);
-    idxOfSearchedContacts = getContactSearchResult("", contactListNames);
+    idxOfSearchedContacts = getContactNameSearchIndices("", contactListNames);
     createContactDropDownSearchList(idxOfSearchedContacts, assignedPersons, formContacts);
     defaultAssignedInput();
 }
 
 
+/**
+ * Returns an object containing the assigned persons for the current task.
+ * 
+ * - Iterates through the `assignedPersons` array.
+ * - Maps assigned indices to their corresponding contact IDs.
+ * 
+ * @returns {Object} assigned - An object mapping contact keys to their IDs.
+ */
 function getAssignedPersons(){
     let assigned = {};
     let personsKeys = Object.keys(formContacts);
@@ -205,5 +280,24 @@ function deleteTaskForm(kind = "add"){
         document.getElementById("add_task_form").innerHTML = "";
     else if (kind === "edit"){
         document.getElementById("edit_task_form").innerHTML = "";
+    }
+}
+
+
+/**
+ * Toggles the dropdown icon based on the visibility of the selection element.
+ *
+ * @param {string} inputId - The ID of the selection list element to hide.
+ * @param {string} iconId - The ID of the image element representing the dropdown icon.
+ */
+function toggleDropDownIcon(inputId, iconId){
+    let selectionRef = document.getElementById(inputId);
+    let dropDownRef = document.getElementById(iconId);
+
+    if (selectionRef.classList.contains("d_none")){
+        dropDownRef.src="../assets/img/icons/drop_down/arrow.svg";
+    }
+    else{
+        dropDownRef.src="../assets/img/icons/drop_down/arrow_close.svg";
     }
 }

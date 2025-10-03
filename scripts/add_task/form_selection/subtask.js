@@ -1,4 +1,3 @@
-// Subtasks ---------------------------------------------------------------------------------
 
 function toggleDeleteAndAddIcons(){
     let inputSubtask = document.getElementById("subtask_input");

@@ -45,16 +45,23 @@ function displayWelcomeOnScreen(){
 function mobileWelcome() {
     if (currentUser.login){
         const welcomeRef = document.getElementById("welcome_mobile");
-
+        toggleBodyScrollBehavior("hidden");
         if (window.innerWidth <= 950) {
             welcomeRef.classList.add("welcome_show");
 
             setTimeout(() => {
                 welcomeRef.classList.remove("welcome_show");
-            }, 5000);
+                toggleBodyScrollBehavior("auto");
+            }, 4000);
         }
         sessionStorage.setItem("login", false);
     }
+}
+
+
+function toggleBodyScrollBehavior(status){
+    const bodyRef = document.getElementById("body");
+    bodyRef.style.overflow = status;
 }
 
 
