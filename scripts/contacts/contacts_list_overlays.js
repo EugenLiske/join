@@ -240,7 +240,7 @@ function fillFormInputs(contact) {
     const nameInput = document.getElementById('name_input');
     const emailInput = document.getElementById('email_input');
     const phoneInput = document.getElementById('telephone_input');
-    
+    if (nameInput) nameInput.value = contact.name || '';
     if (emailInput) emailInput.value = contact.email || '';
     if (phoneInput) phoneInput.value = contact.phone || '';
 }
