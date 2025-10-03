@@ -19,7 +19,7 @@ function getBoardContacts(){
 }
 
 
-// erlaubt Fokus des Inputfelds beim Anklicken der Lupe trotz absoluter Positionierung und pointer-events:auto
+// Allows focus of the input field when clicking on the magnifying glass despite absolute positioning and pointer-events:auto
 
 function focusSearchInputField() {
     let searchInput = document.getElementById('searchInput');
@@ -27,7 +27,7 @@ function focusSearchInputField() {
 }
 
 
-// Drag & Drop Mechanismus - Deaktivierung bei mobilen Geräten
+// Drag & drop mechanism - Deactivation on mobile devices
 
 function hasCoarsePointer() {
     if (typeof window === 'undefined') {
@@ -86,7 +86,7 @@ window.onresize = function () {
 };
 
 
-// Drag & Drop Mechanismus
+// Drag & drop mechanism
 
 let allTasks = [];
 
@@ -243,13 +243,11 @@ function showDropIndicator(columnId) {
     const container = document.getElementById(columnId);
     const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
     if (actualIndex === -1) return; 
-
     const originCategory = allTasks[actualIndex]['kanbanBoardColumn'];
     if (originCategory === columnId) {
         hideDropIndicator(columnId);
         return;
     }
-
     if (!container.querySelector('.drop_indicator')) {
         const indicator = document.createElement('div');
         indicator.className = 'drop_indicator';
@@ -267,7 +265,7 @@ function hideDropIndicator(columnId) {
 }
 
 
-// Suchfunktionen
+// search function
 
 function onSearchInput() {
     updateHTML();
@@ -320,7 +318,7 @@ function doesTitleMatchSearchTerm(task) {
 }
 
 
-// Fehlermeldung unter dem Suchfeld
+// Error message below the search field
 
 function getSearchErrorElement() {
     return document.getElementById('search_error');
@@ -409,7 +407,7 @@ function closeDragAndDropMenuSelection(event){
 }
 
 
-/* Anzeige des Pfeils um Scrollen zu implizieren bei 320 Pixel und mehr als einem Task in einer Reihe */
+// Display of the arrow to imply scrolling at 320 pixels and more than one task in a row
 
 function getBoardColumnsList() {                 
     return ['to_do', 'in_progress', 'await_feedback', 'done'];  

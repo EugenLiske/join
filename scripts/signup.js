@@ -1,4 +1,4 @@
-// Referenzen der DOM-Elemente und weitere Variablen
+// References to DOM elements and other variables
 
 const nameInput                   = document.getElementById("name_input");
 const emailInput                  = document.getElementById("email_input");
@@ -10,13 +10,13 @@ const confirmationError           = document.getElementById("confirm_error");
 const emailError                  = document.getElementById("email_error");
 const signupOverlay               = document.getElementById("signup_overlay");
 const overlayMessage              = document.getElementById("overlay_message");
-
 const USER_EXISTS_MSG             = "This user exists already. Please use a different email address.";
 const EMAIL_INVALID_MSG           = "Please enter a valid email address.";
 const PASSWORD_MIN_LENGTH         = 8;
 const BASE_URL                    = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
-// Funktion für eventuelles Autofill. Passwort-Icons und der Button-Zustand werden richtig gesetzt.
+// Function for possible autofill. Password icons and button status are set correctly.
+
 
 function initAutoFill() {
   validateForm();
@@ -25,7 +25,8 @@ function initAutoFill() {
 }
 initAutoFill();
 
-// Firebase-Datenbank: Funktionen für GET und PUT für die User-Daten
+
+// Firebase database: GET and PUT functions for user data
 
 async function getAllUsers(path) {
   try {
@@ -40,6 +41,7 @@ async function getAllUsers(path) {
     throw error;
   }
 }
+
 
 async function putUserData(path, data) {
   try {
@@ -57,7 +59,8 @@ async function putUserData(path, data) {
   }
 }
 
-// Registrierfunktion (Sign Up Button)
+
+// Registration function (Sign Up button)
 
 async function registerUser(event) {
   event.preventDefault();
@@ -78,7 +81,8 @@ async function registerUser(event) {
   }
 }
 
-// Hilfsfunktionen für die registerUser-Funktion
+
+// Helper functions for the registerUser function
 
 function checkExistingUsers(userResponse) {
   let emailToCheck = emailInput.value.trim().toLowerCase();
@@ -90,6 +94,7 @@ function checkExistingUsers(userResponse) {
   }
   return false;
 }
+
 
 function checkEveryUserEmail(userResponse, emailToCheck) {
   let userKeys = Object.keys(userResponse);
@@ -106,6 +111,8 @@ function checkEveryUserEmail(userResponse, emailToCheck) {
   return false;
 }
 
+
+
 function calculateNextUserID(userResponse) {
   if (!userResponse) return 1;
   let highestUserID = 0;
@@ -121,6 +128,7 @@ function calculateNextUserID(userResponse) {
   return highestUserID + 1;
 }
 
+
 async function createAndUploadUserObject(nextUserID) {
   let nameVal = nameInput.value.trim();
   let emailVal = emailInput.value.trim().toLowerCase();
@@ -134,6 +142,7 @@ async function createAndUploadUserObject(nextUserID) {
   let path = "/users/user_" + nextUserID;
   await putUserData(path, user);
 }
+
 
 function getInitials(rawName) {
   let cleanName = String(rawName || "").trim();
@@ -149,6 +158,7 @@ function getInitials(rawName) {
   return initials;
 }
 
+
 function createSuccessOverlaySignUp() {
   signupOverlay.classList.add("active");
   overlayMessage.classList.add("enter");
@@ -160,7 +170,8 @@ function createSuccessOverlaySignUp() {
   }, 2700);
 }
 
-// Validierungsfunktion - aktiviert den Sign Up Button bei validen Eingaben
+
+// Validation function - activates the sign-up button when valid entries are made
 
 function validateForm() {
   const formInput = readFormInput();
@@ -170,7 +181,8 @@ function validateForm() {
   return evaluatedFormInput.allValid;
 }
 
-// Hilfsfunktionen für die validateForm-Funktion
+
+// Auxiliary functions for the validateForm function
 
 function readFormInput() {
   return {
@@ -181,6 +193,7 @@ function readFormInput() {
     privacyChecked: checkbox.checked,
   };
 }
+
 
 function evaluateFormInput(formInput) {
   const allFieldsFilled = (formInput.name !== "" && formInput.email !== "") && (formInput.password !== "" && formInput.confirmPassword !== "");
@@ -200,6 +213,7 @@ function evaluateFormInput(formInput) {
   };
 }
 
+
 function renderPasswordErrors(evaluatedFormInput) {
   emailError.textContent = "";
   emailError.style.display = "none";
@@ -218,18 +232,20 @@ function renderPasswordErrors(evaluatedFormInput) {
   }
 }
 
+
 function setSignupButtonState(isFormValid) {
   signupButton.disabled = !isFormValid;
 }
+
 
 function isEmailValid(email) {
   let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
   return regularExpression.test(email);
 }
 
-// Bereinigung der Fehleranzeige bei erneuter Eingabe (also onfocus/oninput).
-// Für denn Fall dass eine bereits benutzte Mailadresse bei registerUser eingegeben wurde.
-// Und falls keine valide Mailadresse eingegeben wurde.
+// Fixing the error message when re-entering (i.e., onfocus/oninput).
+// In case an email address that has already been used was entered in registerUser.
+// And if no valid email address was entered.
 
 function clearEmailError() {
   emailInput.classList.remove("error");
@@ -237,7 +253,8 @@ function clearEmailError() {
   emailError.style.display = "none";
 }
 
-// Fehleranzeige beim Rausklicken aus dem Emailfeld und nicht-valider Email
+
+// Error message when clicking out of the email field and invalid email
 
 function validateEmailOnBlur() {
   const value = emailInput.value.trim();
@@ -251,7 +268,8 @@ function validateEmailOnBlur() {
   }
 }
 
-// Sichtbarkeits-Handling der Passwort-Icons bei Eingabe des Passwortes sowie beim Anklicken des Icons.
+
+// Visibility handling of password icons when entering the password and when clicking on the icon.
 
 function handlePasswordInput(inputId, iconId) {
   let input = document.getElementById(inputId);
@@ -269,6 +287,7 @@ function handlePasswordInput(inputId, iconId) {
     icon.src = "../assets/img/icons/form/visibility_off.svg";
   }
 }
+
 
 function togglePasswordIconVisibility(inputId, iconId) {
   let input = document.getElementById(inputId);

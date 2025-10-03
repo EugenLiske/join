@@ -1,4 +1,4 @@
-// Referenzen der DOM-Elemente und weitere Variablen
+// References to DOM elements and other variables
 
 const emailInput          = document.getElementById("email_input");
 const passwordInput       = document.getElementById("password_input");
@@ -9,10 +9,9 @@ const signupOverlay       = document.getElementById("signup_overlay");
 const overlayMessage      = document.getElementById("overlay_message");
 const passwordInputField  = document.getElementById("password_input");
 const passwordIcon        = document.getElementById("login_password_icon");
-
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
-// Funktion für eventuelles Autofill. Passwort-Icons und der Button-Zustand werden richtig gesetzt.
+// Function for possible autofill. Password icons and button status are set correctly.
 
 function initLoginAutoFill() {
   handleLoginPasswordInput("password_input", "login_password_icon");
@@ -20,7 +19,8 @@ function initLoginAutoFill() {
 }
 initLoginAutoFill();
 
-// Firebase-Datenbank: Funktion für GET für die User-Daten
+
+// Firebase database: GET function for user data
 
 async function getAllUsers(path) {
   try {
@@ -36,7 +36,8 @@ async function getAllUsers(path) {
   }
 }
 
-// Login-Funktion (Login-Button)
+
+// Login function (login button)
 
 async function loginUser(event) {
   event.preventDefault();
@@ -57,11 +58,13 @@ async function loginUser(event) {
   }
 }
 
+
 function loginGuest(event) {
   event.preventDefault();
   setCurrentUserData(true, "guest", "");
   window.location.href='./pages/summary.html';
 }
+
 
 function setCurrentUserData(login, role, name){
     sessionStorage.setItem("login", login);
@@ -69,7 +72,8 @@ function setCurrentUserData(login, role, name){
     sessionStorage.setItem("name", name);  
 }
 
-// Hilfsfunktionen für die loginUser-Funktion
+
+// Auxiliary functions for the loginUser function
 
 function findMatchingUser(userResponse, emailValue, passwordValue) {
   let users = Object.values(userResponse);
@@ -81,6 +85,7 @@ function findMatchingUser(userResponse, emailValue, passwordValue) {
   }
   return null;
 }
+
 
 function checkSingleUserMatch(user, emailValue, passwordValue) {
   let dbEmail = "";
@@ -94,6 +99,7 @@ function checkSingleUserMatch(user, emailValue, passwordValue) {
   return dbEmail !== "" && dbEmail === emailValue && dbPassword === passwordValue;
 }
 
+
 function storeUserInitials(user) {
   if (user && user.initials) {
     let initials = String(user.initials);
@@ -103,6 +109,7 @@ function storeUserInitials(user) {
   }
 }
 
+
 function showLoginErrorAndStop() {
   emailInput.classList.add("error");
   passwordInput.classList.add("error");
@@ -111,10 +118,12 @@ function showLoginErrorAndStop() {
   return false;
 }
 
+
 function showGenericLoginError() {
   loginErrorContainer.textContent = "We couldn't sign you in right now. Please try again in a moment.";
   loginErrorContainer.style.display = "block";
 }
+
 
 function createSuccessOverlayLogin() {
   signupOverlay.classList.add("active");
@@ -127,7 +136,8 @@ function createSuccessOverlayLogin() {
   }, 1700);
 }
 
-// Validierungsfunktion - aktiviert den Login-Button bei validen Eingaben
+
+// Validation function - activates the login button for valid entries
 
 function checkLoginEnable() {loginUser
   let emailValue = emailInput.value.trim();
@@ -138,15 +148,17 @@ function checkLoginEnable() {loginUser
   resetExistingLoginError();
 }
 
-// Hilfsfunktion für die checkLoginEnable-Funktion
+
+// Help function for the checkLoginEnable function
 
 function isEmailValid(email) {
   let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
   return regularExpression.test(email);
 }
 
-// Bereinigung der Fehleranzeige bei erneuter Eingabe (oninput).
-// Für denn Fall dass eine nicht valide Email-Passwort-Kombination bei loginUser eingegeben wurde
+
+// Clearing the error message when re-entering (oninput).
+// In case an invalid email-password combination was entered in loginUser.
 
 function resetExistingLoginError() {
   emailInput.classList.remove("error");
@@ -157,7 +169,8 @@ function resetExistingLoginError() {
   }
 }
 
-// Sichtbarkeits-Handling der Passwort-Icons bei Eingabe des Passwortes sowie beim Anklicken des Icons.
+
+// Visibility handling of password icons when entering the password and when clicking on the icon.
 
 function handleLoginPasswordInput() {
   if (passwordInputField.value.length === 0) {
@@ -173,6 +186,7 @@ function handleLoginPasswordInput() {
     passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
   }
 }
+
 
 function toggleLoginVisibility() {
   if (passwordInputField.value.length === 0) {
@@ -190,36 +204,124 @@ function toggleLoginVisibility() {
   }
 }
 
-function finalizeMobileLogoAfterAnimation() {
-    let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-    if (!isSmallScreen) {
-      return;
-    }
 
-    function applyFinalLogoState() {
-      let logos = document.querySelectorAll('.logo_signup_page');
-      for (let i = 0; i < logos.length; i++) {
-        logos[i].classList.add('logo-final');
-      }
-    }
+// Fade in the static Flow logo when the animation is complete.
 
-    // Deine Animation läuft 2000ms – kleiner Puffer dazu:
-    setTimeout(applyFinalLogoState, 2100);
-  }
+function showStaticLogoAfterAnimation() {
+  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
+  if (!isSmallScreen) { return; }
+  let staticLogo = document.querySelector('.header-logo .logo-static');
+  if (!staticLogo) { return; }
+  setTimeout(function(){
+    staticLogo.classList.add('is-visible');
+  }, 2000);
+}
 
-  // Einfach direkt aufrufen (kein Event-Listener)
-finalizeMobileLogoAfterAnimation();
+
+// Removes the bright intro logo after the splash fade (700ms)
 
 function removeLightLogoAfterSplash() {
     let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-    if (!isSmallScreen) return;
+    if (!isSmallScreen) { return; }
 
     let lightLogo = document.querySelector('.logo--light');
-    if (!lightLogo) return;
+    if (!lightLogo) { return; }
 
     setTimeout(function(){
       lightLogo.remove();
-    }, 700); // nach der logoSwapLight-Dauer
+    }, 700);
   }
 
+
+// Removes the dark fixed logo after the animation,so that only the static one remains in the flow.
+
+function removeDarkFixedLogoAfterAnimation() {
+  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
+  if (!isSmallScreen) { return; }
+  let darkLogo = document.querySelector('.logo--dark');
+  if (!darkLogo) { return; }
+
+  setTimeout(function(){
+    darkLogo.remove();
+  }, 2000);
+}
+
+
+function smoothLogoHandover() {
+  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
+  if (!isSmallScreen) { return; }
+  let staticLogo = document.querySelector('.header-logo .logo-static');
+  if (staticLogo) {
+    setTimeout(function () {
+      staticLogo.classList.add('is-visible');
+    }, 1800); 
+  }
+  let animatedLogos = document.querySelectorAll('.logo_signup_page');
+  if (animatedLogos && animatedLogos.length > 0) {
+    setTimeout(function () {
+      for (let i = 0; i < animatedLogos.length; i++) {
+        animatedLogos[i].remove();
+      }
+    }, 2100);
+  }
+}
+
+
+showStaticLogoAfterAnimation();
 removeLightLogoAfterSplash();
+removeDarkFixedLogoAfterAnimation();
+smoothLogoHandover();
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const mq = window.matchMedia('(max-width: 428px)');
+  const staticLogo = document.querySelector('.header-logo .logo-static');
+  const animatedLogos = document.querySelectorAll('.logo_signup_page');
+  let showTimer = null;
+  let hideTimer = null;
+
+function clearTimers() {
+    if (showTimer) { clearTimeout(showTimer); showTimer = null; }
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+}
+
+
+function enterMobile() {
+  clearTimers();
+  if (staticLogo) {
+    staticLogo.style.display = 'block';      // in Mobile existiert es
+    staticLogo.classList.remove('is-visible'); // beginnt unsichtbar (CSS blendet weich ein)
+  }
+  animatedLogos.forEach(el => { el.style.display = ''; });
+  showTimer = setTimeout(() => {
+    staticLogo && staticLogo.classList.add('is-visible');
+  }, 1800);
+  hideTimer = setTimeout(() => {
+    animatedLogos.forEach(el => { el.style.display = 'none'; });
+  }, 2100);
+}
+
+
+function enterDesktop() {
+  clearTimers();
+  if (staticLogo) {
+    staticLogo.classList.remove('is-visible');
+    staticLogo.style.display = 'none';
+  }
+  animatedLogos.forEach(el => { el.style.display = ''; });
+}
+
+
+function handleChange(e) {
+  if (e.matches) {
+    enterMobile();
+  } else {
+    enterDesktop();
+  }
+}
+
+
+mq.addEventListener('change', handleChange);
+handleChange(mq);
+});
+
