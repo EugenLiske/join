@@ -1,12 +1,3 @@
-/* HTML-Snippet, in dem sich die eigentliche Toast-Nachricht verbirgt.
-    <div id="signup_overlay" class="overlay">
-        <div id="overlay_message" class="overlay_message">
-            You signed up successfully
-        </div>
-    </div> */
-
-
-/* Overlay-Eigenschaften für die Toast-Nachricht*/
 
 .overlay {
     position: fixed;
@@ -40,10 +31,9 @@
     font-weight: 400;
     font-size: 20px;
     text-align: center;
-      /* Inhalt in der Mitte zentrieren */
     display: flex;
-    align-items: center;    /* vertikal */
-    justify-content: center;/* horizontal */
+    align-items: center;  
+    justify-content: center;
     transform: translateY(100%);
     opacity: 0;
     gap: 12px;

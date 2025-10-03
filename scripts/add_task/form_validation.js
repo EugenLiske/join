@@ -72,7 +72,7 @@ function toggleInputErrorDesign(element, isCorrect){
 function toggleWarning(htmlId, isCorrect, message){
     let messageRef = document.getElementById(htmlId);
     isCorrect ? messageRef.classList.add("d_none") : messageRef.classList.remove("d_none");
-    container.innerText = message;
+    messageRef.innerText = message;
 }
 
 
