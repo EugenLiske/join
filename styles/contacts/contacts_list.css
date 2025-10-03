@@ -663,6 +663,7 @@
     width: 100%;
     padding-top: 0;
     margin-top: 0;
+    z-index: auto;
     }
     
     /* Contact Details über komplette Breite */
