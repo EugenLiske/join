@@ -138,7 +138,7 @@ function getCheckboxSubtask(status){
 
 async function saveSubtaskChanges(){
     const task = getCurrentTask();
-    if (task["subtasks"]){
+    if (task["subtasks"] && Object.keys(task["subtasks"]).length > 0){
         await setData(task["subtasks"], "/tasks/task_" + task.id + "/subtasks");
         updateProgressbar(task);
     }
