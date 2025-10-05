@@ -183,8 +183,8 @@ function deleteTaskFromArray(taskId) {
 }
 
 
-function openEditTaskOverlay(){
-    displayEditTaskOverlay(getCurrentTask().id);
+async function openEditTaskOverlay(){
+    await displayEditTaskOverlay();
 }
 
 

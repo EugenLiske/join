@@ -2,7 +2,7 @@
 // --- Task Edit Overlay --------------------------------------------------------------------------
 // Contacts have already been loaded from the board when displaying.
 
-async function displayEditTaskOverlay(taskId){
+async function displayEditTaskOverlay(){
     deleteTaskForm("add");
     toggleScrollBehaviorOfBody('hidden');
 
@@ -70,11 +70,12 @@ function setAssignedToSelection(assignedList){
     const personKeys = Object.keys(contacts);
     const searchHTMLList = document.getElementById("selection").children;
     let contact = null;
-
+    
     for (let personKeyIdx = 0; personKeyIdx < personKeys.length; personKeyIdx++) {
         contact = contacts[personKeys[personKeyIdx]];
         searchHTMLList[personKeyIdx].classList.remove("person_selected");  
-        if(searchPersonInAssigned(assignedList, personKeyIdx, contact.id)){
+       
+        if(searchPersonInAssigned(assignedList, contact.id)){
             selectPerson(searchHTMLList[personKeyIdx], personKeyIdx);  
         }
     }
@@ -84,7 +85,7 @@ function setAssignedToSelection(assignedList){
 function searchPersonInAssigned(assignedList, contactID){
     const assignedKeys = Object.keys(assignedList);
     for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
-        if (assignedList[assignedKeys[assignedKeyIdx]] == contactID){
+        if (assignedList[assignedKeys[assignedKeyIdx]] == contactID){            
             return true;
         }
     }      
