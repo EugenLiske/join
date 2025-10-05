@@ -324,4 +324,3 @@ function handleChange(e) {
 mq.addEventListener('change', handleChange);
 handleChange(mq);
 });
-
