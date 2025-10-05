@@ -202,6 +202,14 @@ body {
 .input_field:focus {
   border: 2px solid #29abe2;
   outline: none;
+  overflow: auto;
+  text-overflow: clip;  
+}
+
+.input_field:not(:focus) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .input_field_icon {
@@ -227,7 +235,8 @@ body {
 .checkbox_wrapper {
   display: flex;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  margin-top: 16px;
 }
 
 .checkbox_field {
@@ -644,6 +653,7 @@ footer {
   .signup_form {
     padding-left: 8px;
     padding-right: 8px;
+    padding-top: 16px;
   }
 }
 

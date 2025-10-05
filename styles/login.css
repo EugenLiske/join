@@ -1,5 +1,13 @@
 /* General (Logo, Animation, etc.) */
 
+
+/* Scroll global sperren */
+html.no-scroll,
+body.no-scroll {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none; /* verhindert Gummi-Scroll auf Mobile */
+}
 * {
   margin: 0;
   box-sizing: border-box;
@@ -22,7 +30,7 @@ body {
   inset: 0;
   background: #f6f7f8;
   z-index: 10000;
-  animation: splashFade 700ms ease-out both;
+  animation: splashFade 1000ms ease-out both;
   pointer-events: none;
 }
 
@@ -197,6 +205,14 @@ body {
 .input_field:focus {
   border: 2px solid #29abe2;
   outline: none;
+  overflow: auto;
+  text-overflow: clip;  
+}
+
+.input_field:not(:focus) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .input_field_icon {
@@ -441,10 +457,6 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 24px;
-  padding-right: 24px;
   transition: background-color 0.125s ease, transform 0.125s ease,
     box-shadow 0.125s ease;
 }
@@ -653,6 +665,13 @@ footer {
 }
 
 @media (max-width: 428px) {
+  .sign_up_page_content_div {
+      height: auto;
+      min-height: unset;
+      padding-bottom: 24px;
+      padding-top: 59px;
+  }
+  
   :root {
     --logo-top-final: 15px;
     --logo-height: 50px;
@@ -694,6 +713,7 @@ footer {
     padding-bottom: 16px;
     padding-left: 0;
   }
+  
   .page > .become_member_area {
     position: static;
     display: flex;
@@ -719,17 +739,21 @@ footer {
   .splash {
     background-color: #091931;
   }
+
   .logo--light,
   .logo--dark {
     display: block;
   }
+
   .logo--light {
     animation: moveLogo 2000ms ease forwards,
-      logoSwapLight 700ms linear forwards;
+      logoSwapLight 1000ms linear forwards;
   }
+
   .logo--dark {
-    animation: moveLogo 2000ms ease forwards, logoSwapDark 700ms linear forwards;
+    animation: moveLogo 2000ms ease forwards, logoSwapDark 1000ms linear forwards;
   }
+
   @keyframes logoSwapLight {
     0%,
     59.999% {
@@ -740,6 +764,7 @@ footer {
       opacity: 0;
     }
   }
+
   @keyframes logoSwapDark {
     0%,
     59.999% {
@@ -755,22 +780,27 @@ footer {
     margin-top: 0;
     height: 600px;
   }
+
   .login_form {
     height: 450px;
     padding-top: 16px;
     padding-bottom: 16px;
   }
+
   .login_button_area {
     flex-direction: column;
     gap: 16px;
     margin-top: 32px;
   }
+  
   .login_button {
     width: 177px;
   }
+
   .signup_button {
     width: 180px;
   }
+
   .input_fields {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -779,5 +809,9 @@ footer {
   .logo_signup_page {
     width: 50px;
     height: auto;
+  }
+
+  .signup_headline {
+    font-size: 48px;
   }
 }

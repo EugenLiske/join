@@ -33,7 +33,7 @@
                         class="input_field"
                         type="email"
                         placeholder="Email"
-                        oninput="validateForm(); clearEmailError()"   
+                        oninput="this.title=this.value; validateForm(); clearEmailError()"   
                         onfocus="clearEmailError()"   
                         onblur="validateEmailOnBlur()"               
                     >
