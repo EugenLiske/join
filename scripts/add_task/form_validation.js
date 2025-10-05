@@ -247,8 +247,8 @@ function checkNumberInterval(day, month, year){
 function isDateInFuture(day, month, year){
     const d = new Date();
     const thisYear = d.getFullYear();
-    const thisMonth = d.getMonth();
-    const thisDay = d.getDay();
+    const thisMonth = d.getMonth() + 1;
+    const thisDay = d.getDate();
  
     return (year > thisYear || (year == thisYear && (month > thisMonth || (month == thisMonth && day >= thisDay))));
 }
