@@ -27,7 +27,7 @@ function shortenText(text, limit) {
 
 
 function buildSubtaskProgressbar(task){
-    if (task["subtasks"]){
+    if (task["subtasks"] && Object.keys(task["subtasks"]).length > 0){
         const subtasks = task["subtasks"];
         const values = countArchievedSubtasks(subtasks);
         let progressbarColor = values.counter/values.amount == 1 ? "all_subtasks_completed" : "subtasks_outstanding";
