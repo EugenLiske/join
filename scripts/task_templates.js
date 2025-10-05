@@ -49,7 +49,7 @@ function getListElementTemplate2(selectedDesignClass, personIdx, personkey, chec
 function assignedToListElementTemplate(person){
     return `<li>
                 ${getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name))}
-                ${person.name}
+                <span>${person.name}</span>
             </li>`;
 }
 
