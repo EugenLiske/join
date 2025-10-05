@@ -10,12 +10,15 @@
 .edit_main {
    display: flex;
    justify-content: flex-start;
-   align-items: center;
+   align-items: flex-start;
    width: 1212px;
-   height: 594px;
+   min-height: 594px;          
+   max-height: 90vh;       
+   overflow-y: auto;       
    border: 1px solid rgba(42, 54, 71, 1);
    border-radius: 30px;
    position: relative;
+   padding-bottom: 40px;
    background-color: #ffffff;
    z-index: 201;
 }
@@ -32,6 +35,7 @@
    width: 100%;
    max-width: 453px;
    height: 594px;
+   flex-shrink: 0;
 }
 
 /* LOGO STYLING in Extra CSS*/
@@ -39,7 +43,7 @@
 /* RIGHT SIDE - CONTENT AREA */
 .content_area {
    flex: 1;
-   height: 100%;
+   height: auto;
    position: relative;
    padding: 48px;
    display: flex;

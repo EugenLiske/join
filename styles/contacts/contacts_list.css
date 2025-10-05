@@ -11,7 +11,7 @@
 
 .main_wrapper {
   align-items: flex-start !important;
-  padding: 0 !important;
+  /* padding: 0 !important; */
 }
 
 .main_container {
@@ -75,6 +75,11 @@
 .add_contact_button img {
   width: 24px;
   height: 24px;
+}
+
+/* Mobile Add Button standardmäßig ausblenden */
+.mobile_add_contact_button {
+    display: none;
 }
 
 /* ================== CONTACTS LIST CONTAINER ================== */
@@ -632,6 +637,12 @@
   .contact_details_name {
     font-size: 28px;
   }
+}
+
+@media (min-width: 751px) {
+    .main_wrapper {
+        padding-bottom: 0 !important;
+    }
 }
 
 /* ========== 750px BREAKPOINT ============================  */
