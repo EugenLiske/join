@@ -300,10 +300,6 @@ button.input_field{
 }
 
 .subtask_icon_wrapper {
-    /* flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;  */
     position: absolute;
     display: flex;
     align-items: center;

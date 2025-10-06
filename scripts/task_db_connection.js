@@ -1,14 +1,22 @@
-// const BASE_URL = "https://test-projekt-3707a-default-rtdb.europe-west1.firebasedatabase.app";
 const BASE_URL = "https://join-476d1-default-rtdb.firebaseio.com";
-// Die aktivierte BASE_URL ist Eugen. Ich nutze das zwecks Kanban-Tests.
-// const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 
+/**
+ * Fetches all tasks from the Firebase database.
+ * 
+ * @returns {Object|null} A promise resolving to an object containing all tasks, or null if an error occurs.
+ */
 async function getAllTasks(){
-  return await getData("/tasks");
+  return getData("/tasks");
 }
 
 
+/**
+ * Fetches data from a given Firebase path.
+ * 
+ * @param {string} path - The relative path in the Firebase database (e.g., "/tasks").
+ * @returns {Object|null} A promise resolving to the data object or null if an error occurs.
+ */
 async function getData(path) {
   let fireBaseResponseAsJson = null;
   try {
@@ -19,10 +27,18 @@ async function getData(path) {
     console.error("getData: Error occured!");
     console.error(error);
   }
-  return fireBaseResponseAsJson; // gibt Objekt oder null zurück
+  return fireBaseResponseAsJson;
 }
 
 
+/**
+ * Writes data to a specified path in the Firebase database.
+ * Overwrites any existing data at that path.
+ * 
+ * @param {any} data - The data to be written.
+ * @param {string} path - The relative path in the Firebase database.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ */
 async function setData(data, path) {
   let response = null;
   try {
@@ -41,7 +57,7 @@ async function setData(data, path) {
 
 
 async function getTaskCounter(){
-  return await getData("/task_counter");
+  return getData("/task_counter");
 }
 
 
