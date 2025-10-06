@@ -11,7 +11,7 @@
 
 .main_wrapper {
   align-items: flex-start !important;
-  /* padding: 0 !important; */
+  padding: 0 !important;
 }
 
 .main_container {
@@ -102,7 +102,7 @@
   left: 0;
   width: calc(100% - 20px);
   display: flex;
-  /* margin-right: 20px; */
+  margin-left: 10px;
   width: 440px;
   height: 90px;
 }
