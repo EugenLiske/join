@@ -33,8 +33,6 @@ function setSubtaskId(subtaskId){
 }
 
 
-// EventListener -------------------------------------------------------------------
-
 /**
  * Global click event listener.
  * 
@@ -203,15 +201,16 @@ function getAssignedPersons(){
 }
 
 
-// Category
-
+/**
+ * Sets the selected category and updates the UI accordingly.
+ * 
+ * @param {string} category - The selected category.
+ */
 function setCategorySelection(category){
     showCategorySelection(category);
     renderCategoryOptions();
 }
 
-
-// Subtasks
 
 function addSubtaskOrToggleIcons(event){
     if (event.key === 'Enter' && document.getElementById("subtask_input").value.length > 0) {
@@ -241,18 +240,34 @@ function cancelSubtask(){
 }
 
 
+/**
+ * Deletes a specific subtask element from the DOM.
+ * 
+ * @param {Event} event - The click event.
+ * @param {number} subtaskID - The ID of the subtask to delete.
+ */
 function deleteSubtask(event, subtaskID) {
     event.stopPropagation();
-    
     document.getElementById("subtask_element_" + subtaskID).remove();
 }
 
 
+/**
+ * Enables edit mode for a specific subtask by showing the edit input field.
+ * 
+ * @param {number} subtaskID - The ID of the subtask to edit.
+ */
 function openEditMode(subtaskID){
     document.getElementById("edit_mode_" + subtaskID).classList.remove("d_none");
 }
 
 
+/**
+ * Saves the edited subtask value and exits edit mode.
+ * 
+ * @param {Event} event - The event triggering the save action.
+ * @param {number} subtaskID - The ID of the subtask being edited.
+ */
 function saveAndCloseEditMode(event, subtaskID){
     event.stopPropagation();
 
@@ -262,19 +277,24 @@ function saveAndCloseEditMode(event, subtaskID){
 }
 
 
-// Create Task or Ok Button
-
+/**
+ * Checks if all required fields are filled and enables or disables
+ * the create task button accordingly.
+ * 
+ * @param {string} mode - The mode in which the form is used ("add_task" or "edit_task").
+ */
 function checkAndEnableButton(mode = "add_task"){
-    let createButtonRef = document.getElementById("create_task_button");
-    if (checkRequiredFieldsToEnableButton(mode)){
-        createButtonRef.disabled = false;
-    }
-    else {
-        createButtonRef.disabled = true;
-    }
+    let buttonId = mode === "add_task" ? "create_task_button" : "update_task_button";
+    let createButtonRef = document.getElementById(buttonId);
+    createButtonRef.disabled = checkRequiredFieldsToEnableButton(mode) ? false : true;
 }
 
 
+/**
+ * Deletes the task form content based on the mode.
+ * 
+ * @param {string} kind - Specifies whether to delete the "add" or "edit" form.
+ */
 function deleteTaskForm(kind = "add"){
     if (kind === "add")
         document.getElementById("add_task_form").innerHTML = "";
@@ -287,17 +307,11 @@ function deleteTaskForm(kind = "add"){
 /**
  * Toggles the dropdown icon based on the visibility of the selection element.
  *
- * @param {string} inputId - The ID of the selection list element to hide.
- * @param {string} iconId - The ID of the image element representing the dropdown icon.
+ * @param {string} inputId - The html ID of the selection list element to hide.
+ * @param {string} iconId - The html ID of the image element representing the dropdown icon.
  */
 function toggleDropDownIcon(inputId, iconId){
     let selectionRef = document.getElementById(inputId);
     let dropDownRef = document.getElementById(iconId);
-
-    if (selectionRef.classList.contains("d_none")){
-        dropDownRef.src="../assets/img/icons/drop_down/arrow.svg";
-    }
-    else{
-        dropDownRef.src="../assets/img/icons/drop_down/arrow_close.svg";
-    }
+    dropDownRef.src = selectionRef.classList.contains("d_none") ? "../assets/img/icons/drop_down/arrow.svg" : "../assets/img/icons/drop_down/arrow_close.svg";
 }

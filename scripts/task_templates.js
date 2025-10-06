@@ -56,7 +56,7 @@ function assignedToListElementTemplate(person){
 
 function getOKButtonTemplate(){
     return `<button 
-                id="create_task_button" 
+                id="update_task_button" 
                 class="button_filled button_check" 
                 onclick="updateTaskAndGoBack()"
             >
