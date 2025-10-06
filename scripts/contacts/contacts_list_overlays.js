@@ -27,6 +27,9 @@ const contactDetailsPanel = document.getElementById("contact_details_panel");
  */
 export async function openAddContactOverlay() {
   try {
+    if (document.activeElement) {
+          document.activeElement.blur();
+      }
     const html = await loadOverlayHTML(
       "../overlays/contacts/contacts_add.html"
     );
@@ -73,6 +76,7 @@ function showOverlay(overlayId, html) {
   const overlay = document.getElementById(overlayId);
   overlay.innerHTML = html;
   overlay.classList.remove("d_none");
+  document.body.style.overflow = "hidden";
 }
 
 /**
@@ -304,6 +308,7 @@ function closeEditContactOverlay() {
   const overlay = document.getElementById("edit_contact_overlay");
   overlay.classList.add("d_none");
   overlay.innerHTML = "";
+  document.body.style.overflow = ''
   localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID);
 
   closeMobileActionMenu();

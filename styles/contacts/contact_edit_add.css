@@ -155,16 +155,16 @@
 }
 
 .input_field:focus {
-   border: 2px solid var(--c-active);
-   outline: none;
+   border: 1px solid var(--c-active);  /* Von 2px auf 1px */
+   outline: 2px solid var(--c-active); /* Focus-Ring außen */
+   outline-offset: -1px;               /* Direkt am Rand */
 }
 
 /* INPUT FIELD ICONS */
 .input_field_icon {
    position: absolute;
    right: 21px;
-   top: 50%;
-   transform: translateY(-50%);
+   top: 12px;
    width: 24px;
    height: 24px;
    pointer-events: none;
@@ -473,7 +473,7 @@
         width: 100px; /* Von 120px auf 100px */
         height: 100px;
         left: 50px; /* Von 97px auf 50px - näher zur linken Seite */
-        top: 180px; /* Etwas höher positionieren */
+        top: 200px; /* Etwas höher positionieren */
     }
     
     .avatar_initials {
@@ -489,7 +489,7 @@
     .input_container {
         width: 350px; /* Von 422px auf 350px */
         left: 180px; /* Weniger Abstand zum Avatar */
-        top: 120px; /* Höher positionieren */
+        top: 140px; /* Höher positionieren */
     }
     
     /* Input Fields schmaler */
@@ -502,7 +502,7 @@
     .button_container {
         max-width: 350px; /* Von 422px auf 350px */
         left: 180px; /* Gleich wie Input Container */
-        top: 360px; /* Angepasst an neue Input Position */
+        top: 380px; /* Angepasst an neue Input Position */
     }
     
     /* Linker Bereich etwas schmaler */
@@ -516,12 +516,7 @@
         height: 58px; /* Von 66px auf 58px */
         margin: 0 0 0 12px; /* Von 16px auf 12px */
     }
-    
-    .edit_h1 {
-        font-size: 52px; /* Von 61px auf 52px */
-        margin: 12px 0 0 12px; /* Von 16px auf 12px */
-    }
-    
+
     .edit_h3 {
         font-size: 24px; /* contact_add: Von 27px auf 24px */
         margin: 6px 0 0 12px; /* Von 8px/16px auf 6px/12px */
@@ -551,7 +546,7 @@
         width: 80px;
         height: 80px;
         left: 30px;
-        top: 140px; /* Höher, um Platz für Input zu schaffen */
+        top: 160px; /* Höher, um Platz für Input zu schaffen */
     }
     
     .avatar_initials {
@@ -567,7 +562,7 @@
     .input_container {
         width: 280px; /* Von 320px auf 280px */
         left: 140px; /* Weiter nach links */
-        top: 90px; /* Höher positionieren */
+        top: 110px; /* Höher positionieren */
     }
     
     .input_field {
@@ -581,7 +576,7 @@
     .button_container {
         max-width: 280px; /* Von 320px auf 280px */
         left: 140px;
-        top: 320px; /* Höher, da Input höher ist */
+        top: 340px; /* Höher, da Input höher ist */
     }
     
     /* Buttons kleiner */
@@ -639,7 +634,7 @@
     
     /* H1 kleiner */
     .edit_h1 {
-        font-size: 36px; /* Von 48px auf 36px */
+        font-size: 32px; /* Von 48px auf 32px */
         margin: 10px 0 0 10px; /* Von 14px auf 10px */
     }
     
@@ -671,7 +666,7 @@
         width: 70px; /* Von 80px auf 70px */
         height: 70px;
         left: 25px; /* Von 30px auf 25px */
-        top: 120px; /* Von 140px auf 120px */
+        top: 140px; /* Von 140px auf 120px */
     }
     
     .avatar_initials {
@@ -687,7 +682,7 @@
     .input_container {
         width: 240px; /* Von 280px auf 240px */
         left: 120px; /* Von 140px auf 120px */
-        top: 80px; /* Von 90px auf 80px */
+        top: 100px; /* Von 90px auf 80px */
     }
     
     /* Input Fields kleiner */
@@ -702,7 +697,7 @@
     .button_container {
         max-width: 240px; /* Von 280px auf 240px */
         left: 120px; /* Von 140px auf 120px */
-        top: 280px; /* Von 320px auf 280px */
+        top: 300px; /* Von 320px auf 280px */
     }
     
       /* Cancel Button deutlich kleiner */

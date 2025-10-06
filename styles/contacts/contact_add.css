@@ -34,3 +34,11 @@
    margin: 16px 0 0 16px;
    margin-bottom: 60px;
 }
+
+/* h1 Anpassung unter 1240px ###########################################*/
+@media (max-width: 1240px) {
+   .edit_h1 {
+   font-size: 48px; /* Von 61px auf 52px */
+   margin: 12px 0 0 12px; /* Von 16px auf 12px */
+   }
+}
