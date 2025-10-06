@@ -1,7 +1,8 @@
 
-// --- Task Edit Overlay --------------------------------------------------------------------------
-// Contacts have already been loaded from the board when displaying.
-
+/**
+ * Displays the overlay for editing a task.
+ * Initializes the form, sets data, adjusts the layout, and opens the overlay.
+ */
 async function displayEditTaskOverlay(){
     deleteTaskForm("add");
     toggleScrollBehaviorOfBody('hidden');
@@ -17,8 +18,10 @@ async function displayEditTaskOverlay(){
 }
 
 
-// Form Manipulation
-
+/**
+ * Modifies the task form layout for editing mode.
+ * Adds the OK button, hides required symbols, and applies CSS class changes.
+ */
 function manipulateTaskForm(){
     document.getElementById("add_task_footer").innerHTML = getOKButtonTemplate();
     hideRequiredSymole();
@@ -26,8 +29,8 @@ function manipulateTaskForm(){
     changeCSSClasses("task_input_area", "edit_task_input_area");
     changeCSSClasses("task_separator", "edit_task_separator");
     changeCSSClasses("add_task_footer", "edit_add_task_footer");
-    document.getElementById("task_title_input").onkeyup = "checkAndEnableButton('edit_task')";
-    document.getElementById("task_deadline_input").onkeyup = "checkAndEnableButton('edit_task')";
+    document.getElementById("task_title_input").onkeyup = () => checkAndEnableButton('edit_task');
+    document.getElementById("task_deadline_input").onkeyup = () => checkAndEnableButton('edit_task');
 }
 
 
@@ -39,14 +42,22 @@ function hideRequiredSymole(){
 }
 
 
+/**
+ * Replaces a given CSS class with a new one on the first matching element.
+ * 
+ * @param {string} oldCSSClass - The current CSS class to replace.
+ * @param {string} newCSSClass - The new CSS class to apply.
+ */
 function changeCSSClasses(oldCSSClass, newCSSClass){
     const elementsRef = document.getElementsByClassName(oldCSSClass);
     elementsRef[0].classList.replace(oldCSSClass, newCSSClass);
 }
 
 
-// Fill Form with Informations
-
+/**
+ * Fills the edit task form with the current task's data.
+ * Sets values for title, description, due date, priority, assigned persons, and subtasks.
+ */
 function setTaskFormData(){
     const task = getCurrentTask();
     const taskKeys = Object.keys(task);
@@ -59,12 +70,22 @@ function setTaskFormData(){
 }
 
 
+/**
+ * Selects the task's priority in the form.
+ * 
+ * @param {string} priority - The selected priority ("urgent", "medium", "low").
+ */
 function setPrioritySelection(priority){
     const priorityButtonRef = document.getElementById(priority);
     togglePriorityButtons(priorityButtonRef, priority);
 }
 
 
+/**
+ * Highlights the contacts that are assigned to the task.
+ * 
+ * @param {Object} assignedList - List of assigned contact IDs.
+ */
 function setAssignedToSelection(assignedList){
     const contacts = getFormContacts();
     const personKeys = Object.keys(contacts);
@@ -82,6 +103,13 @@ function setAssignedToSelection(assignedList){
 }
 
 
+/**
+ * Checks if a given contact ID exists in the list of assigned persons.
+ * 
+ * @param {Object} assignedList - List of assigned person IDs.
+ * @param {number} contactID - ID of the contact to look for.
+ * @returns {boolean} True if found, otherwise false.
+ */
 function searchPersonInAssigned(assignedList, contactID){
     const assignedKeys = Object.keys(assignedList);
     for (let assignedKeyIdx = 0; assignedKeyIdx < assignedKeys.length; assignedKeyIdx++) {
@@ -93,6 +121,11 @@ function searchPersonInAssigned(assignedList, contactID){
 }
 
 
+/**
+ * Adds all subtasks of the task to the form visually.
+ * 
+ * @param {Object} subtasks - Subtasks object with description and state.
+ */
 function setSubtasksList(subtasks){
     const subtaskKeys = Object.keys(subtasks);
     const subtasksContainer = document.getElementById("subtasks_container");
@@ -106,6 +139,10 @@ function setSubtasksList(subtasks){
 }
 
 
+/**
+ * Updates the current task with the edited data and navigates back.
+ * Shows a toast confirmation message after saving.
+ */
 async function updateTaskAndGoBack(){
     if (checkRequiredFields("edit_task")){
         const formContent = getFormContent();
@@ -117,6 +154,12 @@ async function updateTaskAndGoBack(){
     }
 }
 
+
+/**
+ * Saves all form content to the database (Firebase).
+ * 
+ * @param {Object} formContent - Data from the task form.
+ */
 async function saveFormContentInDB(formContent) {
     for (const [key, value] of Object.entries(formContent)) {
         await setData(value, `/tasks/task_${currentTask.id}/${key}`);
@@ -130,7 +173,11 @@ function goBack(){
 }
 
 
-
+/**
+ * Gathers all data from the edit task form and returns it as an object.
+ * 
+ * @returns {Object} Form data including title, description, date, priority, assignees, and subtasks.
+ */
 function getFormContent(){
     return {
         "title": getTitle(),
