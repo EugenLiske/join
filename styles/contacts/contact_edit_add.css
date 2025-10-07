@@ -473,7 +473,7 @@
         width: 100px; /* Von 120px auf 100px */
         height: 100px;
         left: 50px; /* Von 97px auf 50px - näher zur linken Seite */
-        top: 200px; /* Etwas höher positionieren */
+        top: 200x; /* Etwas höher positionieren */
     }
     
     .avatar_initials {
@@ -541,6 +541,9 @@
 
 /* Overlay Anpassung unter 1030px  ##############################################*/
 @media (max-width: 1030px) {
+    .content_area {
+   margin: 40px auto;
+}
     /* Avatar noch kleiner und höher positionieren */
     .contact_avatar {
         width: 80px;
@@ -793,11 +796,7 @@
     
     /* Content Area - heller Bereich */
     .content_area {
-        flex: 1;
-        padding: 60px 24px 24px 24px; /* Oben Platz für Avatar */
-        background-color: white;
-        border-radius: 0 0 30px 30px;
-        position: relative;
+        margin: 0 auto
     }
     
     /* ========== KREUZ RULES ========== */
