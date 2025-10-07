@@ -52,14 +52,17 @@ function getContactNameSearchIndices(input, nameList){
  * @param {Object} contacts - Object containing all available contacts, keyed by unique identifiers.
  */
 function createContactDropDownSearchList(searchedPersons, assignedList, contacts){
-    let personSelectionRef = document.getElementById("selection");
-    let selection = "";
-    let contactKeys = Object.keys(contacts);
-    
-    for (let searchIdx = 0; searchIdx < searchedPersons.length; searchIdx++) {
-        selection += createContactDropDownSearchListElement(searchedPersons, assignedList, searchIdx, contacts, contactKeys);
+    if (contacts){
+        let personSelectionRef = document.getElementById("selection");
+        let selection = "";
+        let contactKeys = Object.keys(contacts);
+        
+        for (let searchIdx = 0; searchIdx < searchedPersons.length; searchIdx++) {
+            selection += createContactDropDownSearchListElement(searchedPersons, assignedList, searchIdx, contacts, contactKeys);
+        }
+        personSelectionRef.innerHTML = selection;        
     }
-    personSelectionRef.innerHTML = selection;
+
 }
 
 
@@ -79,7 +82,7 @@ function createContactDropDownSearchListElement(searchedPersons, assignedList, s
     const selectedDesignClass = assignedTo == true ? "person_selected" : "";
 
     if (contacts[contactKeys[personIdx]].id !== undefined && contacts[contactKeys[personIdx]].id !== null){
-        return getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + contacts[contactKeys[personIdx]].id, assignedTo, contacts);
+        return getListElementTemplate(selectedDesignClass, personIdx, "contact_" + contacts[contactKeys[personIdx]].id, assignedTo, contacts);
     }   
     return ""; 
 }
