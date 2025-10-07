@@ -1,3 +1,11 @@
+
+/**
+ * Returns the HTML template string for a subtask list item including normal and edit modes.
+ *
+ * @param {string} input - The text content of the subtask.
+ * @param {number|string} subtaskId - The unique identifier of the subtask.
+ * @returns {string} HTML string representing the subtask element.
+ */
 function getSubtaskTemplate(input, subtaskId){
     return `<!-- normal -->
             <li id="subtask_element_${subtaskId}" class="subtask_bulletpoint" ondblclick="openEditMode(${subtaskId})">
@@ -28,6 +36,14 @@ function getSubtaskTemplate(input, subtaskId){
 }
 
 
+/**
+ * Generates a user icon template with background color and initials.
+ *
+ * @param {string} color - The background color of the icon.
+ * @param {string} initials - The initials to display.
+ * @param {string} [container="div"] - The HTML container tag (e.g., "div", "span").
+ * @returns {string} HTML string for the assigned-to icon.
+ */
 function getAssignedToIconTemplate(color, initials, container = "div"){
     return `<${container} class="person_icon" style="background-color: ${color}">
                 ${initials}
@@ -35,7 +51,17 @@ function getAssignedToIconTemplate(color, initials, container = "div"){
 }
 
 
-function getListElementTemplate2(selectedDesignClass, personIdx, personkey, checked, contacts){
+/**
+ * Returns an HTML list element template for a selectable contact in the "Assigned To" dropdown.
+ *
+ * @param {string} selectedDesignClass - The CSS class to apply when selected.
+ * @param {number} personIdx - The index of the person in the contacts list.
+ * @param {string} personkey - The key of the person in the contacts object.
+ * @param {boolean} checked - Whether the person is currently selected.
+ * @param {Object} contacts - The contacts object containing contact data.
+ * @returns {string} HTML string for the contact list element.
+ */
+function getListElementTemplate(selectedDesignClass, personIdx, personkey, checked, contacts){
     return `<li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
                 <div class="person_info">
                     ${getAssignedToIconTemplate(contacts[personkey].avatarColor, generateInitials(contacts[personkey].name))}
@@ -46,6 +72,14 @@ function getListElementTemplate2(selectedDesignClass, personIdx, personkey, chec
 }
 
 
+/**
+ * Returns an HTML list element template for an assigned person.
+ *
+ * @param {Object} person - The person object.
+ * @param {string} person.name - The name of the person.
+ * @param {string} person.avatarColor - The color of the avatar icon.
+ * @returns {string} HTML string for the assigned person list item.
+ */
 function assignedToListElementTemplate(person){
     return `<li>
                 ${getAssignedToIconTemplate(person.avatarColor, generateInitials(person.name))}
@@ -54,6 +88,11 @@ function assignedToListElementTemplate(person){
 }
 
 
+/**
+ * Generates the HTML for the "OK" button used to update tasks.
+ *
+ * @returns {string} HTML string for the OK button element.
+ */
 function getOKButtonTemplate(){
     return `<button 
                 id="update_task_button" 
@@ -68,6 +107,15 @@ function getOKButtonTemplate(){
 }
 
 
+/**
+ * Returns an HTML template for a subtask list item with a checkbox.
+ *
+ * @param {Object} subtask - The subtask object.
+ * @param {string} subtask.description - The description of the subtask.
+ * @param {string} subtask.status - The completion status of the subtask.
+ * @param {number} idx - The index of the subtask in the list.
+ * @returns {string} HTML string for the subtask list item.
+ */
 function subtaskListElementTemplate(subtask, idx){
     return `<li onclick="findSubtaskAndToggleCheckbox(${idx})">
                 <img id="checkbox_${idx}" class="checkbox_tick" src="${getCheckboxSubtask(subtask.status)}" alt="">
@@ -76,6 +124,13 @@ function subtaskListElementTemplate(subtask, idx){
 }
 
 
+/**
+ * Builds the drag-and-drop menu template based on the current task column.
+ *
+ * @param {string} column - The current kanban column of the task ("to_do", "in_progress", "await_feedback", "done").
+ * @param {number} taskId - The ID of the task.
+ * @returns {string} HTML string representing the menu options.
+ */
 function buildDragAndDropMenu(column, taskId){
 
     if (column === "to_do"){
@@ -93,6 +148,15 @@ function buildDragAndDropMenu(column, taskId){
 }
 
 
+/**
+ * Generates a menu item for drag-and-drop task movement.
+ *
+ * @param {string} icon - The icon filename (e.g., "arrow_downward.svg").
+ * @param {string} text - The label of the menu option.
+ * @param {string} column - The target kanban column.
+ * @param {number} taskId - The ID of the task to move.
+ * @returns {string} HTML string for the drag-and-drop menu item.
+ */
 function getDragOrDropMenuTemplate(icon, text, column, taskId){
     return `<li onclick="moveTaskWithMenu(event, '${column}', ${taskId})">
                 <img class="drag_and_drop_icon" src="../assets/img/icons/task/${icon}">
@@ -101,6 +165,12 @@ function getDragOrDropMenuTemplate(icon, text, column, taskId){
 }
 
 
+/**
+ * Generates the HTML for a task card used in the kanban board.
+ *
+ * @param {Object} task - The task object containing task information.
+ * @returns {string} HTML string for the task card element.
+ */
 function getTaskCardTemplate(task){
     return `<article
                 id="task_card_${task['id']}"
@@ -144,10 +214,13 @@ function getTaskCardTemplate(task){
 
 
 /**
- * 
- * @param {number} numberSubtasksCompleted 
- * @param {number} numberSubtasks 
- * @returns  - HTML container containing a progress bar that is filled according to the input value.
+ * Generates the progress bar HTML for a task based on completed subtasks.
+ *
+ * @param {number} taskId - The ID of the task.
+ * @param {number} numberSubtasksCompleted - Number of completed subtasks.
+ * @param {number} numberSubtasks - Total number of subtasks.
+ * @param {string} progressbarColor - CSS class for the progress bar color.
+ * @returns {string} HTML string containing the progress bar and text.
  */
 function getProgressbarTemplate(taskId, numberSubtasksCompleted, numberSubtasks, progressbarColor){
     return `<div class="progress_container">
@@ -157,22 +230,46 @@ function getProgressbarTemplate(taskId, numberSubtasksCompleted, numberSubtasks,
 }
 
 
+/**
+ * Creates a list element for a category selection dropdown.
+ *
+ * @param {string} category - The name of the category.
+ * @returns {string} HTML string for the category list item.
+ */
 function getCategorySelectionListElementTemplate(category){
     return `<li onclick="setCategorySelection('${category}'); checkAndEnableButton();">${category}</li>`
 }
 
 
+/**
+ * Returns an HTML template representing the priority of a task.
+ *
+ * @param {string} priority - The task priority ("urgent", "medium", "low").
+ * @returns {string} HTML string for the priority label and icon.
+ */
 function getPriorityTemplate(priority){
     return `<span>${firstLetterUpperCase(priority)}</span><img src="../assets/img/icons/task/priorities/${getPriorityIcon(priority)}" alt="Priority Icon ${priority}">`;
 
 }
 
 
+/**
+ * Generates a colored label for a task category.
+ *
+ * @param {string} category - The name of the task category.
+ * @returns {string} HTML string for the category label.
+ */
 function getCategoryLabelTemplate(category){
     return `<span class="category category_bg_color${getCategoryNumber(category)}">${category}</span>`;
 }
 
 
+/**
+ * Returns a shortened version of the task description.
+ *
+ * @param {string} description - The full description text.
+ * @returns {string} HTML paragraph element with the shortened text.
+ */
 function getShortDescriptionTemplate(description){
     return `<p id="bct_description">${shortenText(description, 40)}</p>`;
 }

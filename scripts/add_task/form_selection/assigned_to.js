@@ -79,7 +79,7 @@ function createContactDropDownSearchListElement(searchedPersons, assignedList, s
     const selectedDesignClass = assignedTo == true ? "person_selected" : "";
 
     if (contacts[contactKeys[personIdx]].id !== undefined && contacts[contactKeys[personIdx]].id !== null){
-        return getListElementTemplate2(selectedDesignClass, personIdx, "contact_" + contacts[contactKeys[personIdx]].id, assignedTo, contacts);
+        return getListElementTemplate(selectedDesignClass, personIdx, "contact_" + contacts[contactKeys[personIdx]].id, assignedTo, contacts);
     }   
     return ""; 
 }
