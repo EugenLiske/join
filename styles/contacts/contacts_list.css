@@ -102,7 +102,6 @@
   left: 0;
   width: calc(100% - 20px);
   display: flex;
-  margin-left: 10px;
   width: 440px;
   height: 90px;
 }
@@ -900,7 +899,7 @@
   .mobile_view_contact_details .mobile_back_button {
     display: flex;
     position: fixed;
-    top: 128px;
+    top: 100px;
     right: 40px;
     width: 44px;
     height: 44px;
