@@ -1,18 +1,72 @@
 // References to DOM elements and other variables
 
+/**
+ * Email input field in the login form.
+ * @type {HTMLInputElement}
+ */
 const emailInput          = document.getElementById("email_input");
+
+/**
+ * Password input field in the login form.
+ * @type {HTMLInputElement}
+ */
 const passwordInput       = document.getElementById("password_input");
+
+/**
+ * Login (submit) button in the login form.
+ * @type {HTMLButtonElement}
+ */
 const loginButton         = document.getElementById("login_button");
+
+/**
+ * Container for login error messages under the password field.
+ * @type {HTMLDivElement}
+ */
 const loginErrorContainer = document.getElementById("login_error");
+
+/**
+ * Icon element on the right of the password field (lock/visibility).
+ * @type {HTMLImageElement}
+ */
 const loginPwdIcon        = document.getElementById("login_password_icon");
+
+/**
+ * Fullscreen overlay container for success feedback.
+ * @type {HTMLDivElement}
+ */
 const signupOverlay       = document.getElementById("signup_overlay");
+
+/**
+ * Message content shown inside the success overlay.
+ * @type {HTMLDivElement}
+ */
 const overlayMessage      = document.getElementById("overlay_message");
+
+/**
+ * Alias to the password input used by the visibility toggle helpers.
+ * @type {HTMLInputElement}
+ */
 const passwordInputField  = document.getElementById("password_input");
+
+/**
+ * Alias to the password visibility icon used by the helpers.
+ * @type {HTMLImageElement}
+ */
 const passwordIcon        = document.getElementById("login_password_icon");
+
+/**
+ * Base URL of the Firebase Realtime Database (without .json).
+ * @type {string}
+ */
 const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
 
 // Function for possible autofill. Password icons and button status are set correctly.
 
+/**
+ * Initializes the login screen to correctly handle browser autofill:
+ * sets the password icon state and enables/disables the login button accordingly.
+ * @returns {void}
+ */
 function initLoginAutoFill() {
   handleLoginPasswordInput("password_input", "login_password_icon");
   checkLoginEnable();
@@ -22,6 +76,13 @@ initLoginAutoFill();
 
 // Firebase database: GET function for user data
 
+/**
+ * Fetches data from the Firebase Realtime Database at a given path.
+ * @async
+ * @param {string} path - API path relative to {@link BASE_URL}, e.g., "/users".
+ * @returns {Promise<any>} Resolved JSON payload (e.g., user object tree).
+ * @throws {Error} If the request fails or returns a non-OK HTTP status.
+ */
 async function getAllUsers(path) {
   try {
     let fireBaseResponse = await fetch(BASE_URL + path + ".json");
@@ -39,6 +100,16 @@ async function getAllUsers(path) {
 
 // Login function (login button)
 
+/**
+ * Handles form-based login:
+ * - Prevents default submit
+ * - Validates email/password against the database
+ * - Stores initials & user state in sessionStorage
+ * - Shows success overlay and redirects to the summary page
+ * @async
+ * @param {Event} event - Submit event from the login form.
+ * @returns {Promise<boolean>} true on success; false on temporary failure.
+ */
 async function loginUser(event) {
   event.preventDefault();
   let emailValue    = emailInput.value.trim().toLowerCase();
@@ -58,14 +129,24 @@ async function loginUser(event) {
   }
 }
 
-
+/**
+ * Performs a guest login and immediately redirects to the summary page.
+ * @param {Event} event - Click event from the guest login button.
+ * @returns {void}
+ */
 function loginGuest(event) {
   event.preventDefault();
   setCurrentUserData(true, "guest", "");
   window.location.href='./pages/summary.html';
 }
 
-
+/**
+ * Persists login state, role, and name into sessionStorage.
+ * @param {boolean} login - Login state (true if logged in).
+ * @param {string} role - User role, e.g., "user" or "guest".
+ * @param {string} name - Display name of the user (empty for guest).
+ * @returns {void}
+ */
 function setCurrentUserData(login, role, name){
     sessionStorage.setItem("login", login);
     sessionStorage.setItem("role", role);
@@ -75,6 +156,13 @@ function setCurrentUserData(login, role, name){
 
 // Auxiliary functions for the loginUser function
 
+/**
+ * Finds a user in the response object that matches email and password.
+ * @param {Record<string, any>} userResponse - User object tree from the database.
+ * @param {string} emailValue - Email (already trimmed and lowercased).
+ * @param {string} passwordValue - Plaintext password.
+ * @returns {any|null} The matching user object or null if no match is found.
+ */
 function findMatchingUser(userResponse, emailValue, passwordValue) {
   let users = Object.values(userResponse);
   for (let i = 0; i < users.length; i++) {
@@ -86,7 +174,13 @@ function findMatchingUser(userResponse, emailValue, passwordValue) {
   return null;
 }
 
-
+/**
+ * Checks a single user record for an exact email/password match.
+ * @param {any} user - Single user object from the database.
+ * @param {string} emailValue - Normalized email.
+ * @param {string} passwordValue - Plaintext password.
+ * @returns {boolean} true if both email and password match.
+ */
 function checkSingleUserMatch(user, emailValue, passwordValue) {
   let dbEmail = "";
   let dbPassword = "";
@@ -99,7 +193,11 @@ function checkSingleUserMatch(user, emailValue, passwordValue) {
   return dbEmail !== "" && dbEmail === emailValue && dbPassword === passwordValue;
 }
 
-
+/**
+ * Stores user initials in sessionStorage if present.
+ * @param {any} user - User object that may include an "initials" field.
+ * @returns {void}
+ */
 function storeUserInitials(user) {
   if (user && user.initials) {
     let initials = String(user.initials);
@@ -109,7 +207,11 @@ function storeUserInitials(user) {
   }
 }
 
-
+/**
+ * Shows an error message for invalid email/password
+ * and marks the input fields as invalid.
+ * @returns {false} Always returns false to stop the login flow at this point.
+ */
 function showLoginErrorAndStop() {
   emailInput.classList.add("error");
   passwordInput.classList.add("error");
@@ -118,13 +220,19 @@ function showLoginErrorAndStop() {
   return false;
 }
 
-
+/**
+ * Shows a generic error message for temporary technical issues during login.
+ * @returns {void}
+ */
 function showGenericLoginError() {
   loginErrorContainer.textContent = "We couldn't sign you in right now. Please try again in a moment.";
   loginErrorContainer.style.display = "block";
 }
 
-
+/**
+ * Displays the success overlay, plays its animation, and then redirects to the summary page.
+ * @returns {void}
+ */
 function createSuccessOverlayLogin() {
   signupOverlay.classList.add("active");
   overlayMessage.classList.add("enter");
@@ -139,6 +247,11 @@ function createSuccessOverlayLogin() {
 
 // Validation function - activates the login button for valid entries
 
+/**
+ * Live-validates form fields and toggles the login button enabled state.
+ * Also clears any existing error indicators/messages.
+ * @returns {void}
+ */
 function checkLoginEnable() {loginUser
   let emailValue = emailInput.value.trim();
   let passwordValue = passwordInput.value;
@@ -151,6 +264,11 @@ function checkLoginEnable() {loginUser
 
 // Help function for the checkLoginEnable function
 
+/**
+ * Validates an email address with a simple regular expression.
+ * @param {string} email - Email address to validate.
+ * @returns {boolean} true if the email matches the pattern.
+ */
 function isEmailValid(email) {
   let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
   return regularExpression.test(email);
@@ -160,6 +278,10 @@ function isEmailValid(email) {
 // Clearing the error message when re-entering (oninput).
 // In case an invalid email-password combination was entered in loginUser.
 
+/**
+ * Clears existing error indicators and hides the login error message.
+ * @returns {void}
+ */
 function resetExistingLoginError() {
   emailInput.classList.remove("error");
   passwordInput.classList.remove("error");
@@ -172,6 +294,13 @@ function resetExistingLoginError() {
 
 // Visibility handling of password icons when entering the password and when clicking on the icon.
 
+/**
+ * Updates password field icon and clickability depending on current value/type.
+ * - Empty field: lock icon, clicks disabled
+ * - Type "text": visibility (eye) icon
+ * - Type "password": visibility_off (striked eye) icon
+ * @returns {void}
+ */
 function handleLoginPasswordInput() {
   if (passwordInputField.value.length === 0) {
     passwordInputField.type = "password";
@@ -187,7 +316,11 @@ function handleLoginPasswordInput() {
   }
 }
 
-
+/**
+ * Toggles the password field visibility (password ⇄ text)
+ * and updates the icon accordingly.
+ * @returns {void}
+ */
 function toggleLoginVisibility() {
   if (passwordInputField.value.length === 0) {
     passwordInputField.type = "password";
@@ -203,124 +336,3 @@ function toggleLoginVisibility() {
     passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
   }
 }
-
-
-// Fade in the static Flow logo when the animation is complete.
-
-function showStaticLogoAfterAnimation() {
-  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-  if (!isSmallScreen) { return; }
-  let staticLogo = document.querySelector('.header-logo .logo-static');
-  if (!staticLogo) { return; }
-  setTimeout(function(){
-    staticLogo.classList.add('is-visible');
-  }, 2000);
-}
-
-
-// Removes the bright intro logo after the splash fade (700ms)
-
-function removeLightLogoAfterSplash() {
-    let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-    if (!isSmallScreen) { return; }
-
-    let lightLogo = document.querySelector('.logo--light');
-    if (!lightLogo) { return; }
-
-    setTimeout(function(){
-      lightLogo.remove();
-    }, 700);
-  }
-
-
-// Removes the dark fixed logo after the animation,so that only the static one remains in the flow.
-
-function removeDarkFixedLogoAfterAnimation() {
-  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-  if (!isSmallScreen) { return; }
-  let darkLogo = document.querySelector('.logo--dark');
-  if (!darkLogo) { return; }
-
-  setTimeout(function(){
-    darkLogo.remove();
-  }, 2000);
-}
-
-
-function smoothLogoHandover() {
-  let isSmallScreen = window.matchMedia('(max-width: 428px)').matches;
-  if (!isSmallScreen) { return; }
-  let staticLogo = document.querySelector('.header-logo .logo-static');
-  if (staticLogo) {
-    setTimeout(function () {
-      staticLogo.classList.add('is-visible');
-    }, 1800); 
-  }
-  let animatedLogos = document.querySelectorAll('.logo_signup_page');
-  if (animatedLogos && animatedLogos.length > 0) {
-    setTimeout(function () {
-      for (let i = 0; i < animatedLogos.length; i++) {
-        animatedLogos[i].remove();
-      }
-    }, 2100);
-  }
-}
-
-
-showStaticLogoAfterAnimation();
-removeLightLogoAfterSplash();
-removeDarkFixedLogoAfterAnimation();
-smoothLogoHandover();
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  const mq = window.matchMedia('(max-width: 428px)');
-  const staticLogo = document.querySelector('.header-logo .logo-static');
-  const animatedLogos = document.querySelectorAll('.logo_signup_page');
-  let showTimer = null;
-  let hideTimer = null;
-
-function clearTimers() {
-    if (showTimer) { clearTimeout(showTimer); showTimer = null; }
-    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-}
-
-
-function enterMobile() {
-  clearTimers();
-  if (staticLogo) {
-    staticLogo.style.display = 'block';      // in Mobile existiert es
-    staticLogo.classList.remove('is-visible'); // beginnt unsichtbar (CSS blendet weich ein)
-  }
-  animatedLogos.forEach(el => { el.style.display = ''; });
-  showTimer = setTimeout(() => {
-    staticLogo && staticLogo.classList.add('is-visible');
-  }, 1800);
-  hideTimer = setTimeout(() => {
-    animatedLogos.forEach(el => { el.style.display = 'none'; });
-  }, 2100);
-}
-
-
-function enterDesktop() {
-  clearTimers();
-  if (staticLogo) {
-    staticLogo.classList.remove('is-visible');
-    staticLogo.style.display = 'none';
-  }
-  animatedLogos.forEach(el => { el.style.display = ''; });
-}
-
-
-function handleChange(e) {
-  if (e.matches) {
-    enterMobile();
-  } else {
-    enterDesktop();
-  }
-}
-
-
-mq.addEventListener('change', handleChange);
-handleChange(mq);
-});

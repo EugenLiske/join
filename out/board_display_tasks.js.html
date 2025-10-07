@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts/contacts_validation.js</title>
+    <title>JSDoc: Source: board_display_tasks.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts/contacts_validation.js</h1>
+    <h1 class="page-title">Source: board_display_tasks.js</h1>
 
     
 
@@ -26,118 +26,359 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// MF - contacts_validation.js
+            <pre class="prettyprint source linenums"><code>/** @type {{id?: number|string, kanbanBoardColumn?: string, [key: string]: any} | null} Holds the task currently opened/selected on the board. */
+let currentTask = null;
 
 /**
- * Contacts Validation Module
- * All validation logic for contact forms
+ * Sets the globally tracked current task by id.
+ * @param {number|string} taskId - The id of the task that should become the current one.
+ * @returns {void}
  */
-
-/**
- * Validates email address format
- * @param {string} email - Email address to validate
- * @returns {boolean} True if email format is valid
- */
-export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+function setCurrentTask(taskId){
+    currentTask = getElementWithId2(allTasks, taskId);
 }
 
 /**
- * Validates phone number format and requirements
- * @param {string} phone - Phone number to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Gets the globally tracked current task.
+ * @returns {{id?: number|string, kanbanBoardColumn?: string, [key: string]: any} | null} The currently selected task or null.
  */
-export function validatePhone(phone) {
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return { isValid: false, message: 'Phone number must have at least 6 digits' };
+function getCurrentTask(){
+    return currentTask;
+}
+
+/** @type {Array&lt;{id?: number|string, [key: string]: any}> | null} Cached list of contacts relevant for board rendering/assignment. */
+let boardContacts = null;
+
+/**
+ * Returns the cached board contacts.
+ * @returns {Array&lt;{id?: number|string, [key: string]: any}> | null} The contact list or null if not loaded yet.
+ */
+function getBoardContacts(){
+    return boardContacts;
+}
+
+
+// Allows focus of the input field when clicking on the magnifying glass despite absolute positioning and pointer-events:auto
+
+/**
+ * Focuses the board search input programmatically.
+ * Useful because the search icon is positioned absolutely.
+ * @returns {void}
+ */
+function focusSearchInputField() {
+    let searchInput = document.getElementById('searchInput');
+    searchInput.focus();
+}
+
+
+// Drag &amp; drop mechanism - Deactivation on mobile devices
+
+/**
+ * Detects whether the primary pointer is coarse (e.g., touch screens).
+ * @returns {boolean} True if the device likely uses a coarse pointer; otherwise false.
+ */
+function hasCoarsePointer() {
+    if (typeof window === 'undefined') {
+        return false;
     }
-    
-    if (!startsCorrect) {
-        return { isValid: false, message: 'Please enter area code (start with 0 or +)' };
+    if (typeof window.matchMedia === 'function') {
+        try {
+            return window.matchMedia('(pointer: coarse)').matches;
+        } catch (_) {
+        }
     }
-    
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
+    return (navigator.maxTouchPoints > 0) || ('ontouchstart' in window);
+}
+
+/**
+ * Determines whether drag &amp; drop should be active based on input capabilities.
+ * @returns {boolean} True if drag &amp; drop is enabled; false for coarse pointer devices.
+ */
+function isDragDropActive() {
+    if (typeof window === 'undefined') {
+        return true;
+    }
+    return !hasCoarsePointer();
+}
+
+/**
+ * Sets or removes the `draggable` attribute on all board cards depending on capability.
+ * @returns {void}
+ */
+function setCardsDraggableState() {
+    let cards = document.getElementsByClassName('board_card');
+    let draggableValue = 'false';
+    if (isDragDropActive()) {
+        draggableValue = 'true';
+    }
+    for (let i = 0; i &lt; cards.length; i++) {
+        cards[i].setAttribute('draggable', draggableValue);
+    }
+}
+
+/**
+ * Removes any visible drop indicators from all board columns.
+ * @returns {void}
+ */
+function clearAllDropIndicators() {
+    let columns = ['to_do', 'in_progress', 'await_feedback', 'done'];
+    for ( i = 0; i &lt; columns.length; i++) {
+        let container = document.getElementById(columns[i]);
+        if (container) {
+            let indicator = container.querySelector('.drop_indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+    }
+}
+
+/**
+ * Window resize handler to keep DnD state and overflow hints in sync.
+ * @returns {void}
+ */
+window.onresize = function () {
+    setCardsDraggableState();
+    if (!isDragDropActive()) {
+        clearAllDropIndicators();
+        updateAllOverflowHints();
+    }
+};
+
+
+// Drag &amp; drop mechanism
+
+/** @type {Array&lt;{id: number|string, kanbanBoardColumn: 'to_do'|'in_progress'|'await_feedback'|'done', title?: string, description?: string, [key: string]: any}>} In-memory list of all tasks displayed on the board. */
+let allTasks = [];
+
+/**
+ * Loads tasks from the database into memory.
+ * Expects a JSON object at "/tasks" whose values are individual task objects.
+ * @async
+ * @returns {Promise&lt;void>} Resolves after all tasks have been pushed to {@link allTasks}.
+ */
+async function loadTasksFromDB(){
+    let taskResponse = await getData("/tasks");
+    let taskKeysArray = Object.keys(taskResponse);
+    for (let index = 0; index &lt; taskKeysArray.length; index++) {
+        allTasks.push(
+            taskResponse[taskKeysArray[index]]
+        )  
+    }
+}
+
+/** @type {number|string|undefined} The id of the task currently being dragged (during DnD). */
+let currentDraggedTask;
+
+/**
+ * Initializes the board page: navigation/header, contacts, tasks, and UI synchronizations.
+ * @async
+ * @returns {Promise&lt;void>} Resolves when the board page has been fully prepared.
+ */
+async function initBoardPage() {
+    initNavAndHeaderPage('board');
+    boardContacts = await getContacts();
+    await loadTasksFromDB();
+    updateHTML();
+    setCardsDraggableState();
+    updateAllOverflowHints();
+    setupOverlayOutsideClickClose();      
+}
+
+/**
+ * Rebuilds the board columns from {@link allTasks} and re-applies behaviors.
+ * @returns {void}
+ */
+function updateHTML(){
+    generateTasksToDoHTML();
+    generateTasksInProgressHTML();
+    generateTasksAwaitFeedbackHTML();
+    generateTasksDoneHTML();
+    setCardsDraggableState();
+    updateAllOverflowHints();
+}
+
+/**
+ * Renders the "To do" column based on filters and search term.
+ * @returns {void}
+ */
+function generateTasksToDoHTML(){
+    let tasksToDo = allTasks.filter(task => task['kanbanBoardColumn'] == 'to_do' &amp;&amp; doesTitleMatchSearchTerm(task));
+    const toDoColumn = document.getElementById('to_do');
+    toDoColumn.innerHTML = '';
+    if (tasksToDo.length === 0) {
+        toDoColumn.innerHTML = generatePlaceholderHTML('to_do');
+    } else {
+        for (let index = 0; index &lt; tasksToDo.length; index++) {
+            const singleTaskToDo = tasksToDo[index];
+            toDoColumn.innerHTML += getTaskCardTemplate(singleTaskToDo);
+        }
+    }
+}
+
+/**
+ * Renders the "In progress" column based on filters and search term.
+ * @returns {void}
+ */
+function generateTasksInProgressHTML(){
+    let tasksInProgress = allTasks.filter(task => task['kanbanBoardColumn'] == 'in_progress' &amp;&amp; doesTitleMatchSearchTerm(task));
+    const inProgressColumn = document.getElementById('in_progress');
+    inProgressColumn.innerHTML = '';
+    if (tasksInProgress.length === 0) {
+        inProgressColumn.innerHTML = generatePlaceholderHTML('in_progress');
+    } else {
+        for (let index = 0; index &lt; tasksInProgress.length; index++) {
+            const singleTaskInProgress = tasksInProgress[index];
+            inProgressColumn.innerHTML += getTaskCardTemplate(singleTaskInProgress);
+        }
+    }
+}
+
+/**
+ * Renders the "Await feedback" column based on filters and search term.
+ * @returns {void}
+ */
+function generateTasksAwaitFeedbackHTML(){
+    let tasksAwaitFeedback = allTasks.filter(task => task['kanbanBoardColumn'] == 'await_feedback' &amp;&amp; doesTitleMatchSearchTerm(task));
+    const awaitFeedbackColumn = document.getElementById('await_feedback');
+    awaitFeedbackColumn.innerHTML = '';
+    if (tasksAwaitFeedback.length === 0) {
+        awaitFeedbackColumn.innerHTML = generatePlaceholderHTML('await_feedback');
+    } else {
+        for (let index = 0; index &lt; tasksAwaitFeedback.length; index++) {
+            const singleTaskAwaitFeedback = tasksAwaitFeedback[index];
+            awaitFeedbackColumn.innerHTML += getTaskCardTemplate(singleTaskAwaitFeedback);
+        }
+    }
+}
+
+/**
+ * Renders the "Done" column based on filters and search term.
+ * @returns {void}
+ */
+function generateTasksDoneHTML(){
+    let tasksDone = allTasks.filter(task => task['kanbanBoardColumn'] == 'done' &amp;&amp; doesTitleMatchSearchTerm(task));
+    const doneColumn = document.getElementById('done');
+    doneColumn.innerHTML = '';
+    if (tasksDone.length === 0) {
+        doneColumn.innerHTML = generatePlaceholderHTML('done');
+    } else {
+        for (let index = 0; index &lt; tasksDone.length; index++) {
+            const singleTaskDone = tasksDone[index];
+            doneColumn.innerHTML += getTaskCardTemplate(singleTaskDone);
+        }
+    }
+}
+
+/**
+ * Generates the placeholder markup for an empty column.
+ * @param {'to_do'|'in_progress'|'await_feedback'|'done'} kanbanBoardColumn - Column identifier.
+ * @returns {string} HTML string for the placeholder.
+ */
+function generatePlaceholderHTML(kanbanBoardColumn) {
+    const texts = {
+        'to_do': 'No tasks to do',
+        'in_progress': 'No tasks in progress',
+        'await_feedback': 'No tasks await feedback',
+        'done': 'No tasks done'
     };
+    return `
+        &lt;div class="no_tasks_placeholder">
+            ${texts[kanbanBoardColumn]}
+        &lt;/div>
+    `;
 }
 
 /**
- * Validates contact name requirements
- * @param {string} name - Full name to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Drag target handler: allows drop if drag &amp; drop is active.
+ * @param {DragEvent} event - The dragover event.
+ * @returns {void}
  */
-export function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return { isValid: false, message: 'Name is required' };
+function allowDrop(event) {
+    if (!isDragDropActive()) { return; } 
+    event.preventDefault();
+}
+
+/**
+ * Drag start handler for a board card.
+ * @param {number|string} id - The id of the task being dragged.
+ * @param {DragEvent} event - The dragstart event.
+ * @returns {void}
+ */
+function startDragging(id, event){
+    if (!isDragDropActive()) { return; } 
+    currentDraggedTask = id;
+    event.target.classList.add('dragging');
+    document.querySelectorAll('.task_column_content').forEach(el => el.classList.add('drag-target-active'));
+}
+
+/**
+ * Drag end handler for a board card.
+ * @param {DragEvent} event - The dragend event.
+ * @returns {void}
+ */
+function endDragging(event){
+    if (!isDragDropActive()) { return; } 
+    event.target.classList.remove('dragging');
+    currentDraggedTask = null;
+    document.querySelectorAll('.task_column_content').forEach(el => el.classList.remove('drag-target-active'));
+    clearAllDropIndicators();
+}
+
+/**
+ * Moves the currently dragged task to a different kanban column and persists it.
+ * @async
+ * @param {'to_do'|'in_progress'|'await_feedback'|'done'} kanbanBoardColumn - Target column identifier.
+ * @returns {Promise&lt;void>} Resolves when the update has been saved and the UI refreshed.
+ */
+async function moveToDifferentCategory(kanbanBoardColumn){
+    const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
+    if (actualIndex === -1) return; 
+    allTasks[actualIndex]['kanbanBoardColumn'] = kanbanBoardColumn;
+    updateHTML();
+    console.log(allTasks);
+    let newKanbanColumn = allTasks[actualIndex]['kanbanBoardColumn'];
+    console.log(newKanbanColumn);
+    let path = `/tasks/task_${currentDraggedTask}/kanbanBoardColumn`
+    console.log(path);
+    await setData(newKanbanColumn, path);
+}
+
+/**
+ * Shows a visual drop indicator inside the specified column (if origin differs).
+ * @param {'to_do'|'in_progress'|'await_feedback'|'done'} columnId - Target column id.
+ * @returns {void}
+ */
+function showDropIndicator(columnId) {
+    if (!isDragDropActive()) { return; }
+    const container = document.getElementById(columnId);
+    const actualIndex = allTasks.findIndex(task => task.id === currentDraggedTask);
+    if (actualIndex === -1) return; 
+    const originCategory = allTasks[actualIndex]['kanbanBoardColumn'];
+    if (originCategory === columnId) {
+        hideDropIndicator(columnId);
+        return;
     }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length &lt; 2) {
-        return { isValid: false, message: 'Please enter first and last name' };
+    if (!container.querySelector('.drop_indicator')) {
+        const indicator = document.createElement('div');
+        indicator.className = 'drop_indicator';
+        container.appendChild(indicator);
     }
-    
-    return { isValid: true, message: '' };
 }
 
 /**
- * Collects and validates all form data from DOM inputs
- * @returns {Object} Complete form data with validation results and contact data
+ * Removes the drop indicator from a specific column (if present).
+ * @param {'to_do'|'in_progress'|'await_feedback'|'done'} columnId - Column id where the indicator should be removed.
+ * @returns {void}
  */
-export function getFormData() {
-    const nameInput = document.getElementById('name_input');
-    const emailInput = document.getElementById('email_input');
-    const phoneInput = document.getElementById('telephone_input');
-    
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 &amp;&amp; validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        name: name,
-        email: email, 
-        phone: phone,
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        isValid: nameValidation.isValid &amp;&amp; emailValidation.isValid &amp;&amp; phoneValidation.isValid,
-        contactData: { name: name, email: email, phone: phone }
-    };
-}
-
-/**
- * Generates initials from full name
- * @param {string} name - Full name to generate initials from
- * @returns {string} Two-character initials in uppercase, or empty string if invalid
- */
-export function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}</code></pre>
+function hideDropIndicator(columnId) {
+    if (!isDragDropActive()) { return; }
+    const container = document.getElementById(columnId);
+    if (!container) return;
+    const indicator = container.querySelector('.drop_indicator');
+    if (indicator) indicator.remove();
+}    
+</code></pre>
         </article>
     </section>
 

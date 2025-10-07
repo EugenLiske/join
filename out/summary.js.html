@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts/contacts_validation.js</title>
+    <title>JSDoc: Source: summary.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts/contacts_validation.js</h1>
+    <h1 class="page-title">Source: summary.js</h1>
 
     
 
@@ -26,118 +26,242 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// MF - contacts_validation.js
+            <pre class="prettyprint source linenums"><code>
+let currentUser = null;
+
+const summaryContent = {
+    "toDo": 0,
+    "done": 0,
+    "urgent": 0,
+    "deadline": null,
+    "tasks": 0,
+    "inProgress": 0,
+    "awaitingFeedback": 0
+};
+
 
 /**
- * Contacts Validation Module
- * All validation logic for contact forms
+ * Initializes the summary view by loading user data, initializing navigation,
+ * displaying welcome message, retrieving tasks, calculating statistics, and updating the UI.
  */
+async function initSummary(){
+    getCurrentUserData();
+    initNavigation("summary");  //include.js
+    displayWelcomeOnScreen();
 
-/**
- * Validates email address format
- * @param {string} email - Email address to validate
- * @returns {boolean} True if email format is valid
- */
-export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const summaryTasks = await getAllTasks();   //task_db_connection.js
+    
+    calculateInformation(summaryTasks);
+    displaySummaryOnScreen();
 }
 
-/**
- * Validates phone number format and requirements
- * @param {string} phone - Phone number to validate
- * @returns {Object} Validation result with isValid boolean and message string
- */
-export function validatePhone(phone) {
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return { isValid: false, message: 'Phone number must have at least 6 digits' };
-    }
-    
-    if (!startsCorrect) {
-        return { isValid: false, message: 'Please enter area code (start with 0 or +)' };
-    }
-    
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
-    };
-}
 
 /**
- * Validates contact name requirements
- * @param {string} name - Full name to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Retrieves the current user information from session storage
+ * and stores it in the global variable `currentUser`.
  */
-export function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return { isValid: false, message: 'Name is required' };
+function getCurrentUserData(){
+    currentUser = {
+        "login": sessionStorage.getItem("login"),
+        "role": sessionStorage.getItem("role"),
+        "name": sessionStorage.getItem("name")
     }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length &lt; 2) {
-        return { isValid: false, message: 'Please enter first and last name' };
-    }
-    
-    return { isValid: true, message: '' };
 }
 
-/**
- * Collects and validates all form data from DOM inputs
- * @returns {Object} Complete form data with validation results and contact data
- */
-export function getFormData() {
-    const nameInput = document.getElementById('name_input');
-    const emailInput = document.getElementById('email_input');
-    const phoneInput = document.getElementById('telephone_input');
-    
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 &amp;&amp; validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        name: name,
-        email: email, 
-        phone: phone,
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        isValid: nameValidation.isValid &amp;&amp; emailValidation.isValid &amp;&amp; phoneValidation.isValid,
-        contactData: { name: name, email: email, phone: phone }
-    };
-}
 
 /**
- * Generates initials from full name
- * @param {string} name - Full name to generate initials from
- * @returns {string} Two-character initials in uppercase, or empty string if invalid
+ * Displays a personalized welcome message on both desktop and mobile views,
+ * if user information is available.
  */
-export function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
+function displayWelcomeOnScreen(){
+    if (currentUser) {
+        createWelcomeText("welcome_text", "welcome_name", currentUser.name);
+        createWelcomeText("welcome_text_mobile", "welcome_name_mobile", currentUser.name);   
+    }
+    mobileWelcome();
+}
+
+
+/**
+ * Shows a temporary mobile welcome screen (if on small screens) and disables/enables body scrolling.
+ * Also resets the login flag in session storage.
+ */
+function mobileWelcome() {
+    if (currentUser.login){
+        const welcomeRef = document.getElementById("welcome_mobile");
+        toggleBodyScrollBehavior("hidden");
+        if (window.innerWidth &lt;= 950) {
+            welcomeRef.classList.add("welcome_show");
+
+            setTimeout(() => {
+                welcomeRef.classList.remove("welcome_show");
+                toggleBodyScrollBehavior("auto");
+            }, 4000);
+        }
+        sessionStorage.setItem("login", false);
+    }
+}
+
+
+/**
+ * Enables or disables scrolling of the body element.
+ * 
+ * @param {string} status - "hidden" to disable scroll, "auto" to enable scroll.
+ */
+function toggleBodyScrollBehavior(status){
+    const bodyRef = document.getElementById("body");
+    bodyRef.style.overflow = status;
+}
+
+
+/**
+ * Creates and writes a personalized welcome text based on user role.
+ * 
+ * @param {string} textId - The html element ID where the greeting text will be placed.
+ * @param {string} nameId - The html element ID where the user's name will be inserted.
+ * @param {string} name - The user's name to display.
+ */
+function createWelcomeText(textId, nameId, name){
+    if (currentUser.role === "guest"){
+        writeWelcomeText(textId, "Good morning!", nameId, name);
+    } else {
+        writeWelcomeText(textId, "Good morning,", nameId, name);
+    }
+}
+
+
+/**
+ * Writes the given greeting text and name into specified DOM elements.
+ * 
+ * @param {string} textId - HTML Element ID for the greeting message.
+ * @param {string} text - The greeting message text.
+ * @param {string} nameId - HTML Element ID for the user's name.
+ * @param {string} name - The user's name to insert.
+ */
+function writeWelcomeText(textId, text, nameId, name){
+    document.getElementById(textId).innerText = text;
+    document.getElementById(nameId).innerText = name;    
+}
+
+
+/**
+ * Calculates and updates the summary information (like task counts and earliest deadline)
+ * based on the list of tasks.
+ * 
+ * @param {Object} summaryTasks - An object containing all task data.
+ */
+function calculateInformation(summaryTasks) {
+    let earliestDeadline = null;
     
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}</code></pre>
+    Object.values(summaryTasks).forEach(task => {
+        countTasks(task);
+        countUrgentTask(task);
+        earliestDeadline = checkLatestDeadline(earliestDeadline, task);
+    });
+
+    summaryContent.deadline = earliestDeadline;
+    summaryContent.tasks = Object.keys(summaryTasks).length;
+}
+
+
+/**
+ * Compares and returns the earlier of two task deadlines.
+ * 
+ * @param {string|null} latestTask - The current earliest deadline.
+ * @param {Object} task - The current task object to compare.
+ * @returns {string|null} The earliest deadline found so far.
+ */
+function checkLatestDeadline(latestTask, task){
+    const date = task["duedate"];
+    const status = task["kanbanBoardColumn"];
+
+    if ((status === "to_do" || status === "in_progress" || status === "await_feedback") &amp;&amp; date) {
+        if (!latestTask || new Date(date) &lt; new Date(latestTask)) {
+            latestTask = date;
+        }
+    }
+    return latestTask;
+}
+
+
+/**
+ * Increments the count of urgent tasks in the summary, excluding those already marked as "done".
+ * 
+ * @param {Object} task - A task object to evaluate.
+ */
+function countUrgentTask(task){
+    const priority = task["priority"];
+    const status = task["kanbanBoardColumn"];
+
+    if(priority == "urgent" &amp;&amp; status != "done"){
+        summaryContent.urgent += 1;
+    }
+}
+
+
+/**
+ * Increments task counters in the summary based on their status.
+ * 
+ * @param {Object} task - A task object to evaluate.
+ */
+function countTasks(task){
+    const status = task["kanbanBoardColumn"];
+    if (status === "to_do") {
+        summaryContent.toDo += 1;
+    } else if (status === "in_progress") {
+        summaryContent.inProgress += 1;
+    } else if (status === "await_feedback") {
+        summaryContent.awaitingFeedback += 1;
+    } else if (status === "done") {
+        summaryContent.done += 1;
+    }
+}
+
+
+/**
+ * Displays the calculated summary data (task counts, deadline) in the corresponding UI elements.
+ */
+function displaySummaryOnScreen(){
+    const summaryKey = Object.keys(summaryContent);
+    let htmlRef = null;
+
+    for (let keyIdx = 0; keyIdx &lt; summaryKey.length; keyIdx++) {
+        htmlRef = document.getElementById("amount_" + summaryKey[keyIdx]);
+        
+        if (summaryKey[keyIdx] === "deadline"){
+            htmlRef.innerText = convertDateInFull(summaryContent[summaryKey[keyIdx]]);
+        }
+        else{
+            htmlRef.innerText = summaryContent[summaryKey[keyIdx]];
+        }
+    }
+}
+
+
+/**
+ * Converts a date string into a readable long-format date (e.g., "October 6, 2025").
+ * Returns "-" if the date is invalid or missing.
+ * @param {string|null} date - The date string (yyyy-mm-dd) to convert.
+ * @returns {string} A formatted date string or "-" if invalid.
+ */
+function convertDateInFull(date) {
+    let dateObject = null;
+    const format = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    if (!date) return "-";
+
+    dateObject = new Date(date);
+
+    if (isNaN(dateObject)) return "-";
+
+    return dateObject.toLocaleDateString('en-US', format);
+}
+
+
+function openKanbanBoard(){
+    window.location.href = "board.html";
+}
+</code></pre>
         </article>
     </section>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts/contacts_validation.js</title>
+    <title>JSDoc: Source: include.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts/contacts_validation.js</h1>
+    <h1 class="page-title">Source: include.js</h1>
 
     
 
@@ -26,118 +26,177 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// MF - contacts_validation.js
-
+            <pre class="prettyprint source linenums"><code>
 /**
- * Contacts Validation Module
- * All validation logic for contact forms
+ * Initializes the full navigation and header for a page.
+ * Loads the standard navigation and header components.
+ * 
+ * @param {string} page - The current page identifier ("summary", "board", "add_task", "contacts", "privacy_policy", "legal_notice", "help").
  */
-
-/**
- * Validates email address format
- * @param {string} email - Email address to validate
- * @returns {boolean} True if email format is valid
- */
-export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+function initNavigation(page){
+    includePageNavigation(page, "page_navigation.html", "all");
+    includePageHeader("page_header.html", "all");
 }
 
-/**
- * Validates phone number format and requirements
- * @param {string} phone - Phone number to validate
- * @returns {Object} Validation result with isValid boolean and message string
- */
-export function validatePhone(phone) {
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return { isValid: false, message: 'Phone number must have at least 6 digits' };
-    }
-    
-    if (!startsCorrect) {
-        return { isValid: false, message: 'Please enter area code (start with 0 or +)' };
-    }
-    
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
-    };
-}
 
 /**
- * Validates contact name requirements
- * @param {string} name - Full name to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Initializes the limited (external) navigation and header.
+ * Used for pages with no login required.
+ * 
+ * @param {string} page - The current page identifier ("privacy_policy", "legal_notice", "help").
  */
-export function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return { isValid: false, message: 'Name is required' };
-    }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length &lt; 2) {
-        return { isValid: false, message: 'Please enter first and last name' };
-    }
-    
-    return { isValid: true, message: '' };
+function initNavigationExternal(page){
+    includePageNavigation(page, 'page_navigation_external.html', "limited");
+    includePageHeader("page_header_external.html", "limited");
 }
 
-/**
- * Collects and validates all form data from DOM inputs
- * @returns {Object} Complete form data with validation results and contact data
- */
-export function getFormData() {
-    const nameInput = document.getElementById('name_input');
-    const emailInput = document.getElementById('email_input');
-    const phoneInput = document.getElementById('telephone_input');
-    
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 &amp;&amp; validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        name: name,
-        email: email, 
-        phone: phone,
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        isValid: nameValidation.isValid &amp;&amp; emailValidation.isValid &amp;&amp; phoneValidation.isValid,
-        contactData: { name: name, email: email, phone: phone }
-    };
-}
 
 /**
- * Generates initials from full name
- * @param {string} name - Full name to generate initials from
- * @returns {string} Two-character initials in uppercase, or empty string if invalid
+ * Dynamically loads the navigation HTML and inserts it into the DOM.
+ * After loading, activates the correct navigation button based on the current page.
+ * 
+ * @param {string} page - The current page identifier.
+ * @param {string} [navigation="page_navigation.html"] - The HTML file to load for navigation.
+ * @param {string} [mode="limited"] - The mode of the navigation ("limited" or "all").
  */
-export function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}</code></pre>
+async function includePageNavigation(page, navigation = "page_navigation.html", mode = "limited"){
+    try{
+        fetch('../includes/' + navigation)
+            .then(response => response.text())
+            .then(data => {
+                try{
+                    document.getElementById("page_navigation").innerHTML = data; 
+                    changeActiveNavButton(page, mode);
+                }
+                catch(error){
+                    console.warn("HTML container not available!");
+                }
+            });
+    }
+    catch(error){
+        console.warn("Include page navigation - Error: Navigation is not loaded!!!");
+    }
+}
+
+
+/**
+ * Dynamically loads the page header HTML and inserts it into the DOM.
+ * If mode is not "limited", user initials are also included in the header.
+ * 
+ * @param {string} header - The header file name to load.
+ * @param {string} [mode="limited"] - The header mode ("limited" or "all").
+ */
+async function includePageHeader(header, mode = "limited"){
+    try{
+        fetch('../includes/' + header)
+            .then(response => response.text())
+            .then(data => {
+                try{
+                    document.getElementById("page_header").innerHTML = data;
+                    if (mode !== "limited") includeInitialsToHeader();
+                }
+                catch(error){
+                    console.warn("HTML container not available!");
+                }
+            });    
+    }
+    catch(error){
+        console.warn("Include page header - Error: Header is not loaded!!!");
+    }     
+}
+
+
+/**
+ * Inserts the user's initials into the header.
+ * Falls back to the letter "G" if no initials are stored.
+ */
+function includeInitialsToHeader(){
+    const initialsButton = document.getElementById("login_initials");
+    const initials = sessionStorage.getItem("initials");
+    if (initials &amp;&amp; initials.trim() !== "") {
+        initialsButton.textContent = initials;
+    } else {
+        initialsButton.textContent = "G";
+    }    
+}
+
+
+/**
+ * Loads the HTML form for adding or editing a task and inserts it into the specified container.
+ * 
+ * @param {string} [containerId="add_task_form"] - The ID of the HTML container where the form will be inserted.
+ */
+async function includeAddTaskForm(containerId = "add_task_form"){
+    try{
+        await fetch('../includes/add_task_form.html')
+            .then(response => response.text())
+            .then(data => {
+                try{
+                    document.getElementById(containerId).innerHTML = data; 
+                }
+                catch{
+                    console.warn("HTML container not available!");
+                }
+            });    
+    }
+    catch(error){
+        console.warn("Include add task form - Error: Form is not loaded!!!");
+    }
+}
+
+
+/**
+ * Activates the correct navigation button based on the current page and mode.
+ * 
+ * @param {string} page - The current page identifier.
+ * @param {string} mode - Navigation mode ("limited" or "all").
+ */
+function changeActiveNavButton(page, mode){
+    if (["summary", "add_task", "board", "contacts"].indexOf(page) >= 0){
+        toggleNavButtons("content", "footer", page, mode);
+    }
+    if (["privacy_policy", "legal_notice"].indexOf(page) >= 0){
+        toggleNavButtons("footer", "content", page, mode);
+    }
+    if (["help"].indexOf(page) >= 0){
+        if (mode !== "limited") deactiveCurrentNavButton("content");
+        deactiveCurrentNavButton("footer");
+    }
+}
+
+
+/**
+ * Toggles active state of navigation buttons between active and inactive.
+ * 
+ * @param {string} setElement - The element group to activate ("content" or "footer").
+ * @param {string} otherElement - The element group to deactivate.
+ * @param {string} page - The current page identifier.
+ * @param {string} mode - Navigation mode ("limited" or "all").
+ */
+function toggleNavButtons(setElement, otherElement, page, mode){
+    deactiveCurrentNavButton(setElement);
+    if (mode !== "limited") deactiveCurrentNavButton(otherElement);
+    document.getElementById("nav_" + page).classList.replace("deactive_" + setElement, "active_" + setElement);               
+}
+
+
+/**
+ * Deactivates the currently active navigation button in the specified section.
+ * 
+ * @param {string} element - The element group to search ("content" or "footer").
+ */
+function deactiveCurrentNavButton(element){
+    document.getElementsByClassName("active_" + element)[0].classList.replace("active_" + element, "deactive_" + element);
+}
+
+
+/**
+ * Logs out the current user by clearing all session storage data.
+ */
+function logoutUser(){
+    sessionStorage.clear();
+}
+</code></pre>
         </article>
     </section>
 

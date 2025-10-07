@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts/contacts_validation.js</title>
+    <title>JSDoc: Source: login.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts/contacts_validation.js</h1>
+    <h1 class="page-title">Source: login.js</h1>
 
     
 
@@ -26,118 +26,345 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// MF - contacts_validation.js
+            <pre class="prettyprint source linenums"><code>// References to DOM elements and other variables
 
 /**
- * Contacts Validation Module
- * All validation logic for contact forms
+ * Email input field in the login form.
+ * @type {HTMLInputElement}
  */
+const emailInput          = document.getElementById("email_input");
 
 /**
- * Validates email address format
- * @param {string} email - Email address to validate
- * @returns {boolean} True if email format is valid
+ * Password input field in the login form.
+ * @type {HTMLInputElement}
  */
-export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+const passwordInput       = document.getElementById("password_input");
+
+/**
+ * Login (submit) button in the login form.
+ * @type {HTMLButtonElement}
+ */
+const loginButton         = document.getElementById("login_button");
+
+/**
+ * Container for login error messages under the password field.
+ * @type {HTMLDivElement}
+ */
+const loginErrorContainer = document.getElementById("login_error");
+
+/**
+ * Icon element on the right of the password field (lock/visibility).
+ * @type {HTMLImageElement}
+ */
+const loginPwdIcon        = document.getElementById("login_password_icon");
+
+/**
+ * Fullscreen overlay container for success feedback.
+ * @type {HTMLDivElement}
+ */
+const signupOverlay       = document.getElementById("signup_overlay");
+
+/**
+ * Message content shown inside the success overlay.
+ * @type {HTMLDivElement}
+ */
+const overlayMessage      = document.getElementById("overlay_message");
+
+/**
+ * Alias to the password input used by the visibility toggle helpers.
+ * @type {HTMLInputElement}
+ */
+const passwordInputField  = document.getElementById("password_input");
+
+/**
+ * Alias to the password visibility icon used by the helpers.
+ * @type {HTMLImageElement}
+ */
+const passwordIcon        = document.getElementById("login_password_icon");
+
+/**
+ * Base URL of the Firebase Realtime Database (without .json).
+ * @type {string}
+ */
+const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
+
+// Function for possible autofill. Password icons and button status are set correctly.
+
+/**
+ * Initializes the login screen to correctly handle browser autofill:
+ * sets the password icon state and enables/disables the login button accordingly.
+ * @returns {void}
+ */
+function initLoginAutoFill() {
+  handleLoginPasswordInput("password_input", "login_password_icon");
+  checkLoginEnable();
+}
+initLoginAutoFill();
+
+
+// Firebase database: GET function for user data
+
+/**
+ * Fetches data from the Firebase Realtime Database at a given path.
+ * @async
+ * @param {string} path - API path relative to {@link BASE_URL}, e.g., "/users".
+ * @returns {Promise&lt;any>} Resolved JSON payload (e.g., user object tree).
+ * @throws {Error} If the request fails or returns a non-OK HTTP status.
+ */
+async function getAllUsers(path) {
+  try {
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+    if (!fireBaseResponse.ok) {
+      throw new Error(`GET ${path} failed: ${fireBaseResponse.status} ${fireBaseResponse.statusText}`);
+    }
+    let fireBaseResponseAsJson = await fireBaseResponse.json();
+    return fireBaseResponseAsJson;
+  } catch (error) {
+    console.error("getAllUsers error:", error);
+    throw error;
+  }
+}
+
+
+// Login function (login button)
+
+/**
+ * Handles form-based login:
+ * - Prevents default submit
+ * - Validates email/password against the database
+ * - Stores initials &amp; user state in sessionStorage
+ * - Shows success overlay and redirects to the summary page
+ * @async
+ * @param {Event} event - Submit event from the login form.
+ * @returns {Promise&lt;boolean>} true on success; false on temporary failure.
+ */
+async function loginUser(event) {
+  event.preventDefault();
+  let emailValue    = emailInput.value.trim().toLowerCase();
+  let passwordValue = passwordInput.value;
+  try {
+    let userResponse = await getAllUsers("/users");
+    let matchedUser = findMatchingUser(userResponse, emailValue, passwordValue);
+    if (!matchedUser) return showLoginErrorAndStop();
+    storeUserInitials(matchedUser);
+    createSuccessOverlayLogin();
+    setCurrentUserData(true, "user", matchedUser.name)
+    return true;
+  } catch (error) {
+    console.error("loginUser failed:", error);
+    showGenericLoginError();
+    return false;
+  }
 }
 
 /**
- * Validates phone number format and requirements
- * @param {string} phone - Phone number to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Performs a guest login and immediately redirects to the summary page.
+ * @param {Event} event - Click event from the guest login button.
+ * @returns {void}
  */
-export function validatePhone(phone) {
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return { isValid: false, message: 'Phone number must have at least 6 digits' };
-    }
-    
-    if (!startsCorrect) {
-        return { isValid: false, message: 'Please enter area code (start with 0 or +)' };
-    }
-    
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
-    };
+function loginGuest(event) {
+  event.preventDefault();
+  setCurrentUserData(true, "guest", "");
+  window.location.href='./pages/summary.html';
 }
 
 /**
- * Validates contact name requirements
- * @param {string} name - Full name to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Persists login state, role, and name into sessionStorage.
+ * @param {boolean} login - Login state (true if logged in).
+ * @param {string} role - User role, e.g., "user" or "guest".
+ * @param {string} name - Display name of the user (empty for guest).
+ * @returns {void}
  */
-export function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return { isValid: false, message: 'Name is required' };
+function setCurrentUserData(login, role, name){
+    sessionStorage.setItem("login", login);
+    sessionStorage.setItem("role", role);
+    sessionStorage.setItem("name", name);  
+}
+
+
+// Auxiliary functions for the loginUser function
+
+/**
+ * Finds a user in the response object that matches email and password.
+ * @param {Record&lt;string, any>} userResponse - User object tree from the database.
+ * @param {string} emailValue - Email (already trimmed and lowercased).
+ * @param {string} passwordValue - Plaintext password.
+ * @returns {any|null} The matching user object or null if no match is found.
+ */
+function findMatchingUser(userResponse, emailValue, passwordValue) {
+  let users = Object.values(userResponse);
+  for (let i = 0; i &lt; users.length; i++) {
+    let user = users[i];
+    if (checkSingleUserMatch(user, emailValue, passwordValue)) {
+      return user;
     }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length &lt; 2) {
-        return { isValid: false, message: 'Please enter first and last name' };
-    }
-    
-    return { isValid: true, message: '' };
+  }
+  return null;
 }
 
 /**
- * Collects and validates all form data from DOM inputs
- * @returns {Object} Complete form data with validation results and contact data
+ * Checks a single user record for an exact email/password match.
+ * @param {any} user - Single user object from the database.
+ * @param {string} emailValue - Normalized email.
+ * @param {string} passwordValue - Plaintext password.
+ * @returns {boolean} true if both email and password match.
  */
-export function getFormData() {
-    const nameInput = document.getElementById('name_input');
-    const emailInput = document.getElementById('email_input');
-    const phoneInput = document.getElementById('telephone_input');
-    
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 &amp;&amp; validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        name: name,
-        email: email, 
-        phone: phone,
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        isValid: nameValidation.isValid &amp;&amp; emailValidation.isValid &amp;&amp; phoneValidation.isValid,
-        contactData: { name: name, email: email, phone: phone }
-    };
+function checkSingleUserMatch(user, emailValue, passwordValue) {
+  let dbEmail = "";
+  let dbPassword = "";
+  if (user &amp;&amp; user.email) {
+    dbEmail = String(user.email).toLowerCase().trim();
+  }
+  if (user &amp;&amp; user.password) {
+    dbPassword = String(user.password);
+  }
+  return dbEmail !== "" &amp;&amp; dbEmail === emailValue &amp;&amp; dbPassword === passwordValue;
 }
 
 /**
- * Generates initials from full name
- * @param {string} name - Full name to generate initials from
- * @returns {string} Two-character initials in uppercase, or empty string if invalid
+ * Stores user initials in sessionStorage if present.
+ * @param {any} user - User object that may include an "initials" field.
+ * @returns {void}
  */
-export function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
-}</code></pre>
+function storeUserInitials(user) {
+  if (user &amp;&amp; user.initials) {
+    let initials = String(user.initials);
+    if (initials !== "") {
+      sessionStorage.setItem("initials", initials);
+    }
+  }
+}
+
+/**
+ * Shows an error message for invalid email/password
+ * and marks the input fields as invalid.
+ * @returns {false} Always returns false to stop the login flow at this point.
+ */
+function showLoginErrorAndStop() {
+  emailInput.classList.add("error");
+  passwordInput.classList.add("error");
+  loginErrorContainer.textContent = "Check your email and password. Please try again.";
+  loginErrorContainer.style.display = "block";
+  return false;
+}
+
+/**
+ * Shows a generic error message for temporary technical issues during login.
+ * @returns {void}
+ */
+function showGenericLoginError() {
+  loginErrorContainer.textContent = "We couldn't sign you in right now. Please try again in a moment.";
+  loginErrorContainer.style.display = "block";
+}
+
+/**
+ * Displays the success overlay, plays its animation, and then redirects to the summary page.
+ * @returns {void}
+ */
+function createSuccessOverlayLogin() {
+  signupOverlay.classList.add("active");
+  overlayMessage.classList.add("enter");
+  setTimeout(function () {
+    signupOverlay.classList.add("leaving");
+    setTimeout(function () {
+      window.location.href = "./pages/summary.html";
+    }, 300);
+  }, 1700);
+}
+
+
+// Validation function - activates the login button for valid entries
+
+/**
+ * Live-validates form fields and toggles the login button enabled state.
+ * Also clears any existing error indicators/messages.
+ * @returns {void}
+ */
+function checkLoginEnable() {loginUser
+  let emailValue = emailInput.value.trim();
+  let passwordValue = passwordInput.value;
+  let emailOk = emailValue !== "" &amp;&amp; isEmailValid(emailValue);
+  let canLogin = emailOk &amp;&amp; passwordValue !== "";
+  loginButton.disabled = !canLogin;
+  resetExistingLoginError();
+}
+
+
+// Help function for the checkLoginEnable function
+
+/**
+ * Validates an email address with a simple regular expression.
+ * @param {string} email - Email address to validate.
+ * @returns {boolean} true if the email matches the pattern.
+ */
+function isEmailValid(email) {
+  let regularExpression = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+  return regularExpression.test(email);
+}
+
+
+// Clearing the error message when re-entering (oninput).
+// In case an invalid email-password combination was entered in loginUser.
+
+/**
+ * Clears existing error indicators and hides the login error message.
+ * @returns {void}
+ */
+function resetExistingLoginError() {
+  emailInput.classList.remove("error");
+  passwordInput.classList.remove("error");
+  if (loginErrorContainer) {
+    loginErrorContainer.textContent = "";
+    loginErrorContainer.style.display = "none";
+  }
+}
+
+
+// Visibility handling of password icons when entering the password and when clicking on the icon.
+
+/**
+ * Updates password field icon and clickability depending on current value/type.
+ * - Empty field: lock icon, clicks disabled
+ * - Type "text": visibility (eye) icon
+ * - Type "password": visibility_off (striked eye) icon
+ * @returns {void}
+ */
+function handleLoginPasswordInput() {
+  if (passwordInputField.value.length === 0) {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.style.pointerEvents = "none";
+    return;
+  }
+  passwordIcon.style.pointerEvents = "auto";
+  if (passwordInputField.type === "text") {
+    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
+}
+
+/**
+ * Toggles the password field visibility (password ⇄ text)
+ * and updates the icon accordingly.
+ * @returns {void}
+ */
+function toggleLoginVisibility() {
+  if (passwordInputField.value.length === 0) {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/lock.svg";
+    passwordIcon.style.pointerEvents = "none";
+    return;
+  }
+  if (passwordInputField.type === "password") {
+    passwordInputField.type = "text";
+    passwordIcon.src = "./assets/img/icons/form/visibility.svg";
+  } else {
+    passwordInputField.type = "password";
+    passwordIcon.src = "./assets/img/icons/form/visibility_off.svg";
+  }
+}
+</code></pre>
         </article>
     </section>
 
