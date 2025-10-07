@@ -63,7 +63,7 @@ function getAssignedToIconTemplate(color, initials, container = "div"){
 }
 
 
-function getListElementTemplate2(selectedDesignClass, personIdx, personkey, checked, contacts){
+function getListElementTemplate(selectedDesignClass, personIdx, personkey, checked, contacts){
     return `&lt;li onclick="selectPerson(this, ${personIdx})" class="${selectedDesignClass}">
                 &lt;div class="person_info">
                     ${getAssignedToIconTemplate(contacts[personkey].avatarColor, generateInitials(contacts[personkey].name))}
