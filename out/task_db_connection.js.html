@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts/contacts_validation.js</title>
+    <title>JSDoc: Source: task_db_connection.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts/contacts_validation.js</h1>
+    <h1 class="page-title">Source: task_db_connection.js</h1>
 
     
 
@@ -26,117 +26,116 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// MF - contacts_validation.js
+            <pre class="prettyprint source linenums"><code>const BASE_URL = "https://join-476d1-default-rtdb.firebaseio.com";
+
 
 /**
- * Contacts Validation Module
- * All validation logic for contact forms
+ * Fetches all tasks from the Firebase database.
+ * 
+ * @returns {Object|null} A promise resolving to an object containing all tasks, or null if an error occurs.
  */
-
-/**
- * Validates email address format
- * @param {string} email - Email address to validate
- * @returns {boolean} True if email format is valid
- */
-export function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+async function getAllTasks(){
+  return getData("/tasks");
 }
 
-/**
- * Validates phone number format and requirements
- * @param {string} phone - Phone number to validate
- * @returns {Object} Validation result with isValid boolean and message string
- */
-export function validatePhone(phone) {
-    const digitsOnly = phone.replace(/\D/g, '');
-    const hasMinDigits = digitsOnly.length >= 6;
-    const startsCorrect = /^[0+]/.test(phone.trim());
-    
-    if (!hasMinDigits) {
-        return { isValid: false, message: 'Phone number must have at least 6 digits' };
-    }
-    
-    if (!startsCorrect) {
-        return { isValid: false, message: 'Please enter area code (start with 0 or +)' };
-    }
-    
-    const formatCheck = /^[0+][\d\s\-\(\)\/+]*\d$/.test(phone);
-    return {
-        isValid: formatCheck,
-        message: formatCheck ? '' : 'Invalid phone number format'
-    };
-}
 
 /**
- * Validates contact name requirements
- * @param {string} name - Full name to validate
- * @returns {Object} Validation result with isValid boolean and message string
+ * Fetches data from a given Firebase path.
+ * 
+ * @param {string} path - The relative path in the Firebase database (e.g., "/tasks").
+ * @returns {Object|null} A promise resolving to the data object or null if an error occurs.
  */
-export function validateName(name) {
-    const trimmedName = name.trim();
-    
-    if (trimmedName.length === 0) {
-        return { isValid: false, message: 'Name is required' };
-    }
-    
-    const words = trimmedName.split(' ').filter(word => word.length > 0);
-    
-    if (words.length &lt; 2) {
-        return { isValid: false, message: 'Please enter first and last name' };
-    }
-    
-    return { isValid: true, message: '' };
+async function getData(path) {
+  let fireBaseResponseAsJson = null;
+  try {
+    let fireBaseResponse = await fetch(BASE_URL + path + ".json");
+    fireBaseResponseAsJson = await fireBaseResponse.json();
+  }
+  catch(error){
+    console.error("getData: Error occured!");
+    console.error(error);
+  }
+  return fireBaseResponseAsJson;
 }
 
-/**
- * Collects and validates all form data from DOM inputs
- * @returns {Object} Complete form data with validation results and contact data
- */
-export function getFormData() {
-    const nameInput = document.getElementById('name_input');
-    const emailInput = document.getElementById('email_input');
-    const phoneInput = document.getElementById('telephone_input');
-    
-    const name = nameInput ? nameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    
-    const nameValidation = validateName(name);
-    const emailValidation = {
-        isValid: email.length > 0 &amp;&amp; validateEmail(email),
-        message: email.length === 0 ? 'Email is required' : 
-                !validateEmail(email) ? 'Please enter a valid email address' : ''
-    };
-    const phoneValidation = validatePhone(phone);
-    
-    return {
-        name: name,
-        email: email, 
-        phone: phone,
-        nameValidation: nameValidation,
-        emailValidation: emailValidation,
-        phoneValidation: phoneValidation,
-        isValid: nameValidation.isValid &amp;&amp; emailValidation.isValid &amp;&amp; phoneValidation.isValid,
-        contactData: { name: name, email: email, phone: phone }
-    };
-}
 
 /**
- * Generates initials from full name
- * @param {string} name - Full name to generate initials from
- * @returns {string} Two-character initials in uppercase, or empty string if invalid
+ * Writes data to a specified path in the Firebase database.
+ * Overwrites any existing data at that path.
+ * 
+ * @param {any} data - The data to be written.
+ * @param {string} path - The relative path in the Firebase database.
+ * @returns {Promise&lt;void>} A promise that resolves when the operation is complete.
  */
-export function generateInitials(name) {
-    if (!name || typeof name !== 'string') return '';
-    
-    const words = name.trim().split(' ').filter(word => word.length > 0);
-    if (words.length === 0) return '';
-    if (words.length === 1) return words[0].charAt(0).toUpperCase();
-    
-    const firstInitial = words[0].charAt(0);
-    const lastInitial = words[words.length - 1].charAt(0);
-    return (firstInitial + lastInitial).toUpperCase();
+async function setData(data, path) {
+  let response = null;
+  try {
+    response = await fetch(BASE_URL + path + ".json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });    
+  }
+  catch (error){
+    console.error("setData: Error occured! ");
+    console.error(error);
+    console.error(response);
+  }
+}
+
+
+async function getTaskCounter(){
+  return getData("/task_counter");
+}
+
+
+async function setTaskCounter(counter){
+  await setData(counter, "/task_counter");
+}
+
+
+async function increaseTaskCounter(nextTaskId){
+  await setTaskCounter(nextTaskId+1);       
+}
+
+
+async function getTaskFromDB(taskId){
+    await setAllTasks();
+    currentTask = getElementWithId(tasks, taskId)
+    if (!objectFound(currentTask)) return false;
+    return true;
+}
+
+async function deleteTaskFromFirebase(taskId) {
+    try {
+        const response = await fetch(BASE_URL + "/tasks/task_" + taskId + ".json", {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to delete contact: ${response.statusText}`);
+        }
+        return true;
+    } catch (error) {
+        console.error('Error deleting contact:', error);
+        throw error;
+    }
+}
+
+
+async function getContacts() {
+    try {
+        const response = await fetch(`https://join-476d1-default-rtdb.firebaseio.com/contacts/data.json?t=${Date.now()}`);
+
+        if (!response.ok) {
+            throw new Error("Failed to load contacts");
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error("Error loading contacts:", error);
+    }
+    return null;
 }</code></pre>
         </article>
     </section>
