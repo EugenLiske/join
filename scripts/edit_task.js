@@ -146,7 +146,7 @@ function setSubtasksList(subtasks){
 async function updateTaskAndGoBack(){
     if (checkRequiredFields("edit_task")){
         const formContent = getFormContent();
-        await saveFormContentInDB(formContent);
+        saveFormContentInDB(formContent);
         updateTask(currentTask.id, formContent);
         updateTaskCardAtBoard(currentTask.id);
         displayToastMessage("overlay_container_edit", "overlay_message_edit");
