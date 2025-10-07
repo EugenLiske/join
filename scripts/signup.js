@@ -27,7 +27,7 @@ const EMAIL_INVALID_MSG           = "Please enter a valid email address.";
 /** @const {number} Minimal required length for passwords */
 const PASSWORD_MIN_LENGTH         = 8;
 /** @const {string} Base endpoint URL for the Firebase Realtime Database */
-const BASE_URL                    = "https://join-test-c19be-default-rtdb.firebaseio.com";
+const BASE_URL                    = "https://join-476d1-default-rtdb.firebaseio.com";
 
 /**
  * Initializes UI on potential autofill and first render.

@@ -58,7 +58,7 @@ const passwordIcon        = document.getElementById("login_password_icon");
  * Base URL of the Firebase Realtime Database (without .json).
  * @type {string}
  */
-const BASE_URL = "https://join-test-c19be-default-rtdb.firebaseio.com";
+const BASE_URL = "https://join-476d1-default-rtdb.firebaseio.com";
 
 // Function for possible autofill. Password icons and button status are set correctly.
 
