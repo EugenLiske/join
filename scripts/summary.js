@@ -38,6 +38,8 @@ function getCurrentUserData(){
         "role": sessionStorage.getItem("role"),
         "name": sessionStorage.getItem("name")
     }
+    console.log(currentUser);
+    
 }
 
 
@@ -58,8 +60,8 @@ function displayWelcomeOnScreen(){
  * Shows a temporary mobile welcome screen (if on small screens) and disables/enables body scrolling.
  * Also resets the login flag in session storage.
  */
-function mobileWelcome() {
-    if (currentUser.login){
+function mobileWelcome() {  
+    if (currentUser.login === "true"){
         const welcomeRef = document.getElementById("welcome_mobile");
         toggleBodyScrollBehavior("hidden");
         if (window.innerWidth <= 950) {
