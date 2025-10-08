@@ -542,8 +542,13 @@
 /* Overlay Anpassung unter 1030px  ##############################################*/
 @media (max-width: 1030px) {
     .content_area {
-   margin: 40px auto;
-}
+        margin: 40px auto;
+    }
+
+    .close_button {
+        top: -16px;
+    }
+
     /* Avatar noch kleiner und höher positionieren */
     .contact_avatar {
         width: 80px;
@@ -570,8 +575,6 @@
     
     .input_field {
         width: 280px; /* Von 320px auf 280px */
-        height: 42px; /* Von 48px auf 42px */
-        font-size: 16px; /* Von 18px auf 16px */
         padding: 10px 16px 10px 18px; /* Kleinere Paddings */
     }
     
@@ -585,7 +588,7 @@
     /* Buttons kleiner */
     .delete_button,
     .add_edit_button {
-        font-size: 16px; /* Von 18px auf 16px */
+        font-size: 14px;
         padding: 10px 16px; /* Kleinere Paddings */
         height: 42px; /* Von 44px auf 42px */
         min-height: 42px;
@@ -621,7 +624,11 @@
         max-width: 680px;
         width: 95%;
     }
-    
+
+    .input_fields {
+        gap: 20px;
+    }
+
     /* Linker Bereich - edit_contact verkleinern */
     .edit_contact {
         max-width: 240px;
@@ -683,49 +690,50 @@
     
     /* Input Container kleiner */
     .input_container {
-        width: 240px; /* Von 280px auf 240px */
+        width: 280px;
         left: 120px; /* Von 140px auf 120px */
         top: 100px; /* Von 90px auf 80px */
     }
     
     /* Input Fields kleiner */
     .input_field {
-        width: 240px; /* Von 280px auf 240px */
-        height: 38px; /* Von 42px auf 38px */
+        width: 280px;
         font-size: 14px; /* Von 16px auf 14px */
         padding: 8px 14px 8px 16px; /* Kleinere Paddings */
     }
     
     /* Button Container anpassen */
     .button_container {
-        max-width: 240px; /* Von 280px auf 240px */
+        max-width: 234px;
         left: 120px; /* Von 140px auf 120px */
         top: 300px; /* Von 320px auf 280px */
     }
     
       /* Cancel Button deutlich kleiner */
     .delete_button {
-        font-size: 13px; /* Von 16px auf 13px */
-        padding: 6px 8px; /* Von 8px 14px auf 6px 8px - weniger Padding */
+        font-size: 14px;
+        padding: 10px 8px; /* Von 8px 14px auf 6px 8px - weniger Padding */
         height: 32px; /* Von 34px auf 32px */
-        min-height: 32px;
-        min-width: 40px; /* Von 50px auf 60px - minimal für "Cancel X" */
+        min-width: 74px; /* Von 50px auf 60px - minimal für "Cancel X" */
         max-width: 50px;
     }
     
     /* Create Contact Button bekommt mehr Platz */
     .add_edit_button {
-        font-size: 15px; /* Von 16px auf 15px - nur leicht kleiner */
-        padding: 8px 12px; /* Von 9px 14px auf 8px 12px */
+        font-size: 14px; /* Von 16px auf 15px - nur leicht kleiner */
+        padding: 10px 12px; /* Von 9px 14px auf 8px 12px */
         height: 36px; /* Von 38px auf 36px */
-        min-height: 36px;
-        min-width: 120px; /* Von 100px auf 120px - mehr Platz für Text */
+        min-width: 138px; /* Von 100px auf 144px - mehr Platz für Text */
         flex: 1; /* Nimmt verfügbaren Platz ein */
+    }
+
+    .save_button {
+        width: 80px;
     }
     
     /* Button Gap anpassen für bessere Verteilung */
     .button_wrapper {
-        gap: 10px; /* Von 12px auf 10px */
+        gap: 16px;
     }
 }
 
