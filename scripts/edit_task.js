@@ -131,8 +131,9 @@ function setSubtasksList(subtasks){
     const subtasksContainer = document.getElementById("subtasks_container");
     let subtaskId = -1;
     for (let keyIdx = 0; keyIdx < subtaskKeys.length; keyIdx++) {
+        const subtaskText = subtasks[subtaskKeys[keyIdx]].description;
         subtaskId = getIdFromObjectKey(subtaskKeys[keyIdx]);
-        subtasksContainer.innerHTML += getSubtaskTemplate(subtasks[subtaskKeys[keyIdx]].description, subtaskId);
+        subtasksContainer.innerHTML += getSubtaskTemplate(subtaskText, subtaskId);
     }
     subtaskId = parseInt(subtaskId) + 1;
     setSubtaskId(subtaskId);

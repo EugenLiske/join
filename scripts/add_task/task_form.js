@@ -224,7 +224,7 @@ function addSubtaskOrToggleIcons(event){
 
 function addSubtaskToList(){
     let inputSubtask = document.getElementById("subtask_input");
-    let input = inputSubtask.value;
+    const input = inputSubtask.value;
     let subtasksContainer = document.getElementById("subtasks_container");
     subtasksContainer.innerHTML += getSubtaskTemplate(input, nextSubtaskId);
     nextSubtaskId++;
