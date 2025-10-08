@@ -38,7 +38,6 @@
 }
 
 .add_contact_button {
-  /* width: 100%; */
   height: 56px;
   background-color: var(--c-btn-edit);
   color: var(--c-btn-text-var2);
@@ -55,8 +54,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
-  /* position: absolute; */
-  /* z-index: 10; */
   margin: 16px;
   width: 100%;
 }
