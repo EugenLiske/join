@@ -425,6 +425,10 @@
   }
 }
 
+.mobile_menu_button {
+  display: none;
+}
+
 /* ================== RESPONSIVE DESIGN ================== */
 @media (max-width: 1240px) {
   /* Header Layout ändern - vertikal statt horizontal */
