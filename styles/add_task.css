@@ -54,7 +54,7 @@
     padding: 48px;
     margin: 8px 0;
 
-    min-width: 320px;
+    min-width: 300px;
 
     display: flex;
     flex-direction: column;
@@ -114,6 +114,10 @@
     }
 
     .overlay_add_task{
-        padding: 16px;
+        padding: 12px;
+    }
+
+    .overlay_add_task h1{
+        font-size: 48px;
     }
 }
