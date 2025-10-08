@@ -29,11 +29,11 @@ export const AVATAR_COLORS = [
 
 // Page URLs for Navigation
 export const PAGES = {
-    ADD_CONTACT: '../../overlays/contacts/contacts_add.html',
-    EDIT_CONTACT: '../../overlays/contacts/contacts_edit.html',
-    SUCCESS_PAGE: '../../overlays/contacts/contacts_add_successful.html',
-    CONTACTS_LIST: '../../overlays/contacts/contacts.html',
-    MAIN_PAGE: '../../pages/contacts_list.html',
+    ADD_CONTACT: '../overlays/contacts/contacts_add.html',
+    EDIT_CONTACT: '../overlays/contacts/contacts_edit.html',
+    SUCCESS_PAGE: '../overlays/contacts/contacts_add_successful.html',
+    CONTACTS_LIST: '../overlays/contacts/contacts.html',
+    MAIN_PAGE: '../pages/contacts_list.html',
 };
 
 // LocalStorage Keys - prevents typos and centralizes key management
@@ -52,5 +52,5 @@ export const FIREBASE_PATHS = {
 // Default Values
 export const DEFAULTS = {
     START_COUNTER: 1000,
-    PERSON_ICON: 'assets/img/icons/form/person.svg'
+    PERSON_ICON: '../assets/img/icons/form/person.svg'
 };

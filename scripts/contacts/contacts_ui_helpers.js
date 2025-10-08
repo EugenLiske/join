@@ -67,7 +67,7 @@ export function updateAvatarPreview(name) {
     if (initials.length > 0) {
         avatarInitials.textContent = initials;
     } else {
-        avatarInitials.innerHTML = '<img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
+        avatarInitials.innerHTML = '<img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
     }
 }
 
@@ -185,7 +185,7 @@ export function clearFormInputs() {
         phoneInput.title = '';
     }    
     if (avatarInitials) {
-        avatarInitials.innerHTML = '<img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
+        avatarInitials.innerHTML = '<img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />';
     }
 }
 

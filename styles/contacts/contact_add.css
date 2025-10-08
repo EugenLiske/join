@@ -1,7 +1,7 @@
 /* MF contact_add.css */
 
 /* LOGO STYLING */
-.logo_light {
+.add-overlay .logo_light {
    width: 54px;
    height: 66px;
    margin: 0 0 0 16px;
@@ -9,7 +9,7 @@
 
 /* h1 und h3 bitte prüfen wegen font und schriftgröße und color */
  /* MAIN HEADLINE */
-.edit_h1 {
+.add-overlay .edit_h1 {
    color: white;
    font-family: inter, sans-serif;
    font-size: 61px;
@@ -18,7 +18,7 @@
    margin: 16px 0 0 16px;
 }   
 
-.edit_h3 {
+.add-overlay .edit_h3 {
    color: white;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
@@ -27,7 +27,7 @@
    margin: 8px 0 0 16px;
 }
 /* BLUE UNDERLINE */
-.edit_blue_line {
+.add-overlay .edit_blue_line {
    width: 90px;
    height: 1px;
    border: 1px solid var(--c-btn-delete);
@@ -37,7 +37,7 @@
 
 /* h1 Anpassung unter 1240px ###########################################*/
 @media (max-width: 1240px) {
-   .edit_h1 {
+   .add-overlay .edit_h1 {
    font-size: 48px; /* Von 61px auf 52px */
    margin: 12px 0 0 12px; /* Von 16px auf 12px */
    }
