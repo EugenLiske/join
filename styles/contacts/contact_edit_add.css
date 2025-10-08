@@ -12,10 +12,9 @@
    justify-content: flex-start;
    align-items: flex-start;
    width: 1212px;
-   min-height: 594px;          
-   max-height: 90vh;       
-   overflow-y: auto;       
-   border: 1px solid rgba(42, 54, 71, 1);
+   min-height: 594px;       
+   /* margin: 16px 0 90px 0;    */
+   border: none;
    border-radius: 30px;
    position: relative;
    background-color: #ffffff;
@@ -748,9 +747,8 @@
         flex-direction: column;
         width: 95%;
         max-width: 500px;
-        height: auto;
         min-height: 600px;
-        padding-bottom: 40px;
+        margin: 8px 0 90px 0;
     }
     
     /* Dunkler Header-Bereich oben */
@@ -943,6 +941,12 @@
     }
 }
 
+@media (max-height: 850px) and (max-width: 750px){
+    .overlay_wrapper{
+        align-items: start;
+        overflow-y: auto;
+    }
+}
 
 
 /* ================== FIGMA TOAST OVERLAY ================== */
