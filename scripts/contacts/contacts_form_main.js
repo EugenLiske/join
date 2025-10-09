@@ -25,9 +25,9 @@ import {
 } from './contacts_navigation.js';
 
 // ================== DOM ELEMENT CONSTANTS ==================
-const NAME_INPUT = document.getElementById('name_input');
-const EMAIL_INPUT = document.getElementById('email_input');
-const PHONE_INPUT = document.getElementById('telephone_input');
+// const NAME_INPUT = document.getElementById('name_input');
+// const EMAIL_INPUT = document.getElementById('email_input');
+// const PHONE_INPUT = document.getElementById('telephone_input');
 
 // ================== FORM VALIDATION ==================
 
@@ -36,6 +36,10 @@ const PHONE_INPUT = document.getElementById('telephone_input');
  * @returns {Object} Complete form validation results
  */
 function validateContactForm() {
+    const NAME_INPUT  = document.getElementById('name_input');
+    const EMAIL_INPUT = document.getElementById('email_input');
+    const PHONE_INPUT = document.getElementById('telephone_input');
+
     const formData = getFormData();
     
     updateFieldValidation(NAME_INPUT, formData.nameValidation);
@@ -53,10 +57,20 @@ function validateContactForm() {
 /**
  * Initializes form input event listeners
  */
+// function initializeEventListeners() {
+//     if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
+//     if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
+//     if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
+// }
+
 function initializeEventListeners() {
-    if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
-    if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
-    if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
+  // Einmal global setzen – reagiert auf dynamisch eingefügte Inputs
+  document.addEventListener('input', (e) => {
+    const id = e.target?.id;
+    if (id === 'name_input' || id === 'email_input' || id === 'telephone_input') {
+      validateContactForm();
+    }
+  });
 }
 
 // ================== NAVIGATION ==================
@@ -78,10 +92,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     else {
         initializeEventListeners();
-        
-        if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
+
+        if (document.getElementById('name_input') ||
+            document.getElementById('email_input') ||
+            document.getElementById('telephone_input')) {
             validateContactForm();
         }
+        
+        // if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
+        //     validateContactForm();
+        // }
     }
 });
 

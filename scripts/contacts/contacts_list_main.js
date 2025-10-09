@@ -8,7 +8,8 @@ import { loadAllContacts } from './contacts_list_data.js';
 import { 
     openAddContactOverlay, 
     editSelectedContact, 
-    deleteSelectedContact 
+    deleteSelectedContact,
+    hideOverlay 
 } from './contacts_list_overlays.js';
 import { showMobileContactList } from './contacts_list_selection.js';
 import { 
@@ -30,3 +31,4 @@ window.deleteSelectedContact = deleteSelectedContact;
 window.showMobileContactList = showMobileContactList;
 window.toggleMobileActionMenu = toggleMobileActionMenu;
 window.closeMobileActionMenu = closeMobileActionMenu;
+window.hideOverlay = hideOverlay;

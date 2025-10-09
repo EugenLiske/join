@@ -37,9 +37,9 @@ import {
 } from './contacts_firebase_api.js';
 
 // ================== DOM ELEMENT CONSTANTS ==================
-const NAME_INPUT = document.getElementById('name_input');
-const EMAIL_INPUT = document.getElementById('email_input');
-const PHONE_INPUT = document.getElementById('telephone_input');
+// const NAME_INPUT = document.getElementById('name_input');
+// const EMAIL_INPUT = document.getElementById('email_input');
+// const PHONE_INPUT = document.getElementById('telephone_input');
 const SAVE_BUTTON = document.getElementById('save_button');
 const BUTTON_TEXT = document.getElementById('button_text');
 const CONTACT_AVATAR = document.getElementById('contact_avatar');
@@ -166,7 +166,8 @@ async function loadContactForEdit(contactId) {
         }
         
         displayContactDataInForm(contactData);
-        validateContactForm();
+        // validateContactForm();
+        if (window.validateContactForm) window.validateContactForm();
         return contactData;
         
     } catch (error) {
@@ -359,52 +360,52 @@ async function executeSave(formData, isEditMode, contactId) {
 }
 
 //Debugg
-function validateContactForm() {
-    const formData = getFormData();
+// function validateContactForm() {
+//     const formData = getFormData();
     
-    updateFieldValidation(NAME_INPUT, formData.nameValidation);
-    updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
-    updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
+//     updateFieldValidation(NAME_INPUT, formData.nameValidation);
+//     updateFieldValidation(EMAIL_INPUT, formData.emailValidation);
+//     updateFieldValidation(PHONE_INPUT, formData.phoneValidation);
     
-    updateAvatarPreview(formData.name);
-    updateSaveButtonState(formData.isValid);
+//     updateAvatarPreview(formData.name);
+//     updateSaveButtonState(formData.isValid);
     
-    return formData;
-}
+//     return formData;
+// }
 
 // ================== EVENT LISTENERS ==================
 
 /**
  * Initializes form input event listeners
  */
-function initializeEventListeners() {
-    if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
-    if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
-    if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
-}
+// function initializeEventListeners() {
+//     if (NAME_INPUT) NAME_INPUT.addEventListener('input', validateContactForm);
+//     if (EMAIL_INPUT) EMAIL_INPUT.addEventListener('input', validateContactForm);
+//     if (PHONE_INPUT) PHONE_INPUT.addEventListener('input', validateContactForm);
+// }
 
 // ================== INITIALIZATION ==================
 
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
 
-    if (window.location.pathname.includes('contacts_add_successful.html')) {
-        loadContactDataForSuccessPage();
-    } 
-    else if (window.location.pathname.includes('contacts_edit.html')) {
-        initializeEventListeners();
-        loadContactDataForEditPage();
-    }
-    else {
-        initializeEventListeners();
+//     if (window.location.pathname.includes('contacts_add_successful.html')) {
+//         loadContactDataForSuccessPage();
+//     } 
+//     else if (window.location.pathname.includes('contacts_edit.html')) {
+//         initializeEventListeners();
+//         loadContactDataForEditPage();
+//     }
+//     else {
+//         initializeEventListeners();
         
-        if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
-            validateContactForm();
-        }
-    }
-});
+//         if (NAME_INPUT || EMAIL_INPUT || PHONE_INPUT) {
+//             validateContactForm();
+//         }
+//     }
+// });
 
 // ================== GLOBAL EXPORTS ==================
-window.validateContactForm = validateContactForm;
+// window.validateContactForm = validateContactForm;
 window.closeEditContact = closeEditContact;
 window.saveContact = saveContact;
 window.clearFormInputs = clearFormInputs;

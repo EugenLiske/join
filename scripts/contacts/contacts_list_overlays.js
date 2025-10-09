@@ -4,6 +4,33 @@
  * Handles Add/Edit contact overlays
  */
 
+// === [NEW] Overlay Utilities: nur ein Overlay gleichzeitig im DOM =================
+
+/**
+ * Versteckt und leert den Overlay-Container (entfernt doppelten DOM mit gleichen IDs).
+ */
+function clearOverlayContainer(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.classList.add('d_none');   // sicherheitshalber verstecken
+  el.innerHTML = '';            // ENTSCHEIDEND: alle Kinder (mit doppelten IDs) entfernen
+}
+
+/**
+ * Entfernt vor dem Öffnen eines Overlays das jeweils andere.
+ * @param {"add"|"edit"|"all"} active
+ */
+function removeOtherOverlay(active) {
+  if (active === 'add') {
+    clearOverlayContainer('edit_contact_overlay');
+  } else if (active === 'edit') {
+    clearOverlayContainer('add_contact_overlay');
+  } else {
+    clearOverlayContainer('add_contact_overlay');
+    clearOverlayContainer('edit_contact_overlay');
+  }
+}
+
 import { FIREBASE_URL, FIREBASE_PATHS, STORAGE_KEYS } from "../config.js";
 
 import {
@@ -27,6 +54,8 @@ const contactDetailsPanel = document.getElementById("contact_details_panel");
  */
 export async function openAddContactOverlay() {
   try {
+    // [NEW] Sicherstellen, dass kein Edit-Overlay im DOM bleibt (doppelte IDs vermeiden)
+    removeOtherOverlay('add');
     if (document.activeElement) {
           document.activeElement.blur();
       }
@@ -37,6 +66,9 @@ export async function openAddContactOverlay() {
 
     await loadContactScripts();
     initializeAddContactOverlay();
+
+    // [NEW] Optional: sofortige Initial-Validierung
+    if (window.validateContactForm) window.validateContactForm();
   } catch (error) {
     // Error handling
   }
@@ -60,11 +92,17 @@ export async function editSelectedContact() {
 }
 
 async function loadAndShowEditOverlay() {
+  // [NEW] Sicherstellen, dass kein Add-Overlay im DOM bleibt (doppelte IDs vermeiden)
+  removeOtherOverlay('edit');
+
   const html = await loadOverlayHTML("../overlays/contacts/contacts_edit.html");
   showOverlay("edit_contact_overlay", html);
 
   await loadContactScripts();
   initializeEditContactOverlay();
+
+  // [NEW] Optional: initial Validierung anstoßen (falls Inputs schon befüllt)
+  if (window.validateContactForm) window.validateContactForm();
 }
 
 async function loadOverlayHTML(path) {
@@ -77,6 +115,20 @@ function showOverlay(overlayId, html) {
   overlay.innerHTML = html;
   overlay.classList.remove("d_none");
   document.body.style.overflow = "hidden";
+}
+
+export function hideOverlay(overlayId){
+  const overlay = document.getElementById(overlayId);
+  overlay.classList.add("d_none");
+
+  // [NEW] Bei unseren Kontakt-Overlays immer auch den Container leeren
+  if (overlayId === 'add_contact_overlay' || overlayId === 'edit_contact_overlay') {
+    clearOverlayContainer(overlayId);
+    document.body.style.overflow = '';
+  } else {
+    const overlay = document.getElementById(overlayId);
+    if (overlay) overlay.classList.add("d_none");
+  }
 }
 
 /**
@@ -159,7 +211,6 @@ function setupInputEventListeners() {
     const nameInput = document.getElementById("name_input");
     const emailInput = document.getElementById("email_input");
     const phoneInput = document.getElementById("telephone_input");
-
     if (nameInput)
       nameInput.addEventListener("input", window.validateContactForm);
     if (emailInput)
@@ -209,6 +260,7 @@ function closeAddContactOverlay() {
   const overlay = document.getElementById("add_contact_overlay");
   overlay.classList.add("d_none");
   overlay.innerHTML = "";
+  document.body.style.overflow = '';
 }
 
 // ================== EDIT OVERLAY INITIALIZATION ==================

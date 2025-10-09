@@ -1,5 +1,16 @@
 let login = false;
 
+
+/**
+ * Closes the burger menu when it is open and the user clicks next to the menu.
+ */
+document.addEventListener('click', event => {
+    if (document.getElementById('side_menu').classList.contains('open') && !(event.target.id === "side_menu") && !(event.target.id === "login_initials")){
+        document.getElementById('side_menu').classList.remove('open');
+    }
+})
+
+
 function toggleMenu() {
     const menu = document.getElementById('side_menu');
     menu.classList.toggle('open');
