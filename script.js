@@ -1,5 +1,11 @@
 let login = false;
 
+document.addEventListener('click', event => {
+    if (document.getElementById('side_menu').classList.contains('open') && !(event.target.id === "side_menu") && !(event.target.id === "login_initials")){
+        document.getElementById('side_menu').classList.remove('open');
+    }
+})
+
 function toggleMenu() {
     const menu = document.getElementById('side_menu');
     menu.classList.toggle('open');
