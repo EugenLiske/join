@@ -216,7 +216,7 @@ export function updateButtonState(text, disabled = false) {
  * @returns {HTMLElement} The created toast element
  */
 
-export function showOverlayMessage(message, type = 'success', duration = 3000) {
+export function showOverlayMessage(message, type = 'success', duration = 1500) {
     const overlay = document.createElement('div');
     overlay.className = 'overlay';
     
