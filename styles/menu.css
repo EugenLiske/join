@@ -238,6 +238,10 @@
   padding: 8px 16px;
 }
 
+.media_menu_element{
+  display: none;
+}
+
 @media (max-width: 1000px) {
   .side_menu {
     top: 60px;
@@ -374,5 +378,16 @@
   .mobil_logo {
     display: block;
     width: 32px;
+  }
+}
+
+
+@media (pointer: coarse){
+  .help_button {
+    display: none;
+  }
+
+  .media_menu_element{
+    display: block;
   }
 }
