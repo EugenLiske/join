@@ -228,7 +228,7 @@
         border-radius: 50% !important;
         
         /* Icon darüber */
-        background-image: url("../../assets/img/icons/navigation/arrow_left.svg") !important;
+        background-image: url("../assets/img/icons/navigation/arrow_left.svg") !important;
         background-position: center !important;
         background-size: 24px 24px !important; /* Kleineres Icon im größeren Button */
         background-repeat: no-repeat !important;

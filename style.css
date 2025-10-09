@@ -121,7 +121,7 @@ h1{
 
     background-color: transparent;
     transition: background-color 2s ease;
-    z-index: 103;
+    z-index: 1002;
 
     padding-bottom: 80px;
 }

@@ -1,24 +1,13 @@
 <!-- ADD CONTACT HTML -->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Contact</title>
-    <link rel="stylesheet" href="../../styles/contacts/contact_edit_add.css" />
-    <link rel="stylesheet" href="../../styles/root.css" />
-    <link rel="stylesheet" href="../../styles/contacts/contact_add.css">
-    <link rel="stylesheet" href="../../styles/fonts.css" />
-  </head>
-  <body>
+
     <main class="edit_main add-overlay">
       <!-- LEFT SIDE - HEADER SECTION -->
       <div class="edit_contact">
         <!-- Kreuz für unter 750px -->
         <button class="close_button close_button_dark" onclick="closeEditContact()">
-          <img src="../../assets/img/icons/navigation/cross.svg" alt="Close">
+          <img src="../assets/img/icons/navigation/cross.svg" alt="Close">
         </button>
-        <img class="logo_light" src="../../assets/img/logos/join_logo_light.svg" alt="Join Logo" />
+        <img class="logo_light" src="../assets/img/logos/join_logo_light.svg" alt="Join Logo" />
         <h1 class="edit_h1">Add contact</h1>
         <h3 class="edit_h3">Tasks are better with a team!</h3>
         <div class="edit_blue_line"></div>
@@ -32,7 +21,7 @@
         <!-- PROFILE AVATAR CIRCLE -->
         <div class="contact_avatar" id="contact_avatar">
           <span class="avatar_initials" id="avatar_initials">
-           <img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" /></span>
+           <img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" /></span>
         </div>
 
         <!-- INPUT CONTAINER -->
@@ -42,21 +31,21 @@
             <div class="input_wrapper">
               <input type="text" id="name_input" class="input_field" placeholder="Name Surname" />
               <span class="input_error" id="name_error"></span>
-              <img src="../../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />
+              <img src="../assets/img/icons/form/person.svg" class="input_field_icon" alt="Person Icon" />
               
             </div>
 
             <div class="input_wrapper">
               <input type="email" id="email_input" class="input_field" placeholder="Email" />
               <span class="input_error" id="email_error"></span>
-              <img src="../../assets/img/icons/form/mail.svg" class="input_field_icon" alt="Mail Icon" />
+              <img src="../assets/img/icons/form/mail.svg" class="input_field_icon" alt="Mail Icon" />
               
             </div>
 
             <div class="input_wrapper">
                 <input type="tel" id="telephone_input" class="input_field" placeholder="Phone" />
                 <span class="input_error" id="phone_error"></span>
-                <img src="../../assets/img/icons/form/call.svg" class="input_field_icon" alt="Phone Icon" />
+                <img src="../assets/img/icons/form/call.svg" class="input_field_icon" alt="Phone Icon" />
                 
             </div>
 
@@ -77,6 +66,3 @@
         </div>
       </div>
     </main>
-  </body>
-  <script type="module" src="../../scripts/contacts/contacts.js"></script>
-</html>

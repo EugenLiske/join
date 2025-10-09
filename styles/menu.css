@@ -141,7 +141,7 @@
   background-color: var(--bg-c-header);
   box-shadow: 0 4px 4px 0 #0000001a;
   position: relative;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .board_header_inner {
@@ -218,7 +218,7 @@
   transition: transform 0.5s ease, opacity 0.5s ease;
   transform: translateX(100%);
   opacity: 0;
-  z-index: 100000000;
+  z-index: 1001;
   pointer-events: none;
 
   display: flex;
@@ -297,7 +297,6 @@
     margin: 0;
     padding: 0 16px;
     box-sizing: border-box;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
