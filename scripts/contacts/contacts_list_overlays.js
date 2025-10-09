@@ -79,6 +79,11 @@ function showOverlay(overlayId, html) {
   document.body.style.overflow = "hidden";
 }
 
+export function hideOverlay(overlayId){
+  const overlay = document.getElementById(overlayId);
+  overlay.classList.add("d_none");
+}
+
 /**
  * Loads contact scripts dynamically
  */
@@ -159,7 +164,6 @@ function setupInputEventListeners() {
     const nameInput = document.getElementById("name_input");
     const emailInput = document.getElementById("email_input");
     const phoneInput = document.getElementById("telephone_input");
-
     if (nameInput)
       nameInput.addEventListener("input", window.validateContactForm);
     if (emailInput)
