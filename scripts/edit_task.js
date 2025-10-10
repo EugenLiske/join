@@ -63,7 +63,7 @@ function setTaskFormData(){
     const taskKeys = Object.keys(task);
     if (taskKeys.includes("title")) document.getElementById("task_title_input").value = task.title;
     if (taskKeys.includes("description")) document.getElementById("task_description_input").value = task.description;
-    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = changeDateFormat2(task.duedate);
+    if (taskKeys.includes("duedate")) document.getElementById("task_deadline_input").value = task.duedate;
     if (taskKeys.includes("priority")) setPrioritySelection(task.priority);
     if (taskKeys.includes("assignedPersons")) setAssignedToSelection(task.assignedPersons);
     if (taskKeys.includes("subtasks")) setSubtasksList(task.subtasks);

@@ -119,6 +119,7 @@ function checkCategory(setWarning = true){
  */
 function simpleCheckDuedate(){
     let duedateRef = document.getElementById("task_deadline_input");  
+    
     let isCorrect = duedateRef.value.length > 0;
 
     return isCorrect;
@@ -177,11 +178,12 @@ function getDateWarning(errorNumber){
  */
 function dateValidation(date) {
     if (date.length <= 0) return 1;
-    if (!checkDateFormat(date)) return 2;
+    //if (!checkDateFormat(date)) return 2;
 
-    let strDateArr = date.split("/");
+    
+    let strDateArr = date.split("-");
     let intDateArr = getIntDate(strDateArr);
-
+    console.log(intDateArr);
     return checkDate(intDateArr[0], intDateArr[1], intDateArr[2]);
 }
 
@@ -194,7 +196,7 @@ function dateValidation(date) {
  * @param {number} year - Year of the date.
  * @returns {number} - Error code (0 = valid, 3 = invalid date, 4 = date not in future).
  */
-function checkDate(day, month, year){
+function checkDate(year, month, day){
     if (!checkNumberInterval(day, month, year)) return 3;
     if (!isDateInFuture(day, month, year)) return 4;
     
