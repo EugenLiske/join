@@ -35,13 +35,15 @@
 
 .priority_input{
     display: flex;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 6px;
 }
 
 .priority_button{
     border-radius: 10px;
-    padding: 16px 10px;
+    padding: 16px 4px;
     display: flex;
+    max-width: 140px;
     align-items: center;
     justify-content: center;
     gap: 8px;
@@ -379,11 +381,11 @@ button.input_field{
     white-space: nowrap;
 }
 
-#medium{
+/* #medium{
     flex-wrap: wrap;
-}
+} */
 
-@media(max-width: 1000px){
+@media(max-width: 1100px){
 
     .task_input_wrapper{
         font-size: 16px;
@@ -419,8 +421,11 @@ button.input_field{
 
 @media(max-width: 400px){
 
-    .priority_button{
+    .priority_input {
         flex-direction: column;
+    }
+    .priority_button{
+        padding: 10px 4px;
     }
 
 }
