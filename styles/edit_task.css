@@ -17,7 +17,8 @@
     width: 100%;
 
     background-color: white;
-    margin: 8px;
+
+    max-height: 100%;
 }
 
 .overlay_edit_task.active {
@@ -28,7 +29,6 @@
 .overlay_edit_task_header{
     display: flex;
     justify-content: end;
-    padding-right: 24px;
     width: 100%;
 }
 
@@ -38,7 +38,7 @@
 
     gap: 24px;
 
-    height: 70vh;
+    height: 60vh;
     padding-right: 20px;
     overflow: auto;
 }
@@ -91,7 +91,7 @@
 @media (max-width: 850px){
 
     .overlay_edit_task{
-        padding: 32px 24px;
+        padding: 32px 12px;
         max-width: 396px; 
         width: 100%;
 

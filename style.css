@@ -117,13 +117,11 @@ h1{
 
     overflow-x: hidden;
 
-    padding: 16px;
+    padding: 8px;
 
     background-color: transparent;
     transition: background-color 2s ease;
     z-index: 1002;
-
-    padding-bottom: 80px;
 }
 
 .overlay_wrapper_animation.active {
@@ -244,13 +242,6 @@ h1{
     }
 }
 
-@media(max-width: 400px){
-    
-    .overlay_wrapper_animation{
-        padding: 8px;
-        padding-bottom: 80px;
-    }
-}
 
 @media(max-width: 320px){
     .main_wrapper {
