@@ -225,11 +225,13 @@ function addSubtaskOrToggleIcons(event){
 function addSubtaskToList(){
     let inputSubtask = document.getElementById("subtask_input");
     const input = inputSubtask.value;
-    let subtasksContainer = document.getElementById("subtasks_container");
-    subtasksContainer.innerHTML += getSubtaskTemplate(input, nextSubtaskId);
-    nextSubtaskId++;
-    inputSubtask.value = "";
-    toggleDeleteAndAddIcons();
+    if (input.trim().length > 0){
+        let subtasksContainer = document.getElementById("subtasks_container");
+        subtasksContainer.innerHTML += getSubtaskTemplate(input, nextSubtaskId);
+        nextSubtaskId++;
+        inputSubtask.value = "";
+        toggleDeleteAndAddIcons();        
+    }
 }
 
 
