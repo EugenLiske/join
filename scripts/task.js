@@ -53,7 +53,11 @@ function buildSubtaskProgressbar(task){
         const subtasks = task["subtasks"];
         const values = countArchievedSubtasks(subtasks);
         let progressbarColor = values.counter/values.amount == 1 ? "all_subtasks_completed" : "subtasks_outstanding";
-        return getProgressbarTemplate(task.id, values.counter, values.amount, progressbarColor);
+        let additionalCSSClass = "d_none";
+        if (values.counter > 0){
+            additionalCSSClass = "";
+        }
+        return getProgressbarTemplate(task.id, values.counter, values.amount, progressbarColor, additionalCSSClass);            
     }
     return "";
 }
@@ -229,9 +233,11 @@ async function saveSubtaskChanges(){
  * @param {Object} task - The task object containing subtasks.
  */
 function updateProgressbar(task){
-    const progressbarRef = document.getElementById("progressbar_" + task.id);
+    
     const values = countArchievedSubtasks(task["subtasks"]);
     let percent = values.counter/values.amount*100;
+    toggleProgressbar(values.counter, task.id)
+    const progressbarRef = document.getElementById("progressbar_" + task.id);
     progressbarRef.style = "width: " + percent + "%";
     if (percent == 100){
         progressbarRef.classList.replace("subtasks_outstanding", "all_subtasks_completed");
@@ -242,6 +248,27 @@ function updateProgressbar(task){
     progressTextRef.innerText = values.counter + "/" + values.amount + " Subtasks";
 }
 
+
+/**
+ * Toggles the visibility of the progress bar and its label for a given task.
+ *
+ * Shows both elements if at least one subtask is completed; hides them otherwise.
+ *
+ * @param {number} numberSubtasksCompleted - Number of completed subtasks.
+ * @param {string|number} taskId - ID of the task used to target DOM elements.
+ */
+function toggleProgressbar(numberSubtasksCompleted, taskId){
+    const progressbarRef = document.getElementById("progress_container_" + taskId);
+    const progressbarTextRef = document.getElementById("progress_text_" + taskId);
+    if (numberSubtasksCompleted > 0){
+        progressbarRef.classList.remove("d_none");
+        progressbarTextRef.classList.remove("d_none");
+    }
+    else {
+        progressbarRef.classList.add("d_none");
+        progressbarTextRef.classList.add("d_none");
+    }
+}
 
 /**
  * Deletes the current task from the UI, memory, and database.

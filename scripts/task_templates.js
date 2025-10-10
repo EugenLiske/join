@@ -222,11 +222,11 @@ function getTaskCardTemplate(task){
  * @param {string} progressbarColor - CSS class for the progress bar color.
  * @returns {string} HTML string containing the progress bar and text.
  */
-function getProgressbarTemplate(taskId, numberSubtasksCompleted, numberSubtasks, progressbarColor){
-    return `<div class="progress_container">
+function getProgressbarTemplate(taskId, numberSubtasksCompleted, numberSubtasks, progressbarColor, dNoneClass){
+    return `<div id="progress_container_${taskId}" class="progress_container ${dNoneClass}">
                 <div class="progress_bar ${progressbarColor}" id="progressbar_${taskId}" style="width: ${numberSubtasksCompleted/numberSubtasks*100}%"></div>
             </div>
-            <span id="progress_text_${taskId}" class="">${numberSubtasksCompleted}/${numberSubtasks} Subtasks</span>`;
+            <span id="progress_text_${taskId}" class="${dNoneClass}">${numberSubtasksCompleted}/${numberSubtasks} Subtasks</span>`;
 }
 
 
