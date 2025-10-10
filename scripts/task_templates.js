@@ -185,15 +185,15 @@ function getTaskCardTemplate(task){
                         ${getCategory(task['category'])}  
                         <div class="drag_and_drop_menu_wrapper">  
                             <img onclick="openDragAndDropMenu(event, ${task['id']})" class="drag_and_drop_mobile" src="../assets/img/icons/task/drag_and_drop_mobile.svg"> 
-                            <menu id="drag_and_drop_menu_${task['id']}" class="drag_and_drop_menu_mobile d_none">
-                                <span>Move to</span>
-                                <ul class="drag_and_drop_buttons">
-                                    ${buildDragAndDropMenu(task['kanbanBoardColumn'], task['id'])}
-                                </ul>
-                            </menu>    
+ 
                         </div>       
                     </div>
-
+                    <menu id="drag_and_drop_menu_${task['id']}" class="drag_and_drop_menu_mobile d_none">
+                        <span>Move to</span>
+                        <ul class="drag_and_drop_buttons">
+                            ${buildDragAndDropMenu(task['kanbanBoardColumn'], task['id'])}
+                        </ul>
+                    </menu>   
 
                     <h4 id="bct_title">${task['title']}</h4>
                     ${buildDescriptionContainer(task)}

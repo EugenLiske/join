@@ -305,8 +305,8 @@ p {
 
 .drag_and_drop_menu_mobile {
   position: absolute;
-  top: -4px;
-  left: -4px;
+  top: 6px;
+  right: 6px;
   background-color: var(--bg-c-navigation);
   padding: 16px 10px;
   border-radius: 0 20px 20px 20px;
@@ -351,6 +351,7 @@ p {
 }
 
 .board_card {
+  position: relative;
   width: 300px;
   min-width: 300px;
   border-radius: 24px;
