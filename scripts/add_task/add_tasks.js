@@ -60,8 +60,27 @@ async function checkAndCreateTask(){
         path = "/tasks/" + "task_" + newTask.id;
         await setData(newTask, path);
         await increaseTaskCounter(newTask.id);
-        displayToastMessage("overlay_container", "overlay_message", "../pages/board.html");
+        newTaskToColumn(newTask);
+        displayToastMessage("overlay_container", "overlay_message", "");
+        toggleOverlay("overlay_add_task");
+        toggleScrollBehaviorOfBody('');
+        clearForm();
+        addTaskToAllTasks(newTask);
     }
+}
+
+function newTaskToColumn(newTask){
+    const kanbanColumnRef = document.getElementById(newTask["kanbanBoardColumn"]);
+    if (checkIfTaskColumnEmpty(kanbanColumnRef)) {
+        kanbanColumnRef.innerHTML = getTaskCardTemplate(newTask);
+    }
+    else {
+        kanbanColumnRef.innerHTML += getTaskCardTemplate(newTask);
+    }
+}
+
+function checkIfTaskColumnEmpty(columnRef){
+    return columnRef.children[0].classList.contains("no_tasks_placeholder") ? true : false;
 }
 
 

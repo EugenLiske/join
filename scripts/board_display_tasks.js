@@ -139,6 +139,12 @@ async function loadTasksFromDB(){
     }
 }
 
+
+function addTaskToAllTasks(newTask){
+    allTasks.push(newTask);
+}
+
+
 /** @type {number|string|undefined} The id of the task currently being dragged (during DnD). */
 let currentDraggedTask;
 
