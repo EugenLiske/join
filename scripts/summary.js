@@ -38,8 +38,6 @@ function getCurrentUserData(){
         "role": sessionStorage.getItem("role"),
         "name": sessionStorage.getItem("name")
     }
-    console.log(currentUser);
-    
 }
 
 

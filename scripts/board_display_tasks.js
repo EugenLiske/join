@@ -314,11 +314,8 @@ async function moveToDifferentCategory(kanbanBoardColumn){
     if (actualIndex === -1) return; 
     allTasks[actualIndex]['kanbanBoardColumn'] = kanbanBoardColumn;
     updateHTML();
-    console.log(allTasks);
     let newKanbanColumn = allTasks[actualIndex]['kanbanBoardColumn'];
-    console.log(newKanbanColumn);
     let path = `/tasks/task_${currentDraggedTask}/kanbanBoardColumn`
-    console.log(path);
     await setData(newKanbanColumn, path);
 }
 

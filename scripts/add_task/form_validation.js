@@ -178,12 +178,9 @@ function getDateWarning(errorNumber){
  */
 function dateValidation(date) {
     if (date.length <= 0) return 1;
-    //if (!checkDateFormat(date)) return 2;
 
-    
     let strDateArr = date.split("-");
     let intDateArr = getIntDate(strDateArr);
-    console.log(intDateArr);
     return checkDate(intDateArr[0], intDateArr[1], intDateArr[2]);
 }
 

@@ -287,7 +287,6 @@ async function deleteCurrentTask(){
 
     document.getElementById("task_card_" + task.id).remove();
     if (document.getElementById(task.kanbanBoardColumn).innerHTML.trim() === ""){
-        debugger
         document.getElementById(task.kanbanBoardColumn).innerHTML = generatePlaceholderHTML('await_feedback');
     }
 }
