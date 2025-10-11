@@ -2,6 +2,7 @@
 .overlay_task{
     border-radius: 30px;
     padding: 48px 40px;
+    padding-right: 26px;
 
     display: flex;
     flex-direction: column;
@@ -19,6 +20,8 @@
     margin: 8px;
 
     gap: 24px;
+
+    max-height: 95vh;
 }
 
 .overlay_task.active{
@@ -188,4 +191,43 @@
     .overlay_task.active{
         right: calc(88vw - 100%);
     }    
+}
+
+/* Scrollbar */
+
+.scrollbar_area{
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #A8A8A8;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #626262;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-button:single-button {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("../assets/img/icons/scrollbar/button_up.svg");
+}
+
+::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("../assets/img/icons/scrollbar/button_down.svg");
 }
