@@ -54,20 +54,34 @@ function clearForm(){
 async function checkAndCreateTask(){
     let newTask = null;
     let path = "";
-    
+    let nextPage = nextPageLink();
     if (checkRequiredFields()){
         newTask = await createTask();
         path = "/tasks/" + "task_" + newTask.id;
         await setData(newTask, path);
         await increaseTaskCounter(newTask.id);
+        displayToastMessage("overlay_container", "overlay_message", nextPage);
+        additionalOverlayFunctions(nextPage, newTask)
+    }
+}
+
+
+function additionalOverlayFunctions(nextPage, newTask){
+    if (nextPage === "")
+    {
         newTaskToColumn(newTask);
-        displayToastMessage("overlay_container", "overlay_message", "");
         toggleOverlay("overlay_add_task");
         toggleScrollBehaviorOfBody('');
         clearForm();
-        addTaskToAllTasks(newTask);
-    }
+        addTaskToAllTasks(newTask);            
+    }    
 }
+
+
+function nextPageLink(){
+    return window.location.pathname.endsWith("add_task.html") ? "board.html" : "";
+}
+
 
 function newTaskToColumn(newTask){
     const kanbanColumnRef = document.getElementById(newTask["kanbanBoardColumn"]);
