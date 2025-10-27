@@ -56,6 +56,9 @@ export async function openAddContactOverlay() {
   try {
     // [NEW] Sicherstellen, dass kein Edit-Overlay im DOM bleibt (doppelte IDs vermeiden)
     removeOtherOverlay('add');
+    // Wenn vorher ein Edit begonnen wurde, entfernen wir die gespeicherte Edit-ID
+    // sonst landet das Formular beim Speichern fälschlich im Edit-Modus.
+    try { localStorage.removeItem(STORAGE_KEYS.CURRENT_EDIT_ID); } catch (e) { /* ignore */ }
     if (document.activeElement) {
           document.activeElement.blur();
       }

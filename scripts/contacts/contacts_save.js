@@ -102,7 +102,8 @@ export async function saveContact(event) {
         showOverlayMessage('Please correct the form errors before saving.');
         return false;
     }
-    
+    console.log('Form data:', formData); // Debug log
+        
     const contactId = localStorage.getItem(STORAGE_KEYS.CURRENT_EDIT_ID);
     const isEditMode = contactId !== null;
     
@@ -117,6 +118,7 @@ async function executeSave(formData, isEditMode, contactId) {
         
         return success;
     } catch (error) {
+        console.error('Save error:', error);
         showOverlayMessage('Error saving contact. Please check your connection and try again.');
         return false;
     }

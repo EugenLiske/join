@@ -700,7 +700,7 @@
   /* Main Content über volle Breite */
   .contacts_main_content {
     gap: 0;
-    padding-bottom: 80px; /* Platz für sticky Nav Menu */
+    padding-bottom: 60px; /* Platz für sticky Nav Menu */
   }
 
   /* Main Header linksbündig */

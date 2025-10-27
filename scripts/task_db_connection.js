@@ -1,4 +1,4 @@
-const BASE_URL = "https://join-476d1-default-rtdb.firebaseio.com";
+const BASE_URL = "https://join---kanban-board-default-rtdb.europe-west1.firebasedatabase.app";
 
 
 /**
@@ -133,7 +133,7 @@ async function deleteTaskFromFirebase(taskId) {
  */
 async function getContacts() {
     try {
-        const response = await fetch(`https://join-476d1-default-rtdb.firebaseio.com/contacts/data.json?t=${Date.now()}`);
+        const response = await fetch(`https://join---kanban-board-default-rtdb.europe-west1.firebasedatabase.app/contacts/data.json?t=${Date.now()}`);
 
         if (!response.ok) {
             throw new Error("Failed to load contacts");
